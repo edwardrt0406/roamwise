@@ -1,0 +1,1048 @@
+<!DOCTYPE html><html><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"><meta http-equiv="x-dns-prefetch-control" content="off"><script src="https://puc.poecdn.net/authenticated_preview_page/standard.3ef2c256959faf5a756d.js"></script>
+    <meta charset="utf-8">
+    <title>Poe</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://puc.poecdn.net/authenticated_preview_page/disableWebRTC.9710cebe07429a9e8e06.js"></script><meta name="x-poe-allow-downloads" content="true"><meta name="x-poe-datastore-behavior" content="disabled"><script src="https://puc.poecdn.net/authenticated_preview_page/tw.b9024aecac666455e183.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/deps.faccd16000d314dc16d5.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/exports.b0f0f482cdeb5302b0b9.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/renderer.75c73ae6b4235f62945a.js"></script><script>Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var _react = require('react'); var _react2 = _interopRequireDefault(_react);
+var _lucidereact = require('lucide-react');
+var _framermotion = require('framer-motion');
+
+const PLUG_META = {
+A:{n:'Tipo A',d:'Ficha plana dupla (EUA)',region:'Américas/Japão/Taiwan'},
+B:{n:'Tipo B',d:'3 pinos (EUA com terra)',region:'Américas/Taiwan'},
+C:{n:'Tipo C',d:'Ficha redonda dupla (Europa)',region:'Europa/Ásia/América do Sul'},
+D:{n:'Tipo D',d:'3 pinos redondos antigos (Índia)',region:'Índia/Ásia do Sul'},
+E:{n:'Tipo E',d:'Francês (com orifício de terra)',region:'França/Bélgica/Polónia'},
+F:{n:'Tipo F',d:'Schuko alemão (clipes laterais)',region:'Alemanha/Maior parte da Europa'},
+G:{n:'Tipo G',d:'3 pinos rectangulares (Reino Unido)',region:'RU/HK/Macau/Malásia/Singapura'},
+H:{n:'Tipo H',d:'3 pinos israelita',region:'Israel'},
+I:{n:'Tipo I',d:'Ficha plana inclinada (Austrália/China)',region:'Austrália/Nova Zelândia/China'},
+J:{n:'Tipo J',d:'3 pinos redondos suíços',region:'Suíça'},
+K:{n:'Tipo K',d:'3 pinos redondos dinamarqueses',region:'Dinamarca'},
+L:{n:'Tipo L',d:'3 pinos redondos em linha (Itália)',region:'Itália/Chile'},
+M:{n:'Tipo M',d:'3 pinos redondos grandes (África do Sul)',region:'África do Sul/Índia'},
+N:{n:'Tipo N',d:'3 pinos redondos brasileiros',region:'Brasil/África do Sul'},
+O:{n:'Tipo O',d:'3 pinos tailandeses',region:'Tailândia'}
+};
+
+const CO = {
+CN:{z:'China',e:'China',cur:'CNY ¥ Yuan chinês',lang:'Chinês (Mandarim)',em:'110 Polícia / 120 Ambulância / 119 Bombeiros',p:'AIC',v:220,f:50,tz:'Asia/Shanghai',ds:'R',sl:'Urbano 50 / Autoestrada 120',lic:'Requer carta de condução chinesa ou PIC certificada',tp:'Não é costume dar gorjeta',cu:'Evitar o número 4; dar/receber presentes com ambas as mãos'},
+HK:{z:'Hong Kong',e:'Hong Kong',cur:'HKD $ Dólar de Hong Kong',lang:'Cantonês / Inglês',em:'999',p:'G',v:220,f:50,tz:'Asia/Hong_Kong',ds:'L',sl:'Urbano 50 / Autoestrada 110',lic:'PIC aceite',tp:'10% de taxa de serviço em restaurantes de gama alta',cu:'Cartão Octopus de uso generalizado; cultura de fazer fila'},
+MO:{z:'Macau',e:'Macau',cur:'MOP $ Pataca de Macau',lang:'Cantonês / Português',em:'999',p:'G',v:220,f:50,tz:'Asia/Macau',ds:'L',sl:'Urbano 60 / Ponte 80',lic:'PIC aceite',tp:'Não obrigatória em casinos mas bem-vinda',cu:'HKD amplamente aceite; código de vestuário nos casinos'},
+TW:{z:'Taiwan',e:'Taiwan',cur:'TWD $ Novo dólar taiwanês',lang:'Chinês (Mandarim)',em:'110 Polícia / 119 Bombeiros e Ambulância',p:'AB',v:110,f:60,tz:'Asia/Taipei',ds:'R',sl:'Urbano 50 / Autoestrada 110',lic:'Requer PIC ou carta de condução local',tp:'Não é costume dar gorjeta',cu:'Hospitalidade calorosa; respeitar costumes religiosos'},
+JP:{z:'Japão',e:'Japan',cur:'JPY ¥ Iene japonês',lang:'Japonês',em:'110 Polícia / 119 Bombeiros e Ambulância',p:'AB',v:100,f:'50/60',tz:'Asia/Tokyo',ds:'L',sl:'Urbano 40-60 / Autoestrada 100',lic:'Requer tradução japonesa da PIC ou carta local',tp:'Nunca dar gorjeta (é considerado rude)',cu:'Tirar os sapatos em interiores; não comer a andar; silêncio nos comboios'},
+KR:{z:'Coreia do Sul',e:'South Korea',cur:'KRW ₩ Won sul-coreano',lang:'Coreano',em:'112 Polícia / 119 Ambulância',p:'CF',v:220,f:60,tz:'Asia/Seoul',ds:'R',sl:'Urbano 60 / Autoestrada 110',lic:'PIC aceite',tp:'Não é costume dar gorjeta',cu:'Usar ambas as mãos ao dar/receber; respeitar os mais velhos'},
+TH:{z:'Tailândia',e:'Thailand',cur:'THB ฿ Baht tailandês',lang:'Tailandês',em:'191 Polícia / 1669 Ambulância',p:'ABCO',v:220,f:50,tz:'Asia/Bangkok',ds:'L',sl:'Urbano 80 / Autoestrada 120',lic:'PIC necessária',tp:'10% em restaurantes de gama alta',cu:'Não tocar nas cabeças; respeitar a família real; tirar sapatos nos templos'},
+VN:{z:'Vietname',e:'Vietnam',cur:'VND ₫ Dong vietnamita',lang:'Vietnamita',em:'113 Polícia / 115 Ambulância',p:'ACG',v:220,f:50,tz:'Asia/Ho_Chi_Minh',ds:'R',sl:'Urbano 50 / Autoestrada 120',lic:'Requer carta vietnamita ou PIC certificada',tp:'Não obrigatória, 5-10% apreciado',cu:'Vestir com modéstia nos templos; atravessar ruas com passo firme'},
+KH:{z:'Camboja',e:'Cambodia',cur:'KHR/USD Riel/Dólar americano',lang:'Khmer',em:'117/118/119',p:'ACG',v:230,f:50,tz:'Asia/Phnom_Penh',ds:'R',sl:'Urbano 40 / Autoestrada 100',lic:'Requer carta cambojana',tp:'Não necessária mas bem-vinda',cu:'Não tocar nos monges; vestir com modéstia em Angkor'},
+LA:{z:'Laos',e:'Laos',cur:'LAK ₭ Kip laociano',lang:'Lao',em:'191/195',p:'ABCEF',v:230,f:50,tz:'Asia/Vientiane',ds:'R',sl:'Urbano 40 / Autoestrada 100',lic:'Requer carta laociana',tp:'Não necessária',cu:'Tirar sapatos nos templos; as mulheres não devem tocar nos monges'},
+MM:{z:'Myanmar',e:'Myanmar',cur:'MMK K Kyat birmanês',lang:'Birmanês',em:'199',p:'CDGF',v:230,f:50,tz:'Asia/Yangon',ds:'R',sl:'Urbano 48 / Autoestrada 100',lic:'Requer carta de Myanmar',tp:'Não necessária',cu:'Tirar sapatos nos pagodes; mostrar respeito pelas imagens de Buda'},
+MY:{z:'Malásia',e:'Malaysia',cur:'MYR RM Ringgit malaio',lang:'Malaio / Inglês',em:'999',p:'G',v:240,f:50,tz:'Asia/Kuala_Lumpur',ds:'L',sl:'Urbano 60 / Autoestrada 110',lic:'PIC aceite',tp:'Não necessária (taxa de serviço incluída)',cu:'Usar a mão direita para entregar objetos; respeitar normas das mesquitas'},
+SG:{z:'Singapura',e:'Singapore',cur:'SGD $ Dólar de Singapura',lang:'Inglês / Chinês / Malaio / Tamil',em:'999',p:'G',v:230,f:50,tz:'Asia/Singapore',ds:'L',sl:'Urbano 50 / Via rápida 80',lic:'PIC aceite',tp:'Não necessária (taxa de serviço incluída)',cu:'Pastilha elástica proibida; sistema de multas rigoroso'},
+ID:{z:'Indonésia',e:'Indonesia',cur:'IDR Rp Rupia indonésia',lang:'Indonésio',em:'112',p:'CF',v:230,f:50,tz:'Asia/Jakarta',ds:'L',sl:'Urbano 50 / Autoestrada 100',lic:'PIC necessária',tp:'5-10% em restaurantes de gama média/alta',cu:'Usar mão direita para entregar; vestir com modéstia nas mesquitas'},
+PH:{z:'Filipinas',e:'Philippines',cur:'PHP ₱ Peso filipino',lang:'Filipino / Inglês',em:'911',p:'ABC',v:220,f:60,tz:'Asia/Manila',ds:'R',sl:'Urbano 60 / Autoestrada 100',lic:'PIC aceite (90 dias)',tp:'10% em restaurantes',cu:'Cultura familiar; optimistas e amigáveis'},
+BN:{z:'Brunei',e:'Brunei',cur:'BND $ Dólar de Brunei',lang:'Malaio / Inglês',em:'993',p:'G',v:240,f:50,tz:'Asia/Brunei',ds:'L',sl:'Urbano 50 / Autoestrada 100',lic:'PIC necessária',tp:'Não necessária',cu:'País islâmico, álcool proibido; vestir de forma conservadora'},
+IN:{z:'Índia',e:'India',cur:'INR ₹ Rupia indiana',lang:'Hindi / Inglês',em:'112',p:'CDM',v:230,f:50,tz:'Asia/Kolkata',ds:'L',sl:'Urbano 50 / Autoestrada 100',lic:'PIC necessária',tp:'10% em restaurantes',cu:'Mão esquerda considerada impura; tirar sapatos nos templos; as vacas são sagradas'},
+LK:{z:'Sri Lanka',e:'Sri Lanka',cur:'LKR Rs Rupia do Sri Lanka',lang:'Cingalês / Tâmil',em:'119',p:'DGM',v:230,f:50,tz:'Asia/Colombo',ds:'L',sl:'Urbano 50 / Autoestrada 100',lic:'PIC necessária',tp:'10%',cu:'País budista; não dar as costas às estátuas de Buda para fotografias'},
+NP:{z:'Nepal',e:'Nepal',cur:'NPR Rs Rupia nepalesa',lang:'Nepalês',em:'100/101',p:'CDM',v:230,f:50,tz:'Asia/Kathmandu',ds:'L',sl:'Urbano 40 / Autoestrada 80',lic:'PIC necessária',tp:'10% em gama média/alta',cu:'Não usar mão esquerda para entregar; a vaca é o animal nacional'},
+MV:{z:'Maldivas',e:'Maldives',cur:'MVR Rf Rufiyaa maldiva',lang:'Divehi',em:'119',p:'ADGJKL',v:230,f:50,tz:'Indian/Maldives',ds:'L',sl:'Urbano 30 / Autoestrada 80',lic:'PIC necessária',tp:'10% geralmente incluído',cu:'Fato de banho permitido em ilhas resort, vestir com modéstia em ilhas locais'},
+BT:{z:'Butão',e:'Bhutan',cur:'BTN Nu Ngultrum butanês',lang:'Dzongkha',em:'113',p:'DFG',v:230,f:50,tz:'Asia/Thimphu',ds:'L',sl:'Urbano 30 / Autoestrada 50',lic:'Não se recomenda conduzir por conta própria',tp:'Não necessária',cu:'Tarifa mínima diária para turistas; fumar proibido'},
+BD:{z:'Bangladesh',e:'Bangladesh',cur:'BDT ৳ Taka do Bangladesh',lang:'Bengali',em:'999',p:'ACDK',v:220,f:50,tz:'Asia/Dhaka',ds:'L',sl:'Urbano 40 / Autoestrada 80',lic:'PIC necessária',tp:'Não necessária',cu:'O Islão é a religião principal; usar mão direita'},
+PK:{z:'Paquistão',e:'Pakistan',cur:'PKR Rs Rupia paquistanesa',lang:'Urdu / Inglês',em:'15',p:'CDG',v:230,f:50,tz:'Asia/Karachi',ds:'L',sl:'Urbano 50 / Autoestrada 120',lic:'PIC necessária',tp:'Não necessária',cu:'País islâmico; vestir de forma conservadora'},
+MN:{z:'Mongólia',e:'Mongolia',cur:'MNT ₮ Tugrik mongol',lang:'Mongol',em:'102/103',p:'CE',v:220,f:50,tz:'Asia/Ulaanbaatar',ds:'R',sl:'Urbano 60 / Autoestrada 100',lic:'PIC necessária',tp:'Não necessária',cu:'Não pisar o limiar de um ger (yurt)'},
+UZ:{z:'Uzbequistão',e:'Uzbekistan',cur:'UZS soʻm Som uzbeque',lang:'Uzbeque',em:'101/102/103',p:'CF',v:220,f:50,tz:'Asia/Tashkent',ds:'R',sl:'Urbano 70 / Autoestrada 110',lic:'PIC necessária',tp:'Não necessária',cu:'Respeitar costumes islâmicos; cultura de hospitalidade'},
+KZ:{z:'Cazaquistão',e:'Kazakhstan',cur:'KZT ₸ Tenge cazaque',lang:'Cazaque / Russo',em:'112',p:'CF',v:220,f:50,tz:'Asia/Almaty',ds:'R',sl:'Urbano 60 / Autoestrada 110',lic:'PIC necessária',tp:'Não necessária',cu:'Tradição de hospitalidade; aceitar comida demonstra respeito'},
+GE:{z:'Geórgia',e:'Georgia',cur:'GEL ₾ Lari georgiano',lang:'Georgiano',em:'112',p:'CF',v:220,f:50,tz:'Asia/Tbilisi',ds:'R',sl:'Urbano 60 / Autoestrada 110',lic:'PIC aceite',tp:'10% em restaurantes',cu:'Cultura do vinho; forte tradição de hospitalidade'},
+AM:{z:'Arménia',e:'Armenia',cur:'AMD ֏ Dram arménio',lang:'Arménio',em:'911',p:'CF',v:230,f:50,tz:'Asia/Yerevan',ds:'R',sl:'Urbano 60 / Autoestrada 90',lic:'PIC necessária',tp:'10%',cu:'Cultura do brandy; tradição cristã'},
+AZ:{z:'Azerbaijão',e:'Azerbaijan',cur:'AZN ₼ Manat azeri',lang:'Azeri',em:'112',p:'CF',v:220,f:50,tz:'Asia/Baku',ds:'R',sl:'Urbano 60 / Autoestrada 110',lic:'PIC necessária',tp:'10%',cu:'Tradição de hospitalidade; observar festividades religiosas'},
+AE:{z:'EAU',e:'United Arab Emirates',cur:'AED د.إ Dirham emiradense',lang:'Árabe / Inglês',em:'999',p:'G',v:220,f:50,tz:'Asia/Dubai',ds:'R',sl:'Urbano 60-80 / Autoestrada 120-140',lic:'PIC aceite',tp:'Não necessária (taxa de serviço incluída)',cu:'Durante o Ramadão, não comer/beber em público de dia; vestir com modéstia'},
+SA:{z:'Arábia Saudita',e:'Saudi Arabia',cur:'SAR ﷼ Rial saudita',lang:'Árabe',em:'911',p:'G',v:220,f:60,tz:'Asia/Riyadh',ds:'R',sl:'Urbano 50 / Autoestrada 120',lic:'PIC necessária',tp:'Não necessária',cu:'Vestir de forma conservadora; mulheres observar etiqueta pública'},
+QA:{z:'Catar',e:'Qatar',cur:'QAR ﷼ Rial catarense',lang:'Árabe / Inglês',em:'999',p:'G',v:240,f:50,tz:'Asia/Qatar',ds:'R',sl:'Urbano 60 / Autoestrada 120',lic:'PIC aceite (7 dias)',tp:'Não necessária',cu:'Etiqueta do Ramadão; vestir decentemente em público'},
+BH:{z:'Barém',e:'Bahrain',cur:'BHD BD Dinar bareinita',lang:'Árabe / Inglês',em:'999',p:'G',v:230,f:50,tz:'Asia/Bahrain',ds:'R',sl:'Urbano 60 / Autoestrada 120',lic:'PIC aceite',tp:'Não necessária',cu:'Vestir decentemente; observar etiqueta do Ramadão'},
+OM:{z:'Omã',e:'Oman',cur:'OMR ﷼ Rial omanense',lang:'Árabe',em:'9999',p:'G',v:240,f:50,tz:'Asia/Muscat',ds:'R',sl:'Urbano 60 / Autoestrada 120',lic:'PIC aceite',tp:'Não necessária',cu:'Vestir de forma conservadora; povo amável'},
+KW:{z:'Kuwait',e:'Kuwait',cur:'KWD د.ك Dinar kuwaitiano',lang:'Árabe',em:'112',p:'G',v:240,f:50,tz:'Asia/Kuwait',ds:'R',sl:'Urbano 50 / Autoestrada 120',lic:'PIC aceite',tp:'Não necessária',cu:'Não comer/beber em público durante o Ramadão'},
+IL:{z:'Israel',e:'Israel',cur:'ILS ₪ Shekel israelita',lang:'Hebraico / Árabe',em:'100 Polícia / 101 Ambulância',p:'CH',v:230,f:50,tz:'Asia/Jerusalem',ds:'R',sl:'Urbano 50 / Autoestrada 110',lic:'PIC aceite',tp:'10-12% em restaurantes',cu:'Shabat (sex. à noite - sáb.): lojas encerradas'},
+JO:{z:'Jordânia',e:'Jordan',cur:'JOD JD Dinar jordano',lang:'Árabe',em:'911',p:'BCDFGJ',v:230,f:50,tz:'Asia/Amman',ds:'R',sl:'Urbano 50 / Autoestrada 110',lic:'PIC aceite',tp:'10%',cu:'Tradição de hospitalidade; tirar sapatos ao entrar em casas'},
+TR:{z:'Turquia',e:'Turkey',cur:'TRY ₺ Lira turca',lang:'Turco',em:'112',p:'CF',v:230,f:50,tz:'Europe/Istanbul',ds:'R',sl:'Urbano 50 / Autoestrada 120',lic:'PIC aceite',tp:'5-10% em restaurantes',cu:'Tirar sapatos nas mesquitas; cultura do chá'},
+LB:{z:'Líbano',e:'Lebanon',cur:'LBP £ Libra libanesa',lang:'Árabe / Francês',em:'112',p:'ABCDFG',v:220,f:50,tz:'Asia/Beirut',ds:'R',sl:'Urbano 50 / Autoestrada 100',lic:'PIC aceite',tp:'10-15%',cu:'Multicultural; interações sociais calorosas'},
+IR:{z:'Irão',e:'Iran',cur:'IRR ﷼ Rial iraniano',lang:'Persa',em:'110/115',p:'CF',v:220,f:50,tz:'Asia/Tehran',ds:'R',sl:'Urbano 60 / Autoestrada 120',lic:'PIC necessária',tp:'Não necessária',cu:'As mulheres devem usar lenço; álcool proibido'},
+EG:{z:'Egito',e:'Egypt',cur:'EGP £ Libra egípcia',lang:'Árabe',em:'122/123',p:'CF',v:220,f:50,tz:'Africa/Cairo',ds:'R',sl:'Urbano 50 / Autoestrada 100',lic:'PIC necessária',tp:'5-10% comum (Baksheesh)',cu:'Tirar sapatos nas mesquitas; cultura do regateio'},
+GB:{z:'Reino Unido',e:'United Kingdom',cur:'GBP £ Libra esterlina',lang:'Inglês',em:'999 / 112',p:'G',v:230,f:50,tz:'Europe/London',ds:'L',sl:'Urbano 48 / Autoestrada 112 (mph: 30/70)',lic:'PIC aceite (12 meses)',tp:'10-15% em restaurantes',cu:'Cultura de fazer fila; o tempo é tema de conversa'},
+FR:{z:'França',e:'France',cur:'EUR € Euro',lang:'Francês',em:'112',p:'CE',v:230,f:50,tz:'Europe/Paris',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'Serviço incluído, deixar troco pequeno',cu:'Cumprimentar com beijos na face; etiqueta formal à mesa'},
+DE:{z:'Alemanha',e:'Germany',cur:'EUR € Euro',lang:'Alemão',em:'112',p:'CF',v:230,f:50,tz:'Europe/Berlin',ds:'R',sl:'Urbano 50 / Autoestrada sem limite (recomendado 130)',lic:'PIC aceite',tp:'5-10%',cu:'A pontualidade é importante; lojas encerradas aos domingos'},
+IT:{z:'Itália',e:'Italy',cur:'EUR € Euro',lang:'Italiano',em:'112',p:'CFL',v:230,f:50,tz:'Europe/Rome',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'Taxa de serviço incluída (coperto)',cu:'Descanso da tarde (riposo) 13-16h; interações sociais calorosas'},
+ES:{z:'Espanha',e:'Spain',cur:'EUR € Euro',lang:'Espanhol',em:'112',p:'CF',v:230,f:50,tz:'Europe/Madrid',ds:'R',sl:'Urbano 50 / Autoestrada 120',lic:'PIC aceite',tp:'Não necessária, deixar troco pequeno',cu:'Almoço às 14h, jantar às 21h; cultura da sesta'},
+PT:{z:'Portugal',e:'Portugal',cur:'EUR € Euro',lang:'Português',em:'112',p:'CF',v:230,f:50,tz:'Europe/Lisbon',ds:'R',sl:'Urbano 50 / Autoestrada 120',lic:'PIC aceite',tp:'5-10%',cu:'Amável e descontraído; cultura do fado'},
+NL:{z:'Países Baixos',e:'Netherlands',cur:'EUR € Euro',lang:'Neerlandês / Inglês',em:'112',p:'CF',v:230,f:50,tz:'Europe/Amsterdam',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'Não necessária (serviço incluído)',cu:'Diretos e francos; as bicicletas têm prioridade'},
+BE:{z:'Bélgica',e:'Belgium',cur:'EUR € Euro',lang:'Neerlandês / Francês / Alemão',em:'112',p:'CE',v:230,f:50,tz:'Europe/Brussels',ds:'R',sl:'Urbano 50 / Autoestrada 120',lic:'PIC aceite',tp:'Taxa de serviço incluída',cu:'Diferenças culturais em três idiomas'},
+CH:{z:'Suíça',e:'Switzerland',cur:'CHF Fr Franco suíço',lang:'Alemão / Francês / Italiano / Romanche',em:'112',p:'CJ',v:230,f:50,tz:'Europe/Zurich',ds:'R',sl:'Urbano 50 / Autoestrada 120',lic:'PIC aceite',tp:'Serviço incluído, deixar troco pequeno',cu:'Pontualidade; silêncio e educação; reduzir ruído após as 22h'},
+AT:{z:'Áustria',e:'Austria',cur:'EUR € Euro',lang:'Alemão',em:'112',p:'CF',v:230,f:50,tz:'Europe/Vienna',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'5-10%',cu:'Cultura de cafetaria; cidade da música'},
+SE:{z:'Suécia',e:'Sweden',cur:'SEK kr Coroa sueca',lang:'Sueco',em:'112',p:'CF',v:230,f:50,tz:'Europe/Stockholm',ds:'R',sl:'Urbano 50 / Autoestrada 110',lic:'PIC aceite',tp:'Taxa de serviço incluída',cu:'Cultura do fika (café); valoriza-se a pontualidade'},
+NO:{z:'Noruega',e:'Norway',cur:'NOK kr Coroa norueguesa',lang:'Norueguês',em:'112',p:'CF',v:230,f:50,tz:'Europe/Oslo',ds:'R',sl:'Urbano 50 / Autoestrada 110',lic:'PIC aceite',tp:'Taxa de serviço incluída',cu:'Tirar sapatos em interiores; respeitar a natureza'},
+DK:{z:'Dinamarca',e:'Denmark',cur:'DKK kr Coroa dinamarquesa',lang:'Dinamarquês',em:'112',p:'CEK',v:230,f:50,tz:'Europe/Copenhagen',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'Taxa de serviço incluída',cu:'Cultura hygge; país amigável para bicicletas'},
+FI:{z:'Finlândia',e:'Finland',cur:'EUR € Euro',lang:'Finlandês / Sueco',em:'112',p:'CF',v:230,f:50,tz:'Europe/Helsinki',ds:'R',sl:'Urbano 50 / Autoestrada 120',lic:'PIC aceite',tp:'Taxa de serviço incluída',cu:'Cultura da sauna; silencioso e reservado'},
+IS:{z:'Islândia',e:'Iceland',cur:'ISK kr Coroa islandesa',lang:'Islandês',em:'112',p:'CF',v:230,f:50,tz:'Atlantic/Reykjavik',ds:'R',sl:'Urbano 50 / Rural 90',lic:'PIC aceite',tp:'Taxa de serviço incluída',cu:'Respeitar a natureza; não pisar o musgo'},
+IE:{z:'Irlanda',e:'Ireland',cur:'EUR € Euro',lang:'Inglês / Irlandês',em:'112 / 999',p:'G',v:230,f:50,tz:'Europe/Dublin',ds:'L',sl:'Urbano 50 / Autoestrada 120',lic:'PIC aceite',tp:'10-15% em restaurantes',cu:'Cultura de pub; conversa amigável'},
+GR:{z:'Grécia',e:'Greece',cur:'EUR € Euro',lang:'Grego',em:'112',p:'CF',v:230,f:50,tz:'Europe/Athens',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'5-10%',cu:'Hospitalidade calorosa; não escalar monumentos antigos'},
+CZ:{z:'República Checa',e:'Czech Republic',cur:'CZK Kč Coroa checa',lang:'Checo',em:'112',p:'CE',v:230,f:50,tz:'Europe/Prague',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'10% em restaurantes',cu:'Cultura cervejeira; linguagem cortês'},
+PL:{z:'Polónia',e:'Poland',cur:'PLN zł Zlóti polaco',lang:'Polaco',em:'112',p:'CE',v:230,f:50,tz:'Europe/Warsaw',ds:'R',sl:'Urbano 50 / Autoestrada 140',lic:'PIC aceite',tp:'10% em restaurantes',cu:'Tradição católica; hospitalidade'},
+HU:{z:'Hungria',e:'Hungary',cur:'HUF Ft Forinte húngaro',lang:'Húngaro',em:'112',p:'CF',v:230,f:50,tz:'Europe/Budapest',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'10%',cu:'Cultura de banhos termais; não brindar com cerveja'},
+HR:{z:'Croácia',e:'Croatia',cur:'EUR € Euro',lang:'Croata',em:'112',p:'CF',v:230,f:50,tz:'Europe/Zagreb',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'10%',cu:'Estilo de vida costeiro descontraído; cultura do café'},
+RO:{z:'Roménia',e:'Romania',cur:'RON lei Leu romeno',lang:'Romeno',em:'112',p:'CF',v:230,f:50,tz:'Europe/Bucharest',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'10%',cu:'Tradição de hospitalidade; berço da lenda do Drácula'},
+BG:{z:'Bulgária',e:'Bulgaria',cur:'BGN лв Lev búlgaro',lang:'Búlgaro',em:'112',p:'CF',v:230,f:50,tz:'Europe/Sofia',ds:'R',sl:'Urbano 50 / Autoestrada 140',lic:'PIC aceite',tp:'10%',cu:'Acenar com a cabeça significa não; abanar a cabeça significa sim'},
+RS:{z:'Sérvia',e:'Serbia',cur:'RSD din Dinar sérvio',lang:'Sérvio',em:'112',p:'CF',v:230,f:50,tz:'Europe/Belgrade',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'10%',cu:'Hospitalidade; cultura da aguardente Rakija'},
+SK:{z:'Eslováquia',e:'Slovakia',cur:'EUR € Euro',lang:'Eslovaco',em:'112',p:'CE',v:230,f:50,tz:'Europe/Bratislava',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'10%',cu:'Cortês e amável'},
+SI:{z:'Eslovénia',e:'Slovenia',cur:'EUR € Euro',lang:'Esloveno',em:'112',p:'CF',v:230,f:50,tz:'Europe/Ljubljana',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'10%',cu:'Forte consciência ecológica'},
+EE:{z:'Estónia',e:'Estonia',cur:'EUR € Euro',lang:'Estónio',em:'112',p:'CF',v:230,f:50,tz:'Europe/Tallinn',ds:'R',sl:'Urbano 50 / Autoestrada 110',lic:'PIC aceite',tp:'10%',cu:'Avançado digitalmente; silencioso e reservado'},
+LV:{z:'Letónia',e:'Latvia',cur:'EUR € Euro',lang:'Letão',em:'112',p:'CF',v:230,f:50,tz:'Europe/Riga',ds:'R',sl:'Urbano 50 / Autoestrada 110',lic:'PIC aceite',tp:'10%',cu:'Tradição de canto e dança'},
+LT:{z:'Lituânia',e:'Lithuania',cur:'EUR € Euro',lang:'Lituano',em:'112',p:'CF',v:230,f:50,tz:'Europe/Vilnius',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'5-10%',cu:'O basquetebol é o desporto nacional'},
+LU:{z:'Luxemburgo',e:'Luxembourg',cur:'EUR € Euro',lang:'Francês / Alemão / Luxemburguês',em:'112',p:'CF',v:230,f:50,tz:'Europe/Luxembourg',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'Taxa de serviço incluída',cu:'País multilingue; cortês e formal'},
+MT:{z:'Malta',e:'Malta',cur:'EUR € Euro',lang:'Maltês / Inglês',em:'112',p:'G',v:230,f:50,tz:'Europe/Malta',ds:'L',sl:'Urbano 50 / Rural 80',lic:'PIC aceite',tp:'5-10%',cu:'Tradição católica; muitas festas de verão'},
+ME:{z:'Montenegro',e:'Montenegro',cur:'EUR € Euro',lang:'Montenegrino',em:'112',p:'CF',v:230,f:50,tz:'Europe/Podgorica',ds:'R',sl:'Urbano 50 / Autoestrada 80',lic:'PIC aceite',tp:'10%',cu:'Tradição de hospitalidade; costa deslumbrante'},
+CY:{z:'Chipre',e:'Cyprus',cur:'EUR € Euro',lang:'Grego / Turco',em:'112',p:'G',v:230,f:50,tz:'Asia/Nicosia',ds:'L',sl:'Urbano 50 / Autoestrada 100',lic:'PIC aceite',tp:'10%',cu:'Estilo de vida mediterrânico'},
+US:{z:'Estados Unidos',e:'United States',cur:'USD $ Dólar americano',lang:'Inglês',em:'911',p:'AB',v:120,f:60,tz:'America/New_York',ds:'R',sl:'Urbano 40-56 / Autoestrada 88-112 (mph: 25-35 / 55-70)',lic:'PIC aceite',tp:'15-20% em restaurantes (esperado)',cu:'A cultura da gorjeta é muito importante; espaço pessoal'},
+CA:{z:'Canadá',e:'Canada',cur:'CAD $ Dólar canadiano',lang:'Inglês / Francês',em:'911',p:'AB',v:120,f:60,tz:'America/Toronto',ds:'R',sl:'Urbano 50 / Autoestrada 110',lic:'PIC aceite',tp:'15-20% em restaurantes',cu:'Cortês e amável; multicultural'},
+MX:{z:'México',e:'Mexico',cur:'MXN $ Peso mexicano',lang:'Espanhol',em:'911',p:'AB',v:127,f:60,tz:'America/Mexico_City',ds:'R',sl:'Urbano 60 / Autoestrada 110',lic:'PIC aceite',tp:'10-15% em restaurantes',cu:'Cultura familiar; hospitalidade calorosa'},
+BR:{z:'Brasil',e:'Brazil',cur:'BRL R$ Real brasileiro',lang:'Português',em:'190/192/193',p:'CN',v:'127/220',f:60,tz:'America/Sao_Paulo',ds:'R',sl:'Urbano 60 / Autoestrada 110',lic:'PIC necessária',tp:'10% (taxa de serviço geralmente incluída)',cu:'Calorosos e abertos; evitar discutir política'},
+AR:{z:'Argentina',e:'Argentina',cur:'ARS $ Peso argentino',lang:'Espanhol',em:'911',p:'CI',v:220,f:50,tz:'America/Argentina/Buenos_Aires',ds:'R',sl:'Urbano 40 / Autoestrada 130',lic:'PIC aceite',tp:'10%',cu:'Cultura do tango; jantar muito tarde (após as 21h)'},
+CL:{z:'Chile',e:'Chile',cur:'CLP $ Peso chileno',lang:'Espanhol',em:'133/131/132',p:'CL',v:220,f:50,tz:'America/Santiago',ds:'R',sl:'Urbano 60 / Autoestrada 120',lic:'PIC aceite',tp:'10%',cu:'Pontual; cortês'},
+CO_CO:{z:'Colômbia',e:'Colombia',cur:'COP $ Peso colombiano',lang:'Espanhol',em:'123',p:'AB',v:110,f:60,tz:'America/Bogota',ds:'R',sl:'Urbano 60 / Autoestrada 100',lic:'PIC necessária',tp:'10%',cu:'Amável e hospitaleiro; cultura do café'},
+PE:{z:'Peru',e:'Peru',cur:'PEN S/ Sol peruano',lang:'Espanhol / Quéchua',em:'105/116',p:'ABC',v:220,f:60,tz:'America/Lima',ds:'R',sl:'Urbano 60 / Autoestrada 100',lic:'PIC aceite',tp:'10%',cu:'Cultura inca; cuidado com o mal de altitude'},
+CU:{z:'Cuba',e:'Cuba',cur:'CUP $ Peso cubano',lang:'Espanhol',em:'106/104/105',p:'AB',v:110,f:60,tz:'America/Havana',ds:'R',sl:'Urbano 50 / Autoestrada 100',lic:'PIC necessária',tp:'10-15%',cu:'Cultura de música e dança; dinheiro é rei'},
+CR:{z:'Costa Rica',e:'Costa Rica',cur:'CRC ₡ Colón costarriquenho',lang:'Espanhol',em:'911',p:'AB',v:120,f:60,tz:'America/Costa_Rica',ds:'R',sl:'Urbano 40 / Autoestrada 100',lic:'PIC aceite (90 dias)',tp:'10% (geralmente incluído)',cu:'Estilo de vida Pura Vida'},
+PA:{z:'Panamá',e:'Panama',cur:'PAB/USD Balboa / Dólar americano',lang:'Espanhol',em:'911',p:'AB',v:120,f:60,tz:'America/Panama',ds:'R',sl:'Urbano 50 / Autoestrada 100',lic:'PIC aceite (90 dias)',tp:'10%',cu:'O Canal do Panamá é motivo de orgulho'},
+JM:{z:'Jamaica',e:'Jamaica',cur:'JMD $ Dólar jamaicano',lang:'Inglês',em:'119/110',p:'AB',v:110,f:50,tz:'America/Jamaica',ds:'L',sl:'Urbano 50 / Autoestrada 80',lic:'PIC necessária',tp:'10-15%',cu:'Cultura do reggae; descontraído e tranquilo'},
+DO:{z:'República Dominicana',e:'Dominican Republic',cur:'DOP $ Peso dominicano',lang:'Espanhol',em:'911',p:'AB',v:120,f:60,tz:'America/Santo_Domingo',ds:'R',sl:'Urbano 40 / Autoestrada 100',lic:'PIC aceite',tp:'10-15%',cu:'Paixão pelo basebol; dança merengue'},
+ZA:{z:'África do Sul',e:'South Africa',cur:'ZAR R Rand sul-africano',lang:'Inglês + 10 mais',em:'10111 / 10177',p:'CMN',v:230,f:50,tz:'Africa/Johannesburg',ds:'L',sl:'Urbano 60 / Autoestrada 120',lic:'PIC aceite',tp:'10-15% em restaurantes',cu:'Nação arco-íris; ter consciência da segurança'},
+MA:{z:'Marrocos',e:'Morocco',cur:'MAD د.م. Dirham marroquino',lang:'Árabe / Francês',em:'19',p:'CE',v:220,f:50,tz:'Africa/Casablanca',ds:'R',sl:'Urbano 60 / Autoestrada 120',lic:'PIC aceite',tp:'10%',cu:'Cultura do regateio; observar o Ramadão'},
+KE:{z:'Quénia',e:'Kenya',cur:'KES KSh Xelim queniano',lang:'Suaíli / Inglês',em:'999 / 112',p:'G',v:240,f:50,tz:'Africa/Nairobi',ds:'L',sl:'Urbano 50 / Autoestrada 110',lic:'PIC necessária',tp:'10%',cu:'Etiqueta de safari; respeitar cultura tribal'},
+TZ:{z:'Tanzânia',e:'Tanzania',cur:'TZS TSh Xelim tanzaniano',lang:'Suaíli / Inglês',em:'112/114',p:'DG',v:230,f:50,tz:'Africa/Dar_es_Salaam',ds:'L',sl:'Urbano 50 / Autoestrada 100',lic:'PIC necessária',tp:'10%',cu:'Saudação Jambo; respeitar tribos locais'},
+ET:{z:'Etiópia',e:'Ethiopia',cur:'ETB Br Birr etíope',lang:'Amárico',em:'991/907',p:'CDEJL',v:220,f:50,tz:'Africa/Addis_Ababa',ds:'R',sl:'Urbano 30 / Autoestrada 100',lic:'PIC necessária',tp:'10%',cu:'Calendário único (7 anos de atraso); berço do café'},
+NG:{z:'Nigéria',e:'Nigeria',cur:'NGN ₦ Naira nigeriana',lang:'Inglês',em:'112/199',p:'DG',v:240,f:50,tz:'Africa/Lagos',ds:'R',sl:'Urbano 50 / Autoestrada 100',lic:'PIC necessária',tp:'10%',cu:'Respeitar os mais velhos; nação multiétnica'},
+GH:{z:'Gana',e:'Ghana',cur:'GHS GH₵ Cedi ganês',lang:'Inglês',em:'191/192/193',p:'DG',v:230,f:50,tz:'Africa/Accra',ds:'R',sl:'Urbano 50 / Autoestrada 100',lic:'PIC necessária',tp:'5-10%',cu:'Amável e caloroso; usar mão direita'},
+TN:{z:'Tunísia',e:'Tunisia',cur:'TND د.ت Dinar tunisino',lang:'Árabe / Francês',em:'197/190/198',p:'CE',v:230,f:50,tz:'Africa/Tunis',ds:'R',sl:'Urbano 50 / Autoestrada 110',lic:'PIC aceite',tp:'10%',cu:'Mistura de cultura mediterrânica e árabe'},
+AU:{z:'Austrália',e:'Australia',cur:'AUD $ Dólar australiano',lang:'Inglês',em:'000',p:'I',v:230,f:50,tz:'Australia/Sydney',ds:'L',sl:'Urbano 50 / Autoestrada 110',lic:'PIC aceite',tp:'Não necessária (pode-se deixar troco)',cu:'Descontraído e tranquilo; protetor solar essencial'},
+NZ:{z:'Nova Zelândia',e:'New Zealand',cur:'NZD $ Dólar neozelandês',lang:'Inglês / Maori',em:'111',p:'I',v:230,f:50,tz:'Pacific/Auckland',ds:'L',sl:'Urbano 50 / Autoestrada 100',lic:'PIC aceite (12 meses)',tp:'Não necessária',cu:'Cultura maori; forte consciência ambiental'},
+FJ:{z:'Fiji',e:'Fiji',cur:'FJD $ Dólar fijiano',lang:'Inglês / Fijiano',em:'911',p:'I',v:240,f:50,tz:'Pacific/Fiji',ds:'L',sl:'Urbano 50 / Autoestrada 80',lic:'PIC aceite',tp:'Não necessária',cu:'Saudação Bula; respeitar costumes das aldeias'},
+AL:{z:'Albânia',e:'Albania',cur:'ALL L Lek albanês',lang:'Albanês',em:'112',p:'CF',v:230,f:50,tz:'Europe/Tirane',ds:'R',sl:'Urbano 40 / Autoestrada 110',lic:'PIC aceite',tp:'Não necessária',cu:'Tradição de hospitalidade'},
+MC:{z:'Mónaco',e:'Monaco',cur:'EUR € Euro',lang:'Francês',em:'112',p:'CEF',v:230,f:50,tz:'Europe/Monaco',ds:'R',sl:'Urbano 50 / Autoestrada 130',lic:'PIC aceite',tp:'10%',cu:'Etiqueta de gama alta'}
+};
+
+CO.CO = CO.CO_CO || CO.CO;
+if(CO.CO_CO) { CO.CO = CO.CO_CO; delete CO.CO_CO; }
+
+const CI = {
+beijing:{z:'Pequim',e:'Beijing',cc:'CN',la:39.9,lo:116.4,tz:'Asia/Shanghai',h:[2,5,12,21,27,31,31,30,26,19,10,3],l:[-8,-5,1,8,14,19,22,21,15,8,0,-6],r:[3,6,9,26,35,78,185,160,46,22,8,2],bm:[3,4,8,9],am:[6,7,11,0],bt:'Abr–Mai, Set–Out',at:'Jul–Ago trovoadas e calor, inverno frio extremo'},
+shanghai:{z:'Xangai',e:'Shanghai',cc:'CN',la:31.2,lo:121.5,tz:'Asia/Shanghai',h:[8,10,14,19,25,28,32,32,28,23,17,10],l:[1,3,6,11,17,21,25,25,21,15,9,3],r:[74,60,84,75,84,181,146,133,87,55,52,43],bm:[3,4,8,9,10],am:[6,7],bt:'Abr–Mai, Set–Nov',at:'Jul–Ago calor extremo'},
+guangzhou:{z:'Cantão',e:'Guangzhou',cc:'CN',la:23.1,lo:113.3,tz:'Asia/Shanghai',h:[16,17,20,25,29,32,33,33,32,28,23,18],l:[9,11,14,19,23,25,26,26,24,20,15,10],r:[42,68,85,188,284,283,228,221,172,73,37,30],bm:[9,10,11],am:[4,5,6,7],bt:'Out–Dez',at:'Mai–Ago trovoadas e humidade'},
+chengdu:{z:'Chengdu',e:'Chengdu',cc:'CN',la:30.6,lo:104.1,tz:'Asia/Shanghai',h:[10,12,17,22,27,29,31,31,27,21,16,11],l:[3,5,9,13,18,21,23,23,19,15,9,4],r:[8,12,21,50,88,111,234,210,128,48,18,6],bm:[3,4,8,9],am:[6,7],bt:'Mar–Mai, Set–Out',at:'Jul–Ago húmido e chuvoso'},
+hongkong:{z:'Hong Kong',e:'Hong Kong',cc:'HK',la:22.3,lo:114.2,tz:'Asia/Hong_Kong',h:[18,19,21,25,29,31,32,31,31,28,24,20],l:[13,14,16,20,24,26,27,27,26,23,19,15],r:[33,38,75,137,292,456,377,432,328,120,37,27],bm:[9,10,11],am:[5,6,7,8],bt:'Out–Dez',at:'Jun–Set tufões e trovoadas'},
+macau:{z:'Macau',e:'Macau',cc:'MO',la:22.2,lo:113.5,tz:'Asia/Macau',h:[18,18,21,25,29,31,32,32,31,28,24,20],l:[12,13,16,20,23,26,27,27,25,22,18,14],r:[33,59,82,153,290,340,270,350,200,75,38,30],bm:[9,10,11],am:[5,6,7,8],bt:'Out–Dez',at:'Jun–Set tufões e trovoadas'},
+taipei:{z:'Taipé',e:'Taipei',cc:'TW',la:25.0,lo:121.5,tz:'Asia/Taipei',h:[19,19,22,25,29,32,34,34,31,27,24,20],l:[13,13,15,18,22,24,26,26,24,21,18,14],r:[83,170,180,178,235,326,245,322,361,149,83,73],bm:[2,3,4,9,10],am:[5,7,8],bt:'Abr–Mai, Out–Nov',at:'Jun–Set tufões e trovoadas'},
+kaohsiung:{z:'Kaohsiung',e:'Kaohsiung',cc:'TW',la:22.6,lo:120.3,tz:'Asia/Taipei',h:[24,25,27,29,31,32,33,33,32,30,28,25],l:[16,17,19,22,25,26,26,26,25,23,20,17],r:[16,22,29,63,195,393,391,417,242,43,18,14],bm:[10,11,0,1],am:[5,6,7,8],bt:'Nov–Fev',at:'Jun–Set tufões e trovoadas'},
+tokyo:{z:'Tóquio',e:'Tokyo',cc:'JP',la:35.7,lo:139.7,tz:'Asia/Tokyo',h:[10,11,14,19,24,26,30,31,27,22,17,12],l:[1,2,5,10,15,19,23,24,20,14,9,3],r:[52,56,117,125,138,168,154,168,210,198,93,51],bm:[2,3,4,9,10],am:[5,6,7],bt:'Mar–Mai, Out–Nov',at:'Jun–Jul chuvoso, Ago calor extremo'},
+osaka:{z:'Osaca',e:'Osaka',cc:'JP',la:34.7,lo:135.5,tz:'Asia/Tokyo',h:[9,10,14,20,25,28,32,33,29,23,17,12],l:[3,3,6,11,16,21,25,26,22,16,10,5],r:[45,61,104,104,146,202,157,90,161,112,69,43],bm:[2,3,4,9,10],am:[5,6,7],bt:'Mar–Mai, Out–Nov',at:'Jun–Jul chuvoso, Ago calor extremo'},
+sapporo:{z:'Sapporo',e:'Sapporo',cc:'JP',la:43.1,lo:141.3,tz:'Asia/Tokyo',h:[-1,0,4,12,17,21,25,26,22,16,8,2],l:[-8,-7,-3,3,8,13,17,19,14,7,1,-4],r:[114,94,80,57,53,46,81,124,135,109,104,112],bm:[5,6,7,1],am:[11,0],bt:'Jun–Ago, Fev Festival da Neve',at:'Dez–Jan muita neve e frio extremo'},
+seoul:{z:'Seul',e:'Seoul',cc:'KR',la:37.6,lo:127.0,tz:'Asia/Seoul',h:[1,4,10,18,23,28,29,30,26,20,11,4],l:[-6,-4,1,7,13,18,22,23,17,10,3,-3],r:[21,25,46,65,105,133,395,348,169,52,53,25],bm:[3,4,8,9],am:[6,7],bt:'Abr–Mai, Set–Out',at:'Jul–Ago trovoadas e calor'},
+bangkok:{z:'Banguecoque',e:'Bangkok',cc:'TH',la:13.8,lo:100.5,tz:'Asia/Bangkok',h:[33,34,35,36,35,34,33,33,33,33,32,32],l:[22,24,26,27,26,26,26,25,25,25,23,21],r:[9,30,29,65,220,149,155,197,344,242,48,10],bm:[10,11,0,1],am:[4,5,8],bt:'Nov–Fev',at:'Mai–Jun, Set chuvas fortes'},
+chiangmai:{z:'Chiang Mai',e:'Chiang Mai',cc:'TH',la:18.8,lo:98.9,tz:'Asia/Bangkok',h:[31,34,36,37,35,33,32,31,32,32,31,30],l:[14,16,19,23,24,24,24,24,23,22,19,15],r:[7,5,13,50,158,132,161,236,228,122,53,15],bm:[10,11,0,1],am:[2,3],bt:'Nov–Fev',at:'Mar–Abr poluição severa por neblina'},
+singapore:{z:'Singapura',e:'Singapore',cc:'SG',la:1.3,lo:103.8,tz:'Asia/Singapore',h:[30,31,32,32,32,31,31,31,31,31,31,30],l:[24,24,24,25,25,25,24,24,24,24,24,24],r:[234,162,171,164,171,162,155,176,170,197,255,269],bm:[1,5,6],am:[10,11],bt:'Fev, Jun–Jul menos chuva',at:'Nov–Dez chuvas fortes'},
+kualalumpur:{z:'Kuala Lumpur',e:'Kuala Lumpur',cc:'MY',la:3.1,lo:101.7,tz:'Asia/Kuala_Lumpur',h:[32,33,33,33,33,33,32,32,32,32,32,31],l:[23,23,24,24,24,24,23,23,23,23,23,23],r:[170,165,240,260,204,131,127,156,193,253,288,233],bm:[0,1,5,6],am:[10,11],bt:'Jan–Fev, Jun–Jul',at:'Nov–Dez chuvas fortes'},
+bali:{z:'Bali',e:'Bali',cc:'ID',la:-8.3,lo:115.2,tz:'Asia/Makassar',h:[30,30,31,31,31,30,29,30,30,31,31,30],l:[24,24,24,24,24,23,23,23,23,24,24,24],r:[345,274,234,88,93,53,55,25,47,63,179,276],bm:[3,4,5,6,7,8],am:[0,1,11],bt:'Abr–Set estação seca',at:'Dez–Fev estação das chuvas'},
+hanoi:{z:'Hanói',e:'Hanoi',cc:'VN',la:21.0,lo:105.8,tz:'Asia/Ho_Chi_Minh',h:[20,21,23,28,32,34,33,32,31,29,25,22],l:[14,15,18,21,25,27,27,27,25,22,18,15],r:[18,26,44,90,189,240,288,318,265,131,43,20],bm:[2,3,9,10],am:[6,7],bt:'Mar–Abr, Out–Nov',at:'Jul–Ago calor extremo e trovoadas'},
+hochiminh:{z:'Ho Chi Minh',e:'Ho Chi Minh City',cc:'VN',la:10.8,lo:106.6,tz:'Asia/Ho_Chi_Minh',h:[32,33,34,35,34,32,32,31,31,31,31,31],l:[22,23,24,26,25,25,24,24,24,24,23,22],r:[14,4,11,50,218,312,294,270,327,267,116,48],bm:[0,1,2,3],am:[5,8,9],bt:'Dez–Mar estação seca',at:'Jun–Out estação das chuvas'},
+manila:{z:'Manila',e:'Manila',cc:'PH',la:14.6,lo:121.0,tz:'Asia/Manila',h:[30,31,33,34,34,33,31,31,31,31,31,30],l:[21,21,22,24,25,25,25,25,25,24,23,22],r:[23,13,16,33,130,254,433,475,356,234,122,66],bm:[0,1,2,3],am:[6,7,8],bt:'Jan–Abr estação seca',at:'Jul–Set época dos tufões'},
+phnompenh:{z:'Phnom Penh',e:'Phnom Penh',cc:'KH',la:11.6,lo:104.9,tz:'Asia/Phnom_Penh',h:[32,33,35,36,35,34,33,32,32,31,31,31],l:[22,23,24,26,26,25,25,25,25,25,23,22],r:[7,10,40,77,124,155,171,160,224,257,127,45],bm:[10,11,0,1],am:[4,5,8,9],bt:'Nov–Fev',at:'Mai–Jun, Set–Out chuvas fortes'},
+yangon:{z:'Yangon',e:'Yangon',cc:'MM',la:16.9,lo:96.2,tz:'Asia/Yangon',h:[32,35,36,37,33,30,30,30,30,32,32,32],l:[18,19,22,24,25,25,24,24,24,24,22,18],r:[5,2,7,15,303,547,559,602,368,206,60,7],bm:[10,11,0,1],am:[5,6,7],bt:'Nov–Fev',at:'Jun–Ago chuvas fortes'},
+delhi:{z:'Deli',e:'Delhi',cc:'IN',la:28.6,lo:77.2,tz:'Asia/Kolkata',h:[21,24,30,37,40,39,35,34,34,34,29,23],l:[7,10,15,21,26,28,27,26,25,19,12,8],r:[19,18,13,8,13,74,210,233,123,13,2,10],bm:[10,11,1],am:[4,5,6,7],bt:'Nov–Fev',at:'Mai–Jun calor extremo, Jul–Ago monção'},
+mumbai:{z:'Bombaim',e:'Mumbai',cc:'IN',la:19.1,lo:72.9,tz:'Asia/Kolkata',h:[31,32,33,33,33,32,30,30,30,33,34,33],l:[19,20,23,26,28,27,26,25,25,25,23,21],r:[3,2,2,2,18,485,840,585,341,64,13,2],bm:[10,11,0,1],am:[5,6,7],bt:'Nov–Fev',at:'Jun–Ago trovoadas monçónicas'},
+kathmandu:{z:'Catmandu',e:'Kathmandu',cc:'NP',la:27.7,lo:85.3,tz:'Asia/Kathmandu',h:[19,21,25,28,30,29,28,29,28,27,23,20],l:[2,4,7,12,16,20,20,20,19,13,7,3],r:[15,19,34,59,124,248,373,339,200,51,8,3],bm:[2,3,9,10],am:[6,7],bt:'Mar–Abr, Out–Nov',at:'Jul–Ago trovoadas monçónicas'},
+male:{z:'Malé',e:'Male',cc:'MV',la:4.2,lo:73.5,tz:'Indian/Maldives',h:[30,31,31,31,31,30,30,30,30,30,30,30],l:[25,25,26,26,26,26,25,25,25,25,25,25],r:[114,38,74,123,219,167,152,176,199,194,231,217],bm:[0,1,2,3],am:[4,5,10,11],bt:'Jan–Abr estação seca',at:'Mai–Jun, Nov–Dez estação das chuvas'},
+dubai:{z:'Dubai',e:'Dubai',cc:'AE',la:25.2,lo:55.3,tz:'Asia/Dubai',h:[24,25,28,33,38,40,41,41,39,35,31,26],l:[14,15,17,21,25,28,30,31,28,24,19,16],r:[10,36,22,8,1,0,0,0,0,1,3,16],bm:[10,11,0,1,2],am:[5,6,7],bt:'Nov–Mar',at:'Jun–Ago calor extremo'},
+istanbul:{z:'Istambul',e:'Istanbul',cc:'TR',la:41.0,lo:28.9,tz:'Europe/Istanbul',h:[9,9,12,17,22,27,29,29,26,21,15,11],l:[3,3,5,9,13,18,21,21,17,13,9,5],r:[99,72,70,46,35,35,39,47,56,81,103,119],bm:[3,4,5,8,9],am:[0,1,11],bt:'Abr–Jun, Set–Out',at:'Dez–Fev frio e nublado'},
+telaviv:{z:'Tel Aviv',e:'Tel Aviv',cc:'IL',la:32.1,lo:34.8,tz:'Asia/Jerusalem',h:[18,19,20,24,27,29,31,32,31,28,24,19],l:[9,10,11,14,17,21,23,24,22,18,14,11],r:[134,99,61,18,3,0,0,0,1,31,78,134],bm:[3,4,5,8,9],am:[6,7],bt:'Abr–Jun, Set–Out',at:'Jul–Ago calor extremo'},
+doha:{z:'Doha',e:'Doha',cc:'QA',la:25.3,lo:51.5,tz:'Asia/Qatar',h:[22,23,27,33,39,42,42,42,39,35,29,24],l:[13,14,17,21,26,29,31,31,28,25,20,15],r:[13,18,16,8,4,0,0,0,0,1,3,12],bm:[10,11,0,1],am:[5,6,7],bt:'Nov–Fev',at:'Jun–Ago calor extremo'},
+london:{z:'Londres',e:'London',cc:'GB',la:51.5,lo:-0.1,tz:'Europe/London',h:[8,9,12,15,18,21,24,23,20,16,11,9],l:[2,2,4,6,9,12,14,14,11,8,5,3],r:[55,41,42,44,49,45,45,50,49,69,59,55],bm:[4,5,6,7,8],am:[10,11,0,1],bt:'Mai–Set',at:'Nov–Fev escuro e húmido'},
+paris:{z:'Paris',e:'Paris',cc:'FR',la:48.9,lo:2.3,tz:'Europe/Paris',h:[7,8,12,16,20,23,25,25,21,16,11,8],l:[2,2,5,7,11,14,16,16,12,9,5,3],r:[51,42,48,52,63,50,63,53,55,62,52,58],bm:[4,5,6,8],am:[11,0,1],bt:'Mai–Jul, Set',at:'Dez–Fev frio e cinzento'},
+rome:{z:'Roma',e:'Rome',cc:'IT',la:41.9,lo:12.5,tz:'Europe/Rome',h:[12,13,16,19,23,28,31,31,27,22,16,13],l:[3,4,6,8,12,16,19,19,16,12,8,4],r:[67,73,58,62,48,34,19,36,68,94,115,81],bm:[3,4,5,8,9],am:[7],bt:'Abr–Jun, Set–Out',at:'Ago calor extremo'},
+barcelona:{z:'Barcelona',e:'Barcelona',cc:'ES',la:41.4,lo:2.2,tz:'Europe/Madrid',h:[14,15,17,19,22,26,29,29,26,22,17,14],l:[5,6,8,10,14,18,21,21,18,14,9,6],r:[41,29,42,50,47,40,20,61,81,91,58,47],bm:[4,5,8,9],am:[],bt:'Mai–Jun, Set–Out',at:'Ago lotado e mais quente'},
+madrid:{z:'Madrid',e:'Madrid',cc:'ES',la:40.4,lo:-3.7,tz:'Europe/Madrid',h:[10,12,16,18,22,30,33,33,27,20,14,10],l:[1,2,5,7,11,16,19,19,15,10,5,2],r:[33,34,26,45,47,25,15,12,28,50,58,51],bm:[3,4,5,8,9],am:[6,7],bt:'Abr–Jun, Set–Out',at:'Jul–Ago calor extremo'},
+amsterdam:{z:'Amesterdão',e:'Amsterdam',cc:'NL',la:52.4,lo:4.9,tz:'Europe/Amsterdam',h:[6,7,10,14,17,20,22,22,19,14,10,7],l:[1,1,3,5,9,11,13,13,11,7,4,2],r:[68,48,63,42,55,65,81,85,78,83,85,76],bm:[3,4,5,6,7],am:[10,11,0,1],bt:'Abr–Ago',at:'Nov–Fev frio e ventoso'},
+berlin:{z:'Berlim',e:'Berlin',cc:'DE',la:52.5,lo:13.4,tz:'Europe/Berlin',h:[3,4,9,14,19,22,25,25,20,14,8,4],l:[-2,-2,1,4,9,12,15,14,11,6,2,-1],r:[42,33,41,37,54,69,56,58,45,37,44,55],bm:[4,5,6,7,8],am:[11,0,1],bt:'Mai–Set',at:'Dez–Fev frio extremo'},
+vienna:{z:'Viena',e:'Vienna',cc:'AT',la:48.2,lo:16.4,tz:'Europe/Vienna',h:[3,5,10,16,21,24,27,26,21,15,8,4],l:[-2,-1,3,7,11,15,17,17,13,7,3,-1],r:[37,39,46,45,62,70,68,58,54,40,50,44],bm:[4,5,8,9,11],am:[0,1],bt:'Mai–Jun, Set–Out, Dez',at:'Jan–Fev frio extremo'},
+prague:{z:'Praga',e:'Prague',cc:'CZ',la:50.1,lo:14.4,tz:'Europe/Prague',h:[2,4,9,15,20,23,25,25,20,14,7,3],l:[-3,-2,1,5,9,12,14,14,10,6,2,-2],r:[23,22,28,38,77,73,66,70,40,29,31,25],bm:[4,5,8,9],am:[0,1],bt:'Mai–Jun, Set–Out',at:'Jan–Fev frio extremo'},
+zurich:{z:'Zurique',e:'Zurich',cc:'CH',la:47.4,lo:8.5,tz:'Europe/Zurich',h:[3,5,10,15,19,23,25,25,20,14,8,4],l:[-2,-1,2,5,10,13,15,15,11,7,2,-1],r:[63,63,75,81,129,128,114,124,99,77,76,72],bm:[5,6,7,8],am:[0,1,11],bt:'Jun–Set',at:'Dez–Fev frio e nublado'},
+stockholm:{z:'Estocolmo',e:'Stockholm',cc:'SE',la:59.3,lo:18.1,tz:'Europe/Stockholm',h:[-1,0,4,10,16,21,23,21,16,10,4,1],l:[-5,-5,-2,2,7,11,14,13,9,5,0,-3],r:[39,27,26,30,30,45,72,66,55,50,53,46],bm:[5,6,7],am:[11,0,1],bt:'Jun–Ago',at:'Dez–Fev frio e escuro'},
+oslo:{z:'Oslo',e:'Oslo',cc:'NO',la:59.9,lo:10.7,tz:'Europe/Oslo',h:[-1,0,5,10,16,20,22,21,16,9,4,1],l:[-7,-6,-3,1,6,10,13,12,8,3,-1,-5],r:[54,41,48,44,54,65,81,90,80,84,73,55],bm:[5,6,7],am:[11,0,1],bt:'Jun–Ago',at:'Dez–Fev frio extremo'},
+copenhagen:{z:'Copenhaga',e:'Copenhagen',cc:'DK',la:55.7,lo:12.6,tz:'Europe/Copenhagen',h:[3,3,6,12,16,20,22,22,18,12,7,4],l:[-1,-1,1,4,8,12,14,14,11,7,3,1],r:[46,30,39,38,43,47,68,64,60,56,61,56],bm:[4,5,6,7],am:[11,0,1],bt:'Mai–Ago',at:'Dez–Fev frio e escuro'},
+helsinki:{z:'Helsínquia',e:'Helsinki',cc:'FI',la:60.2,lo:24.9,tz:'Europe/Helsinki',h:[-2,-2,2,9,15,19,22,20,15,8,3,0],l:[-7,-8,-4,1,6,11,14,13,8,3,-1,-5],r:[52,36,38,32,37,57,63,80,56,65,63,52],bm:[5,6,7],am:[11,0,1],bt:'Jun–Ago',at:'Dez–Fev frio extremo e escuro'},
+reykjavik:{z:'Reiquiavique',e:'Reykjavik',cc:'IS',la:64.1,lo:-21.9,tz:'Atlantic/Reykjavik',h:[3,3,4,6,10,12,14,13,11,7,4,3],l:[-2,-2,-1,1,4,7,9,8,6,3,0,-2],r:[76,72,82,58,44,50,52,62,67,86,73,79],bm:[5,6,7],am:[11,0,1],bt:'Jun–Ago sol da meia-noite',at:'Dez–Fev noite polar (mas auroras boreais)'},
+athens:{z:'Atenas',e:'Athens',cc:'GR',la:37.9,lo:23.7,tz:'Europe/Athens',h:[13,14,16,20,25,30,33,33,29,24,18,14],l:[7,7,9,12,16,21,24,24,20,16,12,8],r:[57,47,40,31,23,11,6,7,15,53,58,69],bm:[3,4,5,8,9],am:[6,7],bt:'Abr–Jun, Set–Out',at:'Jul–Ago calor extremo'},
+lisbon:{z:'Lisboa',e:'Lisbon',cc:'PT',la:38.7,lo:-9.1,tz:'Europe/Lisbon',h:[15,16,18,20,22,26,28,28,26,22,18,15],l:[8,9,11,12,14,17,19,19,18,15,11,9],r:[110,111,69,63,44,16,5,5,33,80,114,108],bm:[3,4,5,6,8],am:[11,0,1],bt:'Abr–Jul, Set',at:'Dez–Fev chuvoso'},
+dublin:{z:'Dublim',e:'Dublin',cc:'IE',la:53.3,lo:-6.3,tz:'Europe/Dublin',h:[8,8,10,12,15,17,19,19,17,14,10,8],l:[2,2,3,4,7,9,12,11,9,7,4,3],r:[67,50,53,55,60,57,56,73,60,79,75,72],bm:[4,5,6,7,8],am:[10,11,0,1],bt:'Mai–Set',at:'Nov–Fev frio e chuvoso'},
+budapest:{z:'Budapeste',e:'Budapest',cc:'HU',la:47.5,lo:19.0,tz:'Europe/Budapest',h:[3,5,11,17,22,26,28,28,23,17,9,4],l:[-3,-1,3,7,12,15,17,17,12,7,2,-1],r:[37,28,30,42,62,63,45,49,40,38,50,44],bm:[4,5,8,9],am:[0,1],bt:'Mai–Jun, Set–Out',at:'Jan–Fev frio extremo'},
+edinburgh:{z:'Edimburgo',e:'Edinburgh',cc:'GB',la:55.9,lo:-3.2,tz:'Europe/London',h:[7,7,9,11,14,17,19,19,16,13,9,7],l:[1,1,2,4,6,9,11,11,9,6,3,1],r:[57,42,51,41,51,51,57,65,57,65,62,57],bm:[4,5,6,7,8],am:[10,11,0,1],bt:'Mai–Set',at:'Nov–Fev frio e ventoso'},
+newyork:{z:'Nova Iorque',e:'New York',cc:'US',la:40.7,lo:-74.0,tz:'America/New_York',h:[4,5,10,18,22,27,30,29,25,19,13,6],l:[-3,-2,2,8,13,18,21,21,17,11,5,0],r:[93,79,111,114,106,112,117,113,109,112,102,102],bm:[3,4,5,8,9],am:[0,1,6,7],bt:'Abr–Jun, Set–Out',at:'Jan–Fev frio extremo, Jul–Ago húmido'},
+losangeles:{z:'Los Angeles',e:'Los Angeles',cc:'US',la:34.1,lo:-118.2,tz:'America/Los_Angeles',h:[20,20,21,22,23,25,28,29,28,26,22,20],l:[9,10,11,12,14,16,18,18,17,15,11,9],r:[79,97,61,23,7,2,0,1,5,18,26,59],bm:[2,3,4,5,8,9],am:[],bt:'Agradável todo o ano, Mar–Mai e Set–Nov melhor',at:'Incêndios florestais ocasionais'},
+sanfrancisco:{z:'São Francisco',e:'San Francisco',cc:'US',la:37.8,lo:-122.4,tz:'America/Los_Angeles',h:[14,16,17,18,19,21,21,21,23,21,17,14],l:[8,9,9,10,11,12,13,13,13,12,10,8],r:[114,113,82,37,18,4,0,1,5,25,64,116],bm:[8,9,4,5],am:[],bt:'Set–Out mais quente, Mai–Jun',at:'Jun–Ago surpreendentemente brumoso e fresco'},
+lasvegas:{z:'Las Vegas',e:'Las Vegas',cc:'US',la:36.2,lo:-115.1,tz:'America/Los_Angeles',h:[14,17,21,26,31,38,41,40,35,28,20,14],l:[1,4,7,11,16,21,25,24,19,12,5,1],r:[13,19,11,5,3,2,11,11,8,8,8,10],bm:[2,3,4,9,10],am:[5,6,7],bt:'Mar–Mai, Out–Nov',at:'Jun–Ago calor extremo 40°C+'},
+chicago:{z:'Chicago',e:'Chicago',cc:'US',la:41.9,lo:-87.6,tz:'America/Chicago',h:[-1,2,8,15,21,27,29,28,24,17,9,2],l:[-9,-6,-2,4,10,16,19,18,14,7,1,-6],r:[52,49,68,92,105,102,101,99,84,82,78,64],bm:[4,5,8,9],am:[0,1,11],bt:'Mai–Jun, Set–Out',at:'Dez–Fev frio extremo, Jul–Ago húmido'},
+miami:{z:'Miami',e:'Miami',cc:'US',la:25.8,lo:-80.2,tz:'America/New_York',h:[25,26,28,29,31,32,33,33,32,30,28,26],l:[16,17,19,21,24,25,26,26,25,23,20,17],r:[52,57,68,80,140,243,163,200,234,162,83,53],bm:[10,11,0,1,2],am:[7,8],bt:'Nov–Mar',at:'Ago–Set época dos furacões'},
+vancouver:{z:'Vancouver',e:'Vancouver',cc:'CA',la:49.3,lo:-123.1,tz:'America/Vancouver',h:[6,8,10,13,17,20,23,23,19,14,9,6],l:[1,2,3,5,8,11,13,13,10,7,4,2],r:[169,105,114,89,65,54,40,39,54,121,189,162],bm:[5,6,7],am:[10,11],bt:'Jun–Ago',at:'Nov–Dez chuvas fortes'},
+toronto:{z:'Toronto',e:'Toronto',cc:'CA',la:43.7,lo:-79.4,tz:'America/Toronto',h:[-1,0,5,12,19,24,27,26,22,14,8,2],l:[-7,-7,-2,4,10,15,18,18,13,7,2,-4],r:[62,51,54,68,74,71,64,79,85,64,75,70],bm:[5,6,7,8],am:[0,1,11],bt:'Jun–Set',at:'Dez–Fev frio extremo'},
+mexicocity:{z:'Cidade do México',e:'Mexico City',cc:'MX',la:19.4,lo:-99.1,tz:'America/Mexico_City',h:[22,24,26,27,26,25,23,23,23,22,22,22],l:[6,7,9,11,12,13,12,12,12,11,8,7],r:[11,4,10,26,53,119,170,152,145,67,13,6],bm:[10,11,0,1,2],am:[6,7],bt:'Nov–Mar',at:'Jul–Ago época das chuvas'},
+cancun:{z:'Cancún',e:'Cancun',cc:'MX',la:21.2,lo:-86.8,tz:'America/Cancun',h:[28,29,30,31,32,32,33,33,32,31,29,28],l:[19,20,21,23,24,25,25,25,24,23,21,20],r:[72,39,33,38,111,181,109,129,220,241,107,78],bm:[0,1,2,3],am:[8,9],bt:'Dez–Abr',at:'Set–Out época dos furacões'},
+buenosaires:{z:'Buenos Aires',e:'Buenos Aires',cc:'AR',la:-34.6,lo:-58.4,tz:'America/Argentina/Buenos_Aires',h:[30,29,26,23,19,15,15,17,19,22,25,28],l:[20,20,17,14,10,8,7,8,10,13,16,18],r:[121,123,134,107,74,56,53,64,78,120,108,105],bm:[8,9,10,2,3],am:[],bt:'Set–Nov, Mar–Mai',at:'Jul o mais fresco mas ainda temperado'},
+lima:{z:'Lima',e:'Lima',cc:'PE',la:-12.0,lo:-77.0,tz:'America/Lima',h:[26,27,27,25,22,20,19,19,19,20,22,24],l:[19,20,19,18,16,15,15,14,14,15,17,18],r:[1,0,0,0,1,2,1,1,3,1,0,1],bm:[0,1,2,3],am:[5,6,7],bt:'Jan–Abr (verão)',at:'Jun–Ago brumoso e frio (garúa)'},
+cairo:{z:'Cairo',e:'Cairo',cc:'EG',la:30.0,lo:31.2,tz:'Africa/Cairo',h:[19,21,24,28,33,35,36,35,33,30,25,21],l:[9,10,12,15,18,21,23,23,22,18,14,10],r:[5,4,4,1,1,0,0,0,0,1,3,6],bm:[9,10,1,2],am:[4,5,6,7],bt:'Out–Mar',at:'Mai–Ago calor extremo'},
+capetown:{z:'Cidade do Cabo',e:'Cape Town',cc:'ZA',la:-33.9,lo:18.4,tz:'Africa/Johannesburg',h:[26,27,25,22,19,18,17,18,19,21,23,25],l:[16,16,14,12,9,8,7,8,9,11,13,15],r:[15,17,20,41,69,93,82,77,40,30,14,17],bm:[9,10,11,0,1,2],am:[5,6],bt:'Out–Mar verão',at:'Jun–Jul inverno chuvoso'},
+marrakech:{z:'Marraquexe',e:'Marrakech',cc:'MA',la:31.6,lo:-8.0,tz:'Africa/Casablanca',h:[18,20,23,26,30,34,38,38,33,28,23,19],l:[6,8,10,12,15,18,21,21,19,15,10,7],r:[32,38,39,35,24,5,1,3,11,24,40,34],bm:[2,3,4,9,10],am:[6,7],bt:'Mar–Mai, Out–Nov',at:'Jul–Ago calor extremo'},
+nairobi:{z:'Nairobi',e:'Nairobi',cc:'KE',la:-1.3,lo:36.8,tz:'Africa/Nairobi',h:[25,26,25,24,22,21,20,21,24,24,23,23],l:[12,13,14,14,13,11,10,10,11,13,14,13],r:[58,52,96,211,158,35,15,24,28,53,139,86],bm:[0,1,5,6,7,8],am:[3,4,10],bt:'Jan–Fev, Jun–Set (estação seca)',at:'Abr–Mai chuvas fortes, Nov chuvoso'},
+sydney:{z:'Sydney',e:'Sydney',cc:'AU',la:-33.9,lo:151.2,tz:'Australia/Sydney',h:[26,26,25,22,19,17,16,18,20,22,24,25],l:[19,19,18,15,11,9,8,9,11,14,16,18],r:[102,118,131,127,123,132,97,80,69,77,84,78],bm:[8,9,10,2,3],am:[],bt:'Set–Nov, Mar–Mai',at:'Calor extremo ocasional e incêndios florestais'},
+melbourne:{z:'Melbourne',e:'Melbourne',cc:'AU',la:-37.8,lo:145.0,tz:'Australia/Melbourne',h:[26,26,24,20,17,14,13,15,17,20,22,24],l:[15,15,14,11,9,6,6,6,8,9,11,13],r:[48,47,50,57,56,49,48,50,58,67,60,59],bm:[8,9,10,2,3],am:[],bt:'Set–Nov, Mar–Mai',at:'Tempo muito variável (4 estações num dia)'},
+auckland:{z:'Auckland',e:'Auckland',cc:'NZ',la:-36.9,lo:174.8,tz:'Pacific/Auckland',h:[23,24,22,20,17,15,14,14,16,17,19,21],l:[16,16,15,13,10,8,7,8,9,11,13,15],r:[74,66,87,100,112,126,145,118,106,100,85,91],bm:[0,1,2,10,11],am:[5,6],bt:'Dez–Mar, Nov',at:'Jun–Jul inverno chuvoso'},
+queenstown:{z:'Queenstown',e:'Queenstown',cc:'NZ',la:-45.0,lo:168.7,tz:'Pacific/Auckland',h:[22,22,19,15,11,8,7,9,12,15,18,20],l:[10,9,8,5,2,0,-2,-1,1,4,6,9],r:[65,56,63,62,63,46,44,52,55,66,58,58],bm:[0,1,11,5,6,7],am:[],bt:'Dez–Fev verão, Jun–Ago esqui',at:'Sem período particularmente mau'}
+};
+
+const HOLIDAYS_DATA = {
+CN:[['01-01','Ano Novo'],['02-17','Ano Novo Chinês'],['02-18','Ano Novo Chinês'],['02-19','Ano Novo Chinês'],['04-05','Festival Qingming'],['05-01','Dia do Trabalhador'],['06-19','Festival do Barco-Dragão'],['10-01','Dia Nacional'],['10-06','Festival do Meio-Outono']],
+HK:[['01-01','Ano Novo'],['02-17','Ano Novo Lunar'],['02-18','Ano Novo Lunar'],['02-19','Ano Novo Lunar'],['04-03','Sexta-feira Santa'],['04-05','Festival Qingming'],['05-01','Dia do Trabalhador'],['05-24','Aniversário de Buda'],['06-19','Festival do Barco-Dragão'],['07-01','Dia de Estabelecimento da RAE de HK'],['10-01','Dia Nacional'],['10-07','Dia seguinte ao Festival do Meio-Outono'],['12-25','Natal']],
+MO:[['01-01','Ano Novo'],['02-17','Ano Novo Lunar'],['02-18','Ano Novo Lunar'],['02-19','Ano Novo Lunar'],['04-05','Festival Qingming'],['05-01','Dia do Trabalhador'],['10-01','Dia Nacional'],['10-06','Festival do Meio-Outono'],['12-20','Dia de Estabelecimento da RAE de Macau'],['12-25','Natal']],
+TW:[['01-01','Ano Novo'],['02-17','Véspera do Ano Novo Lunar'],['02-18','Ano Novo Lunar'],['02-19','Ano Novo Lunar'],['02-28','Dia da Paz'],['04-04','Dia da Criança'],['04-05','Festival Qingming'],['06-19','Festival do Barco-Dragão'],['10-06','Festival do Meio-Outono'],['10-10','Dia Nacional']],
+JP:[['01-01','Ano Novo'],['01-12','Dia da Maioridade'],['02-11','Dia da Fundação Nacional'],['02-23','Aniversário do Imperador'],['03-20','Equinócio da Primavera'],['04-29','Dia Shōwa'],['05-03','Dia da Constituição'],['05-04','Dia do Verde'],['05-05','Dia da Criança'],['07-20','Dia do Mar'],['08-11','Dia da Montanha'],['09-21','Dia de Respeito pelos Idosos'],['09-23','Equinócio de Outono'],['10-12','Dia do Desporto'],['11-03','Dia da Cultura'],['11-23','Dia de Ação de Graças Laboral']],
+KR:[['01-01','Ano Novo'],['02-16','Seollal (Ano Novo Lunar)'],['02-17','Seollal'],['02-18','Seollal'],['03-01','Dia do Movimento Independentista'],['05-05','Dia da Criança'],['05-24','Aniversário de Buda'],['06-06','Dia dos Caídos'],['08-15','Dia da Libertação'],['10-05','Chuseok'],['10-06','Chuseok'],['10-07','Chuseok'],['10-03','Dia da Fundação Nacional'],['10-09','Dia do Hangul'],['12-25','Natal']],
+TH:[['01-01','Ano Novo'],['02-17','Makha Bucha (aprox.)'],['04-06','Dia da Memória de Chakri'],['04-13','Festival Songkran'],['04-14','Festival Songkran'],['04-15','Festival Songkran'],['05-01','Dia do Trabalhador'],['05-24','Visakha Bucha'],['07-22','Asalha Bucha (aprox.)'],['07-28','Aniversário do Rei'],['08-12','Dia da Mãe'],['10-23','Dia de Chulalongkorn'],['12-05','Dia do Pai'],['12-31','Véspera de Ano Novo']],
+VN:[['01-01','Ano Novo'],['02-17','Tết (Ano Novo Lunar)'],['02-18','Tết'],['02-19','Tết'],['02-20','Tết'],['04-30','Dia da Reunificação'],['05-01','Dia do Trabalhador'],['09-02','Dia Nacional']],
+SG:[['01-01','Ano Novo'],['02-17','Ano Novo Chinês'],['02-18','Ano Novo Chinês'],['03-20','Hari Raya Aidilfitri (aprox.)'],['04-03','Sexta-feira Santa'],['05-01','Dia do Trabalhador'],['05-24','Dia de Vesak'],['05-27','Hari Raya Haji (aprox.)'],['08-09','Dia Nacional'],['10-20','Deepavali (aprox.)'],['12-25','Natal']],
+MY:[['01-01','Ano Novo'],['02-01','Thaipusam'],['02-17','Ano Novo Chinês'],['02-18','Ano Novo Chinês'],['03-20','Hari Raya Aidilfitri (aprox.)'],['03-21','Hari Raya Aidilfitri (aprox.)'],['05-01','Dia do Trabalhador'],['05-24','Dia de Vesak'],['05-27','Hari Raya Haji (aprox.)'],['06-02','Aniversário do Yang di-Pertuan Agong'],['08-31','Dia Nacional'],['09-16','Dia da Malásia'],['10-20','Deepavali (aprox.)'],['12-25','Natal']],
+ID:[['01-01','Ano Novo'],['02-17','Ano Novo Chinês'],['03-20','Eid al-Fitr (aprox.)'],['03-21','Eid al-Fitr (aprox.)'],['03-29','Dia de Nyepi'],['04-03','Sexta-feira Santa'],['05-01','Dia do Trabalhador'],['05-24','Dia de Vesak'],['05-27','Eid al-Adha (aprox.)'],['05-29','Isra Mi\'raj'],['06-01','Dia de Pancasila'],['08-17','Dia da Independência'],['09-16','Aniversário do Profeta (aprox.)'],['12-25','Natal']],
+IN:[['01-26','Dia da República'],['03-14','Holi (aprox.)'],['04-03','Sexta-feira Santa'],['05-24','Buddha Purnima'],['08-15','Dia da Independência'],['10-02','Gandhi Jayanti'],['10-20','Diwali (aprox.)'],['10-21','Diwali (aprox.)'],['12-25','Natal']],
+AE:[['01-01','Ano Novo'],['03-20','Eid al-Fitr (aprox.)'],['03-21','Eid al-Fitr (aprox.)'],['03-22','Eid al-Fitr (aprox.)'],['05-27','Eid al-Adha (aprox.)'],['05-28','Eid al-Adha (aprox.)'],['07-19','Ano Novo Islâmico (aprox.)'],['09-27','Aniversário do Profeta (aprox.)'],['12-02','Dia Nacional'],['12-03','Dia Nacional']],
+TR:[['01-01','Ano Novo'],['03-20','Eid al-Fitr (aprox.)'],['03-21','Eid al-Fitr (aprox.)'],['03-22','Eid al-Fitr (aprox.)'],['04-23','Dia da Criança'],['05-01','Dia do Trabalhador'],['05-19','Dia da Juventude'],['05-27','Eid al-Adha (aprox.)'],['05-28','Eid al-Adha (aprox.)'],['05-29','Eid al-Adha (aprox.)'],['05-30','Eid al-Adha (aprox.)'],['07-15','Dia da Democracia e Unidade'],['08-30','Dia da Vitória'],['10-29','Dia da República']],
+EG:[['01-07','Natal Copta'],['01-25','Dia da Revolução'],['03-20','Eid al-Fitr (aprox.)'],['04-13','Eid al-Fitr (aprox.)'],['04-25','Dia da Libertação do Sinai'],['05-01','Dia do Trabalhador'],['05-27','Eid al-Adha (aprox.)'],['06-30','Revolução de Junho'],['07-19','Ano Novo Islâmico (aprox.)'],['07-23','Revolução de Julho'],['10-06','Dia das Forças Armadas']],
+GB:[['01-01','Ano Novo'],['04-03','Sexta-feira Santa'],['04-06','Segunda-feira de Páscoa'],['05-04','Feriado de início de maio'],['05-25','Feriado de primavera'],['08-31','Feriado de verão'],['12-25','Natal'],['12-26','Dia de Santo Estêvão']],
+FR:[['01-01','Ano Novo'],['04-06','Segunda-feira de Páscoa'],['05-01','Dia do Trabalhador'],['05-08','Dia da Vitória na Europa'],['05-14','Ascensão'],['05-25','Segunda-feira de Pentecostes'],['07-14','Dia da Bastilha'],['08-15','Assunção'],['11-01','Dia de Todos os Santos'],['11-11','Armistício'],['12-25','Natal']],
+DE:[['01-01','Ano Novo'],['04-03','Sexta-feira Santa'],['04-06','Segunda-feira de Páscoa'],['05-01','Dia do Trabalhador'],['05-14','Ascensão'],['05-25','Segunda-feira de Pentecostes'],['10-03','Dia da Unidade Alemã'],['12-25','Natal'],['12-26','Dia de Santo Estêvão']],
+IT:[['01-01','Ano Novo'],['01-06','Epifania'],['04-05','Domingo de Páscoa'],['04-06','Segunda-feira de Páscoa'],['04-25','Dia da Libertação'],['05-01','Dia do Trabalhador'],['06-02','Dia da República'],['08-15','Assunção'],['11-01','Dia de Todos os Santos'],['12-08','Imaculada Conceição'],['12-25','Natal'],['12-26','Dia de Santo Estêvão']],
+ES:[['01-01','Ano Novo'],['01-06','Epifania'],['04-02','Quinta-feira Santa'],['04-03','Sexta-feira Santa'],['05-01','Dia do Trabalhador'],['08-15','Assunção'],['10-12','Festa Nacional'],['11-01','Dia de Todos os Santos'],['12-06','Dia da Constituição'],['12-08','Imaculada Conceição'],['12-25','Natal']],
+US:[['01-01','Ano Novo'],['01-19','Dia de Martin Luther King Jr.'],['02-16','Dia dos Presidentes'],['05-25','Memorial Day'],['07-04','Dia da Independência'],['09-07','Dia do Trabalho'],['10-12','Dia de Colombo'],['11-11','Dia dos Veteranos'],['11-26','Dia de Ação de Graças'],['12-25','Natal']],
+CA:[['01-01','Ano Novo'],['02-16','Dia da Família'],['04-03','Sexta-feira Santa'],['05-18','Dia da Rainha Vitória'],['07-01','Dia do Canadá'],['09-07','Dia do Trabalho'],['10-12','Dia de Ação de Graças'],['11-11','Dia da Lembrança'],['12-25','Natal'],['12-26','Dia de Santo Estêvão']],
+AU:[['01-01','Ano Novo'],['01-26','Dia da Austrália'],['04-03','Sexta-feira Santa'],['04-06','Segunda-feira de Páscoa'],['04-25','Dia ANZAC'],['06-08','Aniversário da Rainha'],['12-25','Natal'],['12-26','Dia de Santo Estêvão']],
+NZ:[['01-01','Ano Novo'],['01-02','Dia seguinte ao Ano Novo'],['02-06','Dia de Waitangi'],['04-03','Sexta-feira Santa'],['04-06','Segunda-feira de Páscoa'],['04-25','Dia ANZAC'],['06-01','Aniversário da Rainha'],['10-26','Dia do Trabalho'],['12-25','Natal'],['12-26','Dia de Santo Estêvão']],
+MX:[['01-01','Ano Novo'],['02-02','Dia da Constituição'],['03-16','Aniversário de Benito Juárez'],['05-01','Dia do Trabalhador'],['09-16','Dia da Independência'],['11-02','Dia dos Mortos'],['11-16','Dia da Revolução'],['12-25','Natal']],
+BR:[['01-01','Ano Novo'],['02-16','Carnaval'],['02-17','Carnaval'],['04-03','Sexta-feira Santa'],['04-21','Dia de Tiradentes'],['05-01','Dia do Trabalhador'],['06-04','Corpo de Deus'],['09-07','Dia da Independência'],['10-12','Nossa Senhora Aparecida'],['11-02','Dia dos Fiéis Defuntos'],['11-15','Dia da República'],['12-25','Natal']],
+PT:[['01-01','Ano Novo'],['02-17','Carnaval'],['04-03','Sexta-feira Santa'],['04-25','Dia da Liberdade'],['05-01','Dia do Trabalhador'],['06-04','Corpo de Deus'],['06-10','Dia de Portugal'],['08-15','Assunção de Nossa Senhora'],['10-05','Implantação da República'],['11-01','Dia de Todos os Santos'],['12-01','Restauração da Independência'],['12-08','Imaculada Conceição'],['12-25','Natal']],
+NL:[['01-01','Ano Novo'],['04-06','Segunda-feira de Páscoa'],['04-27','Dia do Rei'],['05-05','Dia da Libertação'],['05-14','Ascensão'],['05-25','Segunda-feira de Pentecostes'],['12-25','Natal'],['12-26','Segundo dia de Natal']],
+CH:[['01-01','Ano Novo'],['04-03','Sexta-feira Santa'],['04-06','Segunda-feira de Páscoa'],['05-14','Ascensão'],['05-25','Segunda-feira de Pentecostes'],['08-01','Dia Nacional'],['12-25','Natal']],
+AT:[['01-01','Ano Novo'],['01-06','Epifania'],['04-06','Segunda-feira de Páscoa'],['05-01','Dia do Trabalhador'],['05-14','Ascensão'],['05-25','Segunda-feira de Pentecostes'],['06-04','Corpo de Deus'],['08-15','Assunção'],['10-26','Dia Nacional'],['11-01','Dia de Todos os Santos'],['12-08','Imaculada Conceição'],['12-25','Natal'],['12-26','Dia de Santo Estêvão']],
+GR:[['01-01','Ano Novo'],['01-06','Epifania'],['03-02','Segunda-feira Limpa'],['03-25','Dia da Independência'],['04-18','Sexta-feira Santa Ortodoxa'],['04-20','Páscoa Ortodoxa'],['05-01','Dia do Trabalhador'],['06-08','Segunda-feira de Pentecostes'],['08-15','Assunção'],['10-28','Dia do Ochi'],['12-25','Natal']],
+CZ:[['01-01','Ano Novo'],['04-03','Sexta-feira Santa'],['04-06','Segunda-feira de Páscoa'],['05-01','Dia do Trabalhador'],['05-08','Dia da Libertação'],['07-05','Santos Cirilo e Metódio'],['07-06','Dia de Jan Hus'],['09-28','Dia da Estatalidade Checa'],['10-28','Dia da Independência'],['11-17','Dia da Liberdade e da Democracia'],['12-24','Véspera de Natal'],['12-25','Natal'],['12-26','Dia de Santo Estêvão']],
+IL:[['04-02','Pessach (aprox.)'],['04-08','Último dia de Pessach (aprox.)'],['04-23','Dia da Independência'],['06-22','Shavuot (aprox.)'],['09-23','Rosh Hashaná (aprox.)'],['10-02','Yom Kipur (aprox.)'],['10-07','Sucot (aprox.)']],
+ZA:[['01-01','Ano Novo'],['03-21','Dia dos Direitos Humanos'],['04-03','Sexta-feira Santa'],['04-06','Dia da Família'],['04-27','Dia da Liberdade'],['05-01','Dia do Trabalhador'],['06-16','Dia da Juventude'],['08-09','Dia da Mulher'],['09-24','Dia do Património'],['12-16','Dia da Reconciliação'],['12-25','Natal'],['12-26','Dia da Boa Vontade']],
+MA:[['01-01','Ano Novo'],['01-11','Dia do Manifesto da Independência'],['03-20','Eid al-Fitr (aprox.)'],['05-01','Dia do Trabalhador'],['05-27','Eid al-Adha (aprox.)'],['07-19','Ano Novo Islâmico (aprox.)'],['07-30','Dia do Trono'],['08-14','Dia da Fidelidade'],['08-20','Dia da Revolução'],['08-21','Aniversário do Rei'],['09-27','Aniversário do Profeta (aprox.)'],['11-06','Dia da Marcha Verde'],['11-18','Dia da Independência']]
+};
+
+const CURR = {
+USD:{z:'Dólar americano',e:'US Dollar',s:'$',r:1},EUR:{z:'Euro',e:'Euro',s:'€',r:0.92},
+GBP:{z:'Libra esterlina',e:'British Pound',s:'£',r:0.79},JPY:{z:'Iene japonês',e:'Japanese Yen',s:'¥',r:150},
+CNY:{z:'Yuan chinês',e:'Chinese Yuan',s:'¥',r:7.25},HKD:{z:'Dólar de Hong Kong',e:'HK Dollar',s:'$',r:7.82},
+MOP:{z:'Pataca de Macau',e:'Macanese Pataca',s:'$',r:8.06},TWD:{z:'Novo dólar taiwanês',e:'New Taiwan Dollar',s:'$',r:32.5},
+KRW:{z:'Won sul-coreano',e:'Korean Won',s:'₩',r:1350},THB:{z:'Baht tailandês',e:'Thai Baht',s:'฿',r:35},
+VND:{z:'Dong vietnamita',e:'Vietnamese Dong',s:'₫',r:24500},KHR:{z:'Riel cambojano',e:'Cambodian Riel',s:'៛',r:4100},
+MYR:{z:'Ringgit malaio',e:'Malaysian Ringgit',s:'RM',r:4.45},SGD:{z:'Dólar de Singapura',e:'Singapore Dollar',s:'$',r:1.35},
+IDR:{z:'Rupia indonésia',e:'Indonesian Rupiah',s:'Rp',r:15800},PHP:{z:'Peso filipino',e:'Philippine Peso',s:'₱',r:56},
+INR:{z:'Rupia indiana',e:'Indian Rupee',s:'₹',r:83},LKR:{z:'Rupia do Sri Lanka',e:'Sri Lankan Rupee',s:'Rs',r:310},
+NPR:{z:'Rupia nepalesa',e:'Nepalese Rupee',s:'Rs',r:133},MVR:{z:'Rufiyaa maldiva',e:'Maldivian Rufiyaa',s:'Rf',r:15.4},
+AED:{z:'Dirham emiradense',e:'UAE Dirham',s:'د.إ',r:3.67},SAR:{z:'Rial saudita',e:'Saudi Riyal',s:'﷼',r:3.75},
+QAR:{z:'Rial catarense',e:'Qatari Riyal',s:'﷼',r:3.64},ILS:{z:'Shekel israelita',e:'Israeli Shekel',s:'₪',r:3.65},
+TRY:{z:'Lira turca',e:'Turkish Lira',s:'₺',r:30},EGP:{z:'Libra egípcia',e:'Egyptian Pound',s:'£',r:30.9},
+MAD:{z:'Dirham marroquino',e:'Moroccan Dirham',s:'د.م.',r:10},ZAR:{z:'Rand sul-africano',e:'South African Rand',s:'R',r:18.5},
+KES:{z:'Xelim queniano',e:'Kenyan Shilling',s:'KSh',r:155},
+AUD:{z:'Dólar australiano',e:'Australian Dollar',s:'$',r:1.55},NZD:{z:'Dólar neozelandês',e:'NZ Dollar',s:'$',r:1.68},
+FJD:{z:'Dólar fijiano',e:'Fijian Dollar',s:'$',r:2.27},
+CAD:{z:'Dólar canadiano',e:'Canadian Dollar',s:'$',r:1.36},MXN:{z:'Peso mexicano',e:'Mexican Peso',s:'$',r:17.2},
+BRL:{z:'Real brasileiro',e:'Brazilian Real',s:'R$',r:5.0},ARS:{z:'Peso argentino',e:'Argentine Peso',s:'$',r:870},
+CLP:{z:'Peso chileno',e:'Chilean Peso',s:'$',r:950},COP:{z:'Peso colombiano',e:'Colombian Peso',s:'$',r:4100},
+PEN:{z:'Sol peruano',e:'Peruvian Sol',s:'S/',r:3.75},
+SEK:{z:'Coroa sueca',e:'Swedish Krona',s:'kr',r:10.5},NOK:{z:'Coroa norueguesa',e:'Norwegian Krone',s:'kr',r:10.6},
+DKK:{z:'Coroa dinamarquesa',e:'Danish Krone',s:'kr',r:6.88},ISK:{z:'Coroa islandesa',e:'Icelandic Króna',s:'kr',r:138},
+CHF:{z:'Franco suíço',e:'Swiss Franc',s:'Fr',r:0.88},CZK:{z:'Coroa checa',e:'Czech Koruna',s:'Kč',r:23.5},
+PLN:{z:'Zlóti polaco',e:'Polish Zloty',s:'zł',r:4.05},HUF:{z:'Forinte húngaro',e:'Hungarian Forint',s:'Ft',r:365},
+RON:{z:'Leu romeno',e:'Romanian Leu',s:'lei',r:4.6},BGN:{z:'Lev búlgaro',e:'Bulgarian Lev',s:'лв',r:1.8},
+GEL:{z:'Lari georgiano',e:'Georgian Lari',s:'₾',r:2.7},KZT:{z:'Tenge cazaque',e:'Kazakhstani Tenge',s:'₸',r:460},
+MMK:{z:'Kyat birmanês',e:'Myanmar Kyat',s:'K',r:2100},LAK:{z:'Kip laociano',e:'Lao Kip',s:'₭',r:20800},
+BDT:{z:'Taka do Bangladesh',e:'Bangladeshi Taka',s:'৳',r:110},PKR:{z:'Rupia paquistanesa',e:'Pakistani Rupee',s:'Rs',r:280},
+JOD:{z:'Dinar jordano',e:'Jordanian Dinar',s:'JD',r:0.71}
+};
+
+const UNIT_CATS = {
+length:{z:'Comprimento',u:{mm:{z:'Milímetro',f:0.001},cm:{z:'Centímetro',f:0.01},m:{z:'Metro',f:1},km:{z:'Quilómetro',f:1000},in:{z:'Polegada',f:0.0254},ft:{z:'Pé',f:0.3048},yd:{z:'Jarda',f:0.9144},mi:{z:'Milha',f:1609.344}}},
+weight:{z:'Peso',u:{mg:{z:'Miligrama',f:0.001},g:{z:'Grama',f:1},kg:{z:'Quilograma',f:1000},t:{z:'Tonelada métrica',f:1e6},oz:{z:'Onça',f:28.3495},lb:{z:'Libra',f:453.592},st:{z:'Stone',f:6350.29}}},
+temp:{z:'Temperatura',u:{C:{z:'°C Celsius'},F:{z:'°F Fahrenheit'},K:{z:'K Kelvin'}}},
+volume:{z:'Volume',u:{ml:{z:'Mililitro',f:0.001},l:{z:'Litro',f:1},gal_us:{z:'Galão (EUA)',f:3.78541},gal_uk:{z:'Galão (RU)',f:4.54609},cup:{z:'Chávena (EUA)',f:0.236588},fl_oz:{z:'Oz líq. (EUA)',f:0.0295735},pt:{z:'Pinta (EUA)',f:0.473176}}},
+speed:{z:'Velocidade',u:{ms:{z:'m/s',f:1},kmh:{z:'km/h',f:0.277778},mph:{z:'mph',f:0.44704},kn:{z:'Nó',f:0.514444}}},
+area:{z:'Área',u:{sqm:{z:'m²',f:1},sqkm:{z:'km²',f:1e6},ha:{z:'Hectare',f:10000},sqft:{z:'pé²',f:0.092903},sqmi:{z:'milha²',f:2.59e6},ac:{z:'Acre',f:4046.86},ping:{z:'Ping (坪)',f:3.30579}}}
+};
+
+const CITY_REGIONS = {
+'Ásia Oriental':[{k:'beijing'},{k:'shanghai'},{k:'guangzhou'},{k:'chengdu'},{k:'hongkong'},{k:'macau'},{k:'taipei'},{k:'kaohsiung'},{k:'tokyo'},{k:'osaka'},{k:'sapporo'},{k:'seoul'}],
+'Sudeste Asiático':[{k:'bangkok'},{k:'chiangmai'},{k:'singapore'},{k:'kualalumpur'},{k:'bali'},{k:'hanoi'},{k:'hochiminh'},{k:'manila'},{k:'phnompenh'},{k:'yangon'}],
+'Ásia do Sul / Médio Oriente':[{k:'delhi'},{k:'mumbai'},{k:'kathmandu'},{k:'male'},{k:'dubai'},{k:'istanbul'},{k:'telaviv'},{k:'doha'}],
+'Europa':[{k:'london'},{k:'paris'},{k:'rome'},{k:'barcelona'},{k:'madrid'},{k:'amsterdam'},{k:'berlin'},{k:'vienna'},{k:'prague'},{k:'zurich'},{k:'stockholm'},{k:'oslo'},{k:'copenhagen'},{k:'helsinki'},{k:'reykjavik'},{k:'athens'},{k:'lisbon'},{k:'dublin'},{k:'budapest'},{k:'edinburgh'}],
+'Américas':[{k:'newyork'},{k:'losangeles'},{k:'sanfrancisco'},{k:'lasvegas'},{k:'chicago'},{k:'miami'},{k:'vancouver'},{k:'toronto'},{k:'mexicocity'},{k:'cancun'},{k:'buenosaires'},{k:'lima'}],
+'África':[{k:'cairo'},{k:'capetown'},{k:'marrakech'},{k:'nairobi'}],
+'Oceânia':[{k:'sydney'},{k:'melbourne'},{k:'auckland'},{k:'queenstown'}]
+};
+
+const CO_REGIONS = {
+'Ásia Oriental':['CN','HK','MO','TW','JP','KR','MN'],
+'Sudeste Asiático':['TH','VN','KH','LA','MM','MY','SG','ID','PH','BN'],
+'Ásia do Sul':['IN','LK','NP','MV','BT','BD','PK'],
+'Ásia Central / Cáucaso':['UZ','KZ','GE','AM','AZ'],
+'Médio Oriente':['AE','SA','QA','BH','OM','KW','IL','JO','TR','LB','IR'],
+'Norte de África':['EG','MA','TN'],
+'África Oriental':['KE','TZ','ET'],
+'África Ocidental':['NG','GH'],
+'África Austral':['ZA'],
+'Europa Ocidental':['GB','FR','DE','IT','ES','PT','NL','BE','CH','AT','IE','LU','MC'],
+'Europa do Norte':['SE','NO','DK','FI','IS'],
+'Europa do Sul / Sudeste':['GR','HR','SI','MT','ME','CY','AL'],
+'Europa Central / Oriental':['CZ','PL','HU','RO','BG','RS','SK','EE','LV','LT'],
+'América do Norte':['US','CA','MX'],
+'Centro / Sul da América e Caraíbas':['BR','AR','CL','CO','PE','CU','CR','PA','JM','DO'],
+'Oceânia':['AU','NZ','FJ']
+};
+
+const ML = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const CM = new Date().getMonth();
+
+function calcSun(lat, lon, date) {
+  const rad = Math.PI / 180;
+  const doy = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 864e5);
+  const g = 2 * Math.PI / 365 * (doy - 1);
+  const eq = 229.18 * (0.000075 + 0.001868*Math.cos(g) - 0.032077*Math.sin(g) - 0.014615*Math.cos(2*g) - 0.040849*Math.sin(2*g));
+  const dc = 0.006918 - 0.399912*Math.cos(g) + 0.070257*Math.sin(g) - 0.006758*Math.cos(2*g) + 0.000907*Math.sin(2*g) - 0.002697*Math.cos(3*g) + 0.00148*Math.sin(3*g);
+  const cosHA = (Math.cos(90.833*rad) / (Math.cos(lat*rad)*Math.cos(dc))) - Math.tan(lat*rad)*Math.tan(dc);
+  if (cosHA > 1) return { rise: null, set: null, day: 0, polar: 'night' };
+  if (cosHA < -1) return { rise: null, set: null, day: 24, polar: 'day' };
+  const ha = Math.acos(cosHA);
+  const noon = (720 - 4*lon - eq) / 60;
+  const rise = noon - ha/rad*4/60;
+  const set = noon + ha/rad*4/60;
+  return { rise, set, day: set - rise, polar: null };
+}
+
+function utcHToStr(h) {
+  while (h < 0) h += 24; while (h >= 24) h -= 24;
+  const hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+  return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
+}
+
+function getLocalTime(tz) {
+  try { return new Date().toLocaleTimeString('pt-PT', { timeZone: tz, hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }); } catch (e2) { return '--:--:--'; }
+}
+function getLocalDate(tz) {
+  try { return new Date().toLocaleDateString('pt-PT', { timeZone: tz, year:'numeric', month:'short', day:'2-digit', weekday:'short' }); } catch (e3) { return '--'; }
+}
+
+function getOffsetHours(tz) {
+  try {
+    const now = new Date();
+    const s = now.toLocaleString('en-US',{timeZone:tz});
+    const local = new Date(s);
+    const utcS = now.toLocaleString('en-US',{timeZone:'UTC'});
+    const utc = new Date(utcS);
+    return (local - utc) / 3600000;
+  } catch (e4) { return 0; }
+}
+
+function tempClr(t) {
+  if(t<=-5) return '#1e40af';if(t<=0) return '#3b82f6';if(t<=5) return '#06b6d4';
+  if(t<=10) return '#14b8a6';if(t<=15) return '#22c55e';if(t<=20) return '#84cc16';
+  if(t<=25) return '#eab308';if(t<=30) return '#f97316';if(t<=35) return '#ef4444';
+  return '#dc2626';
+}
+
+function convertTemp(val, from, to) {
+  let c = from === 'C' ? val : from === 'F' ? (val - 32) * 5/9 : val - 273.15;
+  return to === 'C' ? c : to === 'F' ? c * 9/5 + 32 : c + 273.15;
+}
+
+function genClothing(d) {
+  const avg = a => a.reduce((s,v)=>s+v,0)/a.length;
+  const variation = Math.max(...d.h) - Math.min(...d.h);
+  if(variation < 5) {
+    let t='Calor o ano todo — roupa leve e respirável (calções e t-shirts).';
+    if(avg(d.r)>150) t+=' Possibilidade de chuva em qualquer altura — leve um guarda-chuva dobrável.';
+    t+=' Protetor solar imprescindível. O ar condicionado interior pode ser muito frio — leve um casaco leve.';
+    return {'Todo o ano':t};
+  }
+  const isN = d.h[6] >= d.h[0];
+  const seasons = isN ? [{n:'🌸 Primavera (Mar–Mai)',m:[2,3,4]},{n:'☀️ Verão (Jun–Ago)',m:[5,6,7]},{n:'🍂 Outono (Set–Nov)',m:[8,9,10]},{n:'❄️ Inverno (Dez–Fev)',m:[11,0,1]}]
+    : [{n:'☀️ Verão (Dez–Fev)',m:[11,0,1]},{n:'🍂 Outono (Mar–Mai)',m:[2,3,4]},{n:'❄️ Inverno (Jun–Ago)',m:[5,6,7]},{n:'🌸 Primavera (Set–Nov)',m:[8,9,10]}];
+  const res={};
+  seasons.forEach(s => {
+    const aH=avg(s.m.map(i=>d.h[i])),aL=avg(s.m.map(i=>d.l[i])),aR=avg(s.m.map(i=>d.r[i]));
+    let t='';
+    if(aH>=33) t='T-shirts leves, calções, protetor solar, óculos de sol.';
+    else if(aH>=27) t='Manga curta principalmente, proteção solar.';
+    else if(aH>=21) t='Manga comprida leve, casaco fino.';
+    else if(aH>=15) t='Manga comprida, camisola, corta-vento ou blusão leve de penas.';
+    else if(aH>=8) t='Casaco grosso, camisola, cachecol.';
+    else if(aH>=2) t='Blusão de penas, roupa interior térmica, gorro, luvas e cachecol.';
+    else t='Equipamento para frio extremo: blusão de penas grosso, aquecedores de mãos, cobertura total.';
+    if(aH-aL>12) t+=' Grande diferença de temperatura dia-noite — vista-se em camadas.';
+    else if(aH-aL>8) t+=' Manhãs e noites mais frescas — leve um casaco.';
+    if(aR>200) t+=' Chuvas frequentes — impermeável imprescindível.';
+    else if(aR>100) t+=' Leve um guarda-chuva dobrável.';
+    res[s.n]=t;
+  });
+  return res;
+}
+
+const SearchSelect = _react2.default.memo(({ options, value, onChange, placeholder='Pesquisar cidade ou país...', grouped }) => {
+  const [open, setOpen] = _react.useState.call(void 0, false);
+  const [q, setQ] = _react.useState.call(void 0, '');
+  const ref = _react.useRef.call(void 0, null);
+  const inputRef = _react.useRef.call(void 0, null);
+
+  _react.useEffect.call(void 0, () => {
+    const h = e => { if(ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+
+  const flat = _react.useMemo.call(void 0, () => {
+    if(grouped) {
+      const arr = [];
+      Object.entries(grouped).forEach(([g, items]) => items.forEach(it => arr.push({...it, group:g})));
+      return arr;
+    }
+    return options || [];
+  }, [options, grouped]);
+
+  const filtered = _react.useMemo.call(void 0, () => {
+    if(!q) return flat;
+    const s = q.toLowerCase();
+    return flat.filter(o => (o.z||'').toLowerCase().includes(s) || (o.e||'').toLowerCase().includes(s) || (o.label||'').toLowerCase().includes(s));
+  }, [flat, q]);
+
+  const groups = _react.useMemo.call(void 0, () => {
+    const m = {};
+    filtered.forEach(o => { const g = o.group||''; if(!m[g]) m[g]=[]; m[g].push(o); });
+    return m;
+  }, [filtered]);
+
+  const selected = flat.find(o => o.id === value);
+
+  return (
+    _react2.default.createElement('div', { ref: ref, className: "relative",}
+      , _react2.default.createElement('div', { className: "flex items-center border border-gray-300 rounded-lg bg-white cursor-pointer hover:border-blue-400 transition-colors"        ,
+        onClick: () => { setOpen(!open); setTimeout(()=>_optionalChain([inputRef, 'access', _2 => _2.current, 'optionalAccess', _3 => _3.focus, 'call', _4 => _4()]),50); },}
+        , _react2.default.createElement(_lucidereact.Search, { size: 14, className: "ml-3 text-gray-400 flex-shrink-0"  ,})
+        , _react2.default.createElement('input', { ref: inputRef, className: "w-full px-2 py-2.5 text-sm bg-transparent outline-none"     ,
+          placeholder: selected ? `${selected.z} ${selected.e||''}` : placeholder,
+          value: open ? q : (selected ? `${selected.z}${selected.e && selected.e !== selected.z ? ' ('+selected.e+')' : ''}` : ''),
+          onChange: e => { setQ(e.target.value); if(!open) setOpen(true); },
+          onFocus: () => { setOpen(true); setQ(''); },})
+        , _react2.default.createElement(_lucidereact.ChevronDown, { size: 14, className: "mr-3 text-gray-400 flex-shrink-0"  ,})
+      )
+      , open && (
+        _react2.default.createElement('div', { className: "absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-xl max-h-64 overflow-y-auto"          ,}
+          , Object.entries(groups).length === 0 && _react2.default.createElement('div', { className: "p-3 text-sm text-gray-400"  ,}, "Sem resultados" )
+          , Object.entries(groups).map(([g, items]) => (
+            _react2.default.createElement('div', { key: g,}
+              , g && _react2.default.createElement('div', { className: "px-3 py-1.5 text-xs font-bold text-gray-400 bg-gray-50 sticky top-0"       ,}, g)
+              , items.map(o => (
+                _react2.default.createElement('div', { key: o.id, className: `px-3 py-2 text-sm cursor-pointer hover:bg-blue-50 transition-colors ${o.id===value?'bg-blue-50 text-blue-700 font-semibold':'text-gray-700'}`,
+                  onClick: () => { onChange(o.id); setOpen(false); setQ(''); },}
+                  , o.z, " " , o.e && o.e !== o.z && _react2.default.createElement('span', { className: "text-gray-400 text-xs ml-1"  ,}, "(", o.e, ")")
+                )
+              ))
+            )
+          ))
+        )
+      )
+    )
+  );
+});
+
+const PlugSVG = ({type, size=80}) => {
+  const s = size;
+  const shapes = {
+    A: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('rect', { x: "10", y: "5", width: "40", height: "50", rx: "8", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('rect', { x: "22", y: "14", width: "4", height: "18", rx: "1", fill: "#4b5563",}), _react2.default.createElement('rect', { x: "34", y: "14", width: "4", height: "18", rx: "1", fill: "#4b5563",})),
+    B: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('rect', { x: "10", y: "5", width: "40", height: "50", rx: "8", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('rect', { x: "22", y: "12", width: "4", height: "16", rx: "1", fill: "#4b5563",}), _react2.default.createElement('rect', { x: "34", y: "12", width: "4", height: "16", rx: "1", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "40", r: "3", fill: "#4b5563",})),
+    C: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('rect', { x: "10", y: "5", width: "40", height: "50", rx: "8", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "23", cy: "25", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "37", cy: "25", r: "3", fill: "#4b5563",})),
+    D: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "35", r: "3.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "35", r: "3.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "18", r: "4", fill: "#4b5563",})),
+    E: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "34", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "34", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "16", r: "2.5", fill: "none", stroke: "#4b5563", strokeWidth: "1.5",})),
+    F: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "30", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "30", r: "3", fill: "#4b5563",}), _react2.default.createElement('rect', { x: "7", y: "22", width: "4", height: "16", rx: "2", fill: "#6b7280",}), _react2.default.createElement('rect', { x: "49", y: "22", width: "4", height: "16", rx: "2", fill: "#6b7280",})),
+    G: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('rect', { x: "8", y: "5", width: "44", height: "50", rx: "8", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('rect', { x: "17", y: "32", width: "5", height: "12", rx: "1", fill: "#4b5563",}), _react2.default.createElement('rect', { x: "38", y: "32", width: "5", height: "12", rx: "1", fill: "#4b5563",}), _react2.default.createElement('rect', { x: "26", y: "14", width: "8", height: "14", rx: "1", fill: "#4b5563",})),
+    H: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "20", cy: "36", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "40", cy: "36", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "18", r: "3", fill: "#4b5563",})),
+    I: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('rect', { x: "10", y: "5", width: "40", height: "50", rx: "8", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('rect', { x: "16", y: "14", width: "4", height: "16", rx: "1", fill: "#4b5563", transform: "rotate(20 18 22)"  ,}), _react2.default.createElement('rect', { x: "40", y: "14", width: "4", height: "16", rx: "1", fill: "#4b5563", transform: "rotate(-20 42 22)"  ,}), _react2.default.createElement('rect', { x: "28", y: "34", width: "4", height: "12", rx: "1", fill: "#4b5563",})),
+    J: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "28", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "28", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "42", r: "2.5", fill: "#4b5563",})),
+    K: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "28", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "28", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "42", r: "3", fill: "#4b5563",})),
+    L: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "18", cy: "30", r: "2.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "30", r: "2.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "42", cy: "30", r: "2.5", fill: "#4b5563",})),
+    M: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "36", r: "4", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "36", r: "4", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "18", r: "4.5", fill: "#4b5563",})),
+    N: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "34", r: "2.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "34", r: "2.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "20", r: "2.5", fill: "#4b5563",})),
+    O: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "30", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "30", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "16", r: "3", fill: "#4b5563",}))
+  };
+  return shapes[type] || _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "N/D");
+};
+
+const TempChart = ({d}) => {
+  const all = [...d.h,...d.l];
+  const mn = Math.floor(Math.min(...all)/5)*5 - 5;
+  const mx = Math.ceil(Math.max(...all)/5)*5 + 5;
+  const rng = mx - mn;
+  const CH = 160;
+  const yp = t => CH * (1 - (t - mn) / rng);
+  const ticks = [];
+  for(let t=mn;t<=mx;t+=10) ticks.push(t);
+  return (
+    _react2.default.createElement('div', { className: "relative", style: {height:CH+30,paddingLeft:32},}
+      , ticks.map(t => _react2.default.createElement(_react2.default.Fragment, { key: t,}
+        , _react2.default.createElement('div', { className: "absolute left-0 text-gray-400"  , style: {top:yp(t),transform:'translateY(-50%)',fontSize:9,width:28,textAlign:'right'},}, t, "°")
+        , _react2.default.createElement('div', { className: "absolute right-0 border-t border-dashed border-gray-200"    , style: {top:yp(t),left:34},})
+      ))
+      , mn<0 && mx>0 && _react2.default.createElement('div', { className: "absolute right-0 border-t border-gray-400"   , style: {top:yp(0),left:34,borderWidth:1},})
+      , _react2.default.createElement('div', { className: "absolute flex gap-0.5"  , style: {left:36,right:4,top:0,height:CH},}
+        , d.h.map((hi,i) => {
+          const lo=d.l[i], hy=yp(hi), ly=yp(lo), bh=Math.max(ly-hy,2);
+          const av=(hi+lo)/2, col=tempClr(av), cur=i===CM;
+          return _react2.default.createElement('div', { key: i, className: "flex-1 relative" ,}
+            , _react2.default.createElement('div', { className: "absolute rounded" , style: {left:'15%',width:'70%',top:hy,height:bh,background:col,opacity:cur?1:0.5,boxShadow:cur?`0 0 0 2px ${col}`:''},})
+            , _react2.default.createElement('div', { className: "absolute w-full text-center font-bold"   , style: {top:hy-13,fontSize:9,color:col},}, hi, "°")
+            , _react2.default.createElement('div', { className: "absolute w-full text-center text-gray-400"   , style: {top:ly+2,fontSize:8},}, lo, "°")
+            , _react2.default.createElement('div', { className: `absolute w-full text-center ${cur?'font-bold text-blue-600':'text-gray-400'}`, style: {bottom:-22,fontSize:9},}, ML[i])
+          );
+        })
+      )
+    )
+  );
+};
+
+const RainChart = ({d}) => {
+  const mx = Math.max(Math.ceil(Math.max(...d.r)/50)*50, 50);
+  const CH = 100;
+  const step = mx<=100?25:mx<=300?50:100;
+  const ticks=[];for(let v=0;v<=mx;v+=step) ticks.push(v);
+  return (
+    _react2.default.createElement('div', { className: "relative", style: {height:CH+30,paddingLeft:32},}
+      , ticks.map(v => _react2.default.createElement(_react2.default.Fragment, { key: v,}
+        , _react2.default.createElement('div', { className: "absolute left-0 text-gray-400"  , style: {top:CH*(1-v/mx),transform:'translateY(-50%)',fontSize:9,width:28,textAlign:'right'},}, v)
+        , _react2.default.createElement('div', { className: "absolute right-0 border-t border-dashed border-gray-200"    , style: {top:CH*(1-v/mx),left:34},})
+      ))
+      , _react2.default.createElement('div', { className: "absolute flex gap-0.5 items-end"   , style: {left:36,right:4,bottom:26,height:CH},}
+        , d.r.map((rain,i) => {
+          const bh=rain/mx*CH, cur=i===CM;
+          return _react2.default.createElement('div', { key: i, className: "flex-1 flex flex-col items-center justify-end"    , style: {height:'100%'},}
+            , rain>0 && _react2.default.createElement('div', { className: "text-gray-500 mb-0.5" , style: {fontSize:7},}, rain)
+            , rain>0 && _react2.default.createElement('div', { className: "w-3/5 rounded-t" , style: {height:bh,background:'linear-gradient(to top,#93c5fd,#3b82f6)',opacity:cur?1:0.5},})
+          );
+        })
+      )
+      , _react2.default.createElement('div', { className: "absolute flex gap-0.5"  , style: {left:36,right:4,bottom:0,height:22},}
+        , ML.map((m,i) => _react2.default.createElement('div', { key: i, className: `flex-1 text-center ${i===CM?'font-bold text-blue-600':'text-gray-400'}`, style: {fontSize:9},}, m))
+      )
+    )
+  );
+};
+
+const SeasonStrip = ({d}) => (
+  _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "flex gap-0.5 rounded-lg overflow-hidden mb-2"    ,}
+      , Array.from({length:12}).map((_,i) => {
+        let cls='bg-yellow-300 text-yellow-900';
+        if(_optionalChain([d, 'access', _5 => _5.bm, 'optionalAccess', _6 => _6.includes, 'call', _7 => _7(i)])) cls='bg-green-500 text-white';
+        if(_optionalChain([d, 'access', _8 => _8.am, 'optionalAccess', _9 => _9.includes, 'call', _10 => _10(i)])) cls='bg-red-300 text-red-900';
+        const cur=i===CM;
+        return _react2.default.createElement('div', { key: i, className: `flex-1 text-center py-2 font-bold relative ${cls} ${cur?'ring-2 ring-blue-500 z-10':''}`, style: {fontSize:10},}
+          , cur && _react2.default.createElement('span', { className: "absolute -top-3 left-1/2 -translate-x-1/2 text-xs"    ,}, "📍")
+          , i+1
+        );
+      })
+    )
+    , _react2.default.createElement('div', { className: "flex justify-center gap-4 text-xs text-gray-400 mb-3"     ,}
+      , _react2.default.createElement('span', { className: "flex items-center gap-1"  ,}, _react2.default.createElement('span', { className: "w-2.5 h-2.5 rounded bg-green-500 inline-block"    ,}), "Melhor")
+      , _react2.default.createElement('span', { className: "flex items-center gap-1"  ,}, _react2.default.createElement('span', { className: "w-2.5 h-2.5 rounded bg-yellow-300 inline-block"    ,}), "Normal")
+      , _react2.default.createElement('span', { className: "flex items-center gap-1"  ,}, _react2.default.createElement('span', { className: "w-2.5 h-2.5 rounded bg-red-300 inline-block"    ,}), "Não ideal" )
+    )
+  )
+);
+
+const Card = ({icon,title,children,className=''}) => (
+  _react2.default.createElement('div', { className: `bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-3 ${className}`,}
+    , title && _react2.default.createElement('div', { className: "flex items-center gap-2 font-bold text-sm mb-3"     ,}, icon, title)
+    , children
+  )
+);
+
+function PlugTab() {
+  const [home,setHome]=_react.useState.call(void 0, 'TW');
+  const [dest,setDest]=_react.useState.call(void 0, 'JP');
+  const coOpts = _react.useMemo.call(void 0, ()=>{
+    const g={};
+    Object.entries(CO_REGIONS).forEach(([rg,codes])=>{
+      g[rg]=codes.filter(c=>CO[c]).map(c=>({id:c,z:CO[c].z,e:CO[c].e}));
+    });
+    return g;
+  },[]);
+
+  const homeC=CO[home],destC=CO[dest];
+  const homePlug=(_optionalChain([homeC, 'optionalAccess', _11 => _11.p])||'').split(''),destPlug=(_optionalChain([destC, 'optionalAccess', _12 => _12.p])||'').split('');
+  const shared=homePlug.filter(p=>destPlug.includes(p));
+  const needAdapter=shared.length===0 && home!==dest;
+  const voltDiff=homeC && destC && homeC.v!==destC.v;
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3 mb-4"   ,}
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "🏠 Origem" )
+        , _react2.default.createElement(SearchSelect, { value: home, onChange: setHome, grouped: coOpts, placeholder: "Selecionar país de origem..."   ,}))
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "✈️ Destino" )
+        , _react2.default.createElement(SearchSelect, { value: dest, onChange: setDest, grouped: coOpts, placeholder: "Selecionar destino..." ,}))
+    )
+    , destC && _react2.default.createElement('div', null
+      , needAdapter && _react2.default.createElement('div', { className: "bg-red-50 border border-red-200 rounded-lg p-3 mb-3 flex items-start gap-2"        ,}
+        , _react2.default.createElement(_lucidereact.AlertTriangle, { size: 16, className: "text-red-500 mt-0.5 flex-shrink-0"  ,})
+        , _react2.default.createElement('div', { className: "text-sm",}, _react2.default.createElement('span', { className: "font-bold text-red-600" ,}, "É necessário adaptador!"  ), " As fichas de "    , homeC.z, " (" , homePlug.join(','), ") são incompatíveis com as tomadas de "       , destC.z, " (" , destPlug.join(','), ").")
+      )
+      , !needAdapter && home!==dest && _react2.default.createElement('div', { className: "bg-green-50 border border-green-200 rounded-lg p-3 mb-3 flex items-start gap-2"        ,}
+        , _react2.default.createElement(_lucidereact.ShieldCheck, { size: 16, className: "text-green-500 mt-0.5 flex-shrink-0"  ,})
+        , _react2.default.createElement('div', { className: "text-sm",}, _react2.default.createElement('span', { className: "font-bold text-green-600" ,}, "Fichas compatíveis!" ), " Tipos partilhados: "   , shared.join(', '), ". " , voltDiff && _react2.default.createElement('span', { className: "text-orange-600 font-semibold" ,}, " ⚠️ No entanto, a voltagem é diferente ("        , homeC.v, "V → "  , destC.v, "V). Certifique-se de que os seus dispositivos suportam dupla voltagem."         ))
+      )
+      , _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.Zap, { size: 14, className: "text-yellow-500",}), title: `${destC.z} — Especificações elétricas`,}
+        , _react2.default.createElement('div', { className: "grid grid-cols-3 gap-3 mb-4 text-center"    ,}
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}, _react2.default.createElement('div', { className: "text-lg font-bold" ,}, destC.v, "V"), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Voltagem"))
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}, _react2.default.createElement('div', { className: "text-lg font-bold" ,}, destC.f, "Hz"), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Frequência"))
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}, _react2.default.createElement('div', { className: "text-lg font-bold" ,}, destPlug.join(', ')), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Tipo de ficha"  ))
+        )
+        , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3"  ,}
+          , destPlug.map(p => PLUG_META[p] && (
+            _react2.default.createElement('div', { key: p, className: "border border-gray-100 rounded-lg p-3 flex items-center gap-3"      ,}
+              , _react2.default.createElement(PlugSVG, { type: p, size: 56,})
+              , _react2.default.createElement('div', null
+                , _react2.default.createElement('div', { className: "font-bold text-sm" ,}, PLUG_META[p].n)
+                , _react2.default.createElement('div', { className: "text-xs text-gray-500" ,}, PLUG_META[p].d)
+              )
+            )
+          ))
+        )
+      )
+    )
+  );
+}
+
+function TimeTab() {
+  const [c1,setC1]=_react.useState.call(void 0, 'taipei');
+  const [c2,setC2]=_react.useState.call(void 0, 'tokyo');
+  const [now,setNow]=_react.useState.call(void 0, Date.now());
+  _react.useEffect.call(void 0, ()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[]);
+
+  const cityOpts = _react.useMemo.call(void 0, ()=>{
+    const g={};
+    Object.entries(CITY_REGIONS).forEach(([rg,items])=>{
+      g[rg]=items.map(({k})=>({id:k,z:CI[k].z,e:CI[k].e}));
+    });
+    return g;
+  },[]);
+
+  const d1=CI[c1],d2=CI[c2];
+  const off1=d1?getOffsetHours(d1.tz):0, off2=d2?getOffsetHours(d2.tz):0;
+  const diff=off2-off1;
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3 mb-4"   ,}
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Cidade A" )
+        , _react2.default.createElement(SearchSelect, { value: c1, onChange: setC1, grouped: cityOpts,}))
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Cidade B" )
+        , _react2.default.createElement(SearchSelect, { value: c2, onChange: setC2, grouped: cityOpts,}))
+    )
+    , d1 && d2 && _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3"  ,}
+      , [d1,d2].map((d,idx) => (
+        _react2.default.createElement(Card, { key: idx,}
+          , _react2.default.createElement('div', { className: "text-center",}
+            , _react2.default.createElement('div', { className: "font-bold text-base" ,}, d.z)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mb-1"  ,}, d.e)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mb-1"  ,}, "📍 " , d.la.toFixed(1), "°", d.la>=0?'N':'S', ", " , d.lo.toFixed(1), "°", d.lo>=0?'E':'O')
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mb-2"  ,}, "🕐 " , d.tz, " (UTC" , (idx===0?off1:off2)>=0?'+':'', (idx===0?off1:off2), ")")
+            , _react2.default.createElement('div', { className: "text-3xl font-black text-blue-600 tabular-nums"   ,}, getLocalTime(d.tz))
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mt-1"  ,}, getLocalDate(d.tz))
+          )
+        )
+      ))
+    )
+    , d1 && d2 && _react2.default.createElement('div', { className: "text-center bg-blue-50 rounded-xl p-4 mt-3"    ,}
+      , _react2.default.createElement(_lucidereact.ArrowLeftRight, { size: 18, className: "inline text-blue-500 mb-1"  ,})
+      , _react2.default.createElement('div', { className: "text-sm font-bold text-blue-700"  ,}, "Diferença horária: "  , diff===0?'Sem diferença':`${Math.abs(diff)} hora${Math.abs(diff)!==1?'s':''} (${d2.z} está ${Math.abs(diff)}h ${diff>0?'à frente':'atrás'})`)
+    )
+  );
+}
+
+function SunTab() {
+  const [city,setCity]=_react.useState.call(void 0, 'taipei');
+  const [dateStr,setDateStr]=_react.useState.call(void 0, new Date().toISOString().split('T')[0]);
+  const cityOpts = _react.useMemo.call(void 0, ()=>{
+    const g={};
+    Object.entries(CITY_REGIONS).forEach(([rg,items])=>{g[rg]=items.map(({k})=>({id:k,z:CI[k].z,e:CI[k].e}));});
+    return g;
+  },[]);
+  const d=CI[city];
+  const date=new Date(dateStr+'T12:00:00Z');
+  const sun=d?calcSun(d.la,d.lo,date):null;
+  const off=d?getOffsetHours(d.tz):0;
+  const riseLocal=_optionalChain([sun, 'optionalAccess', _13 => _13.rise])!=null?utcHToStr(sun.rise+off):null;
+  const setLocal=_optionalChain([sun, 'optionalAccess', _14 => _14.set])!=null?utcHToStr(sun.set+off):null;
+  const dayH=_optionalChain([sun, 'optionalAccess', _15 => _15.day])?Math.floor(sun.day):0, dayM=_optionalChain([sun, 'optionalAccess', _16 => _16.day])?Math.round((sun.day-dayH)*60):0;
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3 mb-4"   ,}
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Selecionar cidade" )
+        , _react2.default.createElement(SearchSelect, { value: city, onChange: setCity, grouped: cityOpts,}))
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Selecionar data" )
+        , _react2.default.createElement('input', { type: "date", value: dateStr, onChange: e=>setDateStr(e.target.value), className: "w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm"      ,}))
+    )
+    , d && sun && _react2.default.createElement('div', null
+      , _react2.default.createElement('div', { className: "text-center mb-3" ,}
+        , _react2.default.createElement('div', { className: "font-bold text-lg" ,}, d.z, " " , _react2.default.createElement('span', { className: "text-gray-400 text-sm" ,}, d.e))
+        , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "📍 " , d.la.toFixed(2), "°, " , d.lo.toFixed(2), "° · "  , d.tz)
+      )
+      , sun.polar ? (
+        _react2.default.createElement('div', { className: "text-center bg-gray-50 rounded-xl p-6"   ,}
+          , _react2.default.createElement('div', { className: "text-4xl mb-2" ,}, sun.polar==='day'?'☀️':'🌙')
+          , _react2.default.createElement('div', { className: "font-bold",}, sun.polar==='day'?'Sol da meia-noite — 24 horas de luz':'Noite polar — Sem luz solar o dia todo')
+        )
+      ) : (
+        _react2.default.createElement('div', { className: "grid grid-cols-3 gap-3"  ,}
+          , _react2.default.createElement(Card, { className: "text-center",}
+            , _react2.default.createElement(_lucidereact.Sunrise, { size: 28, className: "text-orange-400 mx-auto mb-2"  ,})
+            , _react2.default.createElement('div', { className: "text-2xl font-black text-orange-500"  ,}, riseLocal)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Nascer do sol"  )
+          )
+          , _react2.default.createElement(Card, { className: "text-center",}
+            , _react2.default.createElement(_lucidereact.Sun, { size: 28, className: "text-yellow-400 mx-auto mb-2"  ,})
+            , _react2.default.createElement('div', { className: "text-2xl font-black text-yellow-600"  ,}, dayH, "h " , dayM, "m")
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Luz diurna" )
+          )
+          , _react2.default.createElement(Card, { className: "text-center",}
+            , _react2.default.createElement(_lucidereact.Sunset, { size: 28, className: "text-indigo-400 mx-auto mb-2"  ,})
+            , _react2.default.createElement('div', { className: "text-2xl font-black text-indigo-500"  ,}, setLocal)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Pôr do sol"  )
+          )
+        )
+      )
+      , _react2.default.createElement('div', { className: "mt-3 bg-gradient-to-r from-yellow-50 via-blue-50 to-indigo-50 rounded-xl p-3"      ,}
+        , _react2.default.createElement('div', { className: "h-4 rounded-full overflow-hidden bg-gray-200 relative"    ,}
+          , !sun.polar && _react2.default.createElement(_react2.default.Fragment, null
+            , _react2.default.createElement('div', { className: "absolute h-full bg-gradient-to-r from-orange-300 via-yellow-200 to-orange-300"     , style: {left:`${(sun.rise/24)*100}%`,width:`${(sun.day/24)*100}%`},})
+            , _react2.default.createElement('div', { className: "absolute h-full w-0.5 bg-red-500 z-10"    , style: {left:`${((new Date().getUTCHours()+off)/24)*100}%`},})
+          )
+        )
+        , _react2.default.createElement('div', { className: "flex justify-between text-xs text-gray-400 mt-1"    ,}, _react2.default.createElement('span', null, "00:00"), _react2.default.createElement('span', null, "06:00"), _react2.default.createElement('span', null, "12:00"), _react2.default.createElement('span', null, "18:00"), _react2.default.createElement('span', null, "24:00"))
+      )
+    )
+  );
+}
+
+function HolidayTab() {
+  const [co,setCo]=_react.useState.call(void 0, 'JP');
+  const coOpts = _react.useMemo.call(void 0, ()=>{
+    const g={};
+    Object.entries(CO_REGIONS).forEach(([rg,codes])=>{g[rg]=codes.filter(c=>CO[c]).map(c=>({id:c,z:CO[c].z,e:CO[c].e}));});
+    return g;
+  },[]);
+  const holidays = HOLIDAYS_DATA[co]||[];
+  const today = new Date().toISOString().slice(5,10);
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "mb-4",}, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Selecionar país / região"   )
+      , _react2.default.createElement(SearchSelect, { value: co, onChange: setCo, grouped: coOpts, placeholder: "Pesquisar países..." ,}))
+    , CO[co] && _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.Calendar, { size: 14, className: "text-purple-500",}), title: `${CO[co].z} — Feriados principais 2026`,}
+      , holidays.length===0?_react2.default.createElement('div', { className: "text-sm text-gray-400 py-4 text-center"   ,}, "Sem dados de feriados para este país"      ):
+      _react2.default.createElement('div', { className: "space-y-1",}
+        , holidays.map(([dt,name],i)=>{
+          const isPast = dt < today.replace('-','').slice(0,5) ? true : false;
+          const mm=parseInt(dt.split('-')[0]),dd=parseInt(dt.split('-')[1]);
+          const isToday = dt===`${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}`;
+          return _react2.default.createElement('div', { key: i, className: `flex items-center gap-3 py-2 px-3 rounded-lg text-sm ${isToday?'bg-blue-50 ring-1 ring-blue-300':'hover:bg-gray-50'} transition-colors`,}
+            , _react2.default.createElement('div', { className: `w-14 text-center font-mono font-bold ${isPast?'text-gray-300':'text-blue-600'}`,}, mm, "/", dd)
+            , _react2.default.createElement('div', { className: `flex-1 ${isPast?'text-gray-300 line-through':'text-gray-700'}`,}, name)
+            , isToday && _react2.default.createElement('span', { className: "text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full"     ,}, "Hoje")
+            , name.includes('aprox') && _react2.default.createElement('span', { className: "text-xs text-orange-400" ,}, "≈")
+          );
+        })
+      )
+    )
+  );
+}
+
+function CurrencyTab() {
+  const [from,setFrom]=_react.useState.call(void 0, 'TWD');
+  const [to,setTo]=_react.useState.call(void 0, 'JPY');
+  const [amt,setAmt]=_react.useState.call(void 0, '1000');
+  const curOpts = _react.useMemo.call(void 0, ()=>Object.entries(CURR).map(([k,v])=>({id:k,z:`${k} ${v.z}`,e:v.e})),[]);
+  const result = CURR[from] && CURR[to] ? parseFloat(amt||0) / CURR[from].r * CURR[to].r : 0;
+  const rate = CURR[from] && CURR[to] ? CURR[to].r / CURR[from].r : 0;
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3 mb-3"   ,}
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "De")
+        , _react2.default.createElement(SearchSelect, { options: curOpts, value: from, onChange: setFrom, placeholder: "Pesquisar moeda..." ,}))
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Para")
+        , _react2.default.createElement(SearchSelect, { options: curOpts, value: to, onChange: setTo, placeholder: "Pesquisar moeda..." ,}))
+    )
+    , _react2.default.createElement('div', { className: "flex gap-3 mb-4 items-end"   ,}
+      , _react2.default.createElement('div', { className: "flex-1",}, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Montante")
+        , _react2.default.createElement('input', { type: "number", value: amt, onChange: e=>setAmt(e.target.value), className: "w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm"      ,}))
+      , _react2.default.createElement('button', { onClick: ()=>{const t=from;setFrom(to);setTo(t);}, className: "px-4 py-2.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"     ,}
+        , _react2.default.createElement(_lucidereact.ArrowLeftRight, { size: 16,}))
+    )
+    , _react2.default.createElement('div', { className: "bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl p-5 text-center"      ,}
+      , _react2.default.createElement('div', { className: "text-sm opacity-80 mb-1"  ,}, parseFloat(amt||0).toLocaleString(), " " , from, " =" )
+      , _react2.default.createElement('div', { className: "text-3xl font-black" ,}, result.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}), " " , to)
+      , _react2.default.createElement('div', { className: "text-xs opacity-70 mt-2"  ,}, "1 " , from, " = "  , rate.toFixed(rate<1?4:2), " " , to)
+    )
+    , _react2.default.createElement('div', { className: "text-xs text-gray-400 text-center mt-3"   ,}, "⚠️ As taxas são apenas de referência. Consulte o seu banco para taxas reais."             )
+  );
+}
+
+function UnitTab() {
+  const [cat,setCat]=_react.useState.call(void 0, 'length');
+  const [from,setFrom]=_react.useState.call(void 0, 'km');
+  const [to,setTo]=_react.useState.call(void 0, 'mi');
+  const [val,setVal]=_react.useState.call(void 0, '1');
+
+  const units = _optionalChain([UNIT_CATS, 'access', _17 => _17[cat], 'optionalAccess', _18 => _18.u])||{};
+  const uKeys = Object.keys(units);
+
+  _react.useEffect.call(void 0, ()=>{
+    const k=Object.keys(_optionalChain([UNIT_CATS, 'access', _19 => _19[cat], 'optionalAccess', _20 => _20.u])||{});
+    if(k.length>=2){setFrom(k[0]);setTo(k[1]);}
+  },[cat]);
+
+  let result = 0;
+  if(cat==='temp'){
+    result = convertTemp(parseFloat(val||0),from,to);
+  } else {
+    const fFrom=_optionalChain([units, 'access', _21 => _21[from], 'optionalAccess', _22 => _22.f])||1, fTo=_optionalChain([units, 'access', _23 => _23[to], 'optionalAccess', _24 => _24.f])||1;
+    result = parseFloat(val||0) * fFrom / fTo;
+  }
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "flex flex-wrap gap-1.5 mb-4"   ,}
+      , Object.entries(UNIT_CATS).map(([k,v])=>(
+        _react2.default.createElement('button', { key: k, onClick: ()=>setCat(k), className: `px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${cat===k?'bg-blue-600 text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`,}, v.z)
+      ))
+    )
+    , _react2.default.createElement('div', { className: "grid grid-cols-5 gap-2 items-end mb-4"    ,}
+      , _react2.default.createElement('div', { className: "col-span-2",}, _react2.default.createElement('label', { className: "text-xs text-gray-500 mb-1 block"   ,}, "De")
+        , _react2.default.createElement('select', { value: from, onChange: e=>setFrom(e.target.value), className: "w-full border border-gray-300 rounded-lg px-2 py-2.5 text-sm"      ,}
+          , uKeys.map(k=>_react2.default.createElement('option', { key: k, value: k,}, units[k].z))
+        ))
+      , _react2.default.createElement('div', { className: "flex justify-center pb-2"  ,}, _react2.default.createElement(_lucidereact.ArrowLeftRight, { size: 16, className: "text-gray-400",}))
+      , _react2.default.createElement('div', { className: "col-span-2",}, _react2.default.createElement('label', { className: "text-xs text-gray-500 mb-1 block"   ,}, "Para")
+        , _react2.default.createElement('select', { value: to, onChange: e=>setTo(e.target.value), className: "w-full border border-gray-300 rounded-lg px-2 py-2.5 text-sm"      ,}
+          , uKeys.map(k=>_react2.default.createElement('option', { key: k, value: k,}, units[k].z))
+        ))
+    )
+    , _react2.default.createElement('div', { className: "flex gap-3 items-center mb-4"   ,}
+      , _react2.default.createElement('input', { type: "number", value: val, onChange: e=>setVal(e.target.value), className: "flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-right text-lg font-bold"         ,})
+      , _react2.default.createElement('span', { className: "text-gray-400 font-bold" ,}, "=")
+      , _react2.default.createElement('div', { className: "flex-1 bg-blue-50 rounded-lg px-3 py-2.5 text-right text-lg font-bold text-blue-700"        ,}
+        , result.toLocaleString(undefined,{maximumFractionDigits:6})
+      )
+    )
+    , _react2.default.createElement('div', { className: "text-center text-sm text-gray-500"  ,}, val||0, " " , _optionalChain([units, 'access', _25 => _25[from], 'optionalAccess', _26 => _26.z]), " = "  , result.toLocaleString(undefined,{maximumFractionDigits:6}), " " , _optionalChain([units, 'access', _27 => _27[to], 'optionalAccess', _28 => _28.z]))
+  );
+}
+
+function InfoTab() {
+  const [city,setCity]=_react.useState.call(void 0, 'taipei');
+  const [section,setSection]=_react.useState.call(void 0, null);
+  const topRef=_react.useRef.call(void 0, null);
+  const refs=[_react.useRef.call(void 0, null),_react.useRef.call(void 0, null),_react.useRef.call(void 0, null),_react.useRef.call(void 0, null)];
+
+  const cityOpts = _react.useMemo.call(void 0, ()=>{
+    const g={};
+    Object.entries(CITY_REGIONS).forEach(([rg,items])=>{g[rg]=items.map(({k})=>({id:k,z:CI[k].z,e:CI[k].e}));});
+    return g;
+  },[]);
+
+  const d=CI[city];
+  const co=d?CO[d.cc]:null;
+  const [now,setNow]=_react.useState.call(void 0, Date.now());
+  _react.useEffect.call(void 0, ()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[]);
+
+  const scrollTo=(idx)=>{_optionalChain([refs, 'access', _29 => _29[idx], 'optionalAccess', _30 => _30.current, 'optionalAccess', _31 => _31.scrollIntoView, 'call', _32 => _32({behavior:'smooth',block:'start'})]);setSection(idx);};
+  const scrollTop=()=>_optionalChain([topRef, 'access', _33 => _33.current, 'optionalAccess', _34 => _34.scrollIntoView, 'call', _35 => _35({behavior:'smooth',block:'start'})]);
+
+  const clothing = d ? genClothing(d) : {};
+  const plugs = co ? (co.p||'').split('') : [];
+  const hi=_optionalChain([d, 'optionalAccess', _36 => _36.h, 'access', _37 => _37[CM]]),lo=_optionalChain([d, 'optionalAccess', _38 => _38.l, 'access', _39 => _39[CM]]),rain=_optionalChain([d, 'optionalAccess', _40 => _40.r, 'access', _41 => _41[CM]]);
+  let nowRate=_optionalChain([d, 'optionalAccess', _42 => _42.bm, 'optionalAccess', _43 => _43.includes, 'call', _44 => _44(CM)])?'✨ Melhor época':_optionalChain([d, 'optionalAccess', _45 => _45.am, 'optionalAccess', _46 => _46.includes, 'call', _47 => _47(CM)])?'⚠️ Não ideal':'Aceitável';
+
+  const sections = ['📋 Info básica','⚡ Fichas e Hora','☀️ Clima','🚗 Info de condução'];
+  const BackBtn = () => _react2.default.createElement('button', { onClick: scrollTop, className: "flex items-center gap-1 text-xs text-blue-500 hover:text-blue-700 mt-3 mb-1"       ,}, _react2.default.createElement(_lucidereact.ArrowUp, { size: 12,}), "Voltar ao topo"  );
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { ref: topRef,})
+    , _react2.default.createElement('div', { className: "mb-4",}, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Selecionar cidade (completa info do país automaticamente)"      )
+      , _react2.default.createElement(SearchSelect, { value: city, onChange: setCity, grouped: cityOpts,}))
+
+    , d && co && _react2.default.createElement(_react2.default.Fragment, null
+      , _react2.default.createElement('div', { className: "text-center mb-3" ,}
+        , _react2.default.createElement('div', { className: "text-xl font-black" ,}, d.z, " · "  , co.z)
+        , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, d.e, ", " , co.e)
+      )
+
+      , _react2.default.createElement('div', { className: "grid grid-cols-4 gap-1.5 mb-4"   ,}
+        , sections.map((s,i)=>(
+          _react2.default.createElement('button', { key: i, onClick: ()=>scrollTo(i), className: "px-2 py-2 bg-blue-50 hover:bg-blue-100 rounded-lg text-xs font-semibold text-blue-700 transition-colors text-center leading-tight"          ,}, s)
+        ))
+      )
+
+      , _react2.default.createElement('div', { ref: refs[0],})
+      , _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.BookOpen, { size: 14, className: "text-blue-500",}), title: "Informações básicas de viagem"   ,}
+        , _react2.default.createElement('div', { className: "space-y-3 text-sm" ,}
+          , _react2.default.createElement('div', { className: "flex gap-3" ,}, _react2.default.createElement(_lucidereact.CreditCard, { size: 14, className: "text-gray-400 mt-0.5 flex-shrink-0"  ,}), _react2.default.createElement('div', null, _react2.default.createElement('span', { className: "font-semibold",}, "Moeda: " ), co.cur))
+          , _react2.default.createElement('div', { className: "flex gap-3" ,}, _react2.default.createElement(_lucidereact.Languages, { size: 14, className: "text-gray-400 mt-0.5 flex-shrink-0"  ,}), _react2.default.createElement('div', null, _react2.default.createElement('span', { className: "font-semibold",}, "Idioma: " ), co.lang))
+          , _react2.default.createElement('div', { className: "flex gap-3" ,}, _react2.default.createElement(_lucidereact.Phone, { size: 14, className: "text-gray-400 mt-0.5 flex-shrink-0"  ,}), _react2.default.createElement('div', null, _react2.default.createElement('span', { className: "font-semibold",}, "Emergências: " ), co.em))
+          , _react2.default.createElement('div', { className: "flex gap-3" ,}, _react2.default.createElement(_lucidereact.Coffee, { size: 14, className: "text-gray-400 mt-0.5 flex-shrink-0"  ,}), _react2.default.createElement('div', null, _react2.default.createElement('span', { className: "font-semibold",}, "Gorjeta: " ), co.tp))
+          , _react2.default.createElement('div', { className: "flex gap-3" ,}, _react2.default.createElement(_lucidereact.Globe, { size: 14, className: "text-gray-400 mt-0.5 flex-shrink-0"  ,}), _react2.default.createElement('div', null, _react2.default.createElement('span', { className: "font-semibold",}, "Cultura e costumes: "   ), co.cu))
+        )
+        , _react2.default.createElement(BackBtn, null)
+      )
+
+      , _react2.default.createElement('div', { ref: refs[1],})
+      , _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.Zap, { size: 14, className: "text-yellow-500",}), title: "Fichas e fuso horário"   ,}
+        , _react2.default.createElement('div', { className: "grid grid-cols-3 gap-2 text-center mb-4"    ,}
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-2"  ,}, _react2.default.createElement('div', { className: "font-bold",}, co.v, "V"), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Voltagem"))
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-2"  ,}, _react2.default.createElement('div', { className: "font-bold",}, co.f, "Hz"), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Frequência"))
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-2"  ,}, _react2.default.createElement('div', { className: "font-bold",}, plugs.join(', ')), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Ficha"))
+        )
+        , _react2.default.createElement('div', { className: "flex flex-wrap gap-3 justify-center mb-4"    ,}
+          , plugs.map(p=> PLUG_META[p] && _react2.default.createElement('div', { key: p, className: "text-center",}
+            , _react2.default.createElement(PlugSVG, { type: p, size: 52,})
+            , _react2.default.createElement('div', { className: "text-xs font-semibold" ,}, PLUG_META[p].n)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, PLUG_META[p].d)
+          ))
+        )
+        , _react2.default.createElement('div', { className: "bg-blue-50 rounded-lg p-4 text-center"   ,}
+          , _react2.default.createElement('div', { className: "text-xs text-gray-500 mb-1"  ,}, "🕐 " , d.tz, " (UTC" , getOffsetHours(d.tz)>=0?'+':'', getOffsetHours(d.tz), ")")
+          , _react2.default.createElement('div', { className: "text-3xl font-black text-blue-600 tabular-nums"   ,}, getLocalTime(d.tz))
+          , _react2.default.createElement('div', { className: "text-xs text-gray-400 mt-1"  ,}, getLocalDate(d.tz))
+        )
+        , _react2.default.createElement(BackBtn, null)
+      )
+
+      , _react2.default.createElement('div', { ref: refs[2],})
+      , _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.Thermometer, { size: 14, className: "text-red-500",}), title: "Clima e meteorologia"  ,}
+        , _react2.default.createElement('div', { className: "bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg p-4 mb-4"      ,}
+          , _react2.default.createElement('div', { className: "text-xs opacity-80 mb-2"  ,}, "📅 Vai viajar agora? ("    , ML[CM], ")")
+          , _react2.default.createElement('div', { className: "grid grid-cols-3 gap-2 mb-3"   ,}
+            , _react2.default.createElement('div', { className: "bg-white/15 rounded-lg p-2 text-center"   ,}, _react2.default.createElement('div', { className: "font-bold text-lg" ,}, lo, "~", hi, "°C"), _react2.default.createElement('div', { className: "text-xs opacity-80" ,}, "Temp."))
+            , _react2.default.createElement('div', { className: "bg-white/15 rounded-lg p-2 text-center"   ,}, _react2.default.createElement('div', { className: "font-bold text-lg" ,}, rain, "mm"), _react2.default.createElement('div', { className: "text-xs opacity-80" ,}, "Chuva"))
+            , _react2.default.createElement('div', { className: "bg-white/15 rounded-lg p-2 text-center"   ,}, _react2.default.createElement('div', { className: "font-bold text-sm" ,}, nowRate), _react2.default.createElement('div', { className: "text-xs opacity-80" ,}, "Avaliação"))
+          )
+        )
+        , _react2.default.createElement('div', { className: "mb-3 flex flex-wrap gap-2"   ,}
+          , d.bt && _react2.default.createElement('span', { className: "bg-green-50 text-green-700 text-xs font-semibold px-3 py-1 rounded-full"      ,}, "⭐ Melhor: "  , d.bt)
+          , d.at && _react2.default.createElement('span', { className: "bg-red-50 text-red-700 text-xs font-semibold px-3 py-1 rounded-full"      ,}, "⚠️ Evitar: "  , d.at)
+        )
+        , _react2.default.createElement(SeasonStrip, { d: d,})
+        , _react2.default.createElement('div', { className: "mb-4",}
+          , _react2.default.createElement('div', { className: "text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"      ,}, _react2.default.createElement(_lucidereact.Thermometer, { size: 12, className: "text-red-400",}), "Temperatura média mensal (°C)"   )
+          , _react2.default.createElement(TempChart, { d: d,})
+        )
+        , _react2.default.createElement('div', { className: "mb-4 mt-8" ,}
+          , _react2.default.createElement('div', { className: "text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"      ,}, _react2.default.createElement(_lucidereact.Droplets, { size: 12, className: "text-blue-400",}), "Precipitação média mensal (mm)"   )
+          , _react2.default.createElement(RainChart, { d: d,})
+        )
+        , _react2.default.createElement('div', { className: "mt-6",}
+          , _react2.default.createElement('div', { className: "text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"      ,}, _react2.default.createElement(_lucidereact.Shirt, { size: 12, className: "text-purple-400",}), "Sugestões de vestuário"  )
+          , Object.entries(clothing).map(([sn,desc])=>(
+            _react2.default.createElement('div', { key: sn, className: "flex gap-3 py-2 border-b border-dashed border-gray-100 last:border-0"      ,}
+              , _react2.default.createElement('div', { className: "text-xs font-bold text-blue-600 w-28 flex-shrink-0"    ,}, sn)
+              , _react2.default.createElement('div', { className: "text-xs text-gray-600 leading-relaxed"  ,}, desc)
+            )
+          ))
+        )
+        , _react2.default.createElement(BackBtn, null)
+      )
+
+      , _react2.default.createElement('div', { ref: refs[3],})
+      , _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.Car, { size: 14, className: "text-green-500",}), title: "Informações de condução"  ,}
+        , _react2.default.createElement('div', { className: "grid grid-cols-3 gap-3 text-center mb-3"    ,}
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}
+            , _react2.default.createElement('div', { className: "text-3xl mb-1" ,}, co.ds==='L'?'🇬🇧':'🇺🇸')
+            , _react2.default.createElement('div', { className: "font-bold text-sm" ,}, co.ds==='L'?'Conduzir pela esquerda':'Conduzir pela direita')
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, co.ds==='L'?'Volante à direita':'Volante à esquerda')
+          )
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}
+            , _react2.default.createElement(_lucidereact.Navigation, { size: 20, className: "mx-auto mb-1 text-blue-500"  ,})
+            , _react2.default.createElement('div', { className: "font-bold text-sm" ,}, co.sl)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Limite de velocidade (km/h)"   )
+          )
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}
+            , _react2.default.createElement(_lucidereact.ShieldCheck, { size: 20, className: "mx-auto mb-1 text-green-500"  ,})
+            , _react2.default.createElement('div', { className: "text-xs font-semibold leading-tight"  ,}, co.lic)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mt-1"  ,}, "Req. de carta"  )
+          )
+        )
+        , _react2.default.createElement(BackBtn, null)
+      )
+    )
+  );
+}
+
+ function TravelTool() {
+  const [tab, setTab] = _react.useState.call(void 0, 0);
+
+  const tabs = [
+    { icon: _react2.default.createElement(_lucidereact.Zap, { size: 13,}), label: 'Fichas', color:'text-yellow-500' },
+    { icon: _react2.default.createElement(_lucidereact.Clock, { size: 13,}), label: 'Fusos horários', color:'text-blue-500' },
+    { icon: _react2.default.createElement(_lucidereact.Sun, { size: 13,}), label: 'Nascer/Pôr do sol', color:'text-orange-500' },
+    { icon: _react2.default.createElement(_lucidereact.Calendar, { size: 13,}), label: 'Feriados', color:'text-purple-500' },
+    { icon: _react2.default.createElement(_lucidereact.DollarSign, { size: 13,}), label: 'Moeda', color:'text-green-500' },
+    { icon: _react2.default.createElement(_lucidereact.Ruler, { size: 13,}), label: 'Conversão', color:'text-cyan-500' },
+    { icon: _react2.default.createElement(_lucidereact.BookOpen, { size: 13,}), label: 'Guia de viagem', color:'text-red-500' },
+  ];
+
+  const comps = [PlugTab, TimeTab, SunTab, HolidayTab, CurrencyTab, UnitTab, InfoTab];
+  const Comp = comps[tab];
+
+  return (
+    _react2.default.createElement('div', { className: "min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-3"    ,}
+      , _react2.default.createElement('div', { className: "max-w-2xl mx-auto" ,}
+        , _react2.default.createElement('div', { className: "text-center mb-4" ,}
+          , _react2.default.createElement('h1', { className: "text-xl font-black text-gray-800"  ,}, "🌍 Kit de ferramentas de viagem"     )
+          , _react2.default.createElement('p', { className: "text-xs text-gray-400" ,}, "100 países · 70 cidades · Referência de viagem tudo-em-um"         )
+        )
+
+        , _react2.default.createElement('div', { className: "flex flex-wrap gap-1 mb-4 justify-center"    ,}
+          , tabs.map((t, i) => (
+            _react2.default.createElement(_framermotion.motion.button, { key: i, whileTap: {scale:0.95}, onClick: () => setTab(i),
+              className: `flex items-center gap-1 px-2.5 py-2 rounded-lg text-xs font-semibold transition-all ${
+                tab===i ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
+              }`,}
+              , t.icon, _react2.default.createElement('span', { className: "hidden sm:inline" ,}, t.label), _react2.default.createElement('span', { className: "sm:hidden",}, t.label.split(' ')[0])
+            )
+          ))
+        )
+
+        , _react2.default.createElement(_framermotion.AnimatePresence, { mode: "wait",}
+          , _react2.default.createElement(_framermotion.motion.div, { key: tab, initial: {opacity:0,y:10}, animate: {opacity:1,y:0}, exit: {opacity:0,y:-10}, transition: {duration:0.2},}
+            , _react2.default.createElement(Comp, null)
+          )
+        )
+
+        , _react2.default.createElement('div', { className: "text-center text-xs text-gray-300 mt-6 pb-4"    ,}, "Dados apenas para referência · Verifique com fontes oficiais antes de viajar"
+
+        )
+      )
+    )
+  );
+} exports.default = TravelTool;
+</script></head>
+  <body>
+  
+
+<div id="preview-app"></div></body></html>

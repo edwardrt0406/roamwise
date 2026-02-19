@@ -1,0 +1,1049 @@
+<!DOCTYPE html><html><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"><meta http-equiv="x-dns-prefetch-control" content="off"><script src="https://puc.poecdn.net/authenticated_preview_page/standard.3ef2c256959faf5a756d.js"></script>
+    <meta charset="utf-8">
+    <title>Poe</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://puc.poecdn.net/authenticated_preview_page/disableWebRTC.9710cebe07429a9e8e06.js"></script><meta name="x-poe-allow-downloads" content="true"><meta name="x-poe-datastore-behavior" content="disabled"><script src="https://puc.poecdn.net/authenticated_preview_page/tw.b9024aecac666455e183.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/deps.faccd16000d314dc16d5.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/exports.b0f0f482cdeb5302b0b9.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/renderer.75c73ae6b4235f62945a.js"></script><script>Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var _react = require('react'); var _react2 = _interopRequireDefault(_react);
+var _lucidereact = require('lucide-react');
+var _framermotion = require('framer-motion');
+
+const PLUG_META = {
+A:{n:'Type A',d:'US dual flat prong',region:'Americas/Japan/Taiwan'},
+B:{n:'Type B',d:'US 3-prong (grounded)',region:'Americas/Taiwan'},
+C:{n:'Type C',d:'European dual round pin',region:'Europe/Asia/South America'},
+D:{n:'Type D',d:'Old Indian 3 round pin',region:'India/South Asia'},
+E:{n:'Type E',d:'French (with ground hole)',region:'France/Belgium/Poland'},
+F:{n:'Type F',d:'German Schuko (side clips)',region:'Germany/Most of Europe'},
+G:{n:'Type G',d:'British 3 rectangular prong',region:'UK/HK/Macau/Malaysia/Singapore'},
+H:{n:'Type H',d:'Israeli 3-prong',region:'Israel'},
+I:{n:'Type I',d:'Australian/Chinese angled flat',region:'Australia/New Zealand/China'},
+J:{n:'Type J',d:'Swiss 3 round pin',region:'Switzerland'},
+K:{n:'Type K',d:'Danish 3 round pin',region:'Denmark'},
+L:{n:'Type L',d:'Italian 3 inline round pin',region:'Italy/Chile'},
+M:{n:'Type M',d:'South African 3 large round pin',region:'South Africa/India'},
+N:{n:'Type N',d:'Brazilian 3 round pin',region:'Brazil/South Africa'},
+O:{n:'Type O',d:'Thai 3-prong',region:'Thailand'}
+};
+
+const CO = {
+CN:{z:'China',e:'China',cur:'CNY ¥ Chinese Yuan',lang:'Chinese (Mandarin)',em:'110 Police / 120 Ambulance / 119 Fire',p:'AIC',v:220,f:50,tz:'Asia/Shanghai',ds:'R',sl:'Urban 50 / Highway 120',lic:'Requires Chinese license or certified IDP',tp:'Tipping not customary',cu:'Avoid the number 4; give/receive gifts with both hands'},
+HK:{z:'Hong Kong',e:'Hong Kong',cur:'HKD $ Hong Kong Dollar',lang:'Cantonese / English',em:'999',p:'G',v:220,f:50,tz:'Asia/Hong_Kong',ds:'L',sl:'Urban 50 / Highway 110',lic:'IDP accepted',tp:'10% service charge at upscale restaurants',cu:'Octopus card widely used; queuing culture'},
+MO:{z:'Macau',e:'Macau',cur:'MOP $ Macanese Pataca',lang:'Cantonese / Portuguese',em:'999',p:'G',v:220,f:50,tz:'Asia/Macau',ds:'L',sl:'Urban 60 / Bridge 80',lic:'IDP accepted',tp:'Not mandatory at casinos but welcome',cu:'HKD widely accepted; dress code at casinos'},
+TW:{z:'Taiwan',e:'Taiwan',cur:'TWD $ New Taiwan Dollar',lang:'Chinese (Mandarin)',em:'110 Police / 119 Fire & Ambulance',p:'AB',v:110,f:60,tz:'Asia/Taipei',ds:'R',sl:'Urban 50 / Highway 110',lic:'Requires IDP or local license',tp:'Tipping not customary',cu:'Warm hospitality; respect religious customs'},
+JP:{z:'Japan',e:'Japan',cur:'JPY ¥ Japanese Yen',lang:'Japanese',em:'110 Police / 119 Fire & Ambulance',p:'AB',v:100,f:'50/60',tz:'Asia/Tokyo',ds:'L',sl:'Urban 40-60 / Highway 100',lic:'Requires Japanese translation of IDP or local license',tp:'Never tip (considered rude)',cu:'Remove shoes indoors; no eating while walking; be quiet on trains'},
+KR:{z:'South Korea',e:'South Korea',cur:'KRW ₩ Korean Won',lang:'Korean',em:'112 Police / 119 Ambulance',p:'CF',v:220,f:60,tz:'Asia/Seoul',ds:'R',sl:'Urban 60 / Highway 110',lic:'IDP accepted',tp:'Tipping not customary',cu:'Use both hands when giving/receiving; respect elders'},
+TH:{z:'Thailand',e:'Thailand',cur:'THB ฿ Thai Baht',lang:'Thai',em:'191 Police / 1669 Ambulance',p:'ABCO',v:220,f:50,tz:'Asia/Bangkok',ds:'L',sl:'Urban 80 / Highway 120',lic:'IDP required',tp:'10% at upscale restaurants',cu:'Do not touch heads; respect the royal family; remove shoes in temples'},
+VN:{z:'Vietnam',e:'Vietnam',cur:'VND ₫ Vietnamese Dong',lang:'Vietnamese',em:'113 Police / 115 Ambulance',p:'ACG',v:220,f:50,tz:'Asia/Ho_Chi_Minh',ds:'R',sl:'Urban 50 / Highway 120',lic:'Requires Vietnamese license or certified IDP',tp:'Not mandatory, 5-10% appreciated',cu:'Dress modestly in temples; walk steadily when crossing roads'},
+KH:{z:'Cambodia',e:'Cambodia',cur:'KHR/USD Riel/US Dollar',lang:'Khmer',em:'117/118/119',p:'ACG',v:230,f:50,tz:'Asia/Phnom_Penh',ds:'R',sl:'Urban 40 / Highway 100',lic:'Requires Cambodian license',tp:'Not required but welcome',cu:'Do not touch monks; dress modestly at Angkor'},
+LA:{z:'Laos',e:'Laos',cur:'LAK ₭ Lao Kip',lang:'Lao',em:'191/195',p:'ABCEF',v:230,f:50,tz:'Asia/Vientiane',ds:'R',sl:'Urban 40 / Highway 100',lic:'Requires Lao license',tp:'Not required',cu:'Remove shoes in temples; women should not touch monks'},
+MM:{z:'Myanmar',e:'Myanmar',cur:'MMK K Myanmar Kyat',lang:'Burmese',em:'199',p:'CDGF',v:230,f:50,tz:'Asia/Yangon',ds:'R',sl:'Urban 48 / Highway 100',lic:'Requires Myanmar license',tp:'Not required',cu:'Remove shoes at pagodas; show respect to Buddha images'},
+MY:{z:'Malaysia',e:'Malaysia',cur:'MYR RM Malaysian Ringgit',lang:'Malay / English',em:'999',p:'G',v:240,f:50,tz:'Asia/Kuala_Lumpur',ds:'L',sl:'Urban 60 / Highway 110',lic:'IDP accepted',tp:'Not required (service charge included)',cu:'Use right hand for passing items; respect mosque rules'},
+SG:{z:'Singapore',e:'Singapore',cur:'SGD $ Singapore Dollar',lang:'English / Chinese / Malay / Tamil',em:'999',p:'G',v:230,f:50,tz:'Asia/Singapore',ds:'L',sl:'Urban 50 / Expressway 80',lic:'IDP accepted',tp:'Not required (service charge included)',cu:'Chewing gum banned; strict fines system'},
+ID:{z:'Indonesia',e:'Indonesia',cur:'IDR Rp Indonesian Rupiah',lang:'Indonesian',em:'112',p:'CF',v:230,f:50,tz:'Asia/Jakarta',ds:'L',sl:'Urban 50 / Highway 100',lic:'IDP required',tp:'5-10% at mid/high-end restaurants',cu:'Use right hand for passing; dress modestly at mosques'},
+PH:{z:'Philippines',e:'Philippines',cur:'PHP ₱ Philippine Peso',lang:'Filipino / English',em:'911',p:'ABC',v:220,f:60,tz:'Asia/Manila',ds:'R',sl:'Urban 60 / Highway 100',lic:'IDP accepted (90 days)',tp:'10% at restaurants',cu:'Family-oriented; optimistic and friendly'},
+BN:{z:'Brunei',e:'Brunei',cur:'BND $ Brunei Dollar',lang:'Malay / English',em:'993',p:'G',v:240,f:50,tz:'Asia/Brunei',ds:'L',sl:'Urban 50 / Highway 100',lic:'IDP required',tp:'Not required',cu:'Islamic country, alcohol prohibited; dress conservatively'},
+IN:{z:'India',e:'India',cur:'INR ₹ Indian Rupee',lang:'Hindi / English',em:'112',p:'CDM',v:230,f:50,tz:'Asia/Kolkata',ds:'L',sl:'Urban 50 / Highway 100',lic:'IDP required',tp:'10% at restaurants',cu:'Left hand considered unclean; remove shoes in temples; cows are sacred'},
+LK:{z:'Sri Lanka',e:'Sri Lanka',cur:'LKR Rs Sri Lankan Rupee',lang:'Sinhala / Tamil',em:'119',p:'DGM',v:230,f:50,tz:'Asia/Colombo',ds:'L',sl:'Urban 50 / Highway 100',lic:'IDP required',tp:'10%',cu:'Buddhist country; do not turn back on Buddha statues for photos'},
+NP:{z:'Nepal',e:'Nepal',cur:'NPR Rs Nepalese Rupee',lang:'Nepali',em:'100/101',p:'CDM',v:230,f:50,tz:'Asia/Kathmandu',ds:'L',sl:'Urban 40 / Highway 80',lic:'IDP required',tp:'10% at mid/high-end',cu:'Do not use left hand for passing; cow is the national animal'},
+MV:{z:'Maldives',e:'Maldives',cur:'MVR Rf Maldivian Rufiyaa',lang:'Dhivehi',em:'119',p:'ADGJKL',v:230,f:50,tz:'Indian/Maldives',ds:'L',sl:'Urban 30 / Highway 80',lic:'IDP required',tp:'10% usually included',cu:'Swimwear OK on resort islands, dress modestly on local islands'},
+BT:{z:'Bhutan',e:'Bhutan',cur:'BTN Nu Bhutanese Ngultrum',lang:'Dzongkha',em:'113',p:'DFG',v:230,f:50,tz:'Asia/Thimphu',ds:'L',sl:'Urban 30 / Highway 50',lic:'Self-driving not recommended',tp:'Not required',cu:'Daily minimum tourist fee; smoking prohibited'},
+BD:{z:'Bangladesh',e:'Bangladesh',cur:'BDT ৳ Bangladeshi Taka',lang:'Bengali',em:'999',p:'ACDK',v:220,f:50,tz:'Asia/Dhaka',ds:'L',sl:'Urban 40 / Highway 80',lic:'IDP required',tp:'Not required',cu:'Islam is the main religion; use right hand'},
+PK:{z:'Pakistan',e:'Pakistan',cur:'PKR Rs Pakistani Rupee',lang:'Urdu / English',em:'15',p:'CDG',v:230,f:50,tz:'Asia/Karachi',ds:'L',sl:'Urban 50 / Highway 120',lic:'IDP required',tp:'Not required',cu:'Islamic country; dress conservatively'},
+MN:{z:'Mongolia',e:'Mongolia',cur:'MNT ₮ Mongolian Tugrik',lang:'Mongolian',em:'102/103',p:'CE',v:220,f:50,tz:'Asia/Ulaanbaatar',ds:'R',sl:'Urban 60 / Highway 100',lic:'IDP required',tp:'Not required',cu:'Do not step on the threshold of a ger (yurt)'},
+UZ:{z:'Uzbekistan',e:'Uzbekistan',cur:'UZS soʻm Uzbekistani Som',lang:'Uzbek',em:'101/102/103',p:'CF',v:220,f:50,tz:'Asia/Tashkent',ds:'R',sl:'Urban 70 / Highway 110',lic:'IDP required',tp:'Not required',cu:'Respect Islamic customs; hospitality culture'},
+KZ:{z:'Kazakhstan',e:'Kazakhstan',cur:'KZT ₸ Kazakhstani Tenge',lang:'Kazakh / Russian',em:'112',p:'CF',v:220,f:50,tz:'Asia/Almaty',ds:'R',sl:'Urban 60 / Highway 110',lic:'IDP required',tp:'Not required',cu:'Hospitality tradition; accepting food shows respect'},
+GE:{z:'Georgia',e:'Georgia',cur:'GEL ₾ Georgian Lari',lang:'Georgian',em:'112',p:'CF',v:220,f:50,tz:'Asia/Tbilisi',ds:'R',sl:'Urban 60 / Highway 110',lic:'IDP accepted',tp:'10% at restaurants',cu:'Wine culture; strong hospitality tradition'},
+AM:{z:'Armenia',e:'Armenia',cur:'AMD ֏ Armenian Dram',lang:'Armenian',em:'911',p:'CF',v:230,f:50,tz:'Asia/Yerevan',ds:'R',sl:'Urban 60 / Highway 90',lic:'IDP required',tp:'10%',cu:'Brandy culture; Christian tradition'},
+AZ:{z:'Azerbaijan',e:'Azerbaijan',cur:'AZN ₼ Azerbaijani Manat',lang:'Azerbaijani',em:'112',p:'CF',v:220,f:50,tz:'Asia/Baku',ds:'R',sl:'Urban 60 / Highway 110',lic:'IDP required',tp:'10%',cu:'Hospitality tradition; observe religious holidays'},
+AE:{z:'UAE',e:'United Arab Emirates',cur:'AED د.إ UAE Dirham',lang:'Arabic / English',em:'999',p:'G',v:220,f:50,tz:'Asia/Dubai',ds:'R',sl:'Urban 60-80 / Highway 120-140',lic:'IDP accepted',tp:'Not required (service charge included)',cu:'During Ramadan, do not eat/drink publicly in daytime; dress modestly'},
+SA:{z:'Saudi Arabia',e:'Saudi Arabia',cur:'SAR ﷼ Saudi Riyal',lang:'Arabic',em:'911',p:'G',v:220,f:60,tz:'Asia/Riyadh',ds:'R',sl:'Urban 50 / Highway 120',lic:'IDP required',tp:'Not required',cu:'Dress conservatively; women observe public etiquette'},
+QA:{z:'Qatar',e:'Qatar',cur:'QAR ﷼ Qatari Riyal',lang:'Arabic / English',em:'999',p:'G',v:240,f:50,tz:'Asia/Qatar',ds:'R',sl:'Urban 60 / Highway 120',lic:'IDP accepted (7 days)',tp:'Not required',cu:'Ramadan etiquette; dress decently in public'},
+BH:{z:'Bahrain',e:'Bahrain',cur:'BHD BD Bahraini Dinar',lang:'Arabic / English',em:'999',p:'G',v:230,f:50,tz:'Asia/Bahrain',ds:'R',sl:'Urban 60 / Highway 120',lic:'IDP accepted',tp:'Not required',cu:'Dress decently; observe Ramadan etiquette'},
+OM:{z:'Oman',e:'Oman',cur:'OMR ﷼ Omani Rial',lang:'Arabic',em:'9999',p:'G',v:240,f:50,tz:'Asia/Muscat',ds:'R',sl:'Urban 60 / Highway 120',lic:'IDP accepted',tp:'Not required',cu:'Dress conservatively; friendly people'},
+KW:{z:'Kuwait',e:'Kuwait',cur:'KWD د.ك Kuwaiti Dinar',lang:'Arabic',em:'112',p:'G',v:240,f:50,tz:'Asia/Kuwait',ds:'R',sl:'Urban 50 / Highway 120',lic:'IDP accepted',tp:'Not required',cu:'Do not eat/drink publicly during Ramadan'},
+IL:{z:'Israel',e:'Israel',cur:'ILS ₪ Israeli Shekel',lang:'Hebrew / Arabic',em:'100 Police / 101 Ambulance',p:'CH',v:230,f:50,tz:'Asia/Jerusalem',ds:'R',sl:'Urban 50 / Highway 110',lic:'IDP accepted',tp:'10-12% at restaurants',cu:'Shabbat (Fri evening - Sat): shops closed'},
+JO:{z:'Jordan',e:'Jordan',cur:'JOD JD Jordanian Dinar',lang:'Arabic',em:'911',p:'BCDFGJ',v:230,f:50,tz:'Asia/Amman',ds:'R',sl:'Urban 50 / Highway 110',lic:'IDP accepted',tp:'10%',cu:'Hospitality tradition; remove shoes when entering homes'},
+TR:{z:'Turkey',e:'Turkey',cur:'TRY ₺ Turkish Lira',lang:'Turkish',em:'112',p:'CF',v:230,f:50,tz:'Europe/Istanbul',ds:'R',sl:'Urban 50 / Highway 120',lic:'IDP accepted',tp:'5-10% at restaurants',cu:'Remove shoes in mosques; tea culture'},
+LB:{z:'Lebanon',e:'Lebanon',cur:'LBP £ Lebanese Pound',lang:'Arabic / French',em:'112',p:'ABCDFG',v:220,f:50,tz:'Asia/Beirut',ds:'R',sl:'Urban 50 / Highway 100',lic:'IDP accepted',tp:'10-15%',cu:'Multicultural; warm social interactions'},
+IR:{z:'Iran',e:'Iran',cur:'IRR ﷼ Iranian Rial',lang:'Persian',em:'110/115',p:'CF',v:220,f:50,tz:'Asia/Tehran',ds:'R',sl:'Urban 60 / Highway 120',lic:'IDP required',tp:'Not required',cu:'Women must wear headscarf; alcohol prohibited'},
+EG:{z:'Egypt',e:'Egypt',cur:'EGP £ Egyptian Pound',lang:'Arabic',em:'122/123',p:'CF',v:220,f:50,tz:'Africa/Cairo',ds:'R',sl:'Urban 50 / Highway 100',lic:'IDP required',tp:'5-10% common (Baksheesh)',cu:'Remove shoes in mosques; bargaining culture'},
+GB:{z:'United Kingdom',e:'United Kingdom',cur:'GBP £ British Pound',lang:'English',em:'999 / 112',p:'G',v:230,f:50,tz:'Europe/London',ds:'L',sl:'Urban 48 / Highway 112 (mph: 30/70)',lic:'IDP accepted (12 months)',tp:'10-15% at restaurants',cu:'Queuing culture; weather is a conversation starter'},
+FR:{z:'France',e:'France',cur:'EUR € Euro',lang:'French',em:'112',p:'CE',v:230,f:50,tz:'Europe/Paris',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'Service included, leave small change',cu:'Greet with cheek kisses; formal dining etiquette'},
+DE:{z:'Germany',e:'Germany',cur:'EUR € Euro',lang:'German',em:'112',p:'CF',v:230,f:50,tz:'Europe/Berlin',ds:'R',sl:'Urban 50 / Highway unlimited (recommended 130)',lic:'IDP accepted',tp:'5-10%',cu:'Punctuality is important; shops closed on Sundays'},
+IT:{z:'Italy',e:'Italy',cur:'EUR € Euro',lang:'Italian',em:'112',p:'CFL',v:230,f:50,tz:'Europe/Rome',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'Service charge included (coperto)',cu:'Afternoon rest (riposo) 1-4 PM; warm social interactions'},
+ES:{z:'Spain',e:'Spain',cur:'EUR € Euro',lang:'Spanish',em:'112',p:'CF',v:230,f:50,tz:'Europe/Madrid',ds:'R',sl:'Urban 50 / Highway 120',lic:'IDP accepted',tp:'Not required, leave small change',cu:'Lunch at 2 PM, dinner at 9 PM; siesta culture'},
+PT:{z:'Portugal',e:'Portugal',cur:'EUR € Euro',lang:'Portuguese',em:'112',p:'CF',v:230,f:50,tz:'Europe/Lisbon',ds:'R',sl:'Urban 50 / Highway 120',lic:'IDP accepted',tp:'5-10%',cu:'Friendly and relaxed; fado music culture'},
+NL:{z:'Netherlands',e:'Netherlands',cur:'EUR € Euro',lang:'Dutch / English',em:'112',p:'CF',v:230,f:50,tz:'Europe/Amsterdam',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'Not required (service included)',cu:'Direct and frank; bicycles have priority'},
+BE:{z:'Belgium',e:'Belgium',cur:'EUR € Euro',lang:'Dutch / French / German',em:'112',p:'CE',v:230,f:50,tz:'Europe/Brussels',ds:'R',sl:'Urban 50 / Highway 120',lic:'IDP accepted',tp:'Service charge included',cu:'Three-language cultural differences'},
+CH:{z:'Switzerland',e:'Switzerland',cur:'CHF Fr Swiss Franc',lang:'German / French / Italian / Romansh',em:'112',p:'CJ',v:230,f:50,tz:'Europe/Zurich',ds:'R',sl:'Urban 50 / Highway 120',lic:'IDP accepted',tp:'Service included, leave small change',cu:'Punctuality; quiet and polite; reduce noise after 10 PM'},
+AT:{z:'Austria',e:'Austria',cur:'EUR € Euro',lang:'German',em:'112',p:'CF',v:230,f:50,tz:'Europe/Vienna',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'5-10%',cu:'Coffeehouse culture; city of music'},
+SE:{z:'Sweden',e:'Sweden',cur:'SEK kr Swedish Krona',lang:'Swedish',em:'112',p:'CF',v:230,f:50,tz:'Europe/Stockholm',ds:'R',sl:'Urban 50 / Highway 110',lic:'IDP accepted',tp:'Service charge included',cu:'Fika coffee culture; punctuality valued'},
+NO:{z:'Norway',e:'Norway',cur:'NOK kr Norwegian Krone',lang:'Norwegian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Oslo',ds:'R',sl:'Urban 50 / Highway 110',lic:'IDP accepted',tp:'Service charge included',cu:'Remove shoes indoors; respect nature'},
+DK:{z:'Denmark',e:'Denmark',cur:'DKK kr Danish Krone',lang:'Danish',em:'112',p:'CEK',v:230,f:50,tz:'Europe/Copenhagen',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'Service charge included',cu:'Hygge culture; bicycle-friendly'},
+FI:{z:'Finland',e:'Finland',cur:'EUR € Euro',lang:'Finnish / Swedish',em:'112',p:'CF',v:230,f:50,tz:'Europe/Helsinki',ds:'R',sl:'Urban 50 / Highway 120',lic:'IDP accepted',tp:'Service charge included',cu:'Sauna culture; quiet and reserved'},
+IS:{z:'Iceland',e:'Iceland',cur:'ISK kr Icelandic Krona',lang:'Icelandic',em:'112',p:'CF',v:230,f:50,tz:'Atlantic/Reykjavik',ds:'R',sl:'Urban 50 / Rural 90',lic:'IDP accepted',tp:'Service charge included',cu:'Respect nature; do not trample moss'},
+IE:{z:'Ireland',e:'Ireland',cur:'EUR € Euro',lang:'English / Irish',em:'112 / 999',p:'G',v:230,f:50,tz:'Europe/Dublin',ds:'L',sl:'Urban 50 / Highway 120',lic:'IDP accepted',tp:'10-15% at restaurants',cu:'Pub culture; friendly conversation'},
+GR:{z:'Greece',e:'Greece',cur:'EUR € Euro',lang:'Greek',em:'112',p:'CF',v:230,f:50,tz:'Europe/Athens',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'5-10%',cu:'Warm hospitality; do not climb on ancient monuments'},
+CZ:{z:'Czech Republic',e:'Czech Republic',cur:'CZK Kč Czech Koruna',lang:'Czech',em:'112',p:'CE',v:230,f:50,tz:'Europe/Prague',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'10% at restaurants',cu:'Beer culture; polite language'},
+PL:{z:'Poland',e:'Poland',cur:'PLN zł Polish Zloty',lang:'Polish',em:'112',p:'CE',v:230,f:50,tz:'Europe/Warsaw',ds:'R',sl:'Urban 50 / Highway 140',lic:'IDP accepted',tp:'10% at restaurants',cu:'Catholic tradition; hospitality'},
+HU:{z:'Hungary',e:'Hungary',cur:'HUF Ft Hungarian Forint',lang:'Hungarian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Budapest',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'10%',cu:'Thermal bath culture; do not clink beer glasses'},
+HR:{z:'Croatia',e:'Croatia',cur:'EUR € Euro',lang:'Croatian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Zagreb',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'10%',cu:'Relaxed coastal lifestyle; coffee culture'},
+RO:{z:'Romania',e:'Romania',cur:'RON lei Romanian Leu',lang:'Romanian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Bucharest',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'10%',cu:'Hospitality tradition; home of Dracula legend'},
+BG:{z:'Bulgaria',e:'Bulgaria',cur:'BGN лв Bulgarian Lev',lang:'Bulgarian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Sofia',ds:'R',sl:'Urban 50 / Highway 140',lic:'IDP accepted',tp:'10%',cu:'Nodding means no, shaking head means yes'},
+RS:{z:'Serbia',e:'Serbia',cur:'RSD din Serbian Dinar',lang:'Serbian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Belgrade',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'10%',cu:'Hospitality; Rakija brandy culture'},
+SK:{z:'Slovakia',e:'Slovakia',cur:'EUR € Euro',lang:'Slovak',em:'112',p:'CE',v:230,f:50,tz:'Europe/Bratislava',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'10%',cu:'Polite and friendly'},
+SI:{z:'Slovenia',e:'Slovenia',cur:'EUR € Euro',lang:'Slovenian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Ljubljana',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'10%',cu:'Strong green/environmental consciousness'},
+EE:{z:'Estonia',e:'Estonia',cur:'EUR € Euro',lang:'Estonian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Tallinn',ds:'R',sl:'Urban 50 / Highway 110',lic:'IDP accepted',tp:'10%',cu:'Digitally advanced; quiet and reserved'},
+LV:{z:'Latvia',e:'Latvia',cur:'EUR € Euro',lang:'Latvian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Riga',ds:'R',sl:'Urban 50 / Highway 110',lic:'IDP accepted',tp:'10%',cu:'Song and dance tradition'},
+LT:{z:'Lithuania',e:'Lithuania',cur:'EUR € Euro',lang:'Lithuanian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Vilnius',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'5-10%',cu:'Basketball is the national sport'},
+LU:{z:'Luxembourg',e:'Luxembourg',cur:'EUR € Euro',lang:'French / German / Luxembourgish',em:'112',p:'CF',v:230,f:50,tz:'Europe/Luxembourg',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'Service charge included',cu:'Multilingual country; polite and formal'},
+MT:{z:'Malta',e:'Malta',cur:'EUR € Euro',lang:'Maltese / English',em:'112',p:'G',v:230,f:50,tz:'Europe/Malta',ds:'L',sl:'Urban 50 / Rural 80',lic:'IDP accepted',tp:'5-10%',cu:'Catholic tradition; many summer festivals'},
+ME:{z:'Montenegro',e:'Montenegro',cur:'EUR € Euro',lang:'Montenegrin',em:'112',p:'CF',v:230,f:50,tz:'Europe/Podgorica',ds:'R',sl:'Urban 50 / Highway 80',lic:'IDP accepted',tp:'10%',cu:'Hospitality tradition; beautiful coastline'},
+CY:{z:'Cyprus',e:'Cyprus',cur:'EUR € Euro',lang:'Greek / Turkish',em:'112',p:'G',v:230,f:50,tz:'Asia/Nicosia',ds:'L',sl:'Urban 50 / Highway 100',lic:'IDP accepted',tp:'10%',cu:'Mediterranean lifestyle'},
+US:{z:'United States',e:'United States',cur:'USD $ US Dollar',lang:'English',em:'911',p:'AB',v:120,f:60,tz:'America/New_York',ds:'R',sl:'Urban 40-56 / Highway 88-112 (mph: 25-35 / 55-70)',lic:'IDP accepted',tp:'15-20% at restaurants (expected)',cu:'Tipping culture is very important; personal space'},
+CA:{z:'Canada',e:'Canada',cur:'CAD $ Canadian Dollar',lang:'English / French',em:'911',p:'AB',v:120,f:60,tz:'America/Toronto',ds:'R',sl:'Urban 50 / Highway 110',lic:'IDP accepted',tp:'15-20% at restaurants',cu:'Polite and friendly; multicultural'},
+MX:{z:'Mexico',e:'Mexico',cur:'MXN $ Mexican Peso',lang:'Spanish',em:'911',p:'AB',v:127,f:60,tz:'America/Mexico_City',ds:'R',sl:'Urban 60 / Highway 110',lic:'IDP accepted',tp:'10-15% at restaurants',cu:'Family-oriented; warm hospitality'},
+BR:{z:'Brazil',e:'Brazil',cur:'BRL R$ Brazilian Real',lang:'Portuguese',em:'190/192/193',p:'CN',v:'127/220',f:60,tz:'America/Sao_Paulo',ds:'R',sl:'Urban 60 / Highway 110',lic:'IDP required',tp:'10% (service charge usually included)',cu:'Warm and open; avoid discussing politics'},
+AR:{z:'Argentina',e:'Argentina',cur:'ARS $ Argentine Peso',lang:'Spanish',em:'911',p:'CI',v:220,f:50,tz:'America/Argentina/Buenos_Aires',ds:'R',sl:'Urban 40 / Highway 130',lic:'IDP accepted',tp:'10%',cu:'Tango culture; dinner very late (after 9 PM)'},
+CL:{z:'Chile',e:'Chile',cur:'CLP $ Chilean Peso',lang:'Spanish',em:'133/131/132',p:'CL',v:220,f:50,tz:'America/Santiago',ds:'R',sl:'Urban 60 / Highway 120',lic:'IDP accepted',tp:'10%',cu:'Punctual; polite'},
+CO_CO:{z:'Colombia',e:'Colombia',cur:'COP $ Colombian Peso',lang:'Spanish',em:'123',p:'AB',v:110,f:60,tz:'America/Bogota',ds:'R',sl:'Urban 60 / Highway 100',lic:'IDP required',tp:'10%',cu:'Friendly and hospitable; coffee culture'},
+PE:{z:'Peru',e:'Peru',cur:'PEN S/ Peruvian Sol',lang:'Spanish / Quechua',em:'105/116',p:'ABC',v:220,f:60,tz:'America/Lima',ds:'R',sl:'Urban 60 / Highway 100',lic:'IDP accepted',tp:'10%',cu:'Inca culture; beware of altitude sickness'},
+CU:{z:'Cuba',e:'Cuba',cur:'CUP $ Cuban Peso',lang:'Spanish',em:'106/104/105',p:'AB',v:110,f:60,tz:'America/Havana',ds:'R',sl:'Urban 50 / Highway 100',lic:'IDP required',tp:'10-15%',cu:'Music and dance culture; cash is king'},
+CR:{z:'Costa Rica',e:'Costa Rica',cur:'CRC ₡ Costa Rican Colón',lang:'Spanish',em:'911',p:'AB',v:120,f:60,tz:'America/Costa_Rica',ds:'R',sl:'Urban 40 / Highway 100',lic:'IDP accepted (90 days)',tp:'10% (usually included)',cu:'Pura Vida lifestyle'},
+PA:{z:'Panama',e:'Panama',cur:'PAB/USD Balboa / US Dollar',lang:'Spanish',em:'911',p:'AB',v:120,f:60,tz:'America/Panama',ds:'R',sl:'Urban 50 / Highway 100',lic:'IDP accepted (90 days)',tp:'10%',cu:'The Panama Canal is a source of pride'},
+JM:{z:'Jamaica',e:'Jamaica',cur:'JMD $ Jamaican Dollar',lang:'English',em:'119/110',p:'AB',v:110,f:50,tz:'America/Jamaica',ds:'L',sl:'Urban 50 / Highway 80',lic:'IDP required',tp:'10-15%',cu:'Reggae music culture; relaxed and easygoing'},
+DO:{z:'Dominican Republic',e:'Dominican Republic',cur:'DOP $ Dominican Peso',lang:'Spanish',em:'911',p:'AB',v:120,f:60,tz:'America/Santo_Domingo',ds:'R',sl:'Urban 40 / Highway 100',lic:'IDP accepted',tp:'10-15%',cu:'Baseball passion; merengue dance'},
+ZA:{z:'South Africa',e:'South Africa',cur:'ZAR R South African Rand',lang:'English + 10 others',em:'10111 / 10177',p:'CMN',v:230,f:50,tz:'Africa/Johannesburg',ds:'L',sl:'Urban 60 / Highway 120',lic:'IDP accepted',tp:'10-15% at restaurants',cu:'Rainbow nation; be security-conscious'},
+MA:{z:'Morocco',e:'Morocco',cur:'MAD د.م. Moroccan Dirham',lang:'Arabic / French',em:'19',p:'CE',v:220,f:50,tz:'Africa/Casablanca',ds:'R',sl:'Urban 60 / Highway 120',lic:'IDP accepted',tp:'10%',cu:'Bargaining culture; observe Ramadan'},
+KE:{z:'Kenya',e:'Kenya',cur:'KES KSh Kenyan Shilling',lang:'Swahili / English',em:'999 / 112',p:'G',v:240,f:50,tz:'Africa/Nairobi',ds:'L',sl:'Urban 50 / Highway 110',lic:'IDP required',tp:'10%',cu:'Safari etiquette; respect tribal culture'},
+TZ:{z:'Tanzania',e:'Tanzania',cur:'TZS TSh Tanzanian Shilling',lang:'Swahili / English',em:'112/114',p:'DG',v:230,f:50,tz:'Africa/Dar_es_Salaam',ds:'L',sl:'Urban 50 / Highway 100',lic:'IDP required',tp:'10%',cu:'Jambo greeting; respect local tribes'},
+ET:{z:'Ethiopia',e:'Ethiopia',cur:'ETB Br Ethiopian Birr',lang:'Amharic',em:'991/907',p:'CDEJL',v:220,f:50,tz:'Africa/Addis_Ababa',ds:'R',sl:'Urban 30 / Highway 100',lic:'IDP required',tp:'10%',cu:'Unique calendar (7 years behind); birthplace of coffee'},
+NG:{z:'Nigeria',e:'Nigeria',cur:'NGN ₦ Nigerian Naira',lang:'English',em:'112/199',p:'DG',v:240,f:50,tz:'Africa/Lagos',ds:'R',sl:'Urban 50 / Highway 100',lic:'IDP required',tp:'10%',cu:'Respect elders; multi-ethnic nation'},
+GH:{z:'Ghana',e:'Ghana',cur:'GHS GH₵ Ghanaian Cedi',lang:'English',em:'191/192/193',p:'DG',v:230,f:50,tz:'Africa/Accra',ds:'R',sl:'Urban 50 / Highway 100',lic:'IDP required',tp:'5-10%',cu:'Friendly and warm; use right hand'},
+TN:{z:'Tunisia',e:'Tunisia',cur:'TND د.ت Tunisian Dinar',lang:'Arabic / French',em:'197/190/198',p:'CE',v:230,f:50,tz:'Africa/Tunis',ds:'R',sl:'Urban 50 / Highway 110',lic:'IDP accepted',tp:'10%',cu:'Blend of Mediterranean and Arab culture'},
+AU:{z:'Australia',e:'Australia',cur:'AUD $ Australian Dollar',lang:'English',em:'000',p:'I',v:230,f:50,tz:'Australia/Sydney',ds:'L',sl:'Urban 50 / Highway 110',lic:'IDP accepted',tp:'Not required (can leave small change)',cu:'Relaxed and easygoing; sunscreen is essential'},
+NZ:{z:'New Zealand',e:'New Zealand',cur:'NZD $ New Zealand Dollar',lang:'English / Māori',em:'111',p:'I',v:230,f:50,tz:'Pacific/Auckland',ds:'L',sl:'Urban 50 / Highway 100',lic:'IDP accepted (12 months)',tp:'Not required',cu:'Māori culture; strong environmental awareness'},
+FJ:{z:'Fiji',e:'Fiji',cur:'FJD $ Fijian Dollar',lang:'English / Fijian',em:'911',p:'I',v:240,f:50,tz:'Pacific/Fiji',ds:'L',sl:'Urban 50 / Highway 80',lic:'IDP accepted',tp:'Not required',cu:'Bula greeting; respect village customs'},
+AL:{z:'Albania',e:'Albania',cur:'ALL L Albanian Lek',lang:'Albanian',em:'112',p:'CF',v:230,f:50,tz:'Europe/Tirane',ds:'R',sl:'Urban 40 / Highway 110',lic:'IDP accepted',tp:'Not required',cu:'Hospitality tradition'},
+MC:{z:'Monaco',e:'Monaco',cur:'EUR € Euro',lang:'French',em:'112',p:'CEF',v:230,f:50,tz:'Europe/Monaco',ds:'R',sl:'Urban 50 / Highway 130',lic:'IDP accepted',tp:'10%',cu:'High-end etiquette'}
+};
+
+// Fix Colombia key
+CO.CO = CO.CO_CO || CO.CO;
+if(CO.CO_CO) { CO.CO = CO.CO_CO; delete CO.CO_CO; }
+
+const CI = {
+beijing:{z:'Beijing',e:'Beijing',cc:'CN',la:39.9,lo:116.4,tz:'Asia/Shanghai',h:[2,5,12,21,27,31,31,30,26,19,10,3],l:[-8,-5,1,8,14,19,22,21,15,8,0,-6],r:[3,6,9,26,35,78,185,160,46,22,8,2],bm:[3,4,8,9],am:[6,7,11,0],bt:'Apr–May, Sep–Oct',at:'Jul–Aug storms & heat, winter severe cold'},
+shanghai:{z:'Shanghai',e:'Shanghai',cc:'CN',la:31.2,lo:121.5,tz:'Asia/Shanghai',h:[8,10,14,19,25,28,32,32,28,23,17,10],l:[1,3,6,11,17,21,25,25,21,15,9,3],r:[74,60,84,75,84,181,146,133,87,55,52,43],bm:[3,4,8,9,10],am:[6,7],bt:'Apr–May, Sep–Nov',at:'Jul–Aug extreme heat'},
+guangzhou:{z:'Guangzhou',e:'Guangzhou',cc:'CN',la:23.1,lo:113.3,tz:'Asia/Shanghai',h:[16,17,20,25,29,32,33,33,32,28,23,18],l:[9,11,14,19,23,25,26,26,24,20,15,10],r:[42,68,85,188,284,283,228,221,172,73,37,30],bm:[9,10,11],am:[4,5,6,7],bt:'Oct–Dec',at:'May–Aug storms & humidity'},
+chengdu:{z:'Chengdu',e:'Chengdu',cc:'CN',la:30.6,lo:104.1,tz:'Asia/Shanghai',h:[10,12,17,22,27,29,31,31,27,21,16,11],l:[3,5,9,13,18,21,23,23,19,15,9,4],r:[8,12,21,50,88,111,234,210,128,48,18,6],bm:[3,4,8,9],am:[6,7],bt:'Mar–May, Sep–Oct',at:'Jul–Aug humid & rainy'},
+hongkong:{z:'Hong Kong',e:'Hong Kong',cc:'HK',la:22.3,lo:114.2,tz:'Asia/Hong_Kong',h:[18,19,21,25,29,31,32,31,31,28,24,20],l:[13,14,16,20,24,26,27,27,26,23,19,15],r:[33,38,75,137,292,456,377,432,328,120,37,27],bm:[9,10,11],am:[5,6,7,8],bt:'Oct–Dec',at:'Jun–Sep typhoons & storms'},
+macau:{z:'Macau',e:'Macau',cc:'MO',la:22.2,lo:113.5,tz:'Asia/Macau',h:[18,18,21,25,29,31,32,32,31,28,24,20],l:[12,13,16,20,23,26,27,27,25,22,18,14],r:[33,59,82,153,290,340,270,350,200,75,38,30],bm:[9,10,11],am:[5,6,7,8],bt:'Oct–Dec',at:'Jun–Sep typhoons & storms'},
+taipei:{z:'Taipei',e:'Taipei',cc:'TW',la:25.0,lo:121.5,tz:'Asia/Taipei',h:[19,19,22,25,29,32,34,34,31,27,24,20],l:[13,13,15,18,22,24,26,26,24,21,18,14],r:[83,170,180,178,235,326,245,322,361,149,83,73],bm:[2,3,4,9,10],am:[5,7,8],bt:'Mar–May, Oct–Nov',at:'Jun–Sep typhoons & storms'},
+kaohsiung:{z:'Kaohsiung',e:'Kaohsiung',cc:'TW',la:22.6,lo:120.3,tz:'Asia/Taipei',h:[24,25,27,29,31,32,33,33,32,30,28,25],l:[16,17,19,22,25,26,26,26,25,23,20,17],r:[16,22,29,63,195,393,391,417,242,43,18,14],bm:[10,11,0,1],am:[5,6,7,8],bt:'Nov–Feb',at:'Jun–Sep typhoons & storms'},
+tokyo:{z:'Tokyo',e:'Tokyo',cc:'JP',la:35.7,lo:139.7,tz:'Asia/Tokyo',h:[10,11,14,19,24,26,30,31,27,22,17,12],l:[1,2,5,10,15,19,23,24,20,14,9,3],r:[52,56,117,125,138,168,154,168,210,198,93,51],bm:[2,3,4,9,10],am:[5,6,7],bt:'Mar–May, Oct–Nov',at:'Jun–Jul rainy, Aug extreme heat'},
+osaka:{z:'Osaka',e:'Osaka',cc:'JP',la:34.7,lo:135.5,tz:'Asia/Tokyo',h:[9,10,14,20,25,28,32,33,29,23,17,12],l:[3,3,6,11,16,21,25,26,22,16,10,5],r:[45,61,104,104,146,202,157,90,161,112,69,43],bm:[2,3,4,9,10],am:[5,6,7],bt:'Mar–May, Oct–Nov',at:'Jun–Jul rainy, Aug extreme heat'},
+sapporo:{z:'Sapporo',e:'Sapporo',cc:'JP',la:43.1,lo:141.3,tz:'Asia/Tokyo',h:[-1,0,4,12,17,21,25,26,22,16,8,2],l:[-8,-7,-3,3,8,13,17,19,14,7,1,-4],r:[114,94,80,57,53,46,81,124,135,109,104,112],bm:[5,6,7,1],am:[11,0],bt:'Jun–Aug, Feb Snow Festival',at:'Dec–Jan heavy snow & severe cold'},
+seoul:{z:'Seoul',e:'Seoul',cc:'KR',la:37.6,lo:127.0,tz:'Asia/Seoul',h:[1,4,10,18,23,28,29,30,26,20,11,4],l:[-6,-4,1,7,13,18,22,23,17,10,3,-3],r:[21,25,46,65,105,133,395,348,169,52,53,25],bm:[3,4,8,9],am:[6,7],bt:'Apr–May, Sep–Oct',at:'Jul–Aug storms & heat'},
+bangkok:{z:'Bangkok',e:'Bangkok',cc:'TH',la:13.8,lo:100.5,tz:'Asia/Bangkok',h:[33,34,35,36,35,34,33,33,33,33,32,32],l:[22,24,26,27,26,26,26,25,25,25,23,21],r:[9,30,29,65,220,149,155,197,344,242,48,10],bm:[10,11,0,1],am:[4,5,8],bt:'Nov–Feb',at:'May–Jun, Sep heavy rain'},
+chiangmai:{z:'Chiang Mai',e:'Chiang Mai',cc:'TH',la:18.8,lo:98.9,tz:'Asia/Bangkok',h:[31,34,36,37,35,33,32,31,32,32,31,30],l:[14,16,19,23,24,24,24,24,23,22,19,15],r:[7,5,13,50,158,132,161,236,228,122,53,15],bm:[10,11,0,1],am:[2,3],bt:'Nov–Feb',at:'Mar–Apr severe haze'},
+singapore:{z:'Singapore',e:'Singapore',cc:'SG',la:1.3,lo:103.8,tz:'Asia/Singapore',h:[30,31,32,32,32,31,31,31,31,31,31,30],l:[24,24,24,25,25,25,24,24,24,24,24,24],r:[234,162,171,164,171,162,155,176,170,197,255,269],bm:[1,5,6],am:[10,11],bt:'Feb, Jun–Jul less rain',at:'Nov–Dec heavy rain'},
+kualalumpur:{z:'Kuala Lumpur',e:'Kuala Lumpur',cc:'MY',la:3.1,lo:101.7,tz:'Asia/Kuala_Lumpur',h:[32,33,33,33,33,33,32,32,32,32,32,31],l:[23,23,24,24,24,24,23,23,23,23,23,23],r:[170,165,240,260,204,131,127,156,193,253,288,233],bm:[0,1,5,6],am:[10,11],bt:'Jan–Feb, Jun–Jul',at:'Nov–Dec heavy rain'},
+bali:{z:'Bali',e:'Bali',cc:'ID',la:-8.3,lo:115.2,tz:'Asia/Makassar',h:[30,30,31,31,31,30,29,30,30,31,31,30],l:[24,24,24,24,24,23,23,23,23,24,24,24],r:[345,274,234,88,93,53,55,25,47,63,179,276],bm:[3,4,5,6,7,8],am:[0,1,11],bt:'Apr–Sep dry season',at:'Dec–Feb rainy season'},
+hanoi:{z:'Hanoi',e:'Hanoi',cc:'VN',la:21.0,lo:105.8,tz:'Asia/Ho_Chi_Minh',h:[20,21,23,28,32,34,33,32,31,29,25,22],l:[14,15,18,21,25,27,27,27,25,22,18,15],r:[18,26,44,90,189,240,288,318,265,131,43,20],bm:[2,3,9,10],am:[6,7],bt:'Mar–Apr, Oct–Nov',at:'Jul–Aug extreme heat & storms'},
+hochiminh:{z:'Ho Chi Minh City',e:'Ho Chi Minh City',cc:'VN',la:10.8,lo:106.6,tz:'Asia/Ho_Chi_Minh',h:[32,33,34,35,34,32,32,31,31,31,31,31],l:[22,23,24,26,25,25,24,24,24,24,23,22],r:[14,4,11,50,218,312,294,270,327,267,116,48],bm:[0,1,2,3],am:[5,8,9],bt:'Dec–Mar dry season',at:'Jun–Oct rainy season'},
+manila:{z:'Manila',e:'Manila',cc:'PH',la:14.6,lo:121.0,tz:'Asia/Manila',h:[30,31,33,34,34,33,31,31,31,31,31,30],l:[21,21,22,24,25,25,25,25,25,24,23,22],r:[23,13,16,33,130,254,433,475,356,234,122,66],bm:[0,1,2,3],am:[6,7,8],bt:'Jan–Apr dry season',at:'Jul–Sep typhoon season'},
+phnompenh:{z:'Phnom Penh',e:'Phnom Penh',cc:'KH',la:11.6,lo:104.9,tz:'Asia/Phnom_Penh',h:[32,33,35,36,35,34,33,32,32,31,31,31],l:[22,23,24,26,26,25,25,25,25,25,23,22],r:[7,10,40,77,124,155,171,160,224,257,127,45],bm:[10,11,0,1],am:[4,5,8,9],bt:'Nov–Feb',at:'May–Jun, Sep–Oct heavy rain'},
+yangon:{z:'Yangon',e:'Yangon',cc:'MM',la:16.9,lo:96.2,tz:'Asia/Yangon',h:[32,35,36,37,33,30,30,30,30,32,32,32],l:[18,19,22,24,25,25,24,24,24,24,22,18],r:[5,2,7,15,303,547,559,602,368,206,60,7],bm:[10,11,0,1],am:[5,6,7],bt:'Nov–Feb',at:'Jun–Aug heavy rain'},
+delhi:{z:'Delhi',e:'Delhi',cc:'IN',la:28.6,lo:77.2,tz:'Asia/Kolkata',h:[21,24,30,37,40,39,35,34,34,34,29,23],l:[7,10,15,21,26,28,27,26,25,19,12,8],r:[19,18,13,8,13,74,210,233,123,13,2,10],bm:[10,11,1],am:[4,5,6,7],bt:'Nov–Feb',at:'May–Jun extreme heat, Jul–Aug monsoon'},
+mumbai:{z:'Mumbai',e:'Mumbai',cc:'IN',la:19.1,lo:72.9,tz:'Asia/Kolkata',h:[31,32,33,33,33,32,30,30,30,33,34,33],l:[19,20,23,26,28,27,26,25,25,25,23,21],r:[3,2,2,2,18,485,840,585,341,64,13,2],bm:[10,11,0,1],am:[5,6,7],bt:'Nov–Feb',at:'Jun–Aug monsoon storms'},
+kathmandu:{z:'Kathmandu',e:'Kathmandu',cc:'NP',la:27.7,lo:85.3,tz:'Asia/Kathmandu',h:[19,21,25,28,30,29,28,29,28,27,23,20],l:[2,4,7,12,16,20,20,20,19,13,7,3],r:[15,19,34,59,124,248,373,339,200,51,8,3],bm:[2,3,9,10],am:[6,7],bt:'Mar–Apr, Oct–Nov',at:'Jul–Aug monsoon storms'},
+male:{z:'Malé',e:'Male',cc:'MV',la:4.2,lo:73.5,tz:'Indian/Maldives',h:[30,31,31,31,31,30,30,30,30,30,30,30],l:[25,25,26,26,26,26,25,25,25,25,25,25],r:[114,38,74,123,219,167,152,176,199,194,231,217],bm:[0,1,2,3],am:[4,5,10,11],bt:'Jan–Apr dry season',at:'May–Jun, Nov–Dec rainy season'},
+dubai:{z:'Dubai',e:'Dubai',cc:'AE',la:25.2,lo:55.3,tz:'Asia/Dubai',h:[24,25,28,33,38,40,41,41,39,35,31,26],l:[14,15,17,21,25,28,30,31,28,24,19,16],r:[10,36,22,8,1,0,0,0,0,1,3,16],bm:[10,11,0,1,2],am:[5,6,7],bt:'Nov–Mar',at:'Jun–Aug extreme heat'},
+istanbul:{z:'Istanbul',e:'Istanbul',cc:'TR',la:41.0,lo:28.9,tz:'Europe/Istanbul',h:[9,9,12,17,22,27,29,29,26,21,15,11],l:[3,3,5,9,13,18,21,21,17,13,9,5],r:[99,72,70,46,35,35,39,47,56,81,103,119],bm:[3,4,5,8,9],am:[0,1,11],bt:'Apr–Jun, Sep–Oct',at:'Dec–Feb cold & overcast'},
+telaviv:{z:'Tel Aviv',e:'Tel Aviv',cc:'IL',la:32.1,lo:34.8,tz:'Asia/Jerusalem',h:[18,19,20,24,27,29,31,32,31,28,24,19],l:[9,10,11,14,17,21,23,24,22,18,14,11],r:[134,99,61,18,3,0,0,0,1,31,78,134],bm:[3,4,5,8,9],am:[6,7],bt:'Apr–Jun, Sep–Oct',at:'Jul–Aug extreme heat'},
+doha:{z:'Doha',e:'Doha',cc:'QA',la:25.3,lo:51.5,tz:'Asia/Qatar',h:[22,23,27,33,39,42,42,42,39,35,29,24],l:[13,14,17,21,26,29,31,31,28,25,20,15],r:[13,18,16,8,4,0,0,0,0,1,3,12],bm:[10,11,0,1],am:[5,6,7],bt:'Nov–Feb',at:'Jun–Aug extreme heat'},
+london:{z:'London',e:'London',cc:'GB',la:51.5,lo:-0.1,tz:'Europe/London',h:[8,9,12,15,18,21,24,23,20,16,11,9],l:[2,2,4,6,9,12,14,14,11,8,5,3],r:[55,41,42,44,49,45,45,50,49,69,59,55],bm:[4,5,6,7,8],am:[10,11,0,1],bt:'May–Sep',at:'Nov–Feb dark & damp'},
+paris:{z:'Paris',e:'Paris',cc:'FR',la:48.9,lo:2.3,tz:'Europe/Paris',h:[7,8,12,16,20,23,25,25,21,16,11,8],l:[2,2,5,7,11,14,16,16,12,9,5,3],r:[51,42,48,52,63,50,63,53,55,62,52,58],bm:[4,5,6,8],am:[11,0,1],bt:'May–Jul, Sep',at:'Dec–Feb cold & gray'},
+rome:{z:'Rome',e:'Rome',cc:'IT',la:41.9,lo:12.5,tz:'Europe/Rome',h:[12,13,16,19,23,28,31,31,27,22,16,13],l:[3,4,6,8,12,16,19,19,16,12,8,4],r:[67,73,58,62,48,34,19,36,68,94,115,81],bm:[3,4,5,8,9],am:[7],bt:'Apr–Jun, Sep–Oct',at:'Aug extreme heat'},
+barcelona:{z:'Barcelona',e:'Barcelona',cc:'ES',la:41.4,lo:2.2,tz:'Europe/Madrid',h:[14,15,17,19,22,26,29,29,26,22,17,14],l:[5,6,8,10,14,18,21,21,18,14,9,6],r:[41,29,42,50,47,40,20,61,81,91,58,47],bm:[4,5,8,9],am:[],bt:'May–Jun, Sep–Oct',at:'Aug crowded & hottest'},
+madrid:{z:'Madrid',e:'Madrid',cc:'ES',la:40.4,lo:-3.7,tz:'Europe/Madrid',h:[10,12,16,18,22,30,33,33,27,20,14,10],l:[1,2,5,7,11,16,19,19,15,10,5,2],r:[33,34,26,45,47,25,15,12,28,50,58,51],bm:[3,4,5,8,9],am:[6,7],bt:'Apr–Jun, Sep–Oct',at:'Jul–Aug extreme heat'},
+amsterdam:{z:'Amsterdam',e:'Amsterdam',cc:'NL',la:52.4,lo:4.9,tz:'Europe/Amsterdam',h:[6,7,10,14,17,20,22,22,19,14,10,7],l:[1,1,3,5,9,11,13,13,11,7,4,2],r:[68,48,63,42,55,65,81,85,78,83,85,76],bm:[3,4,5,6,7],am:[10,11,0,1],bt:'Apr–Aug',at:'Nov–Feb cold & windy'},
+berlin:{z:'Berlin',e:'Berlin',cc:'DE',la:52.5,lo:13.4,tz:'Europe/Berlin',h:[3,4,9,14,19,22,25,25,20,14,8,4],l:[-2,-2,1,4,9,12,15,14,11,6,2,-1],r:[42,33,41,37,54,69,56,58,45,37,44,55],bm:[4,5,6,7,8],am:[11,0,1],bt:'May–Sep',at:'Dec–Feb severe cold'},
+vienna:{z:'Vienna',e:'Vienna',cc:'AT',la:48.2,lo:16.4,tz:'Europe/Vienna',h:[3,5,10,16,21,24,27,26,21,15,8,4],l:[-2,-1,3,7,11,15,17,17,13,7,3,-1],r:[37,39,46,45,62,70,68,58,54,40,50,44],bm:[4,5,8,9,11],am:[0,1],bt:'May–Jun, Sep–Oct, Dec',at:'Jan–Feb severe cold'},
+prague:{z:'Prague',e:'Prague',cc:'CZ',la:50.1,lo:14.4,tz:'Europe/Prague',h:[2,4,9,15,20,23,25,25,20,14,7,3],l:[-3,-2,1,5,9,12,14,14,10,6,2,-2],r:[23,22,28,38,77,73,66,70,40,29,31,25],bm:[4,5,8,9],am:[0,1],bt:'May–Jun, Sep–Oct',at:'Jan–Feb severe cold'},
+zurich:{z:'Zurich',e:'Zurich',cc:'CH',la:47.4,lo:8.5,tz:'Europe/Zurich',h:[3,5,10,15,19,23,25,25,20,14,8,4],l:[-2,-1,2,5,10,13,15,15,11,7,2,-1],r:[63,63,75,81,129,128,114,124,99,77,76,72],bm:[5,6,7,8],am:[0,1,11],bt:'Jun–Sep',at:'Dec–Feb cold & cloudy'},
+stockholm:{z:'Stockholm',e:'Stockholm',cc:'SE',la:59.3,lo:18.1,tz:'Europe/Stockholm',h:[-1,0,4,10,16,21,23,21,16,10,4,1],l:[-5,-5,-2,2,7,11,14,13,9,5,0,-3],r:[39,27,26,30,30,45,72,66,55,50,53,46],bm:[5,6,7],am:[11,0,1],bt:'Jun–Aug',at:'Dec–Feb cold & dark'},
+oslo:{z:'Oslo',e:'Oslo',cc:'NO',la:59.9,lo:10.7,tz:'Europe/Oslo',h:[-1,0,5,10,16,20,22,21,16,9,4,1],l:[-7,-6,-3,1,6,10,13,12,8,3,-1,-5],r:[54,41,48,44,54,65,81,90,80,84,73,55],bm:[5,6,7],am:[11,0,1],bt:'Jun–Aug',at:'Dec–Feb extreme cold'},
+copenhagen:{z:'Copenhagen',e:'Copenhagen',cc:'DK',la:55.7,lo:12.6,tz:'Europe/Copenhagen',h:[3,3,6,12,16,20,22,22,18,12,7,4],l:[-1,-1,1,4,8,12,14,14,11,7,3,1],r:[46,30,39,38,43,47,68,64,60,56,61,56],bm:[4,5,6,7],am:[11,0,1],bt:'May–Aug',at:'Dec–Feb cold & dark'},
+helsinki:{z:'Helsinki',e:'Helsinki',cc:'FI',la:60.2,lo:24.9,tz:'Europe/Helsinki',h:[-2,-2,2,9,15,19,22,20,15,8,3,0],l:[-7,-8,-4,1,6,11,14,13,8,3,-1,-5],r:[52,36,38,32,37,57,63,80,56,65,63,52],bm:[5,6,7],am:[11,0,1],bt:'Jun–Aug',at:'Dec–Feb extreme cold & dark'},
+reykjavik:{z:'Reykjavik',e:'Reykjavik',cc:'IS',la:64.1,lo:-21.9,tz:'Atlantic/Reykjavik',h:[3,3,4,6,10,12,14,13,11,7,4,3],l:[-2,-2,-1,1,4,7,9,8,6,3,0,-2],r:[76,72,82,58,44,50,52,62,67,86,73,79],bm:[5,6,7],am:[11,0,1],bt:'Jun–Aug midnight sun',at:'Dec–Feb polar night (but northern lights)'},
+athens:{z:'Athens',e:'Athens',cc:'GR',la:37.9,lo:23.7,tz:'Europe/Athens',h:[13,14,16,20,25,30,33,33,29,24,18,14],l:[7,7,9,12,16,21,24,24,20,16,12,8],r:[57,47,40,31,23,11,6,7,15,53,58,69],bm:[3,4,5,8,9],am:[6,7],bt:'Apr–Jun, Sep–Oct',at:'Jul–Aug extreme heat'},
+lisbon:{z:'Lisbon',e:'Lisbon',cc:'PT',la:38.7,lo:-9.1,tz:'Europe/Lisbon',h:[15,16,18,20,22,26,28,28,26,22,18,15],l:[8,9,11,12,14,17,19,19,18,15,11,9],r:[110,111,69,63,44,16,5,5,33,80,114,108],bm:[3,4,5,6,8],am:[11,0,1],bt:'Apr–Jul, Sep',at:'Dec–Feb rainy'},
+dublin:{z:'Dublin',e:'Dublin',cc:'IE',la:53.3,lo:-6.3,tz:'Europe/Dublin',h:[8,8,10,12,15,17,19,19,17,14,10,8],l:[2,2,3,4,7,9,12,11,9,7,4,3],r:[67,50,53,55,60,57,56,73,60,79,75,72],bm:[4,5,6,7,8],am:[10,11,0,1],bt:'May–Sep',at:'Nov–Feb cold & rainy'},
+budapest:{z:'Budapest',e:'Budapest',cc:'HU',la:47.5,lo:19.0,tz:'Europe/Budapest',h:[3,5,11,17,22,26,28,28,23,17,9,4],l:[-3,-1,3,7,12,15,17,17,12,7,2,-1],r:[37,28,30,42,62,63,45,49,40,38,50,44],bm:[4,5,8,9],am:[0,1],bt:'May–Jun, Sep–Oct',at:'Jan–Feb severe cold'},
+edinburgh:{z:'Edinburgh',e:'Edinburgh',cc:'GB',la:55.9,lo:-3.2,tz:'Europe/London',h:[7,7,9,11,14,17,19,19,16,13,9,7],l:[1,1,2,4,6,9,11,11,9,6,3,1],r:[57,42,51,41,51,51,57,65,57,65,62,57],bm:[4,5,6,7,8],am:[10,11,0,1],bt:'May–Sep',at:'Nov–Feb cold & windy'},
+newyork:{z:'New York',e:'New York',cc:'US',la:40.7,lo:-74.0,tz:'America/New_York',h:[4,5,10,18,22,27,30,29,25,19,13,6],l:[-3,-2,2,8,13,18,21,21,17,11,5,0],r:[93,79,111,114,106,112,117,113,109,112,102,102],bm:[3,4,5,8,9],am:[0,1,6,7],bt:'Apr–Jun, Sep–Oct',at:'Jan–Feb severe cold, Jul–Aug humid'},
+losangeles:{z:'Los Angeles',e:'Los Angeles',cc:'US',la:34.1,lo:-118.2,tz:'America/Los_Angeles',h:[20,20,21,22,23,25,28,29,28,26,22,20],l:[9,10,11,12,14,16,18,18,17,15,11,9],r:[79,97,61,23,7,2,0,1,5,18,26,59],bm:[2,3,4,5,8,9],am:[],bt:'Year-round pleasant, Mar–May & Sep–Nov best',at:'Occasional wildfires'},
+sanfrancisco:{z:'San Francisco',e:'San Francisco',cc:'US',la:37.8,lo:-122.4,tz:'America/Los_Angeles',h:[14,16,17,18,19,21,21,21,23,21,17,14],l:[8,9,9,10,11,12,13,13,13,12,10,8],r:[114,113,82,37,18,4,0,1,5,25,64,116],bm:[8,9,4,5],am:[],bt:'Sep–Oct warmest, May–Jun',at:'Jun–Aug surprisingly foggy & cool'},
+lasvegas:{z:'Las Vegas',e:'Las Vegas',cc:'US',la:36.2,lo:-115.1,tz:'America/Los_Angeles',h:[14,17,21,26,31,38,41,40,35,28,20,14],l:[1,4,7,11,16,21,25,24,19,12,5,1],r:[13,19,11,5,3,2,11,11,8,8,8,10],bm:[2,3,4,9,10],am:[5,6,7],bt:'Mar–May, Oct–Nov',at:'Jun–Aug extreme heat 40°C+'},
+chicago:{z:'Chicago',e:'Chicago',cc:'US',la:41.9,lo:-87.6,tz:'America/Chicago',h:[-1,2,8,15,21,27,29,28,24,17,9,2],l:[-9,-6,-2,4,10,16,19,18,14,7,1,-6],r:[52,49,68,92,105,102,101,99,84,82,78,64],bm:[4,5,8,9],am:[0,1,11],bt:'May–Jun, Sep–Oct',at:'Dec–Feb severe cold, Jul–Aug humid'},
+miami:{z:'Miami',e:'Miami',cc:'US',la:25.8,lo:-80.2,tz:'America/New_York',h:[25,26,28,29,31,32,33,33,32,30,28,26],l:[16,17,19,21,24,25,26,26,25,23,20,17],r:[52,57,68,80,140,243,163,200,234,162,83,53],bm:[10,11,0,1,2],am:[7,8],bt:'Nov–Mar',at:'Aug–Sep hurricane season'},
+vancouver:{z:'Vancouver',e:'Vancouver',cc:'CA',la:49.3,lo:-123.1,tz:'America/Vancouver',h:[6,8,10,13,17,20,23,23,19,14,9,6],l:[1,2,3,5,8,11,13,13,10,7,4,2],r:[169,105,114,89,65,54,40,39,54,121,189,162],bm:[5,6,7],am:[10,11],bt:'Jun–Aug',at:'Nov–Dec heavy rain'},
+toronto:{z:'Toronto',e:'Toronto',cc:'CA',la:43.7,lo:-79.4,tz:'America/Toronto',h:[-1,0,5,12,19,24,27,26,22,14,8,2],l:[-7,-7,-2,4,10,15,18,18,13,7,2,-4],r:[62,51,54,68,74,71,64,79,85,64,75,70],bm:[5,6,7,8],am:[0,1,11],bt:'Jun–Sep',at:'Dec–Feb severe cold'},
+mexicocity:{z:'Mexico City',e:'Mexico City',cc:'MX',la:19.4,lo:-99.1,tz:'America/Mexico_City',h:[22,24,26,27,26,25,23,23,23,22,22,22],l:[6,7,9,11,12,13,12,12,12,11,8,7],r:[11,4,10,26,53,119,170,152,145,67,13,6],bm:[10,11,0,1,2],am:[6,7],bt:'Nov–Mar',at:'Jul–Aug rainy season'},
+cancun:{z:'Cancún',e:'Cancun',cc:'MX',la:21.2,lo:-86.8,tz:'America/Cancun',h:[28,29,30,31,32,32,33,33,32,31,29,28],l:[19,20,21,23,24,25,25,25,24,23,21,20],r:[72,39,33,38,111,181,109,129,220,241,107,78],bm:[0,1,2,3],am:[8,9],bt:'Dec–Apr',at:'Sep–Oct hurricane season'},
+buenosaires:{z:'Buenos Aires',e:'Buenos Aires',cc:'AR',la:-34.6,lo:-58.4,tz:'America/Argentina/Buenos_Aires',h:[30,29,26,23,19,15,15,17,19,22,25,28],l:[20,20,17,14,10,8,7,8,10,13,16,18],r:[121,123,134,107,74,56,53,64,78,120,108,105],bm:[8,9,10,2,3],am:[],bt:'Sep–Nov, Mar–May',at:'Jul coolest but still mild'},
+lima:{z:'Lima',e:'Lima',cc:'PE',la:-12.0,lo:-77.0,tz:'America/Lima',h:[26,27,27,25,22,20,19,19,19,20,22,24],l:[19,20,19,18,16,15,15,14,14,15,17,18],r:[1,0,0,0,1,2,1,1,3,1,0,1],bm:[0,1,2,3],am:[5,6,7],bt:'Jan–Apr (summer)',at:'Jun–Aug foggy & cold (garúa)'},
+cairo:{z:'Cairo',e:'Cairo',cc:'EG',la:30.0,lo:31.2,tz:'Africa/Cairo',h:[19,21,24,28,33,35,36,35,33,30,25,21],l:[9,10,12,15,18,21,23,23,22,18,14,10],r:[5,4,4,1,1,0,0,0,0,1,3,6],bm:[9,10,1,2],am:[4,5,6,7],bt:'Oct–Mar',at:'May–Aug extreme heat'},
+capetown:{z:'Cape Town',e:'Cape Town',cc:'ZA',la:-33.9,lo:18.4,tz:'Africa/Johannesburg',h:[26,27,25,22,19,18,17,18,19,21,23,25],l:[16,16,14,12,9,8,7,8,9,11,13,15],r:[15,17,20,41,69,93,82,77,40,30,14,17],bm:[9,10,11,0,1,2],am:[5,6],bt:'Oct–Mar summer',at:'Jun–Jul winter rainy'},
+marrakech:{z:'Marrakech',e:'Marrakech',cc:'MA',la:31.6,lo:-8.0,tz:'Africa/Casablanca',h:[18,20,23,26,30,34,38,38,33,28,23,19],l:[6,8,10,12,15,18,21,21,19,15,10,7],r:[32,38,39,35,24,5,1,3,11,24,40,34],bm:[2,3,4,9,10],am:[6,7],bt:'Mar–May, Oct–Nov',at:'Jul–Aug extreme heat'},
+nairobi:{z:'Nairobi',e:'Nairobi',cc:'KE',la:-1.3,lo:36.8,tz:'Africa/Nairobi',h:[25,26,25,24,22,21,20,21,24,24,23,23],l:[12,13,14,14,13,11,10,10,11,13,14,13],r:[58,52,96,211,158,35,15,24,28,53,139,86],bm:[0,1,5,6,7,8],am:[3,4,10],bt:'Jan–Feb, Jun–Sep (dry season)',at:'Apr–May heavy rain, Nov rainy'},
+sydney:{z:'Sydney',e:'Sydney',cc:'AU',la:-33.9,lo:151.2,tz:'Australia/Sydney',h:[26,26,25,22,19,17,16,18,20,22,24,25],l:[19,19,18,15,11,9,8,9,11,14,16,18],r:[102,118,131,127,123,132,97,80,69,77,84,78],bm:[8,9,10,2,3],am:[],bt:'Sep–Nov, Mar–May',at:'Occasional extreme heat & bushfires'},
+melbourne:{z:'Melbourne',e:'Melbourne',cc:'AU',la:-37.8,lo:145.0,tz:'Australia/Melbourne',h:[26,26,24,20,17,14,13,15,17,20,22,24],l:[15,15,14,11,9,6,6,6,8,9,11,13],r:[48,47,50,57,56,49,48,50,58,67,60,59],bm:[8,9,10,2,3],am:[],bt:'Sep–Nov, Mar–May',at:'Weather highly changeable (4 seasons in a day)'},
+auckland:{z:'Auckland',e:'Auckland',cc:'NZ',la:-36.9,lo:174.8,tz:'Pacific/Auckland',h:[23,24,22,20,17,15,14,14,16,17,19,21],l:[16,16,15,13,10,8,7,8,9,11,13,15],r:[74,66,87,100,112,126,145,118,106,100,85,91],bm:[0,1,2,10,11],am:[5,6],bt:'Dec–Mar, Nov',at:'Jun–Jul winter rainy'},
+queenstown:{z:'Queenstown',e:'Queenstown',cc:'NZ',la:-45.0,lo:168.7,tz:'Pacific/Auckland',h:[22,22,19,15,11,8,7,9,12,15,18,20],l:[10,9,8,5,2,0,-2,-1,1,4,6,9],r:[65,56,63,62,63,46,44,52,55,66,58,58],bm:[0,1,11,5,6,7],am:[],bt:'Dec–Feb summer, Jun–Aug skiing',at:'No particularly bad period'}
+};
+
+const HOLIDAYS_DATA = {
+CN:[['01-01','New Year'],['02-17','Chinese New Year'],['02-18','Chinese New Year'],['02-19','Chinese New Year'],['04-05','Qingming Festival'],['05-01','Labour Day'],['06-19','Dragon Boat Festival'],['10-01','National Day'],['10-06','Mid-Autumn Festival']],
+HK:[['01-01','New Year'],['02-17','Lunar New Year'],['02-18','Lunar New Year'],['02-19','Lunar New Year'],['04-03','Good Friday'],['04-05','Qingming Festival'],['05-01','Labour Day'],['05-24','Buddha\'s Birthday'],['06-19','Dragon Boat Festival'],['07-01','HKSAR Establishment Day'],['10-01','National Day'],['10-07','Day After Mid-Autumn'],['12-25','Christmas Day']],
+MO:[['01-01','New Year'],['02-17','Lunar New Year'],['02-18','Lunar New Year'],['02-19','Lunar New Year'],['04-05','Qingming Festival'],['05-01','Labour Day'],['10-01','National Day'],['10-06','Mid-Autumn Festival'],['12-20','Macau SAR Establishment Day'],['12-25','Christmas Day']],
+TW:[['01-01','New Year'],['02-17','Lunar New Year\'s Eve'],['02-18','Lunar New Year'],['02-19','Lunar New Year'],['02-28','Peace Memorial Day'],['04-04','Children\'s Day'],['04-05','Qingming Festival'],['06-19','Dragon Boat Festival'],['10-06','Mid-Autumn Festival'],['10-10','National Day']],
+JP:[['01-01','New Year\'s Day'],['01-12','Coming of Age Day'],['02-11','National Foundation Day'],['02-23','Emperor\'s Birthday'],['03-20','Vernal Equinox Day'],['04-29','Shōwa Day'],['05-03','Constitution Memorial Day'],['05-04','Greenery Day'],['05-05','Children\'s Day'],['07-20','Marine Day'],['08-11','Mountain Day'],['09-21','Respect for the Aged Day'],['09-23','Autumnal Equinox Day'],['10-12','Sports Day'],['11-03','Culture Day'],['11-23','Labour Thanksgiving Day']],
+KR:[['01-01','New Year'],['02-16','Seollal (Lunar New Year)'],['02-17','Seollal'],['02-18','Seollal'],['03-01','Independence Movement Day'],['05-05','Children\'s Day'],['05-24','Buddha\'s Birthday'],['06-06','Memorial Day'],['08-15','Liberation Day'],['10-05','Chuseok'],['10-06','Chuseok'],['10-07','Chuseok'],['10-03','National Foundation Day'],['10-09','Hangul Day'],['12-25','Christmas Day']],
+TH:[['01-01','New Year'],['02-17','Makha Bucha (approx)'],['04-06','Chakri Memorial Day'],['04-13','Songkran Festival'],['04-14','Songkran Festival'],['04-15','Songkran Festival'],['05-01','Labour Day'],['05-24','Visakha Bucha'],['07-22','Asalha Bucha (approx)'],['07-28','King\'s Birthday'],['08-12','Mother\'s Day'],['10-23','Chulalongkorn Day'],['12-05','Father\'s Day'],['12-31','New Year\'s Eve']],
+VN:[['01-01','New Year'],['02-17','Tết (Lunar New Year)'],['02-18','Tết'],['02-19','Tết'],['02-20','Tết'],['04-30','Reunification Day'],['05-01','Labour Day'],['09-02','National Day']],
+SG:[['01-01','New Year'],['02-17','Chinese New Year'],['02-18','Chinese New Year'],['03-20','Hari Raya Aidilfitri (approx)'],['04-03','Good Friday'],['05-01','Labour Day'],['05-24','Vesak Day'],['05-27','Hari Raya Haji (approx)'],['08-09','National Day'],['10-20','Deepavali (approx)'],['12-25','Christmas Day']],
+MY:[['01-01','New Year'],['02-01','Thaipusam'],['02-17','Chinese New Year'],['02-18','Chinese New Year'],['03-20','Hari Raya Aidilfitri (approx)'],['03-21','Hari Raya Aidilfitri (approx)'],['05-01','Labour Day'],['05-24','Vesak Day'],['05-27','Hari Raya Haji (approx)'],['06-02','Yang di-Pertuan Agong Birthday'],['08-31','National Day'],['09-16','Malaysia Day'],['10-20','Deepavali (approx)'],['12-25','Christmas Day']],
+ID:[['01-01','New Year'],['02-17','Chinese New Year'],['03-20','Eid al-Fitr (approx)'],['03-21','Eid al-Fitr (approx)'],['03-29','Nyepi Day'],['04-03','Good Friday'],['05-01','Labour Day'],['05-24','Vesak Day'],['05-27','Eid al-Adha (approx)'],['05-29','Isra Mi\'raj'],['06-01','Pancasila Day'],['08-17','Independence Day'],['09-16','Prophet\'s Birthday (approx)'],['12-25','Christmas Day']],
+IN:[['01-26','Republic Day'],['03-14','Holi (approx)'],['04-03','Good Friday'],['05-24','Buddha Purnima'],['08-15','Independence Day'],['10-02','Gandhi Jayanti'],['10-20','Diwali (approx)'],['10-21','Diwali (approx)'],['12-25','Christmas Day']],
+AE:[['01-01','New Year'],['03-20','Eid al-Fitr (approx)'],['03-21','Eid al-Fitr (approx)'],['03-22','Eid al-Fitr (approx)'],['05-27','Eid al-Adha (approx)'],['05-28','Eid al-Adha (approx)'],['07-19','Islamic New Year (approx)'],['09-27','Prophet\'s Birthday (approx)'],['12-02','National Day'],['12-03','National Day']],
+TR:[['01-01','New Year'],['03-20','Eid al-Fitr (approx)'],['03-21','Eid al-Fitr (approx)'],['03-22','Eid al-Fitr (approx)'],['04-23','Children\'s Day'],['05-01','Labour Day'],['05-19','Youth Day'],['05-27','Eid al-Adha (approx)'],['05-28','Eid al-Adha (approx)'],['05-29','Eid al-Adha (approx)'],['05-30','Eid al-Adha (approx)'],['07-15','Democracy & Unity Day'],['08-30','Victory Day'],['10-29','Republic Day']],
+EG:[['01-07','Coptic Christmas'],['01-25','Revolution Day'],['03-20','Eid al-Fitr (approx)'],['04-13','Eid al-Fitr (approx)'],['04-25','Sinai Liberation Day'],['05-01','Labour Day'],['05-27','Eid al-Adha (approx)'],['06-30','June Revolution Day'],['07-19','Islamic New Year (approx)'],['07-23','July Revolution Day'],['10-06','Armed Forces Day']],
+GB:[['01-01','New Year'],['04-03','Good Friday'],['04-06','Easter Monday'],['05-04','Early May Bank Holiday'],['05-25','Spring Bank Holiday'],['08-31','Summer Bank Holiday'],['12-25','Christmas Day'],['12-26','Boxing Day']],
+FR:[['01-01','New Year'],['04-06','Easter Monday'],['05-01','Labour Day'],['05-08','Victory in Europe Day'],['05-14','Ascension Day'],['05-25','Whit Monday'],['07-14','Bastille Day'],['08-15','Assumption Day'],['11-01','All Saints\' Day'],['11-11','Armistice Day'],['12-25','Christmas Day']],
+DE:[['01-01','New Year'],['04-03','Good Friday'],['04-06','Easter Monday'],['05-01','Labour Day'],['05-14','Ascension Day'],['05-25','Whit Monday'],['10-03','German Unity Day'],['12-25','Christmas Day'],['12-26','St. Stephen\'s Day']],
+IT:[['01-01','New Year'],['01-06','Epiphany'],['04-05','Easter Sunday'],['04-06','Easter Monday'],['04-25','Liberation Day'],['05-01','Labour Day'],['06-02','Republic Day'],['08-15','Assumption Day'],['11-01','All Saints\' Day'],['12-08','Immaculate Conception'],['12-25','Christmas Day'],['12-26','St. Stephen\'s Day']],
+ES:[['01-01','New Year'],['01-06','Epiphany'],['04-02','Holy Thursday'],['04-03','Good Friday'],['05-01','Labour Day'],['08-15','Assumption Day'],['10-12','National Day'],['11-01','All Saints\' Day'],['12-06','Constitution Day'],['12-08','Immaculate Conception'],['12-25','Christmas Day']],
+US:[['01-01','New Year'],['01-19','Martin Luther King Jr. Day'],['02-16','Presidents\' Day'],['05-25','Memorial Day'],['07-04','Independence Day'],['09-07','Labour Day'],['10-12','Columbus Day'],['11-11','Veterans Day'],['11-26','Thanksgiving Day'],['12-25','Christmas Day']],
+CA:[['01-01','New Year'],['02-16','Family Day'],['04-03','Good Friday'],['05-18','Victoria Day'],['07-01','Canada Day'],['09-07','Labour Day'],['10-12','Thanksgiving Day'],['11-11','Remembrance Day'],['12-25','Christmas Day'],['12-26','Boxing Day']],
+AU:[['01-01','New Year'],['01-26','Australia Day'],['04-03','Good Friday'],['04-06','Easter Monday'],['04-25','ANZAC Day'],['06-08','Queen\'s Birthday'],['12-25','Christmas Day'],['12-26','Boxing Day']],
+NZ:[['01-01','New Year'],['01-02','Day After New Year'],['02-06','Waitangi Day'],['04-03','Good Friday'],['04-06','Easter Monday'],['04-25','ANZAC Day'],['06-01','Queen\'s Birthday'],['10-26','Labour Day'],['12-25','Christmas Day'],['12-26','Boxing Day']],
+MX:[['01-01','New Year'],['02-02','Constitution Day'],['03-16','Benito Juárez Birthday'],['05-01','Labour Day'],['09-16','Independence Day'],['11-02','Day of the Dead'],['11-16','Revolution Day'],['12-25','Christmas Day']],
+BR:[['01-01','New Year'],['02-16','Carnival'],['02-17','Carnival'],['04-03','Good Friday'],['04-21','Tiradentes Day'],['05-01','Labour Day'],['06-04','Corpus Christi'],['09-07','Independence Day'],['10-12','Our Lady of Aparecida'],['11-02','All Souls\' Day'],['11-15','Republic Day'],['12-25','Christmas Day']],
+PT:[['01-01','New Year'],['02-17','Carnival'],['04-03','Good Friday'],['04-25','Freedom Day'],['05-01','Labour Day'],['06-04','Corpus Christi'],['06-10','Portugal Day'],['08-15','Assumption Day'],['10-05','Republic Day'],['11-01','All Saints\' Day'],['12-01','Restoration of Independence'],['12-08','Immaculate Conception'],['12-25','Christmas Day']],
+NL:[['01-01','New Year'],['04-06','Easter Monday'],['04-27','King\'s Day'],['05-05','Liberation Day'],['05-14','Ascension Day'],['05-25','Whit Monday'],['12-25','Christmas Day'],['12-26','Second Christmas Day']],
+CH:[['01-01','New Year'],['04-03','Good Friday'],['04-06','Easter Monday'],['05-14','Ascension Day'],['05-25','Whit Monday'],['08-01','National Day'],['12-25','Christmas Day']],
+AT:[['01-01','New Year'],['01-06','Epiphany'],['04-06','Easter Monday'],['05-01','Labour Day'],['05-14','Ascension Day'],['05-25','Whit Monday'],['06-04','Corpus Christi'],['08-15','Assumption Day'],['10-26','National Day'],['11-01','All Saints\' Day'],['12-08','Immaculate Conception'],['12-25','Christmas Day'],['12-26','St. Stephen\'s Day']],
+GR:[['01-01','New Year'],['01-06','Epiphany'],['03-02','Clean Monday'],['03-25','Independence Day'],['04-18','Orthodox Good Friday'],['04-20','Orthodox Easter'],['05-01','Labour Day'],['06-08','Whit Monday'],['08-15','Assumption Day'],['10-28','Ohi Day'],['12-25','Christmas Day']],
+CZ:[['01-01','New Year'],['04-03','Good Friday'],['04-06','Easter Monday'],['05-01','Labour Day'],['05-08','Liberation Day'],['07-05','Saints Cyril & Methodius'],['07-06','Jan Hus Day'],['09-28','Czech Statehood Day'],['10-28','Independence Day'],['11-17','Freedom & Democracy Day'],['12-24','Christmas Eve'],['12-25','Christmas Day'],['12-26','St. Stephen\'s Day']],
+IL:[['04-02','Passover (approx)'],['04-08','Last Day of Passover (approx)'],['04-23','Independence Day'],['06-22','Shavuot (approx)'],['09-23','Rosh Hashanah (approx)'],['10-02','Yom Kippur (approx)'],['10-07','Sukkot (approx)']],
+ZA:[['01-01','New Year'],['03-21','Human Rights Day'],['04-03','Good Friday'],['04-06','Family Day'],['04-27','Freedom Day'],['05-01','Workers\' Day'],['06-16','Youth Day'],['08-09','Women\'s Day'],['09-24','Heritage Day'],['12-16','Day of Reconciliation'],['12-25','Christmas Day'],['12-26','Day of Goodwill']],
+MA:[['01-01','New Year'],['01-11','Independence Manifesto Day'],['03-20','Eid al-Fitr (approx)'],['05-01','Labour Day'],['05-27','Eid al-Adha (approx)'],['07-19','Islamic New Year (approx)'],['07-30','Throne Day'],['08-14','Allegiance Day'],['08-20','Revolution Day'],['08-21','King\'s Birthday'],['09-27','Prophet\'s Birthday (approx)'],['11-06','Green March Day'],['11-18','Independence Day']]
+};
+
+const CURR = {
+USD:{z:'US Dollar',e:'US Dollar',s:'$',r:1},EUR:{z:'Euro',e:'Euro',s:'€',r:0.92},
+GBP:{z:'British Pound',e:'British Pound',s:'£',r:0.79},JPY:{z:'Japanese Yen',e:'Japanese Yen',s:'¥',r:150},
+CNY:{z:'Chinese Yuan',e:'Chinese Yuan',s:'¥',r:7.25},HKD:{z:'HK Dollar',e:'Hong Kong Dollar',s:'$',r:7.82},
+MOP:{z:'Macanese Pataca',e:'Macanese Pataca',s:'$',r:8.06},TWD:{z:'New Taiwan Dollar',e:'New Taiwan Dollar',s:'$',r:32.5},
+KRW:{z:'Korean Won',e:'South Korean Won',s:'₩',r:1350},THB:{z:'Thai Baht',e:'Thai Baht',s:'฿',r:35},
+VND:{z:'Vietnamese Dong',e:'Vietnamese Dong',s:'₫',r:24500},KHR:{z:'Cambodian Riel',e:'Cambodian Riel',s:'៛',r:4100},
+MYR:{z:'Malaysian Ringgit',e:'Malaysian Ringgit',s:'RM',r:4.45},SGD:{z:'Singapore Dollar',e:'Singapore Dollar',s:'$',r:1.35},
+IDR:{z:'Indonesian Rupiah',e:'Indonesian Rupiah',s:'Rp',r:15800},PHP:{z:'Philippine Peso',e:'Philippine Peso',s:'₱',r:56},
+INR:{z:'Indian Rupee',e:'Indian Rupee',s:'₹',r:83},LKR:{z:'Sri Lankan Rupee',e:'Sri Lankan Rupee',s:'Rs',r:310},
+NPR:{z:'Nepalese Rupee',e:'Nepalese Rupee',s:'Rs',r:133},MVR:{z:'Maldivian Rufiyaa',e:'Maldivian Rufiyaa',s:'Rf',r:15.4},
+AED:{z:'UAE Dirham',e:'UAE Dirham',s:'د.إ',r:3.67},SAR:{z:'Saudi Riyal',e:'Saudi Riyal',s:'﷼',r:3.75},
+QAR:{z:'Qatari Riyal',e:'Qatari Riyal',s:'﷼',r:3.64},ILS:{z:'Israeli Shekel',e:'Israeli Shekel',s:'₪',r:3.65},
+TRY:{z:'Turkish Lira',e:'Turkish Lira',s:'₺',r:30},EGP:{z:'Egyptian Pound',e:'Egyptian Pound',s:'£',r:30.9},
+MAD:{z:'Moroccan Dirham',e:'Moroccan Dirham',s:'د.م.',r:10},ZAR:{z:'South African Rand',e:'South African Rand',s:'R',r:18.5},
+KES:{z:'Kenyan Shilling',e:'Kenyan Shilling',s:'KSh',r:155},
+AUD:{z:'Australian Dollar',e:'Australian Dollar',s:'$',r:1.55},NZD:{z:'NZ Dollar',e:'New Zealand Dollar',s:'$',r:1.68},
+FJD:{z:'Fijian Dollar',e:'Fijian Dollar',s:'$',r:2.27},
+CAD:{z:'Canadian Dollar',e:'Canadian Dollar',s:'$',r:1.36},MXN:{z:'Mexican Peso',e:'Mexican Peso',s:'$',r:17.2},
+BRL:{z:'Brazilian Real',e:'Brazilian Real',s:'R$',r:5.0},ARS:{z:'Argentine Peso',e:'Argentine Peso',s:'$',r:870},
+CLP:{z:'Chilean Peso',e:'Chilean Peso',s:'$',r:950},COP:{z:'Colombian Peso',e:'Colombian Peso',s:'$',r:4100},
+PEN:{z:'Peruvian Sol',e:'Peruvian Sol',s:'S/',r:3.75},
+SEK:{z:'Swedish Krona',e:'Swedish Krona',s:'kr',r:10.5},NOK:{z:'Norwegian Krone',e:'Norwegian Krone',s:'kr',r:10.6},
+DKK:{z:'Danish Krone',e:'Danish Krone',s:'kr',r:6.88},ISK:{z:'Icelandic Króna',e:'Icelandic Króna',s:'kr',r:138},
+CHF:{z:'Swiss Franc',e:'Swiss Franc',s:'Fr',r:0.88},CZK:{z:'Czech Koruna',e:'Czech Koruna',s:'Kč',r:23.5},
+PLN:{z:'Polish Zloty',e:'Polish Zloty',s:'zł',r:4.05},HUF:{z:'Hungarian Forint',e:'Hungarian Forint',s:'Ft',r:365},
+RON:{z:'Romanian Leu',e:'Romanian Leu',s:'lei',r:4.6},BGN:{z:'Bulgarian Lev',e:'Bulgarian Lev',s:'лв',r:1.8},
+GEL:{z:'Georgian Lari',e:'Georgian Lari',s:'₾',r:2.7},KZT:{z:'Kazakhstani Tenge',e:'Kazakhstani Tenge',s:'₸',r:460},
+MMK:{z:'Myanmar Kyat',e:'Myanmar Kyat',s:'K',r:2100},LAK:{z:'Lao Kip',e:'Lao Kip',s:'₭',r:20800},
+BDT:{z:'Bangladeshi Taka',e:'Bangladeshi Taka',s:'৳',r:110},PKR:{z:'Pakistani Rupee',e:'Pakistani Rupee',s:'Rs',r:280},
+JOD:{z:'Jordanian Dinar',e:'Jordanian Dinar',s:'JD',r:0.71}
+};
+
+const UNIT_CATS = {
+length:{z:'Length',u:{mm:{z:'Millimeter',f:0.001},cm:{z:'Centimeter',f:0.01},m:{z:'Meter',f:1},km:{z:'Kilometer',f:1000},in:{z:'Inch',f:0.0254},ft:{z:'Foot',f:0.3048},yd:{z:'Yard',f:0.9144},mi:{z:'Mile',f:1609.344}}},
+weight:{z:'Weight',u:{mg:{z:'Milligram',f:0.001},g:{z:'Gram',f:1},kg:{z:'Kilogram',f:1000},t:{z:'Metric Ton',f:1e6},oz:{z:'Ounce',f:28.3495},lb:{z:'Pound',f:453.592},st:{z:'Stone',f:6350.29}}},
+temp:{z:'Temperature',u:{C:{z:'°C Celsius'},F:{z:'°F Fahrenheit'},K:{z:'K Kelvin'}}},
+volume:{z:'Volume',u:{ml:{z:'Milliliter',f:0.001},l:{z:'Liter',f:1},gal_us:{z:'US Gallon',f:3.78541},gal_uk:{z:'UK Gallon',f:4.54609},cup:{z:'Cup (US)',f:0.236588},fl_oz:{z:'Fl Oz (US)',f:0.0295735},pt:{z:'Pint (US)',f:0.473176}}},
+speed:{z:'Speed',u:{ms:{z:'m/s',f:1},kmh:{z:'km/h',f:0.277778},mph:{z:'mph',f:0.44704},kn:{z:'Knot',f:0.514444}}},
+area:{z:'Area',u:{sqm:{z:'sq meter',f:1},sqkm:{z:'sq km',f:1e6},ha:{z:'Hectare',f:10000},sqft:{z:'sq foot',f:0.092903},sqmi:{z:'sq mile',f:2.59e6},ac:{z:'Acre',f:4046.86},ping:{z:'Ping (坪)',f:3.30579}}}
+};
+
+const CITY_REGIONS = {
+'East Asia':[{k:'beijing'},{k:'shanghai'},{k:'guangzhou'},{k:'chengdu'},{k:'hongkong'},{k:'macau'},{k:'taipei'},{k:'kaohsiung'},{k:'tokyo'},{k:'osaka'},{k:'sapporo'},{k:'seoul'}],
+'Southeast Asia':[{k:'bangkok'},{k:'chiangmai'},{k:'singapore'},{k:'kualalumpur'},{k:'bali'},{k:'hanoi'},{k:'hochiminh'},{k:'manila'},{k:'phnompenh'},{k:'yangon'}],
+'South Asia / Middle East':[{k:'delhi'},{k:'mumbai'},{k:'kathmandu'},{k:'male'},{k:'dubai'},{k:'istanbul'},{k:'telaviv'},{k:'doha'}],
+'Europe':[{k:'london'},{k:'paris'},{k:'rome'},{k:'barcelona'},{k:'madrid'},{k:'amsterdam'},{k:'berlin'},{k:'vienna'},{k:'prague'},{k:'zurich'},{k:'stockholm'},{k:'oslo'},{k:'copenhagen'},{k:'helsinki'},{k:'reykjavik'},{k:'athens'},{k:'lisbon'},{k:'dublin'},{k:'budapest'},{k:'edinburgh'}],
+'Americas':[{k:'newyork'},{k:'losangeles'},{k:'sanfrancisco'},{k:'lasvegas'},{k:'chicago'},{k:'miami'},{k:'vancouver'},{k:'toronto'},{k:'mexicocity'},{k:'cancun'},{k:'buenosaires'},{k:'lima'}],
+'Africa':[{k:'cairo'},{k:'capetown'},{k:'marrakech'},{k:'nairobi'}],
+'Oceania':[{k:'sydney'},{k:'melbourne'},{k:'auckland'},{k:'queenstown'}]
+};
+
+const CO_REGIONS = {
+'East Asia':['CN','HK','MO','TW','JP','KR','MN'],
+'Southeast Asia':['TH','VN','KH','LA','MM','MY','SG','ID','PH','BN'],
+'South Asia':['IN','LK','NP','MV','BT','BD','PK'],
+'Central Asia / Caucasus':['UZ','KZ','GE','AM','AZ'],
+'Middle East':['AE','SA','QA','BH','OM','KW','IL','JO','TR','LB','IR'],
+'North Africa':['EG','MA','TN'],
+'East Africa':['KE','TZ','ET'],
+'West Africa':['NG','GH'],
+'Southern Africa':['ZA'],
+'Western Europe':['GB','FR','DE','IT','ES','PT','NL','BE','CH','AT','IE','LU','MC'],
+'Northern Europe':['SE','NO','DK','FI','IS'],
+'Southern / SE Europe':['GR','HR','SI','MT','ME','CY','AL'],
+'Central / Eastern Europe':['CZ','PL','HU','RO','BG','RS','SK','EE','LV','LT'],
+'North America':['US','CA','MX'],
+'Central / South America & Caribbean':['BR','AR','CL','CO','PE','CU','CR','PA','JM','DO'],
+'Oceania':['AU','NZ','FJ']
+};
+
+const ML = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const CM = new Date().getMonth();
+
+function calcSun(lat, lon, date) {
+  const rad = Math.PI / 180;
+  const doy = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 864e5);
+  const g = 2 * Math.PI / 365 * (doy - 1);
+  const eq = 229.18 * (0.000075 + 0.001868*Math.cos(g) - 0.032077*Math.sin(g) - 0.014615*Math.cos(2*g) - 0.040849*Math.sin(2*g));
+  const dc = 0.006918 - 0.399912*Math.cos(g) + 0.070257*Math.sin(g) - 0.006758*Math.cos(2*g) + 0.000907*Math.sin(2*g) - 0.002697*Math.cos(3*g) + 0.00148*Math.sin(3*g);
+  const cosHA = (Math.cos(90.833*rad) / (Math.cos(lat*rad)*Math.cos(dc))) - Math.tan(lat*rad)*Math.tan(dc);
+  if (cosHA > 1) return { rise: null, set: null, day: 0, polar: 'night' };
+  if (cosHA < -1) return { rise: null, set: null, day: 24, polar: 'day' };
+  const ha = Math.acos(cosHA);
+  const noon = (720 - 4*lon - eq) / 60;
+  const rise = noon - ha/rad*4/60;
+  const set = noon + ha/rad*4/60;
+  return { rise, set, day: set - rise, polar: null };
+}
+
+function utcHToStr(h) {
+  while (h < 0) h += 24; while (h >= 24) h -= 24;
+  const hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+  return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
+}
+
+function getLocalTime(tz) {
+  try { return new Date().toLocaleTimeString('en-US', { timeZone: tz, hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }); } catch (e2) { return '--:--:--'; }
+}
+function getLocalDate(tz) {
+  try { return new Date().toLocaleDateString('en-US', { timeZone: tz, year:'numeric', month:'short', day:'2-digit', weekday:'short' }); } catch (e3) { return '--'; }
+}
+
+function getOffsetHours(tz) {
+  try {
+    const now = new Date();
+    const s = now.toLocaleString('en-US',{timeZone:tz});
+    const local = new Date(s);
+    const utcS = now.toLocaleString('en-US',{timeZone:'UTC'});
+    const utc = new Date(utcS);
+    return (local - utc) / 3600000;
+  } catch (e4) { return 0; }
+}
+
+function tempClr(t) {
+  if(t<=-5) return '#1e40af';if(t<=0) return '#3b82f6';if(t<=5) return '#06b6d4';
+  if(t<=10) return '#14b8a6';if(t<=15) return '#22c55e';if(t<=20) return '#84cc16';
+  if(t<=25) return '#eab308';if(t<=30) return '#f97316';if(t<=35) return '#ef4444';
+  return '#dc2626';
+}
+
+function convertTemp(val, from, to) {
+  let c = from === 'C' ? val : from === 'F' ? (val - 32) * 5/9 : val - 273.15;
+  return to === 'C' ? c : to === 'F' ? c * 9/5 + 32 : c + 273.15;
+}
+
+function genClothing(d) {
+  const avg = a => a.reduce((s,v)=>s+v,0)/a.length;
+  const variation = Math.max(...d.h) - Math.min(...d.h);
+  if(variation < 5) {
+    let t='Hot year-round — wear light, breathable clothing (shorts & T-shirts).';
+    if(avg(d.r)>150) t+=' Rain possible anytime — carry a foldable umbrella.';
+    t+=' Sunscreen essential. Indoor AC can be very cold — bring a light jacket.';
+    return {'Year-round':t};
+  }
+  const isN = d.h[6] >= d.h[0];
+  const seasons = isN ? [{n:'🌸 Spring (Mar–May)',m:[2,3,4]},{n:'☀️ Summer (Jun–Aug)',m:[5,6,7]},{n:'🍂 Autumn (Sep–Nov)',m:[8,9,10]},{n:'❄️ Winter (Dec–Feb)',m:[11,0,1]}]
+    : [{n:'☀️ Summer (Dec–Feb)',m:[11,0,1]},{n:'🍂 Autumn (Mar–May)',m:[2,3,4]},{n:'❄️ Winter (Jun–Aug)',m:[5,6,7]},{n:'🌸 Spring (Sep–Nov)',m:[8,9,10]}];
+  const res={};
+  seasons.forEach(s => {
+    const aH=avg(s.m.map(i=>d.h[i])),aL=avg(s.m.map(i=>d.l[i])),aR=avg(s.m.map(i=>d.r[i]));
+    let t='';
+    if(aH>=33) t='Light T-shirts, shorts, sunscreen, sunglasses.';
+    else if(aH>=27) t='Short sleeves mainly, sun protection.';
+    else if(aH>=21) t='Light long sleeves, thin jacket.';
+    else if(aH>=15) t='Long sleeves, sweater, windbreaker or light down jacket.';
+    else if(aH>=8) t='Heavy coat, sweater, scarf.';
+    else if(aH>=2) t='Down jacket, thermal underwear, hat, gloves & scarf.';
+    else t='Extreme cold gear: thick down jacket, hand warmers, full coverage.';
+    if(aH-aL>12) t+=' Huge day-night temp gap — layer up.';
+    else if(aH-aL>8) t+=' Cooler mornings & evenings — bring a jacket.';
+    if(aR>200) t+=' Frequent rain — rain gear essential.';
+    else if(aR>100) t+=' Carry a foldable umbrella.';
+    res[s.n]=t;
+  });
+  return res;
+}
+
+const SearchSelect = _react2.default.memo(({ options, value, onChange, placeholder='Search city or country...', grouped }) => {
+  const [open, setOpen] = _react.useState.call(void 0, false);
+  const [q, setQ] = _react.useState.call(void 0, '');
+  const ref = _react.useRef.call(void 0, null);
+  const inputRef = _react.useRef.call(void 0, null);
+
+  _react.useEffect.call(void 0, () => {
+    const h = e => { if(ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
+  }, []);
+
+  const flat = _react.useMemo.call(void 0, () => {
+    if(grouped) {
+      const arr = [];
+      Object.entries(grouped).forEach(([g, items]) => items.forEach(it => arr.push({...it, group:g})));
+      return arr;
+    }
+    return options || [];
+  }, [options, grouped]);
+
+  const filtered = _react.useMemo.call(void 0, () => {
+    if(!q) return flat;
+    const s = q.toLowerCase();
+    return flat.filter(o => (o.z||'').toLowerCase().includes(s) || (o.e||'').toLowerCase().includes(s) || (o.label||'').toLowerCase().includes(s));
+  }, [flat, q]);
+
+  const groups = _react.useMemo.call(void 0, () => {
+    const m = {};
+    filtered.forEach(o => { const g = o.group||''; if(!m[g]) m[g]=[]; m[g].push(o); });
+    return m;
+  }, [filtered]);
+
+  const selected = flat.find(o => o.id === value);
+
+  return (
+    _react2.default.createElement('div', { ref: ref, className: "relative",}
+      , _react2.default.createElement('div', { className: "flex items-center border border-gray-300 rounded-lg bg-white cursor-pointer hover:border-blue-400 transition-colors"        ,
+        onClick: () => { setOpen(!open); setTimeout(()=>_optionalChain([inputRef, 'access', _2 => _2.current, 'optionalAccess', _3 => _3.focus, 'call', _4 => _4()]),50); },}
+        , _react2.default.createElement(_lucidereact.Search, { size: 14, className: "ml-3 text-gray-400 flex-shrink-0"  ,})
+        , _react2.default.createElement('input', { ref: inputRef, className: "w-full px-2 py-2.5 text-sm bg-transparent outline-none"     ,
+          placeholder: selected ? `${selected.z} ${selected.e||''}` : placeholder,
+          value: open ? q : (selected ? `${selected.z}${selected.e && selected.e !== selected.z ? ' ('+selected.e+')' : ''}` : ''),
+          onChange: e => { setQ(e.target.value); if(!open) setOpen(true); },
+          onFocus: () => { setOpen(true); setQ(''); },})
+        , _react2.default.createElement(_lucidereact.ChevronDown, { size: 14, className: "mr-3 text-gray-400 flex-shrink-0"  ,})
+      )
+      , open && (
+        _react2.default.createElement('div', { className: "absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-xl max-h-64 overflow-y-auto"          ,}
+          , Object.entries(groups).length === 0 && _react2.default.createElement('div', { className: "p-3 text-sm text-gray-400"  ,}, "No results" )
+          , Object.entries(groups).map(([g, items]) => (
+            _react2.default.createElement('div', { key: g,}
+              , g && _react2.default.createElement('div', { className: "px-3 py-1.5 text-xs font-bold text-gray-400 bg-gray-50 sticky top-0"       ,}, g)
+              , items.map(o => (
+                _react2.default.createElement('div', { key: o.id, className: `px-3 py-2 text-sm cursor-pointer hover:bg-blue-50 transition-colors ${o.id===value?'bg-blue-50 text-blue-700 font-semibold':'text-gray-700'}`,
+                  onClick: () => { onChange(o.id); setOpen(false); setQ(''); },}
+                  , o.z, " " , o.e && o.e !== o.z && _react2.default.createElement('span', { className: "text-gray-400 text-xs ml-1"  ,}, "(", o.e, ")")
+                )
+              ))
+            )
+          ))
+        )
+      )
+    )
+  );
+});
+
+const PlugSVG = ({type, size=80}) => {
+  const s = size;
+  const shapes = {
+    A: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('rect', { x: "10", y: "5", width: "40", height: "50", rx: "8", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('rect', { x: "22", y: "14", width: "4", height: "18", rx: "1", fill: "#4b5563",}), _react2.default.createElement('rect', { x: "34", y: "14", width: "4", height: "18", rx: "1", fill: "#4b5563",})),
+    B: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('rect', { x: "10", y: "5", width: "40", height: "50", rx: "8", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('rect', { x: "22", y: "12", width: "4", height: "16", rx: "1", fill: "#4b5563",}), _react2.default.createElement('rect', { x: "34", y: "12", width: "4", height: "16", rx: "1", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "40", r: "3", fill: "#4b5563",})),
+    C: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('rect', { x: "10", y: "5", width: "40", height: "50", rx: "8", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "23", cy: "25", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "37", cy: "25", r: "3", fill: "#4b5563",})),
+    D: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "35", r: "3.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "35", r: "3.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "18", r: "4", fill: "#4b5563",})),
+    E: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "34", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "34", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "16", r: "2.5", fill: "none", stroke: "#4b5563", strokeWidth: "1.5",})),
+    F: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "30", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "30", r: "3", fill: "#4b5563",}), _react2.default.createElement('rect', { x: "7", y: "22", width: "4", height: "16", rx: "2", fill: "#6b7280",}), _react2.default.createElement('rect', { x: "49", y: "22", width: "4", height: "16", rx: "2", fill: "#6b7280",})),
+    G: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('rect', { x: "8", y: "5", width: "44", height: "50", rx: "8", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('rect', { x: "17", y: "32", width: "5", height: "12", rx: "1", fill: "#4b5563",}), _react2.default.createElement('rect', { x: "38", y: "32", width: "5", height: "12", rx: "1", fill: "#4b5563",}), _react2.default.createElement('rect', { x: "26", y: "14", width: "8", height: "14", rx: "1", fill: "#4b5563",})),
+    H: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "20", cy: "36", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "40", cy: "36", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "18", r: "3", fill: "#4b5563",})),
+    I: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('rect', { x: "10", y: "5", width: "40", height: "50", rx: "8", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('rect', { x: "16", y: "14", width: "4", height: "16", rx: "1", fill: "#4b5563", transform: "rotate(20 18 22)"  ,}), _react2.default.createElement('rect', { x: "40", y: "14", width: "4", height: "16", rx: "1", fill: "#4b5563", transform: "rotate(-20 42 22)"  ,}), _react2.default.createElement('rect', { x: "28", y: "34", width: "4", height: "12", rx: "1", fill: "#4b5563",})),
+    J: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "28", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "28", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "42", r: "2.5", fill: "#4b5563",})),
+    K: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "28", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "28", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "42", r: "3", fill: "#4b5563",})),
+    L: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "18", cy: "30", r: "2.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "30", r: "2.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "42", cy: "30", r: "2.5", fill: "#4b5563",})),
+    M: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "36", r: "4", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "36", r: "4", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "18", r: "4.5", fill: "#4b5563",})),
+    N: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "34", r: "2.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "34", r: "2.5", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "20", r: "2.5", fill: "#4b5563",})),
+    O: _react2.default.createElement('svg', { width: s, height: s, viewBox: "0 0 60 60"   ,}, _react2.default.createElement('circle', { cx: "30", cy: "30", r: "24", fill: "#f3f4f6", stroke: "#9ca3af", strokeWidth: "2",}), _react2.default.createElement('circle', { cx: "22", cy: "30", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "38", cy: "30", r: "3", fill: "#4b5563",}), _react2.default.createElement('circle', { cx: "30", cy: "16", r: "3", fill: "#4b5563",}))
+  };
+  return shapes[type] || _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "N/A");
+};
+
+const TempChart = ({d}) => {
+  const all = [...d.h,...d.l];
+  const mn = Math.floor(Math.min(...all)/5)*5 - 5;
+  const mx = Math.ceil(Math.max(...all)/5)*5 + 5;
+  const rng = mx - mn;
+  const CH = 160;
+  const yp = t => CH * (1 - (t - mn) / rng);
+  const ticks = [];
+  for(let t=mn;t<=mx;t+=10) ticks.push(t);
+  return (
+    _react2.default.createElement('div', { className: "relative", style: {height:CH+30,paddingLeft:32},}
+      , ticks.map(t => _react2.default.createElement(_react2.default.Fragment, { key: t,}
+        , _react2.default.createElement('div', { className: "absolute left-0 text-gray-400"  , style: {top:yp(t),transform:'translateY(-50%)',fontSize:9,width:28,textAlign:'right'},}, t, "°")
+        , _react2.default.createElement('div', { className: "absolute right-0 border-t border-dashed border-gray-200"    , style: {top:yp(t),left:34},})
+      ))
+      , mn<0 && mx>0 && _react2.default.createElement('div', { className: "absolute right-0 border-t border-gray-400"   , style: {top:yp(0),left:34,borderWidth:1},})
+      , _react2.default.createElement('div', { className: "absolute flex gap-0.5"  , style: {left:36,right:4,top:0,height:CH},}
+        , d.h.map((hi,i) => {
+          const lo=d.l[i], hy=yp(hi), ly=yp(lo), bh=Math.max(ly-hy,2);
+          const av=(hi+lo)/2, col=tempClr(av), cur=i===CM;
+          return _react2.default.createElement('div', { key: i, className: "flex-1 relative" ,}
+            , _react2.default.createElement('div', { className: "absolute rounded" , style: {left:'15%',width:'70%',top:hy,height:bh,background:col,opacity:cur?1:0.5,boxShadow:cur?`0 0 0 2px ${col}`:''},})
+            , _react2.default.createElement('div', { className: "absolute w-full text-center font-bold"   , style: {top:hy-13,fontSize:9,color:col},}, hi, "°")
+            , _react2.default.createElement('div', { className: "absolute w-full text-center text-gray-400"   , style: {top:ly+2,fontSize:8},}, lo, "°")
+            , _react2.default.createElement('div', { className: `absolute w-full text-center ${cur?'font-bold text-blue-600':'text-gray-400'}`, style: {bottom:-22,fontSize:9},}, ML[i])
+          );
+        })
+      )
+    )
+  );
+};
+
+const RainChart = ({d}) => {
+  const mx = Math.max(Math.ceil(Math.max(...d.r)/50)*50, 50);
+  const CH = 100;
+  const step = mx<=100?25:mx<=300?50:100;
+  const ticks=[];for(let v=0;v<=mx;v+=step) ticks.push(v);
+  return (
+    _react2.default.createElement('div', { className: "relative", style: {height:CH+30,paddingLeft:32},}
+      , ticks.map(v => _react2.default.createElement(_react2.default.Fragment, { key: v,}
+        , _react2.default.createElement('div', { className: "absolute left-0 text-gray-400"  , style: {top:CH*(1-v/mx),transform:'translateY(-50%)',fontSize:9,width:28,textAlign:'right'},}, v)
+        , _react2.default.createElement('div', { className: "absolute right-0 border-t border-dashed border-gray-200"    , style: {top:CH*(1-v/mx),left:34},})
+      ))
+      , _react2.default.createElement('div', { className: "absolute flex gap-0.5 items-end"   , style: {left:36,right:4,bottom:26,height:CH},}
+        , d.r.map((rain,i) => {
+          const bh=rain/mx*CH, cur=i===CM;
+          return _react2.default.createElement('div', { key: i, className: "flex-1 flex flex-col items-center justify-end"    , style: {height:'100%'},}
+            , rain>0 && _react2.default.createElement('div', { className: "text-gray-500 mb-0.5" , style: {fontSize:7},}, rain)
+            , rain>0 && _react2.default.createElement('div', { className: "w-3/5 rounded-t" , style: {height:bh,background:'linear-gradient(to top,#93c5fd,#3b82f6)',opacity:cur?1:0.5},})
+          );
+        })
+      )
+      , _react2.default.createElement('div', { className: "absolute flex gap-0.5"  , style: {left:36,right:4,bottom:0,height:22},}
+        , ML.map((m,i) => _react2.default.createElement('div', { key: i, className: `flex-1 text-center ${i===CM?'font-bold text-blue-600':'text-gray-400'}`, style: {fontSize:9},}, m))
+      )
+    )
+  );
+};
+
+const SeasonStrip = ({d}) => (
+  _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "flex gap-0.5 rounded-lg overflow-hidden mb-2"    ,}
+      , Array.from({length:12}).map((_,i) => {
+        let cls='bg-yellow-300 text-yellow-900';
+        if(_optionalChain([d, 'access', _5 => _5.bm, 'optionalAccess', _6 => _6.includes, 'call', _7 => _7(i)])) cls='bg-green-500 text-white';
+        if(_optionalChain([d, 'access', _8 => _8.am, 'optionalAccess', _9 => _9.includes, 'call', _10 => _10(i)])) cls='bg-red-300 text-red-900';
+        const cur=i===CM;
+        return _react2.default.createElement('div', { key: i, className: `flex-1 text-center py-2 font-bold relative ${cls} ${cur?'ring-2 ring-blue-500 z-10':''}`, style: {fontSize:10},}
+          , cur && _react2.default.createElement('span', { className: "absolute -top-3 left-1/2 -translate-x-1/2 text-xs"    ,}, "📍")
+          , i+1
+        );
+      })
+    )
+    , _react2.default.createElement('div', { className: "flex justify-center gap-4 text-xs text-gray-400 mb-3"     ,}
+      , _react2.default.createElement('span', { className: "flex items-center gap-1"  ,}, _react2.default.createElement('span', { className: "w-2.5 h-2.5 rounded bg-green-500 inline-block"    ,}), "Best")
+      , _react2.default.createElement('span', { className: "flex items-center gap-1"  ,}, _react2.default.createElement('span', { className: "w-2.5 h-2.5 rounded bg-yellow-300 inline-block"    ,}), "OK")
+      , _react2.default.createElement('span', { className: "flex items-center gap-1"  ,}, _react2.default.createElement('span', { className: "w-2.5 h-2.5 rounded bg-red-300 inline-block"    ,}), "Not ideal" )
+    )
+  )
+);
+
+const Card = ({icon,title,children,className=''}) => (
+  _react2.default.createElement('div', { className: `bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-3 ${className}`,}
+    , title && _react2.default.createElement('div', { className: "flex items-center gap-2 font-bold text-sm mb-3"     ,}, icon, title)
+    , children
+  )
+);
+
+function PlugTab() {
+  const [home,setHome]=_react.useState.call(void 0, 'TW');
+  const [dest,setDest]=_react.useState.call(void 0, 'JP');
+  const coOpts = _react.useMemo.call(void 0, ()=>{
+    const g={};
+    Object.entries(CO_REGIONS).forEach(([rg,codes])=>{
+      g[rg]=codes.filter(c=>CO[c]).map(c=>({id:c,z:CO[c].z,e:CO[c].e}));
+    });
+    return g;
+  },[]);
+
+  const homeC=CO[home],destC=CO[dest];
+  const homePlug=(_optionalChain([homeC, 'optionalAccess', _11 => _11.p])||'').split(''),destPlug=(_optionalChain([destC, 'optionalAccess', _12 => _12.p])||'').split('');
+  const shared=homePlug.filter(p=>destPlug.includes(p));
+  const needAdapter=shared.length===0 && home!==dest;
+  const voltDiff=homeC && destC && homeC.v!==destC.v;
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3 mb-4"   ,}
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "🏠 Origin" )
+        , _react2.default.createElement(SearchSelect, { value: home, onChange: setHome, grouped: coOpts, placeholder: "Select origin country..."  ,}))
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "✈️ Destination" )
+        , _react2.default.createElement(SearchSelect, { value: dest, onChange: setDest, grouped: coOpts, placeholder: "Select destination..." ,}))
+    )
+    , destC && _react2.default.createElement('div', null
+      , needAdapter && _react2.default.createElement('div', { className: "bg-red-50 border border-red-200 rounded-lg p-3 mb-3 flex items-start gap-2"        ,}
+        , _react2.default.createElement(_lucidereact.AlertTriangle, { size: 16, className: "text-red-500 mt-0.5 flex-shrink-0"  ,})
+        , _react2.default.createElement('div', { className: "text-sm",}, _react2.default.createElement('span', { className: "font-bold text-red-600" ,}, "Adapter needed!" ), " " , homeC.z, " plugs ("  , homePlug.join(','), ") are incompatible with "    , destC.z, " outlets ("  , destPlug.join(','), ").")
+      )
+      , !needAdapter && home!==dest && _react2.default.createElement('div', { className: "bg-green-50 border border-green-200 rounded-lg p-3 mb-3 flex items-start gap-2"        ,}
+        , _react2.default.createElement(_lucidereact.ShieldCheck, { size: 16, className: "text-green-500 mt-0.5 flex-shrink-0"  ,})
+        , _react2.default.createElement('div', { className: "text-sm",}, _react2.default.createElement('span', { className: "font-bold text-green-600" ,}, "Plugs compatible!" ), " Shared types: "   , shared.join(', '), ". " , voltDiff && _react2.default.createElement('span', { className: "text-orange-600 font-semibold" ,}, " ⚠️ However, voltage differs ("     , homeC.v, "V → "  , destC.v, "V). Ensure your devices support dual voltage."      ))
+      )
+      , _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.Zap, { size: 14, className: "text-yellow-500",}), title: `${destC.z} — Power Specifications`,}
+        , _react2.default.createElement('div', { className: "grid grid-cols-3 gap-3 mb-4 text-center"    ,}
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}, _react2.default.createElement('div', { className: "text-lg font-bold" ,}, destC.v, "V"), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Voltage"))
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}, _react2.default.createElement('div', { className: "text-lg font-bold" ,}, destC.f, "Hz"), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Frequency"))
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}, _react2.default.createElement('div', { className: "text-lg font-bold" ,}, destPlug.join(', ')), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Plug Type" ))
+        )
+        , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3"  ,}
+          , destPlug.map(p => PLUG_META[p] && (
+            _react2.default.createElement('div', { key: p, className: "border border-gray-100 rounded-lg p-3 flex items-center gap-3"      ,}
+              , _react2.default.createElement(PlugSVG, { type: p, size: 56,})
+              , _react2.default.createElement('div', null
+                , _react2.default.createElement('div', { className: "font-bold text-sm" ,}, PLUG_META[p].n)
+                , _react2.default.createElement('div', { className: "text-xs text-gray-500" ,}, PLUG_META[p].d)
+              )
+            )
+          ))
+        )
+      )
+    )
+  );
+}
+
+function TimeTab() {
+  const [c1,setC1]=_react.useState.call(void 0, 'taipei');
+  const [c2,setC2]=_react.useState.call(void 0, 'tokyo');
+  const [now,setNow]=_react.useState.call(void 0, Date.now());
+  _react.useEffect.call(void 0, ()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[]);
+
+  const cityOpts = _react.useMemo.call(void 0, ()=>{
+    const g={};
+    Object.entries(CITY_REGIONS).forEach(([rg,items])=>{
+      g[rg]=items.map(({k})=>({id:k,z:CI[k].z,e:CI[k].e}));
+    });
+    return g;
+  },[]);
+
+  const d1=CI[c1],d2=CI[c2];
+  const off1=d1?getOffsetHours(d1.tz):0, off2=d2?getOffsetHours(d2.tz):0;
+  const diff=off2-off1;
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3 mb-4"   ,}
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "City A" )
+        , _react2.default.createElement(SearchSelect, { value: c1, onChange: setC1, grouped: cityOpts,}))
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "City B" )
+        , _react2.default.createElement(SearchSelect, { value: c2, onChange: setC2, grouped: cityOpts,}))
+    )
+    , d1 && d2 && _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3"  ,}
+      , [d1,d2].map((d,idx) => (
+        _react2.default.createElement(Card, { key: idx,}
+          , _react2.default.createElement('div', { className: "text-center",}
+            , _react2.default.createElement('div', { className: "font-bold text-base" ,}, d.z)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mb-1"  ,}, d.e)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mb-1"  ,}, "📍 " , d.la.toFixed(1), "°", d.la>=0?'N':'S', ", " , d.lo.toFixed(1), "°", d.lo>=0?'E':'W')
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mb-2"  ,}, "🕐 " , d.tz, " (UTC" , (idx===0?off1:off2)>=0?'+':'', (idx===0?off1:off2), ")")
+            , _react2.default.createElement('div', { className: "text-3xl font-black text-blue-600 tabular-nums"   ,}, getLocalTime(d.tz))
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mt-1"  ,}, getLocalDate(d.tz))
+          )
+        )
+      ))
+    )
+    , d1 && d2 && _react2.default.createElement('div', { className: "text-center bg-blue-50 rounded-xl p-4 mt-3"    ,}
+      , _react2.default.createElement(_lucidereact.ArrowLeftRight, { size: 18, className: "inline text-blue-500 mb-1"  ,})
+      , _react2.default.createElement('div', { className: "text-sm font-bold text-blue-700"  ,}, "Time Difference: "  , diff===0?'No difference':`${Math.abs(diff)} hour${Math.abs(diff)!==1?'s':''} (${d2.z} is ${Math.abs(diff)}h ${diff>0?'ahead':'behind'})`)
+    )
+  );
+}
+
+function SunTab() {
+  const [city,setCity]=_react.useState.call(void 0, 'taipei');
+  const [dateStr,setDateStr]=_react.useState.call(void 0, new Date().toISOString().split('T')[0]);
+  const cityOpts = _react.useMemo.call(void 0, ()=>{
+    const g={};
+    Object.entries(CITY_REGIONS).forEach(([rg,items])=>{g[rg]=items.map(({k})=>({id:k,z:CI[k].z,e:CI[k].e}));});
+    return g;
+  },[]);
+  const d=CI[city];
+  const date=new Date(dateStr+'T12:00:00Z');
+  const sun=d?calcSun(d.la,d.lo,date):null;
+  const off=d?getOffsetHours(d.tz):0;
+  const riseLocal=_optionalChain([sun, 'optionalAccess', _13 => _13.rise])!=null?utcHToStr(sun.rise+off):null;
+  const setLocal=_optionalChain([sun, 'optionalAccess', _14 => _14.set])!=null?utcHToStr(sun.set+off):null;
+  const dayH=_optionalChain([sun, 'optionalAccess', _15 => _15.day])?Math.floor(sun.day):0, dayM=_optionalChain([sun, 'optionalAccess', _16 => _16.day])?Math.round((sun.day-dayH)*60):0;
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3 mb-4"   ,}
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Select City" )
+        , _react2.default.createElement(SearchSelect, { value: city, onChange: setCity, grouped: cityOpts,}))
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Select Date" )
+        , _react2.default.createElement('input', { type: "date", value: dateStr, onChange: e=>setDateStr(e.target.value), className: "w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm"      ,}))
+    )
+    , d && sun && _react2.default.createElement('div', null
+      , _react2.default.createElement('div', { className: "text-center mb-3" ,}
+        , _react2.default.createElement('div', { className: "font-bold text-lg" ,}, d.z, " " , _react2.default.createElement('span', { className: "text-gray-400 text-sm" ,}, d.e))
+        , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "📍 " , d.la.toFixed(2), "°, " , d.lo.toFixed(2), "° · "  , d.tz)
+      )
+      , sun.polar ? (
+        _react2.default.createElement('div', { className: "text-center bg-gray-50 rounded-xl p-6"   ,}
+          , _react2.default.createElement('div', { className: "text-4xl mb-2" ,}, sun.polar==='day'?'☀️':'🌙')
+          , _react2.default.createElement('div', { className: "font-bold",}, sun.polar==='day'?'Midnight Sun — 24 hours of daylight':'Polar Night — No sunlight all day')
+        )
+      ) : (
+        _react2.default.createElement('div', { className: "grid grid-cols-3 gap-3"  ,}
+          , _react2.default.createElement(Card, { className: "text-center",}
+            , _react2.default.createElement(_lucidereact.Sunrise, { size: 28, className: "text-orange-400 mx-auto mb-2"  ,})
+            , _react2.default.createElement('div', { className: "text-2xl font-black text-orange-500"  ,}, riseLocal)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Sunrise")
+          )
+          , _react2.default.createElement(Card, { className: "text-center",}
+            , _react2.default.createElement(_lucidereact.Sun, { size: 28, className: "text-yellow-400 mx-auto mb-2"  ,})
+            , _react2.default.createElement('div', { className: "text-2xl font-black text-yellow-600"  ,}, dayH, "h " , dayM, "m")
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Daylight")
+          )
+          , _react2.default.createElement(Card, { className: "text-center",}
+            , _react2.default.createElement(_lucidereact.Sunset, { size: 28, className: "text-indigo-400 mx-auto mb-2"  ,})
+            , _react2.default.createElement('div', { className: "text-2xl font-black text-indigo-500"  ,}, setLocal)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Sunset")
+          )
+        )
+      )
+      , _react2.default.createElement('div', { className: "mt-3 bg-gradient-to-r from-yellow-50 via-blue-50 to-indigo-50 rounded-xl p-3"      ,}
+        , _react2.default.createElement('div', { className: "h-4 rounded-full overflow-hidden bg-gray-200 relative"    ,}
+          , !sun.polar && _react2.default.createElement(_react2.default.Fragment, null
+            , _react2.default.createElement('div', { className: "absolute h-full bg-gradient-to-r from-orange-300 via-yellow-200 to-orange-300"     , style: {left:`${(sun.rise/24)*100}%`,width:`${(sun.day/24)*100}%`},})
+            , _react2.default.createElement('div', { className: "absolute h-full w-0.5 bg-red-500 z-10"    , style: {left:`${((new Date().getUTCHours()+off)/24)*100}%`},})
+          )
+        )
+        , _react2.default.createElement('div', { className: "flex justify-between text-xs text-gray-400 mt-1"    ,}, _react2.default.createElement('span', null, "00:00"), _react2.default.createElement('span', null, "06:00"), _react2.default.createElement('span', null, "12:00"), _react2.default.createElement('span', null, "18:00"), _react2.default.createElement('span', null, "24:00"))
+      )
+    )
+  );
+}
+
+function HolidayTab() {
+  const [co,setCo]=_react.useState.call(void 0, 'JP');
+  const coOpts = _react.useMemo.call(void 0, ()=>{
+    const g={};
+    Object.entries(CO_REGIONS).forEach(([rg,codes])=>{g[rg]=codes.filter(c=>CO[c]).map(c=>({id:c,z:CO[c].z,e:CO[c].e}));});
+    return g;
+  },[]);
+  const holidays = HOLIDAYS_DATA[co]||[];
+  const today = new Date().toISOString().slice(5,10);
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "mb-4",}, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Select Country / Region"   )
+      , _react2.default.createElement(SearchSelect, { value: co, onChange: setCo, grouped: coOpts, placeholder: "Search countries..." ,}))
+    , CO[co] && _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.Calendar, { size: 14, className: "text-purple-500",}), title: `${CO[co].z} — 2026 Major Holidays`,}
+      , holidays.length===0?_react2.default.createElement('div', { className: "text-sm text-gray-400 py-4 text-center"   ,}, "No holiday data available for this country"      ):
+      _react2.default.createElement('div', { className: "space-y-1",}
+        , holidays.map(([dt,name],i)=>{
+          const isPast = dt < today.replace('-','').slice(0,5) ? true : false;
+          const mm=parseInt(dt.split('-')[0]),dd=parseInt(dt.split('-')[1]);
+          const isToday = dt===`${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}`;
+          return _react2.default.createElement('div', { key: i, className: `flex items-center gap-3 py-2 px-3 rounded-lg text-sm ${isToday?'bg-blue-50 ring-1 ring-blue-300':'hover:bg-gray-50'} transition-colors`,}
+            , _react2.default.createElement('div', { className: `w-14 text-center font-mono font-bold ${isPast?'text-gray-300':'text-blue-600'}`,}, mm, "/", dd)
+            , _react2.default.createElement('div', { className: `flex-1 ${isPast?'text-gray-300 line-through':'text-gray-700'}`,}, name)
+            , isToday && _react2.default.createElement('span', { className: "text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full"     ,}, "Today")
+            , name.includes('approx') && _react2.default.createElement('span', { className: "text-xs text-orange-400" ,}, "≈")
+          );
+        })
+      )
+    )
+  );
+}
+
+function CurrencyTab() {
+  const [from,setFrom]=_react.useState.call(void 0, 'TWD');
+  const [to,setTo]=_react.useState.call(void 0, 'JPY');
+  const [amt,setAmt]=_react.useState.call(void 0, '1000');
+  const curOpts = _react.useMemo.call(void 0, ()=>Object.entries(CURR).map(([k,v])=>({id:k,z:`${k} ${v.z}`,e:v.e})),[]);
+  const result = CURR[from] && CURR[to] ? parseFloat(amt||0) / CURR[from].r * CURR[to].r : 0;
+  const rate = CURR[from] && CURR[to] ? CURR[to].r / CURR[from].r : 0;
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "grid grid-cols-2 gap-3 mb-3"   ,}
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "From")
+        , _react2.default.createElement(SearchSelect, { options: curOpts, value: from, onChange: setFrom, placeholder: "Search currency..." ,}))
+      , _react2.default.createElement('div', null, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "To")
+        , _react2.default.createElement(SearchSelect, { options: curOpts, value: to, onChange: setTo, placeholder: "Search currency..." ,}))
+    )
+    , _react2.default.createElement('div', { className: "flex gap-3 mb-4 items-end"   ,}
+      , _react2.default.createElement('div', { className: "flex-1",}, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Amount")
+        , _react2.default.createElement('input', { type: "number", value: amt, onChange: e=>setAmt(e.target.value), className: "w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm"      ,}))
+      , _react2.default.createElement('button', { onClick: ()=>{const t=from;setFrom(to);setTo(t);}, className: "px-4 py-2.5 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"     ,}
+        , _react2.default.createElement(_lucidereact.ArrowLeftRight, { size: 16,}))
+    )
+    , _react2.default.createElement('div', { className: "bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl p-5 text-center"      ,}
+      , _react2.default.createElement('div', { className: "text-sm opacity-80 mb-1"  ,}, parseFloat(amt||0).toLocaleString(), " " , from, " =" )
+      , _react2.default.createElement('div', { className: "text-3xl font-black" ,}, result.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}), " " , to)
+      , _react2.default.createElement('div', { className: "text-xs opacity-70 mt-2"  ,}, "1 " , from, " = "  , rate.toFixed(rate<1?4:2), " " , to)
+    )
+    , _react2.default.createElement('div', { className: "text-xs text-gray-400 text-center mt-3"   ,}, "⚠️ Rates are for reference only. Please check with banks for actual rates."            )
+  );
+}
+
+function UnitTab() {
+  const [cat,setCat]=_react.useState.call(void 0, 'length');
+  const [from,setFrom]=_react.useState.call(void 0, 'km');
+  const [to,setTo]=_react.useState.call(void 0, 'mi');
+  const [val,setVal]=_react.useState.call(void 0, '1');
+
+  const units = _optionalChain([UNIT_CATS, 'access', _17 => _17[cat], 'optionalAccess', _18 => _18.u])||{};
+  const uKeys = Object.keys(units);
+
+  _react.useEffect.call(void 0, ()=>{
+    const k=Object.keys(_optionalChain([UNIT_CATS, 'access', _19 => _19[cat], 'optionalAccess', _20 => _20.u])||{});
+    if(k.length>=2){setFrom(k[0]);setTo(k[1]);}
+  },[cat]);
+
+  let result = 0;
+  if(cat==='temp'){
+    result = convertTemp(parseFloat(val||0),from,to);
+  } else {
+    const fFrom=_optionalChain([units, 'access', _21 => _21[from], 'optionalAccess', _22 => _22.f])||1, fTo=_optionalChain([units, 'access', _23 => _23[to], 'optionalAccess', _24 => _24.f])||1;
+    result = parseFloat(val||0) * fFrom / fTo;
+  }
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { className: "flex flex-wrap gap-1.5 mb-4"   ,}
+      , Object.entries(UNIT_CATS).map(([k,v])=>(
+        _react2.default.createElement('button', { key: k, onClick: ()=>setCat(k), className: `px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${cat===k?'bg-blue-600 text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`,}, v.z)
+      ))
+    )
+    , _react2.default.createElement('div', { className: "grid grid-cols-5 gap-2 items-end mb-4"    ,}
+      , _react2.default.createElement('div', { className: "col-span-2",}, _react2.default.createElement('label', { className: "text-xs text-gray-500 mb-1 block"   ,}, "From")
+        , _react2.default.createElement('select', { value: from, onChange: e=>setFrom(e.target.value), className: "w-full border border-gray-300 rounded-lg px-2 py-2.5 text-sm"      ,}
+          , uKeys.map(k=>_react2.default.createElement('option', { key: k, value: k,}, units[k].z))
+        ))
+      , _react2.default.createElement('div', { className: "flex justify-center pb-2"  ,}, _react2.default.createElement(_lucidereact.ArrowLeftRight, { size: 16, className: "text-gray-400",}))
+      , _react2.default.createElement('div', { className: "col-span-2",}, _react2.default.createElement('label', { className: "text-xs text-gray-500 mb-1 block"   ,}, "To")
+        , _react2.default.createElement('select', { value: to, onChange: e=>setTo(e.target.value), className: "w-full border border-gray-300 rounded-lg px-2 py-2.5 text-sm"      ,}
+          , uKeys.map(k=>_react2.default.createElement('option', { key: k, value: k,}, units[k].z))
+        ))
+    )
+    , _react2.default.createElement('div', { className: "flex gap-3 items-center mb-4"   ,}
+      , _react2.default.createElement('input', { type: "number", value: val, onChange: e=>setVal(e.target.value), className: "flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-right text-lg font-bold"         ,})
+      , _react2.default.createElement('span', { className: "text-gray-400 font-bold" ,}, "=")
+      , _react2.default.createElement('div', { className: "flex-1 bg-blue-50 rounded-lg px-3 py-2.5 text-right text-lg font-bold text-blue-700"        ,}
+        , result.toLocaleString(undefined,{maximumFractionDigits:6})
+      )
+    )
+    , _react2.default.createElement('div', { className: "text-center text-sm text-gray-500"  ,}, val||0, " " , _optionalChain([units, 'access', _25 => _25[from], 'optionalAccess', _26 => _26.z]), " = "  , result.toLocaleString(undefined,{maximumFractionDigits:6}), " " , _optionalChain([units, 'access', _27 => _27[to], 'optionalAccess', _28 => _28.z]))
+  );
+}
+
+function InfoTab() {
+  const [city,setCity]=_react.useState.call(void 0, 'taipei');
+  const [section,setSection]=_react.useState.call(void 0, null);
+  const topRef=_react.useRef.call(void 0, null);
+  const refs=[_react.useRef.call(void 0, null),_react.useRef.call(void 0, null),_react.useRef.call(void 0, null),_react.useRef.call(void 0, null)];
+
+  const cityOpts = _react.useMemo.call(void 0, ()=>{
+    const g={};
+    Object.entries(CITY_REGIONS).forEach(([rg,items])=>{g[rg]=items.map(({k})=>({id:k,z:CI[k].z,e:CI[k].e}));});
+    return g;
+  },[]);
+
+  const d=CI[city];
+  const co=d?CO[d.cc]:null;
+  const [now,setNow]=_react.useState.call(void 0, Date.now());
+  _react.useEffect.call(void 0, ()=>{const t=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(t);},[]);
+
+  const scrollTo=(idx)=>{_optionalChain([refs, 'access', _29 => _29[idx], 'optionalAccess', _30 => _30.current, 'optionalAccess', _31 => _31.scrollIntoView, 'call', _32 => _32({behavior:'smooth',block:'start'})]);setSection(idx);};
+  const scrollTop=()=>_optionalChain([topRef, 'access', _33 => _33.current, 'optionalAccess', _34 => _34.scrollIntoView, 'call', _35 => _35({behavior:'smooth',block:'start'})]);
+
+  const clothing = d ? genClothing(d) : {};
+  const plugs = co ? (co.p||'').split('') : [];
+  const hi=_optionalChain([d, 'optionalAccess', _36 => _36.h, 'access', _37 => _37[CM]]),lo=_optionalChain([d, 'optionalAccess', _38 => _38.l, 'access', _39 => _39[CM]]),rain=_optionalChain([d, 'optionalAccess', _40 => _40.r, 'access', _41 => _41[CM]]);
+  let nowRate=_optionalChain([d, 'optionalAccess', _42 => _42.bm, 'optionalAccess', _43 => _43.includes, 'call', _44 => _44(CM)])?'✨ Best time':_optionalChain([d, 'optionalAccess', _45 => _45.am, 'optionalAccess', _46 => _46.includes, 'call', _47 => _47(CM)])?'⚠️ Not ideal':'OK to visit';
+
+  const sections = ['📋 Basic Info','⚡ Plugs & Timezone','☀️ Weather & Climate','🚗 Driving Info'];
+  const BackBtn = () => _react2.default.createElement('button', { onClick: scrollTop, className: "flex items-center gap-1 text-xs text-blue-500 hover:text-blue-700 mt-3 mb-1"       ,}, _react2.default.createElement(_lucidereact.ArrowUp, { size: 12,}), "Back to top"  );
+
+  return _react2.default.createElement('div', null
+    , _react2.default.createElement('div', { ref: topRef,})
+    , _react2.default.createElement('div', { className: "mb-4",}, _react2.default.createElement('label', { className: "text-xs font-semibold text-gray-500 mb-1 block"    ,}, "Select City (auto-fills country info)"    )
+      , _react2.default.createElement(SearchSelect, { value: city, onChange: setCity, grouped: cityOpts,}))
+
+    , d && co && _react2.default.createElement(_react2.default.Fragment, null
+      , _react2.default.createElement('div', { className: "text-center mb-3" ,}
+        , _react2.default.createElement('div', { className: "text-xl font-black" ,}, d.z, " · "  , co.z)
+        , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, d.e, ", " , co.e)
+      )
+
+      , _react2.default.createElement('div', { className: "grid grid-cols-4 gap-1.5 mb-4"   ,}
+        , sections.map((s,i)=>(
+          _react2.default.createElement('button', { key: i, onClick: ()=>scrollTo(i), className: "px-2 py-2 bg-blue-50 hover:bg-blue-100 rounded-lg text-xs font-semibold text-blue-700 transition-colors text-center leading-tight"          ,}, s)
+        ))
+      )
+
+      , _react2.default.createElement('div', { ref: refs[0],})
+      , _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.BookOpen, { size: 14, className: "text-blue-500",}), title: "Basic Travel Info"  ,}
+        , _react2.default.createElement('div', { className: "space-y-3 text-sm" ,}
+          , _react2.default.createElement('div', { className: "flex gap-3" ,}, _react2.default.createElement(_lucidereact.CreditCard, { size: 14, className: "text-gray-400 mt-0.5 flex-shrink-0"  ,}), _react2.default.createElement('div', null, _react2.default.createElement('span', { className: "font-semibold",}, "Currency: " ), co.cur))
+          , _react2.default.createElement('div', { className: "flex gap-3" ,}, _react2.default.createElement(_lucidereact.Languages, { size: 14, className: "text-gray-400 mt-0.5 flex-shrink-0"  ,}), _react2.default.createElement('div', null, _react2.default.createElement('span', { className: "font-semibold",}, "Language: " ), co.lang))
+          , _react2.default.createElement('div', { className: "flex gap-3" ,}, _react2.default.createElement(_lucidereact.Phone, { size: 14, className: "text-gray-400 mt-0.5 flex-shrink-0"  ,}), _react2.default.createElement('div', null, _react2.default.createElement('span', { className: "font-semibold",}, "Emergency: " ), co.em))
+          , _react2.default.createElement('div', { className: "flex gap-3" ,}, _react2.default.createElement(_lucidereact.Coffee, { size: 14, className: "text-gray-400 mt-0.5 flex-shrink-0"  ,}), _react2.default.createElement('div', null, _react2.default.createElement('span', { className: "font-semibold",}, "Tipping: " ), co.tp))
+          , _react2.default.createElement('div', { className: "flex gap-3" ,}, _react2.default.createElement(_lucidereact.Globe, { size: 14, className: "text-gray-400 mt-0.5 flex-shrink-0"  ,}), _react2.default.createElement('div', null, _react2.default.createElement('span', { className: "font-semibold",}, "Culture & Customs: "   ), co.cu))
+        )
+        , _react2.default.createElement(BackBtn, null)
+      )
+
+      , _react2.default.createElement('div', { ref: refs[1],})
+      , _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.Zap, { size: 14, className: "text-yellow-500",}), title: "Plug Types & Timezone"   ,}
+        , _react2.default.createElement('div', { className: "grid grid-cols-3 gap-2 text-center mb-4"    ,}
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-2"  ,}, _react2.default.createElement('div', { className: "font-bold",}, co.v, "V"), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Voltage"))
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-2"  ,}, _react2.default.createElement('div', { className: "font-bold",}, co.f, "Hz"), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Frequency"))
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-2"  ,}, _react2.default.createElement('div', { className: "font-bold",}, plugs.join(', ')), _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Plug"))
+        )
+        , _react2.default.createElement('div', { className: "flex flex-wrap gap-3 justify-center mb-4"    ,}
+          , plugs.map(p=> PLUG_META[p] && _react2.default.createElement('div', { key: p, className: "text-center",}
+            , _react2.default.createElement(PlugSVG, { type: p, size: 52,})
+            , _react2.default.createElement('div', { className: "text-xs font-semibold" ,}, PLUG_META[p].n)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, PLUG_META[p].d)
+          ))
+        )
+        , _react2.default.createElement('div', { className: "bg-blue-50 rounded-lg p-4 text-center"   ,}
+          , _react2.default.createElement('div', { className: "text-xs text-gray-500 mb-1"  ,}, "🕐 " , d.tz, " (UTC" , getOffsetHours(d.tz)>=0?'+':'', getOffsetHours(d.tz), ")")
+          , _react2.default.createElement('div', { className: "text-3xl font-black text-blue-600 tabular-nums"   ,}, getLocalTime(d.tz))
+          , _react2.default.createElement('div', { className: "text-xs text-gray-400 mt-1"  ,}, getLocalDate(d.tz))
+        )
+        , _react2.default.createElement(BackBtn, null)
+      )
+
+      , _react2.default.createElement('div', { ref: refs[2],})
+      , _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.Thermometer, { size: 14, className: "text-red-500",}), title: "Weather & Climate"  ,}
+        , _react2.default.createElement('div', { className: "bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg p-4 mb-4"      ,}
+          , _react2.default.createElement('div', { className: "text-xs opacity-80 mb-2"  ,}, "📅 Going now? ("   , ML[CM], ")")
+          , _react2.default.createElement('div', { className: "grid grid-cols-3 gap-2 mb-3"   ,}
+            , _react2.default.createElement('div', { className: "bg-white/15 rounded-lg p-2 text-center"   ,}, _react2.default.createElement('div', { className: "font-bold text-lg" ,}, lo, "~", hi, "°C"), _react2.default.createElement('div', { className: "text-xs opacity-80" ,}, "Temp"))
+            , _react2.default.createElement('div', { className: "bg-white/15 rounded-lg p-2 text-center"   ,}, _react2.default.createElement('div', { className: "font-bold text-lg" ,}, rain, "mm"), _react2.default.createElement('div', { className: "text-xs opacity-80" ,}, "Rainfall"))
+            , _react2.default.createElement('div', { className: "bg-white/15 rounded-lg p-2 text-center"   ,}, _react2.default.createElement('div', { className: "font-bold text-sm" ,}, nowRate), _react2.default.createElement('div', { className: "text-xs opacity-80" ,}, "Rating"))
+          )
+        )
+        , _react2.default.createElement('div', { className: "mb-3 flex flex-wrap gap-2"   ,}
+          , d.bt && _react2.default.createElement('span', { className: "bg-green-50 text-green-700 text-xs font-semibold px-3 py-1 rounded-full"      ,}, "⭐ Best: "  , d.bt)
+          , d.at && _react2.default.createElement('span', { className: "bg-red-50 text-red-700 text-xs font-semibold px-3 py-1 rounded-full"      ,}, "⚠️ Avoid: "  , d.at)
+        )
+        , _react2.default.createElement(SeasonStrip, { d: d,})
+        , _react2.default.createElement('div', { className: "mb-4",}
+          , _react2.default.createElement('div', { className: "text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"      ,}, _react2.default.createElement(_lucidereact.Thermometer, { size: 12, className: "text-red-400",}), "Monthly Avg Temperature (°C)"   )
+          , _react2.default.createElement(TempChart, { d: d,})
+        )
+        , _react2.default.createElement('div', { className: "mb-4 mt-8" ,}
+          , _react2.default.createElement('div', { className: "text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"      ,}, _react2.default.createElement(_lucidereact.Droplets, { size: 12, className: "text-blue-400",}), "Monthly Avg Rainfall (mm)"   )
+          , _react2.default.createElement(RainChart, { d: d,})
+        )
+        , _react2.default.createElement('div', { className: "mt-6",}
+          , _react2.default.createElement('div', { className: "text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"      ,}, _react2.default.createElement(_lucidereact.Shirt, { size: 12, className: "text-purple-400",}), "Clothing Suggestions" )
+          , Object.entries(clothing).map(([sn,desc])=>(
+            _react2.default.createElement('div', { key: sn, className: "flex gap-3 py-2 border-b border-dashed border-gray-100 last:border-0"      ,}
+              , _react2.default.createElement('div', { className: "text-xs font-bold text-blue-600 w-28 flex-shrink-0"    ,}, sn)
+              , _react2.default.createElement('div', { className: "text-xs text-gray-600 leading-relaxed"  ,}, desc)
+            )
+          ))
+        )
+        , _react2.default.createElement(BackBtn, null)
+      )
+
+      , _react2.default.createElement('div', { ref: refs[3],})
+      , _react2.default.createElement(Card, { icon: _react2.default.createElement(_lucidereact.Car, { size: 14, className: "text-green-500",}), title: "Driving Information" ,}
+        , _react2.default.createElement('div', { className: "grid grid-cols-3 gap-3 text-center mb-3"    ,}
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}
+            , _react2.default.createElement('div', { className: "text-3xl mb-1" ,}, co.ds==='L'?'🇬🇧':'🇺🇸')
+            , _react2.default.createElement('div', { className: "font-bold text-sm" ,}, co.ds==='L'?'Drive on Left':'Drive on Right')
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, co.ds==='L'?'Right-hand drive':'Left-hand drive')
+          )
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}
+            , _react2.default.createElement(_lucidereact.Navigation, { size: 20, className: "mx-auto mb-1 text-blue-500"  ,})
+            , _react2.default.createElement('div', { className: "font-bold text-sm" ,}, co.sl)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400" ,}, "Speed Limit (km/h)"  )
+          )
+          , _react2.default.createElement('div', { className: "bg-gray-50 rounded-lg p-3"  ,}
+            , _react2.default.createElement(_lucidereact.ShieldCheck, { size: 20, className: "mx-auto mb-1 text-green-500"  ,})
+            , _react2.default.createElement('div', { className: "text-xs font-semibold leading-tight"  ,}, co.lic)
+            , _react2.default.createElement('div', { className: "text-xs text-gray-400 mt-1"  ,}, "License Req." )
+          )
+        )
+        , _react2.default.createElement(BackBtn, null)
+      )
+    )
+  );
+}
+
+ function TravelTool() {
+  const [tab, setTab] = _react.useState.call(void 0, 0);
+
+  const tabs = [
+    { icon: _react2.default.createElement(_lucidereact.Zap, { size: 13,}), label: 'Plugs & Voltage', color:'text-yellow-500' },
+    { icon: _react2.default.createElement(_lucidereact.Clock, { size: 13,}), label: 'Time Zones', color:'text-blue-500' },
+    { icon: _react2.default.createElement(_lucidereact.Sun, { size: 13,}), label: 'Sunrise/Sunset', color:'text-orange-500' },
+    { icon: _react2.default.createElement(_lucidereact.Calendar, { size: 13,}), label: 'Holidays', color:'text-purple-500' },
+    { icon: _react2.default.createElement(_lucidereact.DollarSign, { size: 13,}), label: 'Currency', color:'text-green-500' },
+    { icon: _react2.default.createElement(_lucidereact.Ruler, { size: 13,}), label: 'Unit Convert', color:'text-cyan-500' },
+    { icon: _react2.default.createElement(_lucidereact.BookOpen, { size: 13,}), label: 'Travel Guide', color:'text-red-500' },
+  ];
+
+  const comps = [PlugTab, TimeTab, SunTab, HolidayTab, CurrencyTab, UnitTab, InfoTab];
+  const Comp = comps[tab];
+
+  return (
+    _react2.default.createElement('div', { className: "min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-3"    ,}
+      , _react2.default.createElement('div', { className: "max-w-2xl mx-auto" ,}
+        , _react2.default.createElement('div', { className: "text-center mb-4" ,}
+          , _react2.default.createElement('h1', { className: "text-xl font-black text-gray-800"  ,}, "🌍 Travel Toolkit"  )
+          , _react2.default.createElement('p', { className: "text-xs text-gray-400" ,}, "100 Countries · 70 Cities · All-in-One Travel Reference"        )
+        )
+
+        , _react2.default.createElement('div', { className: "flex flex-wrap gap-1 mb-4 justify-center"    ,}
+          , tabs.map((t, i) => (
+            _react2.default.createElement(_framermotion.motion.button, { key: i, whileTap: {scale:0.95}, onClick: () => setTab(i),
+              className: `flex items-center gap-1 px-2.5 py-2 rounded-lg text-xs font-semibold transition-all ${
+                tab===i ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
+              }`,}
+              , t.icon, _react2.default.createElement('span', { className: "hidden sm:inline" ,}, t.label), _react2.default.createElement('span', { className: "sm:hidden",}, t.label.split(' ')[0])
+            )
+          ))
+        )
+
+        , _react2.default.createElement(_framermotion.AnimatePresence, { mode: "wait",}
+          , _react2.default.createElement(_framermotion.motion.div, { key: tab, initial: {opacity:0,y:10}, animate: {opacity:1,y:0}, exit: {opacity:0,y:-10}, transition: {duration:0.2},}
+            , _react2.default.createElement(Comp, null)
+          )
+        )
+
+        , _react2.default.createElement('div', { className: "text-center text-xs text-gray-300 mt-6 pb-4"    ,}, "Data for reference only · Please verify with official sources before traveling"
+
+        )
+      )
+    )
+  );
+} exports.default = TravelTool;
+</script></head>
+  <body>
+  
+
+<div id="preview-app"></div></body></html>
