@@ -125,18 +125,26 @@
 <body>
 
 <header>
-    <div class="logo">Roam<span>wise</span></div>
+    <div class="logo">
+        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
+        Roam<span>wise</span>
+    </div>
     <div class="header-right">
         <a href="#" class="contact-link">Contacte-nos</a>
-        <select class="lang-select" id="langSelect">
-            <option value="zh-Hant">Chinês tradicional</option>
-            <option value="en">Inglês</option>
-            <option value="es">Espanhol</option>
-            <option value="pt" selected="">Português</option>
-            <option value="hi">हिन्दी</option>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+            <option value="time-zone-pt.html" selected="">Português</option>
+            <option value="time-zone-en.html">English</option>
+            <option value="time-zone-es.html">Español</option>
+            <option value="time-zone-zh.html">繁體中文</option>
         </select>
     </div>
 </header>
+
+<script>
+    function changeLanguage(filename) {
+        window.location.href = filename;
+    }
+</script>
 
 <main>
     <h1 class="page-title">🕐 Pesquisa de Fusos Horários Mundiais</h1>
@@ -217,31 +225,32 @@
     </div>
 </main>
 
-<footer>
-    <div class="footer-grid">
-        <div class="footer-col">
-            <h4>🔌 Eletricidade e Hora</h4>
-            <a href="#">Pesquisa de Especificações de Tomada</a>
-            <a href="#" class="active-link">Pesquisa de Fuso Horário</a>
-            <a href="#">Horários de Nascer e Pôr do Sol</a>
-        </div>
-        <div class="footer-col">
-            <h4>🎉 Feriados e Festivais</h4>
-            <a href="#">Feriados por País</a>
-            <a href="#">Resumo de Eventos Festivos</a>
-        </div>
-        <div class="footer-col">
-            <h4>💱 Finanças e Unidades</h4>
-            <a href="#">Conversão de Moeda</a>
-            <a href="#">Conversão de Unidades</a>
-        </div>
-        <div class="footer-col">
-            <h4>🌍 Informação de Viagem</h4>
-            <a href="#">Resumo por País</a>
-            <a href="#">Guias Locais Detalhados</a>
-        </div>
+<footer class="hide-f">
+<div class="footer-grid">
+    <div class="footer-col">
+        <h4>🔌 Energia e Hora</h4>
+        <a href="plug/plug-pt.html" class="active-link">Padrões de Fichas</a>
+        <a href="time-zone/time-zone-pt.html">Consulta de Fusos Horários</a>
+        <a href="sunset/sunset-pt.html">Hora do Nascer e Pôr do Sol</a>
+        <a href="timer/timer-pt.html">Temporizador</a>
     </div>
-    <div class="footer-bottom">© 2026 Roamwise. Todos os direitos reservados. | <a href="#">Política de Privacidade</a> | <a href="#">Termos de Utilização</a></div>
+    <div class="footer-col">
+        <h4>🎉 Férias e Eventos</h4>
+        <a href="#">Consulta de Férias Locais</a>
+        <a href="#">Festividades e Eventos</a>
+    </div>
+    <div class="footer-col">
+        <h4>💱 Finanças e Unidades</h4>
+        <a href="currency/currency-pt.html">Conversor de Taxas de Câmbio</a>
+        <a href="unit/unit-pt.html">Conversor de Unidades</a>
+    </div>
+    <div class="footer-col">
+        <h4>🌍 Informações de Viagem</h4>
+        <a href="#">Informações Básicas de Países</a>
+        <a href="#">Guias Detalhados de Regiões</a>
+    </div>
+</div>
+    <div class="ft-bot">© 2026 Roamwise. Todos os direitos reservados. | <a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></div>
 </footer>
 
 <script>
