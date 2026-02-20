@@ -445,18 +445,28 @@
 
     <!-- HEADER -->
     <header>
-        <div class="logo">Roam<span>wise</span></div>
-        <div class="header-right">
-            <a href="#" class="contact-link">Contact</a>
-            <select class="lang-select" id="langSelect">
-                <option value="zh-Hant">繁體中文</option>
-                <option value="en" selected="">English</option>
-                <option value="es">Español</option>
-                <option value="pt">Português</option>
-                <option value="hi">हिन्दी</option>
-            </select>
-        </div>
-    </header>
+<header>
+    <div class="logo">
+        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
+        Roam<span>wise</span>
+    </div>
+    <div class="header-right">
+        <a href="#" class="contact-link">聯絡我們</a>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+            <option value="plug-zh.html" selected="">繁體中文</option>
+            <option value="plug-en.html">English</option>
+            <option value="plug-es.html">Español</option>
+            <option value="plug-pt.html">Português</option>
+            <option value="plug-hi.html">हिन्दी</option>
+        </select>
+    </div>
+</header>
+
+<script>
+    function changeLanguage(filename) {
+        window.location.href = filename;
+    }
+</script>
 
     <!-- MAIN CONTENT -->
     <main>
@@ -555,9 +565,10 @@
         <div class="footer-grid">
             <div class="footer-col">
                 <h4>🔌 Electricity &amp; Time</h4>
-                <a href="#" class="active-link">Power Plug Standards</a>
-                <a href="#">Time Zone Lookup</a>
-                <a href="#">Sunrise &amp; Sunset</a>
+                <a href="plug/plug-en.html" class="active-link">Power Plug Standards</a>
+                <a href="time-zone/time-zone-en.html">Time Zone Lookup</a>
+                <a href="timer/timer-en.html">Timer</a>
+                <a href="sunrise/sunrise-en.html">Sunrise &amp; Sunset</a>
             </div>
             <div class="footer-col">
                 <h4>🎉 Holidays &amp; Festivals</h4>
@@ -566,8 +577,8 @@
             </div>
             <div class="footer-col">
                 <h4>💱 Finance &amp; Units</h4>
-                <a href="#">Currency Exchange</a>
-                <a href="#">Unit Converter</a>
+                <a href="currency/currency-en.html">Currency Exchange</a>
+                <a href="unit/unit-en.html">Unit Converter</a>
             </div>
             <div class="footer-col">
                 <h4>🌍 Travel Info</h4>
@@ -657,24 +668,43 @@
         "Maldives": { plugs: ["A","C","D","G","J","K","L"], voltage: "230V", freq: "50Hz" }
     };
 
-    // ===== PLUG TYPE DESCRIPTIONS =====
-    const plugDescriptions = {
-        "A": "Two flat prongs (North American standard)",
-        "B": "Three flat prongs (North American grounded)",
-        "C": "Two round pins (European standard / Europlug)",
-        "D": "Three large round pins (old British / Indian standard)",
-        "E": "Two round pins + grounding hole (French standard)",
-        "F": "Two round pins + grounding clips (German / Schuko standard)",
-        "G": "Three rectangular prongs (British standard)",
-        "H": "Three pins (Israeli standard)",
-        "I": "Angled flat prongs (Australian / Chinese standard)",
-        "J": "Three round pins (Swiss standard)",
-        "K": "Three round pins (Danish standard)",
-        "L": "Three round pins in a row (Italian standard)",
-        "M": "Three large round pins (South African standard)",
-        "N": "Three round pins (Brazilian standard)",
-        "O": "Three round pins (Thai standard)"
-    };
+   // Plug type info
+const plugInfo = {
+    A: { name:"Type A", desc:"Two flat prongs (North American standard)" },
+    B: { name:"Type B", desc:"Three flat prongs (North American grounded)" },
+    C: { name:"Type C", desc:"Two round pins (European standard / Europlug)" },
+    D: { name:"Type D", desc:"Three large round pins (old British / Indian standard)" },
+    E: { name:"Type E", desc:"Two round pins + grounding hole (French standard)" },
+    F: { name:"Type F", desc:"Two round pins + grounding clips (German / Schuko standard)" },
+    G: { name:"Type G", desc:"Three rectangular prongs (British standard)" },
+    H: { name:"Type H", desc:"Three pins (Israeli standard)" },
+    I: { name:"Type I", desc:"Angled flat prongs (Australian / Chinese standard)" },
+    J: { name:"Type J", desc:"Three round pins (Swiss standard)" },
+    K: { name:"Type K", desc:"Three round pins (Danish standard)" },
+    L: { name:"Type L", desc:"Three round pins in a row (Italian standard)" },
+    M: { name:"Type M", desc:"Three large round pins (South African standard)" },
+    N: { name:"Type N", desc:"Three round pins (Brazilian standard)" },
+    O: { name:"Type O", desc:"Three round pins (Thai standard)" }
+};
+
+// SVG plug illustrations (socket face view)
+const plugSVG = {
+    A: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><rect x="28" y="24" width="7" height="22" rx="2" fill="#7b8fa3"/><rect x="45" y="24" width="7" height="22" rx="2" fill="#7b8fa3"/></svg>`,
+    B: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><rect x="28" y="18" width="7" height="20" rx="2" fill="#7b8fa3"/><rect x="45" y="18" width="7" height="20" rx="2" fill="#7b8fa3"/><circle cx="40" cy="54" r="5.5" fill="#7b8fa3"/></svg>`,
+    C: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="40" r="6" fill="#7b8fa3"/><circle cx="51" cy="40" r="6" fill="#7b8fa3"/></svg>`,
+    D: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="40" cy="24" r="7" fill="#7b8fa3"/><circle cx="26" cy="50" r="7" fill="#7b8fa3"/><circle cx="54" cy="50" r="7" fill="#7b8fa3"/></svg>`,
+    E: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="46" r="6" fill="#7b8fa3"/><circle cx="51" cy="46" r="6" fill="#7b8fa3"/><circle cx="40" cy="24" r="4.5" fill="none" stroke="#7b8fa3" stroke-width="3"/></svg>`,
+    F: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="40" r="6" fill="#7b8fa3"/><circle cx="51" cy="40" r="6" fill="#7b8fa3"/><rect x="11" y="28" width="5" height="24" rx="2.5" fill="#a3b1c1"/><rect x="64" y="28" width="5" height="24" rx="2.5" fill="#a3b1c1"/></svg>`,
+    G: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><rect x="32" y="16" width="16" height="7" rx="2" fill="#7b8fa3"/><rect x="24" y="42" width="7" height="18" rx="2" fill="#7b8fa3"/><rect x="49" y="42" width="7" height="18" rx="2" fill="#7b8fa3"/></svg>`,
+    H: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><rect x="20" y="20" width="7" height="20" rx="2" fill="#7b8fa3" transform="rotate(15,23.5,30)"/><rect x="53" y="20" width="7" height="20" rx="2" fill="#7b8fa3" transform="rotate(-15,56.5,30)"/><circle cx="40" cy="55" r="5.5" fill="#7b8fa3"/></svg>`,
+    I: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><rect x="22" y="18" width="7" height="22" rx="2" fill="#7b8fa3" transform="rotate(30,25.5,29)"/><rect x="51" y="18" width="7" height="22" rx="2" fill="#7b8fa3" transform="rotate(-30,54.5,29)"/><rect x="36.5" y="44" width="7" height="18" rx="2" fill="#7b8fa3"/></svg>`,
+    J: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="32" r="6" fill="#7b8fa3"/><circle cx="51" cy="32" r="6" fill="#7b8fa3"/><circle cx="40" cy="54" r="5" fill="#7b8fa3"/></svg>`,
+    K: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="30" r="6" fill="#7b8fa3"/><circle cx="51" cy="30" r="6" fill="#7b8fa3"/><circle cx="40" cy="54" r="6" fill="#7b8fa3"/></svg>`,
+    L: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="20" cy="40" r="5.5" fill="#7b8fa3"/><circle cx="40" cy="40" r="4.5" fill="#7b8fa3"/><circle cx="60" cy="40" r="5.5" fill="#7b8fa3"/></svg>`,
+    M: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="40" cy="22" r="8" fill="#7b8fa3"/><circle cx="25" cy="50" r="8" fill="#7b8fa3"/><circle cx="55" cy="50" r="8" fill="#7b8fa3"/></svg>`,
+    N: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="30" r="5.5" fill="#7b8fa3"/><circle cx="51" cy="30" r="5.5" fill="#7b8fa3"/><circle cx="40" cy="54" r="5.5" fill="#7b8fa3"/></svg>`,
+    O: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="28" r="5.5" fill="#7b8fa3"/><circle cx="51" cy="28" r="5.5" fill="#7b8fa3"/><circle cx="40" cy="54" r="6.5" fill="#7b8fa3"/></svg>`
+};
 
     const countryNames = Object.keys(countries);
 
