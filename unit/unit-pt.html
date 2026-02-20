@@ -1,0 +1,514 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roamwise - Conversor de Unidades</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+        :root{--primary:#2563eb;--primary-dark:#1d4ed8;--primary-light:#dbeafe;--accent:#f59e0b;--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.07);--shadow-sm:0 2px 8px rgba(0,0,0,.05);--green:#10b981;--red:#ef4444}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+        header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(37,99,235,.3)}
+        .logo{font-size:1.4rem;font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:8px}.logo span{color:var(--accent)}
+        .header-right{display:flex;align-items:center;gap:16px}
+        .header-right a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;transition:color .2s}.header-right a:hover{color:#fff}
+        .lang-select{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:8px;font-size:.85rem;cursor:pointer;font-family:inherit}.lang-select option{color:#333;background:#fff}
+
+        main{flex:1;max-width:920px;width:100%;margin:0 auto;padding:32px 16px}
+        .page-title{text-align:center;font-size:1.7rem;font-weight:700;margin-bottom:24px;color:var(--primary-dark)}
+        .info-box{background:var(--primary-light);border-left:4px solid var(--primary);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start;font-size:.92rem;color:var(--primary-dark);line-height:1.6}.info-box .icon{font-size:1.2rem;flex-shrink:0;margin-top:2px}
+
+        .cat-tabs-wrap{margin-bottom:22px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+        .cat-tabs-wrap::-webkit-scrollbar{display:none}
+        .cat-tabs{display:flex;gap:8px;min-width:max-content}
+        .cat-chip{padding:10px 16px;border-radius:24px;border:2px solid var(--border);background:#fff;font-size:.88rem;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap;font-weight:500;color:var(--text)}
+        .cat-chip:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark)}
+        .cat-chip.active{border-color:var(--primary);background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.25)}
+        .cat-chip .ci{font-size:1.05rem}
+
+        .converter-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;margin-bottom:20px}
+        .converter-row{display:flex;gap:12px;align-items:stretch}
+        .conv-side{flex:1;min-width:0}
+        .conv-side label{font-weight:500;font-size:.9rem;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+        .unit-select{width:100%;padding:12px 40px 12px 14px;border:2px solid var(--border);border-radius:10px;background:#fff;font-size:.93rem;font-family:inherit;font-weight:600;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;transition:border-color .2s;margin-bottom:10px;color:var(--text)}
+        .unit-select:focus,.unit-select:hover{border-color:var(--primary);outline:none;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+        .amount-input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:10px;font-size:1.45rem;font-family:inherit;font-weight:700;text-align:right;transition:border-color .2s,box-shadow .2s;color:var(--text)}
+        .amount-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+        .amount-input.result{background:#f8fafc;color:var(--primary-dark)}
+        .swap-col{display:flex;align-items:center;justify-content:center;flex-shrink:0;padding-top:28px}
+        .swap-btn{width:48px;height:48px;border-radius:50%;border:2px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .25s;color:var(--primary)}
+        .swap-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary);transform:rotate(180deg);box-shadow:0 4px 16px rgba(37,99,235,.3)}
+
+        .formula-display{text-align:center;margin-top:16px;padding:14px;background:linear-gradient(135deg,#f8fafc,#eff6ff);border-radius:10px;border:1px solid var(--border);position:relative}
+        .formula-main{font-size:1.03rem;font-weight:600;color:var(--text);margin-bottom:3px;font-variant-numeric:tabular-nums}
+        .formula-reverse{font-size:.86rem;color:var(--text-light);font-variant-numeric:tabular-nums}
+
+        .copy-row{display:flex;justify-content:center;gap:10px;margin-top:12px}
+        .copy-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border:1.5px solid var(--border);border-radius:9px;background:#fff;cursor:pointer;font-size:.87rem;font-family:inherit;color:var(--text-light);font-weight:500;transition:all .2s}
+        .copy-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+        .copy-btn.copied{border-color:var(--green);color:var(--green);background:#ecfdf5}
+
+        .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:13px 28px;border-radius:11px;font-size:.92rem;z-index:1000;opacity:0;transition:all .35s cubic-bezier(.4,0,.2,1);pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px;white-space:nowrap}
+        .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+        .section-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:22px 20px;margin-bottom:20px}
+        .section-card h3{font-size:1rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:var(--text)}
+
+        .all-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+        .all-tile{border:1px solid var(--border);border-radius:10px;padding:11px 13px;display:flex;flex-direction:column;gap:4px;transition:all .15s;cursor:pointer}
+        .all-tile:hover{border-color:var(--primary);box-shadow:var(--shadow-sm)}
+        .all-tile.highlight{border-color:var(--primary);background:var(--primary-light)}
+        .all-tile .at-name{font-size:.78rem;color:var(--text-light);display:flex;align-items:center;gap:4px}
+        .all-tile .at-value{font-size:1.05rem;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;word-break:break-all}
+        .all-tile.highlight .at-value{color:var(--primary-dark)}
+
+        .ref-item{padding:10px 14px;background:#f8fafc;border-radius:8px;margin-bottom:8px;font-size:.9rem;line-height:1.6;border-left:3px solid var(--accent);color:var(--text)}
+        .ref-item:last-child{margin-bottom:0}
+
+        .tip-item{margin-bottom:10px;font-size:.92rem;line-height:1.8}
+        .tip-item:last-child{margin-bottom:0}
+
+        .calc-note{font-size:.82rem;color:var(--text-light);line-height:1.6;padding:12px 16px;background:#f8fafc;border-radius:8px;margin-top:8px}
+
+        footer{background:#1e293b;color:rgba(255,255,255,.7);padding:36px 24px 20px;margin-top:auto}
+        .footer-grid{max-width:920px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;margin-bottom:28px}
+        .footer-col h4{color:#fff;font-size:.95rem;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+        .footer-col a{display:block;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;padding:4px 0;transition:color .2s}.footer-col a:hover{color:#fff}
+        .footer-col a.active-link{color:var(--accent);font-weight:500}
+        .footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,.1);padding-top:16px;font-size:.82rem}.footer-bottom a{color:rgba(255,255,255,.5);text-decoration:none}.footer-bottom a:hover{color:#fff}
+
+        @media(max-width:640px){
+            .page-title{font-size:1.3rem}
+            .converter-row{flex-direction:column}
+            .swap-col{padding-top:0;padding-bottom:0}.swap-btn{transform:rotate(90deg)}.swap-btn:hover{transform:rotate(270deg)}
+            .amount-input{font-size:1.2rem}
+            .all-grid{grid-template-columns:1fr 1fr}
+            .header-right a.contact-link{display:none}
+            .converter-card{padding:20px 16px}
+            .cat-chip{padding:9px 13px;font-size:.83rem}
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Roam<span>wise</span></div>
+    <div class="header-right">
+        <a href="#" class="contact-link">Contacte-nos</a>
+        <select class="lang-select"><option>Chinês Tradicional</option><option>Inglês</option><option>Espanhol</option><option selected="">Português</option><option>Hindi</option></select>
+    </div>
+</header>
+
+<main>
+    <h1 class="page-title">📐 Conversor de Unidades</h1>
+    <div class="info-box"><span class="icon">ℹ️</span><div>Suporta conversão em tempo real em <strong>10 grandes categorias</strong>: Comprimento, Peso, Temperatura, Área, Volume, Velocidade, Tempo, Dados, Energia e Potência. Inclui unidades de Taiwan (ping, catty taiwanês), Hong Kong/Macau (pé quadrado, catty de HK) e unidades internacionais padrão. Os resultados são apresentados automaticamente ao introduzir um valor.</div></div>
+
+    <div class="cat-tabs-wrap"><div class="cat-tabs" id="catTabs"></div></div>
+
+    <div class="converter-card">
+        <div class="converter-row">
+            <div class="conv-side">
+                <label>📌 De</label>
+                <select class="unit-select" id="fromUnit"></select>
+                <input type="text" inputmode="decimal" class="amount-input" id="fromAmount" value="1" placeholder="Introduzir valor">
+            </div>
+            <div class="swap-col"><button class="swap-btn" id="swapBtn" title="Trocar">⇄</button></div>
+            <div class="conv-side">
+                <label>📌 Converter para</label>
+                <select class="unit-select" id="toUnit"></select>
+                <input type="text" class="amount-input result" id="toAmount" placeholder="Resultado" inputmode="decimal">
+            </div>
+        </div>
+        <div class="formula-display" id="formulaDisplay">
+            <div class="formula-main" id="formulaMain"></div>
+            <div class="formula-reverse" id="formulaReverse"></div>
+        </div>
+        <div class="copy-row">
+            <button class="copy-btn" id="copyFormula"><span>📋</span> Copiar fórmula</button>
+            <button class="copy-btn" id="copyResult"><span>📋</span> Copiar resultado</button>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h3 id="allTitle">📋 Todas as conversões de unidades</h3>
+        <div class="all-grid" id="allGrid"></div>
+    </div>
+
+    <div class="section-card" id="refSection">
+        <h3>📝 Referências comuns</h3>
+        <div id="refList"></div>
+    </div>
+
+    <div class="section-card">
+        <h3>💡 Dicas de conversão</h3>
+        <div style="font-size:.92rem;line-height:1.8;color:var(--text)">
+            <p class="tip-item">🌍 <strong>Sistema métrico vs imperial</strong>: A maioria dos países utiliza o sistema métrico (metros, quilogramas), enquanto os Estados Unidos, Myanmar e a Libéria usam principalmente o sistema imperial (milhas, libras). Conhecer o sistema de unidades local antes de viajar facilita a comunicação do dia a dia.</p>
+            <p class="tip-item">🏠 <strong>Área em HK e Macau</strong>: Os imóveis em Hong Kong e Macau são avaliados em <strong>pés quadrados (ft²)</strong>. 1 pé quadrado ≈ 0,093 m². Em Taiwan, usa-se habitualmente o «ping», onde 1 ping ≈ 3,3 m² ≈ 35,6 ft².</p>
+            <p class="tip-item">⚖️ <strong>Unidades de peso: Taiwan vs HK</strong>: Catty taiwanês = 600g, tael taiwanês = 37,5g; catty de HK ≈ 604,8g, tael de HK ≈ 37,8g. A diferença é pequena, mas convém tê-la em atenção nos mercados tradicionais.</p>
+            <p class="tip-item">🌡️ <strong>Leitura de temperatura</strong>: Os EUA utilizam Fahrenheit (°F); a maioria dos outros países utiliza Celsius (°C). Estimativa mental rápida: °F ≈ °C × 2 + 30.</p>
+            <p class="tip-item">⚡ <strong>Faturação elétrica</strong>: A eletricidade em Taiwan e Hong Kong/Macau é faturada em quilowatts-hora (kWh). 1 kWh = 1.000 watts-hora = 3.600 quilojoules. Conhecer a potência dos eletrodomésticos ajuda a estimar o custo da eletricidade.</p>
+            <p class="tip-item">⛽ <strong>Conversão de consumo de combustível</strong>: Taiwan usa km/L, os EUA usam MPG (milhas por galão) e a Europa usa L/100 km. Verifique o método de medição local antes de abastecer.</p>
+        </div>
+    </div>
+
+    <div class="calc-note">⚠️ Os resultados de conversão deste site são apenas para referência. Algumas unidades (p. ex., meses, anos) utilizam valores aproximados. O cavalo-vapor métrico (PS) e o imperial (hp) diferem ligeiramente. Para uso científico ou de engenharia, consulte os valores padrão precisos.</div>
+</main>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col"><h4>🔌 Eletricidade e Tempo</h4><a href="#">Consulta de especificações de fichas</a><a href="#">Consulta de fusos horários</a><a href="#">Horários do nascer e pôr do sol</a></div>
+        <div class="footer-col"><h4>🎉 Feriados e Celebrações</h4><a href="#">Feriados nacionais por país</a><a href="#">Resumo de festivais e eventos</a></div>
+        <div class="footer-col"><h4>💱 Finanças e Unidades</h4><a href="#">Câmbio de divisas</a><a href="#" class="active-link">Conversor de unidades</a></div>
+        <div class="footer-col"><h4>🌍 Informações de Viagem</h4><a href="#">Visão geral dos países</a><a href="#">Guias locais detalhados</a></div>
+    </div>
+    <div class="footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="#">Política de Privacidade</a> | <a href="#">Termos de Utilização</a></div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ DATA ============
+const categories=[
+{id:'length',name:'Comprimento',icon:'📏',dfFrom:'cm',dfTo:'in',
+ units:[
+  {code:'mm',name:'Milímetro',sym:'mm',toBase:0.001},
+  {code:'cm',name:'Centímetro',sym:'cm',toBase:0.01},
+  {code:'m',name:'Metro',sym:'m',toBase:1},
+  {code:'km',name:'Quilómetro',sym:'km',toBase:1000},
+  {code:'in',name:'Polegada',sym:'in',toBase:0.0254},
+  {code:'ft',name:'Pé',sym:'ft',toBase:0.3048},
+  {code:'yd',name:'Jarda',sym:'yd',toBase:0.9144},
+  {code:'mi',name:'Milha',sym:'mi',toBase:1609.344},
+  {code:'nmi',name:'Milha náutica',sym:'nmi',toBase:1852}
+ ],
+ refs:['1 pé = 12 polegadas ≈ 30,48 cm, frequentemente utilizado em Hong Kong e Macau','Altura média de um homem adulto: 170 cm ≈ 5 pés 7 polegadas','Distância de maratona completa: 42,195 km ≈ 26,2 mi','Comprimento do papel A4 ≈ 29,7 cm ≈ 11,69 polegadas']
+},
+{id:'weight',name:'Peso',icon:'⚖️',dfFrom:'kg',dfTo:'lb',
+ units:[
+  {code:'mg',name:'Miligrama',sym:'mg',toBase:0.001},
+  {code:'g',name:'Grama',sym:'g',toBase:1},
+  {code:'kg',name:'Quilograma',sym:'kg',toBase:1000},
+  {code:'ton',name:'Tonelada métrica',sym:'t',toBase:1000000},
+  {code:'oz',name:'Onça',sym:'oz',toBase:28.3495},
+  {code:'lb',name:'Libra',sym:'lb',toBase:453.592},
+  {code:'jin',name:'Catty taiwanês (Jin)',sym:'tw.jin',toBase:600},
+  {code:'tliang',name:'Tael taiwanês (Liang)',sym:'tw.liang',toBase:37.5},
+  {code:'hkjin',name:'Catty de HK (Sīmǎ Jin)',sym:'hk.jin',toBase:604.79},
+  {code:'hkliang',name:'Tael de HK (Sīmǎ Liang)',sym:'hk.liang',toBase:37.799},
+  {code:'st',name:'Stone',sym:'st',toBase:6350.29}
+ ],
+ refs:['Catty taiwanês = 600g (16 taéis taiwaneses), catty de HK ≈ 604,8g (16 taéis de HK), ligeiramente diferentes','1 lb ≈ 453,6g ≈ 0,756 catty taiwanês ≈ 0,75 catty de HK','O limite de bagagem das companhias aéreas é normalmente 23 kg ≈ 50,7 lb ≈ 38,3 catties taiwaneses','1 onça ≈ 28,35g','O tael de HK (Sīmǎ Liang) é habitualmente utilizado no comércio de ouro; 1 tael de HK ≈ 37,8g']
+},
+{id:'temp',name:'Temperatura',icon:'🌡️',dfFrom:'C',dfTo:'F',isTemp:true,
+ units:[
+  {code:'C',name:'Celsius',sym:'°C'},
+  {code:'F',name:'Fahrenheit',sym:'°F'},
+  {code:'K',name:'Kelvin',sym:'K'}
+ ],
+ refs:['Ponto de congelação da água: 0 °C = 32 °F = 273,15 K','Temperatura corporal normal: 37 °C ≈ 98,6 °F','Intervalo de temperatura ambiente confortável: 20–25 °C ≈ 68–77 °F','Ponto de ebulição da água: 100 °C = 212 °F = 373,15 K']
+},
+{id:'area',name:'Área',icon:'📐',dfFrom:'ft2',dfTo:'m2',
+ units:[
+  {code:'cm2',name:'Centímetro quadrado',sym:'cm²',toBase:0.0001},
+  {code:'m2',name:'Metro quadrado',sym:'m²',toBase:1},
+  {code:'km2',name:'Quilómetro quadrado',sym:'km²',toBase:1e6},
+  {code:'ha',name:'Hectare',sym:'ha',toBase:10000},
+  {code:'ping',name:'Ping (坪)',sym:'ping',toBase:3.305785},
+  {code:'jia',name:'Jia (甲)',sym:'jia',toBase:9699.17},
+  {code:'ft2',name:'Pé quadrado',sym:'ft²',toBase:0.092903},
+  {code:'yd2',name:'Jarda quadrada',sym:'yd²',toBase:0.836127},
+  {code:'ac',name:'Acre',sym:'ac',toBase:4046.86}
+ ],
+ refs:['Os imóveis em Hong Kong e Macau são avaliados em pés quadrados (ft²); 1 ft² ≈ 0,093 m²','1 ping ≈ 3,306 m² ≈ 35,58 ft² (unidade habitual no mercado imobiliário taiwanês)','Um apartamento pequeno típico em Hong Kong tem 300–400 ft² ≈ 27,9–37,2 m² ≈ 8,4–11,2 ping','1 Jia ≈ 2.934 ping ≈ 0,97 hectares (unidade habitualmente usada para terrenos agrícolas em Taiwan)','Campo de futebol padrão ≈ 7.140 m² ≈ 76.854 ft²']
+},
+{id:'volume',name:'Volume',icon:'🧪',dfFrom:'L',dfTo:'galUS',
+ units:[
+  {code:'mL',name:'Mililitro',sym:'mL',toBase:1},
+  {code:'L',name:'Litro',sym:'L',toBase:1000},
+  {code:'cc',name:'Centímetro cúbico',sym:'cc',toBase:1},
+  {code:'m3',name:'Metro cúbico',sym:'m³',toBase:1e6},
+  {code:'tsp',name:'Colher de chá',sym:'tsp',toBase:4.929},
+  {code:'tbsp',name:'Colher de sopa',sym:'tbsp',toBase:14.787},
+  {code:'cupUS',name:'Chávena americana',sym:'cup',toBase:236.588},
+  {code:'flozUS',name:'Onça líquida',sym:'fl oz',toBase:29.5735},
+  {code:'galUS',name:'Galão americano',sym:'gal(US)',toBase:3785.41},
+  {code:'galUK',name:'Galão imperial',sym:'gal(UK)',toBase:4546.09}
+ ],
+ refs:['1 litro = 1.000 mL = 1.000 cc','1 galão americano ≈ 3,785 L; 1 galão imperial ≈ 4,546 L','1 chávena americana ≈ 237 mL (medida padrão de culinária)','1 onça líquida ≈ 29,6 mL']
+},
+{id:'speed',name:'Velocidade',icon:'🚀',dfFrom:'kmh',dfTo:'mph',
+ units:[
+  {code:'ms',name:'Metros por segundo',sym:'m/s',toBase:1},
+  {code:'kmh',name:'Quilómetros por hora',sym:'km/h',toBase:0.277778},
+  {code:'mph',name:'Milhas por hora',sym:'mph',toBase:0.44704},
+  {code:'kn',name:'Nó',sym:'kt',toBase:0.514444},
+  {code:'fts',name:'Pés por segundo',sym:'ft/s',toBase:0.3048},
+  {code:'mach',name:'Mach',sym:'Mach',toBase:343}
+ ],
+ refs:['Limite de velocidade em autoestrada: 110 km/h ≈ 68,4 mph','1 nó = 1,852 km/h (habitual em náutica e aviação)','Velocidade do som (nível do mar, 20 °C) ≈ 343 m/s ≈ 1.235 km/h','Velocidade do recorde mundial dos 100 m ≈ 37,6 km/h ≈ 23,4 mph']
+},
+{id:'time',name:'Tempo',icon:'⏱️',dfFrom:'hr',dfTo:'min',
+ units:[
+  {code:'msec',name:'Milissegundo',sym:'ms',toBase:0.001},
+  {code:'sec',name:'Segundo',sym:'s',toBase:1},
+  {code:'min',name:'Minuto',sym:'min',toBase:60},
+  {code:'hr',name:'Hora',sym:'hr',toBase:3600},
+  {code:'day',name:'Dia',sym:'day',toBase:86400},
+  {code:'wk',name:'Semana',sym:'wk',toBase:604800},
+  {code:'mo',name:'Mês (≈30 dias)',sym:'mo',toBase:2592000},
+  {code:'yr',name:'Ano (≈365 dias)',sym:'yr',toBase:31536000}
+ ],
+ refs:['1 dia = 24 horas = 1.440 minutos = 86.400 segundos','1 semana = 7 dias = 168 horas','De Taipé a Tóquio ≈ 3 horas = 180 minutos','De Taipé a Hong Kong ≈ 1 hora 50 minutos']
+},
+{id:'data',name:'Dados',icon:'💾',dfFrom:'GB',dfTo:'MB',
+ units:[
+  {code:'bit',name:'Bit',sym:'bit',toBase:0.125},
+  {code:'B',name:'Byte',sym:'B',toBase:1},
+  {code:'KB',name:'Quilobyte',sym:'KB',toBase:1024},
+  {code:'MB',name:'Megabyte',sym:'MB',toBase:1048576},
+  {code:'GB',name:'Gigabyte',sym:'GB',toBase:1073741824},
+  {code:'TB',name:'Terabyte',sym:'TB',toBase:1099511627776},
+  {code:'PB',name:'Petabyte',sym:'PB',toBase:1125899906842624}
+ ],
+ refs:['1 KB = 1.024 bytes','1 MB = 1.024 KB = 1.048.576 B','1 GB = 1.024 MB (pode armazenar aprox. 250 músicas MP3)','1 TB = 1.024 GB (pode armazenar aprox. 250 filmes em HD)']
+},
+{id:'energy',name:'Energia',icon:'⚡',dfFrom:'kWh',dfTo:'kJ',
+ units:[
+  {code:'J',name:'Joule',sym:'J',toBase:1},
+  {code:'kJ',name:'Quilojoule',sym:'kJ',toBase:1000},
+  {code:'MJ',name:'Megajoule',sym:'MJ',toBase:1e6},
+  {code:'cal',name:'Caloria',sym:'cal',toBase:4.184},
+  {code:'kcal',name:'Quilocaloria',sym:'kcal',toBase:4184},
+  {code:'Wh',name:'Watt-hora',sym:'Wh',toBase:3600},
+  {code:'kWh',name:'Quilowatt-hora',sym:'kWh',toBase:3600000},
+  {code:'BTU',name:'Unidade Térmica Britânica',sym:'BTU',toBase:1055.06},
+  {code:'eV',name:'Eletrão-volt',sym:'eV',toBase:1.602176634e-19},
+  {code:'ft_lb',name:'Pé-libra',sym:'ft·lb',toBase:1.35582}
+ ],
+ refs:['1 kWh = 3.600 kJ = 860 kcal','Tarifa elétrica residencial em Taiwan ≈ NT$2,5–6,4/kWh (tarifa progressiva)','Tarifa elétrica residencial em Hong Kong ≈ HK$1,0–1,6/kWh','Uma tigela de arroz branco ≈ 280 kcal ≈ 1.172 kJ','1 BTU ≈ 1.055 J (unidade habitualmente usada para a capacidade de ar condicionado)']
+},
+{id:'power',name:'Potência',icon:'🔌',dfFrom:'kW',dfTo:'hp',
+ units:[
+  {code:'W',name:'Watt',sym:'W',toBase:1},
+  {code:'kW',name:'Quilowatt',sym:'kW',toBase:1000},
+  {code:'MW',name:'Megawatt',sym:'MW',toBase:1e6},
+  {code:'hp',name:'Cavalo-vapor (imperial)',sym:'hp',toBase:745.7},
+  {code:'PS',name:'Cavalo-vapor (métrico)',sym:'PS',toBase:735.499},
+  {code:'BTUh',name:'BTU/hora',sym:'BTU/h',toBase:0.293071},
+  {code:'kcalh',name:'Quilocaloria/hora',sym:'kcal/h',toBase:1.163},
+  {code:'ftlbs',name:'Pé-libra/segundo',sym:'ft·lb/s',toBase:1.35582}
+ ],
+ refs:['1 cavalo-vapor imperial (hp) = 745,7 W; 1 cavalo-vapor métrico (PS) = 735,5 W','Ar condicionado doméstico de 1 tonelada de refrigeração ≈ 12.000 BTU/h ≈ 3.517 W','Potência típica de um micro-ondas doméstico ≈ 700–1.200 W','Potência de um veículo elétrico típico: 100–400 kW ≈ 134–536 hp','Tensão em Hong Kong: 220V/50Hz; em Taiwan: 110V/60Hz']
+}
+];
+
+const catMap={};categories.forEach(c=>{catMap[c.id]=c});
+
+// ============ STATE ============
+let curCat='length';
+let fromU,toU,lastEdited='from';
+
+// ============ HELPERS ============
+function getCat(){return catMap[curCat]}
+function getUnit(cat,code){return cat.units.find(u=>u.code===code)}
+
+function convertVal(val,fromCode,toCode,cat){
+    if(cat.isTemp)return convertTemp(val,fromCode,toCode);
+    const fu=getUnit(cat,fromCode),tu=getUnit(cat,toCode);
+    if(!fu||!tu)return 0;
+    return val*fu.toBase/tu.toBase;
+}
+function convertTemp(val,from,to){
+    let c;
+    if(from==='C')c=val;else if(from==='F')c=(val-32)*5/9;else c=val-273.15;
+    if(to==='C')return c;if(to==='F')return c*9/5+32;return c+273.15;
+}
+
+function fmtNum(n){
+    if(n===0)return '0';
+    const a=Math.abs(n);
+    if(a>=1e15||a<0.0001&&a!==0)return n.toExponential(4);
+    let d;
+    if(a>=10000)d=2;else if(a>=100)d=3;else if(a>=10)d=4;else if(a>=1)d=5;else if(a>=0.01)d=6;else d=8;
+    return n.toLocaleString('zh-TW',{minimumFractionDigits:0,maximumFractionDigits:d});
+}
+function fmtRate(n){
+    if(n===0)return '0';
+    const a=Math.abs(n);
+    if(a>=1e12||a<0.00001&&a!==0)return n.toExponential(4);
+    let d;
+    if(a>=1000)d=3;else if(a>=10)d=4;else if(a>=1)d=5;else if(a>=0.01)d=6;else d=8;
+    return n.toLocaleString('zh-TW',{minimumFractionDigits:0,maximumFractionDigits:d});
+}
+
+// ============ DOM ============
+const fromSel=document.getElementById('fromUnit');
+const toSel=document.getElementById('toUnit');
+const fromAmt=document.getElementById('fromAmount');
+const toAmt=document.getElementById('toAmount');
+const toastEl=document.getElementById('toast');
+
+// Build tabs
+const tabsEl=document.getElementById('catTabs');
+categories.forEach(cat=>{
+    const chip=document.createElement('button');
+    chip.className='cat-chip'+(cat.id===curCat?' active':'');
+    chip.dataset.id=cat.id;
+    chip.innerHTML='<span class="ci">'+cat.icon+'</span>'+cat.name;
+    chip.addEventListener('click',()=>switchCategory(cat.id));
+    tabsEl.appendChild(chip);
+});
+
+function switchCategory(id){
+    curCat=id;
+    document.querySelectorAll('.cat-chip').forEach(c=>c.classList.toggle('active',c.dataset.id===id));
+    const cat=getCat();
+    fromU=cat.dfFrom;toU=cat.dfTo;
+    populateSelects();
+    fromAmt.value='1';lastEdited='from';
+    doConvert();updateAllGrid();updateRefs();
+}
+
+function populateSelects(){
+    const cat=getCat();
+    fromSel.innerHTML='';toSel.innerHTML='';
+    cat.units.forEach(u=>{
+        const o1=document.createElement('option');
+        o1.value=u.code;o1.textContent=u.name+' ('+u.sym+')';
+        if(u.code===fromU)o1.selected=true;
+        fromSel.appendChild(o1);
+        const o2=document.createElement('option');
+        o2.value=u.code;o2.textContent=u.name+' ('+u.sym+')';
+        if(u.code===toU)o2.selected=true;
+        toSel.appendChild(o2);
+    });
+}
+
+function doConvert(){
+    const cat=getCat();
+    fromU=fromSel.value;toU=toSel.value;
+    if(lastEdited==='from'){
+        const v=parseFloat(fromAmt.value.replace(/,/g,''));
+        if(isNaN(v)||fromAmt.value.trim()===''){toAmt.value='';updateFormula();return}
+        toAmt.value=fmtNum(convertVal(v,fromU,toU,cat));
+    }else{
+        const v=parseFloat(toAmt.value.replace(/,/g,''));
+        if(isNaN(v)||toAmt.value.trim()===''){fromAmt.value='';updateFormula();return}
+        fromAmt.value=fmtNum(convertVal(v,toU,fromU,cat));
+    }
+    updateFormula();updateAllGrid();
+}
+
+function updateFormula(){
+    const cat=getCat();
+    const fu=getUnit(cat,fromU),tu=getUnit(cat,toU);
+    if(!fu||!tu)return;
+    const r1=convertVal(1,fromU,toU,cat),r2=convertVal(1,toU,fromU,cat);
+    document.getElementById('formulaMain').textContent='1 '+fu.name+' ('+fu.sym+') = '+fmtRate(r1)+' '+tu.name+' ('+tu.sym+')';
+    document.getElementById('formulaReverse').textContent='1 '+tu.name+' ('+tu.sym+') = '+fmtRate(r2)+' '+fu.name+' ('+fu.sym+')';
+}
+
+function updateAllGrid(){
+    const cat=getCat();const grid=document.getElementById('allGrid');grid.innerHTML='';
+    let baseVal=parseFloat(fromAmt.value.replace(/,/g,''));
+    if(isNaN(baseVal))baseVal=0;
+    const fromCode=fromU;
+    const fu=getUnit(cat,fromCode);
+    document.getElementById('allTitle').textContent='📋 '+fmtNum(baseVal)+' '+(fu?fu.sym:'')+' equivale a…';
+    cat.units.forEach(u=>{
+        const tile=document.createElement('div');
+        tile.className='all-tile';
+        if(u.code===fromU||u.code===toU)tile.classList.add('highlight');
+        const val=convertVal(baseVal,fromCode,u.code,cat);
+        tile.innerHTML='<div class="at-name">'+u.name+' ('+u.sym+')</div><div class="at-value">'+fmtNum(val)+'</div>';
+        tile.addEventListener('click',()=>{toU=u.code;toSel.value=u.code;lastEdited='from';doConvert()});
+        grid.appendChild(tile);
+    });
+}
+
+function updateRefs(){
+    const cat=getCat();const list=document.getElementById('refList');list.innerHTML='';
+    (cat.refs||[]).forEach(r=>{const d=document.createElement('div');d.className='ref-item';d.textContent=r;list.appendChild(d)});
+}
+
+// ============ COPY FUNCTIONS ============
+function showToast(msg){
+    toastEl.textContent='';
+    toastEl.innerHTML='<span style="font-size:1.1rem">✅</span> '+msg;
+    toastEl.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t=setTimeout(()=>toastEl.classList.remove('show'),2200);
+}
+
+function getFormulaText(){
+    const cat=getCat();const fu=getUnit(cat,fromU),tu=getUnit(cat,toU);
+    if(!fu||!tu)return '';
+    const r1=convertVal(1,fromU,toU,cat);
+    return '1 '+fu.name+' ('+fu.sym+') = '+fmtRate(r1)+' '+tu.name+' ('+tu.sym+')';
+}
+function getResultText(){
+    const cat=getCat();const fu=getUnit(cat,fromU),tu=getUnit(cat,toU);
+    if(!fu||!tu)return '';
+    const fv=fromAmt.value.trim(),tv=toAmt.value.trim();
+    if(!fv||!tv)return '';
+    return fv+' '+fu.name+' ('+fu.sym+') = '+tv+' '+tu.name+' ('+tu.sym+')';
+}
+
+function doCopy(text,btnEl){
+    if(!text)return;
+    navigator.clipboard.writeText(text).then(()=>{
+        showToast('Copiado para a área de transferência');
+        btnEl.classList.add('copied');
+        btnEl.innerHTML='<span>✅</span> Copiado';
+        setTimeout(()=>{
+            btnEl.classList.remove('copied');
+            if(btnEl.id==='copyFormula')btnEl.innerHTML='<span>📋</span> Copiar fórmula';
+            else btnEl.innerHTML='<span>📋</span> Copiar resultado';
+        },2000);
+    }).catch(()=>{
+        /* fallback for sandbox */
+        const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';
+        document.body.appendChild(ta);ta.select();
+        try{document.execCommand('copy');showToast('Copiado para a área de transferência');btnEl.classList.add('copied');btnEl.innerHTML='<span>✅</span> Copiado';setTimeout(()=>{btnEl.classList.remove('copied');if(btnEl.id==='copyFormula')btnEl.innerHTML='<span>📋</span> Copiar fórmula';else btnEl.innerHTML='<span>📋</span> Copiar resultado';},2000)}catch(e){}
+        document.body.removeChild(ta);
+    });
+}
+
+document.getElementById('copyFormula').addEventListener('click',function(){doCopy(getFormulaText(),this)});
+document.getElementById('copyResult').addEventListener('click',function(){doCopy(getResultText(),this)});
+
+// ============ INPUT EVENTS ============
+function sanitizeInput(el,allowNeg){
+    let v=el.value;
+    if(allowNeg){v=v.replace(/[^0-9.\-]/g,'')}else{v=v.replace(/[^0-9.]/g,'')}
+    // only one dot
+    const pts=v.split('.');if(pts.length>2)v=pts[0]+'.'+pts.slice(1).join('');
+    // only leading minus
+    if(allowNeg&&v.lastIndexOf('-')>0){const first=v[0]==='-'?'-':'';v=first+v.replace(/-/g,'')}
+    el.value=v;
+}
+
+fromAmt.addEventListener('input',()=>{lastEdited='from';sanitizeInput(fromAmt,getCat().isTemp);doConvert()});
+fromAmt.addEventListener('focus',()=>{lastEdited='from';fromAmt.select()});
+toAmt.addEventListener('input',()=>{lastEdited='to';sanitizeInput(toAmt,getCat().isTemp);doConvert()});
+toAmt.addEventListener('focus',()=>{lastEdited='to';toAmt.select()});
+fromSel.addEventListener('change',()=>{fromU=fromSel.value;lastEdited='from';doConvert()});
+toSel.addEventListener('change',()=>{toU=toSel.value;lastEdited='from';doConvert()});
+
+document.getElementById('swapBtn').addEventListener('click',()=>{
+    const tmp=fromU;fromU=toU;toU=tmp;
+    fromSel.value=fromU;toSel.value=toU;
+    const tmpV=fromAmt.value;fromAmt.value=toAmt.value;toAmt.value=tmpV;
+    lastEdited='from';doConvert();
+});
+
+// ============ INIT ============
+(function init(){
+    const cat=getCat();fromU=cat.dfFrom;toU=cat.dfTo;
+    populateSelects();fromAmt.value='1';lastEdited='from';
+    doConvert();updateRefs();
+})();
+</script>
+
+
+</body></html>

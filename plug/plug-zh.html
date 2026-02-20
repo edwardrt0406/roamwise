@@ -1,0 +1,613 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roamwise - 插頭標準查詢</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --accent: #f59e0b;
+            --bg: #f0f4f8;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.07);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 12px rgba(37,99,235,0.3);
+        }
+        .logo { font-size: 1.4rem; font-weight: 700; letter-spacing: 1px; }
+        .logo span { color: var(--accent); }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .header-right a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.9rem; }
+        .header-right a:hover { color: #fff; }
+        .lang-select {
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem;
+            cursor: pointer; font-family: inherit;
+        }
+        .lang-select option { color: #333; background: #fff; }
+
+        /* MAIN */
+        main {
+            flex: 1; max-width: 960px; width: 100%;
+            margin: 0 auto; padding: 32px 16px;
+        }
+        .page-title {
+            text-align: center; font-size: 1.7rem; font-weight: 700;
+            margin-bottom: 24px; color: var(--primary-dark);
+        }
+        .info-box {
+            background: var(--primary-light); border-left: 4px solid var(--primary);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            padding: 14px 18px; margin-bottom: 28px;
+            display: flex; gap: 10px; font-size: 0.92rem;
+            color: var(--primary-dark); line-height: 1.6;
+        }
+        .info-box .icon { font-size: 1.2rem; flex-shrink: 0; }
+
+        /* SELECTOR */
+        .query-card {
+            background: var(--card-bg); border-radius: var(--radius);
+            box-shadow: var(--shadow); padding: 24px; margin-bottom: 28px;
+        }
+        .selector-row { display: flex; gap: 20px; }
+        .selector-group { flex: 1; min-width: 0; }
+        .selector-group label {
+            display: flex; align-items: center; gap: 6px;
+            font-weight: 500; font-size: 0.92rem; margin-bottom: 8px; color: var(--text-light);
+        }
+        .custom-select-wrapper { position: relative; }
+        .custom-select-wrapper input {
+            width: 100%; padding: 12px 40px 12px 38px;
+            border: 2px solid var(--border); border-radius: 10px;
+            font-size: 1rem; font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s; background: #fff;
+        }
+        .custom-select-wrapper input:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+        }
+        .input-icon-left {
+            position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+            color: #94a3b8; font-size: 1rem; pointer-events: none;
+        }
+        .input-icon-right {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            color: #94a3b8; font-size: 0.8rem; pointer-events: none;
+            transition: transform 0.2s;
+        }
+        .dropdown-list {
+            position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+            background: #fff; border: 1px solid var(--border); border-radius: 10px;
+            max-height: 240px; overflow-y: auto; box-shadow: var(--shadow);
+            z-index: 50; display: none;
+        }
+        .dropdown-list.show { display: block; }
+        .dropdown-item {
+            padding: 10px 16px; cursor: pointer; font-size: 0.95rem;
+            transition: background 0.12s;
+        }
+        .dropdown-item:hover { background: var(--primary-light); color: var(--primary-dark); }
+        .dropdown-item .en-name { color: #94a3b8; font-size: 0.85rem; margin-left: 6px; }
+
+        /* RESULTS */
+        .results-area { transition: opacity 0.3s; }
+        #resultContainer { display: none; animation: fadeUp 0.35s ease; }
+        #resultContainer.show { display: block; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #noResult { display: none; }
+        #noResult.show { display: block; }
+        .no-result { text-align: center; padding: 48px 20px; color: var(--text-light); }
+        .no-result .big-icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+        /* Compatibility Banner */
+        .compat-banner {
+            padding: 16px 20px; border-radius: var(--radius);
+            margin-bottom: 24px; line-height: 1.7; font-size: 0.95rem;
+        }
+        .compat-banner.green {
+            background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534;
+        }
+        .compat-banner.yellow {
+            background: #fffbeb; border: 1px solid #fde68a; color: #92400e;
+        }
+        .compat-banner.red {
+            background: #fef2f2; border: 1px solid #fecaca; color: #991b1b;
+        }
+        .compat-banner .compat-main { font-weight: 600; }
+        .compat-banner .volt-warn { color: #c2410c; font-weight: 600; }
+
+        /* Spec Card */
+        .spec-card {
+            background: var(--card-bg); border-radius: var(--radius);
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+            padding: 24px; margin-bottom: 20px;
+        }
+        .spec-card-title {
+            font-size: 1.1rem; font-weight: 600; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 8px; color: var(--text);
+        }
+        .spec-tiles {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 14px; margin-bottom: 24px;
+        }
+        .spec-tile {
+            background: #f8fafc; border-radius: 12px; padding: 20px 12px;
+            text-align: center; border: 1px solid #f1f5f9;
+        }
+        .spec-tile .val {
+            font-size: 1.5rem; font-weight: 700; color: var(--text);
+            margin-bottom: 4px;
+        }
+        .spec-tile .lbl { font-size: 0.85rem; color: var(--text-light); }
+
+        /* Plug Type Cards */
+        .plug-cards {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+        }
+        .plug-card {
+            display: flex; align-items: center; gap: 16px;
+            background: #f8fafc; border-radius: 12px;
+            padding: 16px; border: 1px solid #f1f5f9;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .plug-card:hover {
+            border-color: #cbd5e1; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .plug-card .plug-icon-wrap {
+            width: 64px; height: 64px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .plug-card .plug-icon-wrap svg { width: 60px; height: 60px; }
+        .plug-card .plug-info { }
+        .plug-card .plug-type-name {
+            font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 2px;
+        }
+        .plug-card .plug-type-desc {
+            font-size: 0.88rem; color: var(--text-light);
+        }
+
+        /* Origin mini card */
+        .origin-spec-card {
+            background: var(--card-bg); border-radius: var(--radius);
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+            padding: 20px 24px; margin-bottom: 20px;
+        }
+        .origin-spec-card .spec-card-title { margin-bottom: 14px; }
+        .origin-spec-inline {
+            display: flex; gap: 24px; flex-wrap: wrap; font-size: 0.93rem;
+        }
+        .origin-spec-inline .item {
+            display: flex; align-items: center; gap: 6px;
+        }
+        .origin-spec-inline .item .lbl { color: var(--text-light); }
+        .origin-spec-inline .item .val { font-weight: 600; }
+
+        /* FOOTER */
+        footer {
+            background: #1e293b; color: rgba(255,255,255,0.7);
+            padding: 36px 24px 20px; margin-top: auto;
+        }
+        .footer-grid {
+            max-width: 960px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 28px; margin-bottom: 28px;
+        }
+        .footer-col h4 {
+            color: #fff; font-size: 0.95rem; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .footer-col a {
+            display: block; color: rgba(255,255,255,0.6); text-decoration: none;
+            font-size: 0.88rem; padding: 4px 0; transition: color 0.2s;
+        }
+        .footer-col a:hover { color: #fff; }
+        .footer-col a.active-link { color: var(--accent); font-weight: 500; }
+        .footer-bottom {
+            text-align: center; border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 16px; font-size: 0.82rem;
+        }
+        .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+        .footer-bottom a:hover { color: #fff; }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .page-title { font-size: 1.3rem; }
+            .selector-row { flex-direction: column; gap: 14px; }
+            .spec-tiles { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .spec-tile .val { font-size: 1.15rem; }
+            .plug-cards { grid-template-columns: 1fr; }
+            .origin-spec-inline { flex-direction: column; gap: 8px; }
+            .header-right a.contact-link { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Roam<span>wise</span></div>
+    <div class="header-right">
+        <a href="#" class="contact-link">聯絡我們</a>
+        <select class="lang-select" id="langSelect">
+            <option value="zh-Hant" selected="">繁體中文</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+            <option value="hi">हिन्दी</option>
+        </select>
+    </div>
+</header>
+
+<main>
+    <h1 class="page-title">🔌 插頭標準查詢</h1>
+
+    <div class="info-box">
+        <span class="icon">ℹ️</span>
+        <div>選擇或輸入出發地和目的地國家，立即了解當地的電源規格、插頭類型和可能的相容性問題。</div>
+    </div>
+
+    <div class="query-card">
+        <div class="selector-row">
+            <div class="selector-group">
+                <label>🏠 出發地</label>
+                <div class="custom-select-wrapper">
+                    <span class="input-icon-left">🔍</span>
+                    <input type="text" id="originInput" placeholder="輸入或選擇國家…" autocomplete="off">
+                    <span class="input-icon-right">▾</span>
+                    <div class="dropdown-list" id="originDropdown"></div>
+                </div>
+            </div>
+            <div class="selector-group">
+                <label>✈️ 目的地</label>
+                <div class="custom-select-wrapper">
+                    <span class="input-icon-left">🔍</span>
+                    <input type="text" id="destInput" placeholder="輸入或選擇國家…" autocomplete="off">
+                    <span class="input-icon-right">▾</span>
+                    <div class="dropdown-list" id="destDropdown"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="results-area">
+        <div id="noResult" class="no-result">
+            <div class="big-icon">🔌</div>
+            <p>請選擇出發地與目的地</p>
+            <p class="sub" style="font-size:0.85rem;color:#94a3b8;margin-top:4px;">選好後即時顯示結果</p>
+        </div>
+        <div id="resultContainer"></div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>🔌 電源與時間</h4>
+            <a href="#" class="active-link">插頭標準</a>
+            <a href="#">時差查詢</a>
+            <a href="#">日出日落時間</a>
+        </div>
+        <div class="footer-col">
+            <h4>🎉 假期與活動</h4>
+            <a href="#">各地假期查詢</a>
+            <a href="#">節慶活動</a>
+        </div>
+        <div class="footer-col">
+            <h4>💱 金融與單位</h4>
+            <a href="#">匯率兌換</a>
+            <a href="#">單位轉換器</a>
+        </div>
+        <div class="footer-col">
+            <h4>🌍 旅遊資訊</h4>
+            <a href="#">國家基本資訊</a>
+            <a href="#">地區詳細指南</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2026 Roamwise. 所有權利保留。 | <a href="#">隱私政策</a> | <a href="#">使用條款</a>
+    </div>
+</footer>
+
+<script>
+// ========== DATA ==========
+const countries = {
+    "台灣":{ en:"Taiwan", plugs:["A","B"], voltage:"110V", freq:"60Hz" },
+    "日本":{ en:"Japan", plugs:["A","B"], voltage:"100V", freq:"50/60Hz" },
+    "中國":{ en:"China", plugs:["A","C","I"], voltage:"220V", freq:"50Hz" },
+    "香港":{ en:"Hong Kong", plugs:["G"], voltage:"220V", freq:"50Hz" },
+    "澳門":{ en:"Macau", plugs:["G"], voltage:"220V", freq:"50Hz" },
+    "南韓":{ en:"South Korea", plugs:["C","F"], voltage:"220V", freq:"60Hz" },
+    "泰國":{ en:"Thailand", plugs:["A","B","C","O"], voltage:"220V", freq:"50Hz" },
+    "越南":{ en:"Vietnam", plugs:["A","B","C"], voltage:"220V", freq:"50Hz" },
+    "新加坡":{ en:"Singapore", plugs:["G"], voltage:"230V", freq:"50Hz" },
+    "馬來西亞":{ en:"Malaysia", plugs:["G"], voltage:"240V", freq:"50Hz" },
+    "印尼":{ en:"Indonesia", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "菲律賓":{ en:"Philippines", plugs:["A","B","C"], voltage:"220V", freq:"60Hz" },
+    "印度":{ en:"India", plugs:["C","D","M"], voltage:"230V", freq:"50Hz" },
+    "斯里蘭卡":{ en:"Sri Lanka", plugs:["D","G"], voltage:"230V", freq:"50Hz" },
+    "尼泊爾":{ en:"Nepal", plugs:["C","D","M"], voltage:"230V", freq:"50Hz" },
+    "柬埔寨":{ en:"Cambodia", plugs:["A","C","G"], voltage:"230V", freq:"50Hz" },
+    "緬甸":{ en:"Myanmar", plugs:["C","D","F","G"], voltage:"230V", freq:"50Hz" },
+    "寮國":{ en:"Laos", plugs:["A","B","C","E","F"], voltage:"230V", freq:"50Hz" },
+    "孟加拉":{ en:"Bangladesh", plugs:["A","C","D","G","K"], voltage:"220V", freq:"50Hz" },
+    "巴基斯坦":{ en:"Pakistan", plugs:["C","D"], voltage:"230V", freq:"50Hz" },
+    "美國":{ en:"USA", plugs:["A","B"], voltage:"120V", freq:"60Hz" },
+    "加拿大":{ en:"Canada", plugs:["A","B"], voltage:"120V", freq:"60Hz" },
+    "墨西哥":{ en:"Mexico", plugs:["A","B"], voltage:"127V", freq:"60Hz" },
+    "巴西":{ en:"Brazil", plugs:["C","N"], voltage:"127/220V", freq:"60Hz" },
+    "阿根廷":{ en:"Argentina", plugs:["C","I"], voltage:"220V", freq:"50Hz" },
+    "智利":{ en:"Chile", plugs:["C","L"], voltage:"220V", freq:"50Hz" },
+    "哥倫比亞":{ en:"Colombia", plugs:["A","B"], voltage:"110V", freq:"60Hz" },
+    "秘魯":{ en:"Peru", plugs:["A","B","C"], voltage:"220V", freq:"60Hz" },
+    "古巴":{ en:"Cuba", plugs:["A","B","C","L"], voltage:"110/220V", freq:"60Hz" },
+    "英國":{ en:"UK", plugs:["G"], voltage:"230V", freq:"50Hz" },
+    "法國":{ en:"France", plugs:["C","E"], voltage:"230V", freq:"50Hz" },
+    "德國":{ en:"Germany", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "義大利":{ en:"Italy", plugs:["C","F","L"], voltage:"230V", freq:"50Hz" },
+    "西班牙":{ en:"Spain", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "葡萄牙":{ en:"Portugal", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "荷蘭":{ en:"Netherlands", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "比利時":{ en:"Belgium", plugs:["C","E"], voltage:"230V", freq:"50Hz" },
+    "瑞士":{ en:"Switzerland", plugs:["C","J"], voltage:"230V", freq:"50Hz" },
+    "奧地利":{ en:"Austria", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "瑞典":{ en:"Sweden", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "挪威":{ en:"Norway", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "丹麥":{ en:"Denmark", plugs:["C","E","F","K"], voltage:"230V", freq:"50Hz" },
+    "芬蘭":{ en:"Finland", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "冰島":{ en:"Iceland", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "愛爾蘭":{ en:"Ireland", plugs:["G"], voltage:"230V", freq:"50Hz" },
+    "希臘":{ en:"Greece", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "土耳其":{ en:"Turkey", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "波蘭":{ en:"Poland", plugs:["C","E"], voltage:"230V", freq:"50Hz" },
+    "捷克":{ en:"Czech Republic", plugs:["C","E"], voltage:"230V", freq:"50Hz" },
+    "匈牙利":{ en:"Hungary", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "克羅埃西亞":{ en:"Croatia", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "俄羅斯":{ en:"Russia", plugs:["C","F"], voltage:"220V", freq:"50Hz" },
+    "烏克蘭":{ en:"Ukraine", plugs:["C","F"], voltage:"230V", freq:"50Hz" },
+    "澳洲":{ en:"Australia", plugs:["I"], voltage:"230V", freq:"50Hz" },
+    "紐西蘭":{ en:"New Zealand", plugs:["I"], voltage:"230V", freq:"50Hz" },
+    "斐濟":{ en:"Fiji", plugs:["I"], voltage:"240V", freq:"50Hz" },
+    "埃及":{ en:"Egypt", plugs:["C","F"], voltage:"220V", freq:"50Hz" },
+    "南非":{ en:"South Africa", plugs:["C","D","M","N"], voltage:"230V", freq:"50Hz" },
+    "肯亞":{ en:"Kenya", plugs:["G"], voltage:"240V", freq:"50Hz" },
+    "摩洛哥":{ en:"Morocco", plugs:["C","E"], voltage:"220V", freq:"50Hz" },
+    "奈及利亞":{ en:"Nigeria", plugs:["D","G"], voltage:"240V", freq:"50Hz" },
+    "坦尚尼亞":{ en:"Tanzania", plugs:["D","G"], voltage:"230V", freq:"50Hz" },
+    "迦納":{ en:"Ghana", plugs:["D","G"], voltage:"230V", freq:"50Hz" },
+    "以色列":{ en:"Israel", plugs:["C","H"], voltage:"230V", freq:"50Hz" },
+    "約旦":{ en:"Jordan", plugs:["B","C","D","F","G","J"], voltage:"230V", freq:"50Hz" },
+    "阿聯酋":{ en:"UAE", plugs:["C","D","G"], voltage:"220V", freq:"50Hz" },
+    "杜拜":{ en:"Dubai", plugs:["C","D","G"], voltage:"220V", freq:"50Hz" },
+    "沙烏地阿拉伯":{ en:"Saudi Arabia", plugs:["A","B","G"], voltage:"220V", freq:"60Hz" },
+    "卡達":{ en:"Qatar", plugs:["D","G"], voltage:"240V", freq:"50Hz" },
+    "馬爾地夫":{ en:"Maldives", plugs:["A","C","D","G","J","K","L"], voltage:"230V", freq:"50Hz" }
+};
+
+// Plug type info
+const plugInfo = {
+    A: { name:"Type A", desc:"美式雙扁腳" },
+    B: { name:"Type B", desc:"美式三腳（含接地）" },
+    C: { name:"Type C", desc:"歐式雙圓腳" },
+    D: { name:"Type D", desc:"印度三圓腳（大）" },
+    E: { name:"Type E", desc:"法式雙圓＋接地孔" },
+    F: { name:"Type F", desc:"德式雙圓＋接地夾" },
+    G: { name:"Type G", desc:"英式三方腳" },
+    H: { name:"Type H", desc:"以色列三腳" },
+    I: { name:"Type I", desc:"澳式斜扁腳" },
+    J: { name:"Type J", desc:"瑞士三圓腳" },
+    K: { name:"Type K", desc:"丹麥三圓腳" },
+    L: { name:"Type L", desc:"義式三圓直排" },
+    M: { name:"Type M", desc:"南非三大圓腳" },
+    N: { name:"Type N", desc:"巴西三圓腳" },
+    O: { name:"Type O", desc:"泰式三圓腳" }
+};
+
+// SVG plug illustrations (socket face view)
+const plugSVG = {
+    A: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><rect x="28" y="24" width="7" height="22" rx="2" fill="#7b8fa3"/><rect x="45" y="24" width="7" height="22" rx="2" fill="#7b8fa3"/></svg>`,
+    B: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><rect x="28" y="18" width="7" height="20" rx="2" fill="#7b8fa3"/><rect x="45" y="18" width="7" height="20" rx="2" fill="#7b8fa3"/><circle cx="40" cy="54" r="5.5" fill="#7b8fa3"/></svg>`,
+    C: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="40" r="6" fill="#7b8fa3"/><circle cx="51" cy="40" r="6" fill="#7b8fa3"/></svg>`,
+    D: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="40" cy="24" r="7" fill="#7b8fa3"/><circle cx="26" cy="50" r="7" fill="#7b8fa3"/><circle cx="54" cy="50" r="7" fill="#7b8fa3"/></svg>`,
+    E: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="46" r="6" fill="#7b8fa3"/><circle cx="51" cy="46" r="6" fill="#7b8fa3"/><circle cx="40" cy="24" r="4.5" fill="none" stroke="#7b8fa3" stroke-width="3"/></svg>`,
+    F: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="40" r="6" fill="#7b8fa3"/><circle cx="51" cy="40" r="6" fill="#7b8fa3"/><rect x="11" y="28" width="5" height="24" rx="2.5" fill="#a3b1c1"/><rect x="64" y="28" width="5" height="24" rx="2.5" fill="#a3b1c1"/></svg>`,
+    G: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><rect x="32" y="16" width="16" height="7" rx="2" fill="#7b8fa3"/><rect x="24" y="42" width="7" height="18" rx="2" fill="#7b8fa3"/><rect x="49" y="42" width="7" height="18" rx="2" fill="#7b8fa3"/></svg>`,
+    H: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><rect x="20" y="20" width="7" height="20" rx="2" fill="#7b8fa3" transform="rotate(15,23.5,30)"/><rect x="53" y="20" width="7" height="20" rx="2" fill="#7b8fa3" transform="rotate(-15,56.5,30)"/><circle cx="40" cy="55" r="5.5" fill="#7b8fa3"/></svg>`,
+    I: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><rect x="22" y="18" width="7" height="22" rx="2" fill="#7b8fa3" transform="rotate(30,25.5,29)"/><rect x="51" y="18" width="7" height="22" rx="2" fill="#7b8fa3" transform="rotate(-30,54.5,29)"/><rect x="36.5" y="44" width="7" height="18" rx="2" fill="#7b8fa3"/></svg>`,
+    J: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="32" r="6" fill="#7b8fa3"/><circle cx="51" cy="32" r="6" fill="#7b8fa3"/><circle cx="40" cy="54" r="5" fill="#7b8fa3"/></svg>`,
+    K: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="30" r="6" fill="#7b8fa3"/><circle cx="51" cy="30" r="6" fill="#7b8fa3"/><circle cx="40" cy="54" r="6" fill="#7b8fa3"/></svg>`,
+    L: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="20" cy="40" r="5.5" fill="#7b8fa3"/><circle cx="40" cy="40" r="4.5" fill="#7b8fa3"/><circle cx="60" cy="40" r="5.5" fill="#7b8fa3"/></svg>`,
+    M: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="40" cy="22" r="8" fill="#7b8fa3"/><circle cx="25" cy="50" r="8" fill="#7b8fa3"/><circle cx="55" cy="50" r="8" fill="#7b8fa3"/></svg>`,
+    N: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="30" r="5.5" fill="#7b8fa3"/><circle cx="51" cy="30" r="5.5" fill="#7b8fa3"/><circle cx="40" cy="54" r="5.5" fill="#7b8fa3"/></svg>`,
+    O: `<svg viewBox="0 0 80 80"><rect x="4" y="4" width="72" height="72" rx="16" fill="#eef2f7" stroke="#d0d7e2" stroke-width="2"/><circle cx="29" cy="28" r="5.5" fill="#7b8fa3"/><circle cx="51" cy="28" r="5.5" fill="#7b8fa3"/><circle cx="40" cy="54" r="6.5" fill="#7b8fa3"/></svg>`
+};
+
+const countryNames = Object.keys(countries);
+
+// ========== DROPDOWN ==========
+function setupDropdown(inputId, dropdownId) {
+    const input = document.getElementById(inputId);
+    const dropdown = document.getElementById(dropdownId);
+
+    function render(filter = '') {
+        const f = filter.trim().toLowerCase();
+        const matches = f
+            ? countryNames.filter(n => n.includes(f) || countries[n].en.toLowerCase().includes(f))
+            : countryNames;
+        dropdown.innerHTML = '';
+        matches.forEach(name => {
+            const div = document.createElement('div');
+            div.className = 'dropdown-item';
+            div.innerHTML = `${name} <span class="en-name">${countries[name].en}</span>`;
+            div.addEventListener('mousedown', e => {
+                e.preventDefault();
+                input.value = `${name} ${countries[name].en}`;
+                input.dataset.country = name;
+                dropdown.classList.remove('show');
+                tryAutoSearch();
+            });
+            dropdown.appendChild(div);
+        });
+        if (matches.length === 0) {
+            dropdown.innerHTML = '<div class="dropdown-item" style="color:#94a3b8;cursor:default">找不到符合的國家</div>';
+        }
+    }
+
+    input.addEventListener('focus', () => { render(input.value.split(' ')[0]); dropdown.classList.add('show'); });
+    input.addEventListener('input', () => {
+        input.dataset.country = '';
+        const raw = input.value.trim();
+        // Check direct match
+        for (const n of countryNames) {
+            if (raw === n || raw.toLowerCase() === countries[n].en.toLowerCase() || raw === `${n} ${countries[n].en}`) {
+                input.dataset.country = n;
+                break;
+            }
+        }
+        render(raw.split(' ')[0] || raw);
+        dropdown.classList.add('show');
+        tryAutoSearch();
+    });
+    input.addEventListener('blur', () => { setTimeout(() => dropdown.classList.remove('show'), 160); });
+}
+
+setupDropdown('originInput', 'originDropdown');
+setupDropdown('destInput', 'destDropdown');
+
+// ========== AUTO SEARCH ==========
+function getSelectedCountry(inputId) {
+    const input = document.getElementById(inputId);
+    if (input.dataset.country && countries[input.dataset.country]) return input.dataset.country;
+    const raw = input.value.trim();
+    for (const n of countryNames) {
+        if (raw === n || raw === `${n} ${countries[n].en}` || raw.toLowerCase() === countries[n].en.toLowerCase()) return n;
+    }
+    return null;
+}
+
+function tryAutoSearch() {
+    const origin = getSelectedCountry('originInput');
+    const dest = getSelectedCountry('destInput');
+    const noResult = document.getElementById('noResult');
+    const container = document.getElementById('resultContainer');
+
+    if (!origin || !dest) {
+        container.classList.remove('show');
+        container.innerHTML = '';
+        noResult.style.display = 'block';
+        return;
+    }
+
+    noResult.style.display = 'none';
+    showResults(origin, dest);
+}
+
+function parseV(s) { const m = s.match(/(\d+)/); return m ? parseInt(m[1]) : 0; }
+
+function showResults(originName, destName) {
+    const o = countries[originName];
+    const d = countries[destName];
+    const container = document.getElementById('resultContainer');
+    const common = o.plugs.filter(p => d.plugs.includes(p));
+    const allMatch = o.plugs.every(p => d.plugs.includes(p));
+    const oV = parseV(o.voltage);
+    const dV = parseV(d.voltage);
+    const voltageDiff = Math.abs(oV - dV) > 5;
+
+    // Compatibility banner
+    let bannerClass, bannerHTML;
+    if (common.length > 0 && allMatch) {
+        bannerClass = 'green';
+        bannerHTML = `<span class="compat-main">✅ 插頭相容！</span> 共用類型：${common.join(', ')}。`;
+        if (voltageDiff) {
+            bannerHTML += ` &nbsp;<span class="volt-warn">⚠️ 但電壓不同（${o.voltage}→${d.voltage}），請確認電器是否支援雙電壓。</span>`;
+        }
+    } else if (common.length > 0) {
+        bannerClass = 'yellow';
+        bannerHTML = `<span class="compat-main">⚠️ 部分相容！</span> 共用類型：${common.join(', ')}。其餘插頭需要轉接頭。`;
+        if (voltageDiff) {
+            bannerHTML += ` <span class="volt-warn">且電壓不同（${o.voltage}→${d.voltage}），請確認電器是否支援雙電壓。</span>`;
+        }
+    } else {
+        bannerClass = 'red';
+        bannerHTML = `<span class="compat-main">❌ 插頭不相容！</span> 需要攜帶轉接頭。`;
+        if (voltageDiff) {
+            bannerHTML += ` <span class="volt-warn">⚠️ 電壓不同（${o.voltage}→${d.voltage}），請確認電器是否支援雙電壓。</span>`;
+        }
+    }
+
+    // Plug cards HTML
+    let plugCardsHTML = '';
+    d.plugs.forEach(p => {
+        const info = plugInfo[p] || { name:`Type ${p}`, desc:'' };
+        const svg = plugSVG[p] || '';
+        plugCardsHTML += `
+            <div class="plug-card">
+                <div class="plug-icon-wrap">${svg}</div>
+                <div class="plug-info">
+                    <div class="plug-type-name">${info.name}</div>
+                    <div class="plug-type-desc">${info.desc}</div>
+                </div>
+            </div>`;
+    });
+
+    // Origin inline specs
+    let originInlineHTML = `
+        <div class="origin-spec-card">
+            <div class="spec-card-title">🏠 ${originName} <span style="color:#94a3b8;font-weight:400;font-size:0.9rem">${o.en}</span> 電力規格</div>
+            <div class="origin-spec-inline">
+                <div class="item"><span class="lbl">電壓：</span><span class="val">${o.voltage}</span></div>
+                <div class="item"><span class="lbl">頻率：</span><span class="val">${o.freq}</span></div>
+                <div class="item"><span class="lbl">插頭：</span><span class="val">${o.plugs.join(', ')}</span></div>
+            </div>
+        </div>`;
+
+    container.innerHTML = `
+        <div class="compat-banner ${bannerClass}">${bannerHTML}</div>
+        <div class="spec-card">
+            <div class="spec-card-title">⚡ ${destName} <span style="color:#94a3b8;font-weight:400;font-size:0.9rem">${d.en}</span> 電力規格</div>
+            <div class="spec-tiles">
+                <div class="spec-tile"><div class="val">${d.voltage}</div><div class="lbl">電壓</div></div>
+                <div class="spec-tile"><div class="val">${d.freq}</div><div class="lbl">頻率</div></div>
+                <div class="spec-tile"><div class="val">${d.plugs.join(', ')}</div><div class="lbl">插頭類型</div></div>
+            </div>
+            <div class="plug-cards">${plugCardsHTML}</div>
+        </div>
+        ${originInlineHTML}`;
+
+    container.classList.remove('show');
+    void container.offsetWidth; // trigger reflow for animation
+    container.classList.add('show');
+}
+</script>
+
+
+
+</body></html>
