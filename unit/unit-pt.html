@@ -92,12 +92,26 @@
 <body>
 
 <header>
-    <div class="logo">Roam<span>wise</span></div>
+    <div class="logo">
+        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
+        Roam<span>wise</span>
+    </div>
     <div class="header-right">
         <a href="#" class="contact-link">Contacte-nos</a>
-        <select class="lang-select"><option>Chinês Tradicional</option><option>Inglês</option><option>Espanhol</option><option selected="">Português</option><option>Hindi</option></select>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+            <option value="timer-pt.html" selected="">Português</option>
+            <option value="timer-en.html">English</option>
+            <option value="timer-es.html">Español</option>
+            <option value="timer-zh.html">繁體中文</option>
+        </select>
     </div>
 </header>
+
+<script>
+    function changeLanguage(filename) {
+        window.location.href = filename;
+    }
+</script>
 
 <main>
     <h1 class="page-title">📐 Conversor de Unidades</h1>
@@ -154,14 +168,32 @@
     <div class="calc-note">⚠️ Os resultados de conversão deste site são apenas para referência. Algumas unidades (p. ex., meses, anos) utilizam valores aproximados. O cavalo-vapor métrico (PS) e o imperial (hp) diferem ligeiramente. Para uso científico ou de engenharia, consulte os valores padrão precisos.</div>
 </main>
 
-<footer>
-    <div class="footer-grid">
-        <div class="footer-col"><h4>🔌 Eletricidade e Tempo</h4><a href="#">Consulta de especificações de fichas</a><a href="#">Consulta de fusos horários</a><a href="#">Horários do nascer e pôr do sol</a></div>
-        <div class="footer-col"><h4>🎉 Feriados e Celebrações</h4><a href="#">Feriados nacionais por país</a><a href="#">Resumo de festivais e eventos</a></div>
-        <div class="footer-col"><h4>💱 Finanças e Unidades</h4><a href="#">Câmbio de divisas</a><a href="#" class="active-link">Conversor de unidades</a></div>
-        <div class="footer-col"><h4>🌍 Informações de Viagem</h4><a href="#">Visão geral dos países</a><a href="#">Guias locais detalhados</a></div>
+<footer class="hide-f">
+<div class="footer-grid">
+    <div class="footer-col">
+        <h4>🔌 Energia e Hora</h4>
+        <a href="plug/plug-pt.html" class="active-link">Padrões de Fichas</a>
+        <a href="time-zone/time-zone-pt.html">Consulta de Fusos Horários</a>
+        <a href="sunset/sunset-pt.html">Hora do Nascer e Pôr do Sol</a>
+        <a href="timer/timer-pt.html">Temporizador</a>
     </div>
-    <div class="footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="#">Política de Privacidade</a> | <a href="#">Termos de Utilização</a></div>
+    <div class="footer-col">
+        <h4>🎉 Férias e Eventos</h4>
+        <a href="#">Consulta de Férias Locais</a>
+        <a href="#">Festividades e Eventos</a>
+    </div>
+    <div class="footer-col">
+        <h4>💱 Finanças e Unidades</h4>
+        <a href="currency/currency-pt.html">Conversor de Taxas de Câmbio</a>
+        <a href="unit/unit-pt.html">Conversor de Unidades</a>
+    </div>
+    <div class="footer-col">
+        <h4>🌍 Informações de Viagem</h4>
+        <a href="#">Informações Básicas de Países</a>
+        <a href="#">Guias Detalhados de Regiões</a>
+    </div>
+</div>
+    <div class="ft-bot">© 2026 Roamwise. Todos os direitos reservados. | <a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></div>
 </footer>
 
 <div class="toast" id="toast"></div>
