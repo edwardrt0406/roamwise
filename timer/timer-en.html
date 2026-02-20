@@ -165,9 +165,26 @@ footer{background:#1e293b;color:rgba(255,255,255,.7);padding:32px 24px 18px;marg
 <body>
 
 <header>
-    <div class="logo">Roam<span>wise</span></div>
-    <div class="hdr-r"><a href="#">Contact us</a></div>
+    <div class="logo">
+        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
+        Roam<span>wise</span>
+    </div>
+    <div class="header-right">
+        <a href="#" class="contact-link">contact us</a>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+            <option value="timer-zh.html" >繁體中文</option>
+            <option value="timer-en.html" selected="">English</option>
+            <option value="timer-es.html" >Español</option>
+            <option value="timer-pt.html" >Português</option>
+        </select>
+    </div>
 </header>
+
+    <script>
+    function changeLanguage(filename) {
+        window.location.href = filename;
+    }
+</script>
 
 <main>
 <h1 class="pg-title hide-f">⏱️ Countdown and Timer</h1>
@@ -255,6 +272,7 @@ footer{background:#1e293b;color:rgba(255,255,255,.7);padding:32px 24px 18px;marg
             <h4>🔌 Power &amp; Time</h4>
             <a href="plug/plug-en.html">Plug Specification Lookup</a>
             <a href="time-zone/time-zone-en.html" class="active-link">Time Zone Lookup</a>
+            <a href="timer/timer-en.html" class="active-link">Timer</a>
             <a href="sunset/sunset-en.html">Sunset &amp; Sunset Times</a>
         </div>
         <div class="footer-col">
