@@ -100,12 +100,27 @@
 <body>
 
 <header>
+    <div class="logo">
+        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
+        Roam<span>wise</span>
+    </div>
     <div class="logo">Roam<span>wise</span></div>
     <div class="header-right">
-        <a href="#" class="contact-link">Contacte-nos</a>
-        <select class="lang-select"><option>Chinês Tradicional</option><option>Inglês</option><option>Espanhol</option><option selected="">Português</option><option>हिन्दी</option></select>
+        <a href="#" class="contact-link">Contáctenos</a>
+        <select class="lang-select" id="langSelect">
+                <option value="currency-zh.html">繁體中文</option>
+                <option value="currency-en.html">English</option>
+                <option value="currency-es.html">Español</option>
+                <option value="currency-pt.html" selected="">Português</option>
+        </select>
     </div>
 </header>
+    
+<script>
+    function changeLanguage(filename) {
+        window.location.href = filename;
+    }
+</script>
 
 <main>
     <h1 class="page-title">💱 Conversor de Câmbio</h1>
