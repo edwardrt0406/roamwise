@@ -1,0 +1,559 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roamwise - 日出日落時間查詢</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+        :root{--primary:#2563eb;--primary-dark:#1d4ed8;--primary-light:#dbeafe;--accent:#f59e0b;--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.07);--shadow-sm:0 2px 8px rgba(0,0,0,.05)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+        header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(37,99,235,.3)}
+        .logo{font-size:1.4rem;font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:8px}.logo span{color:var(--accent)}
+        .header-right{display:flex;align-items:center;gap:16px}
+        .header-right a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;transition:color .2s}.header-right a:hover{color:#fff}
+        .lang-select{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:8px;font-size:.85rem;cursor:pointer;font-family:inherit}.lang-select option{color:#333;background:#fff}
+        main{flex:1;max-width:900px;width:100%;margin:0 auto;padding:32px 16px}
+        .page-title{text-align:center;font-size:1.7rem;font-weight:700;margin-bottom:24px;color:var(--primary-dark)}
+        .info-box{background:var(--primary-light);border-left:4px solid var(--primary);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin-bottom:28px;display:flex;gap:12px;align-items:flex-start;font-size:.92rem;color:var(--primary-dark);line-height:1.6}.info-box .icon{font-size:1.2rem;flex-shrink:0;margin-top:2px}
+        .query-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;margin-bottom:28px}
+        .selector-row{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
+        .selector-group{flex:1;min-width:180px}
+        .selector-group label{display:flex;align-items:center;gap:6px;font-weight:500;font-size:.95rem;margin-bottom:8px}
+        .custom-select-wrapper{position:relative}
+        .custom-select-wrapper input,.date-input{width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:10px;font-size:1rem;font-family:inherit;transition:border-color .2s,box-shadow .2s;background:#fff}
+        .custom-select-wrapper input:focus,.date-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+        .dropdown-list{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:10px;max-height:260px;overflow-y:auto;box-shadow:var(--shadow);z-index:50;display:none}.dropdown-list.show{display:block}
+        .dropdown-item{padding:10px 16px;cursor:pointer;font-size:.93rem;transition:background .15s;display:flex;justify-content:space-between;align-items:center}.dropdown-item:hover,.dropdown-item.active{background:var(--primary-light);color:var(--primary-dark)}
+        .dropdown-item .city-extra{font-size:.78rem;color:var(--text-light)}
+        .dropdown-group-header{padding:8px 16px 4px;font-size:.78rem;font-weight:600;color:var(--primary);background:#f8fafc;text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0}
+        .search-btn-wrapper{flex-shrink:0}
+        .search-btn{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;padding:12px 32px;border-radius:10px;font-size:1rem;font-family:inherit;font-weight:500;cursor:pointer;transition:transform .15s,box-shadow .2s;display:flex;align-items:center;gap:8px;white-space:nowrap}
+        .search-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,.35)}.search-btn:active{transform:translateY(0)}
+        .no-result{text-align:center;padding:48px 20px;color:var(--text-light);display:none}.no-result .big-icon{font-size:2.5rem;margin-bottom:12px}
+        .result-container{display:none}.result-container.show{display:block}
+        .result-header{text-align:center;margin-bottom:24px}.result-header h2{font-size:1.4rem;color:var(--primary-dark);margin-bottom:6px}.result-header p{font-size:.92rem;color:var(--text-light)}
+        .main-times{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+        .time-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:18px 14px;text-align:center}
+        .time-card .t-icon{font-size:1.6rem;display:block;margin-bottom:6px}
+        .time-card .t-label{font-size:.82rem;color:var(--text-light);display:block;margin-bottom:6px}
+        .time-card .t-value{font-size:1.35rem;font-weight:700;color:var(--text);display:block;font-variant-numeric:tabular-nums;letter-spacing:1px}
+        .time-card.sunrise{border-top:3px solid #f97316}.time-card.sunset{border-top:3px solid #8b5cf6}
+        .time-card.daylen{border-top:3px solid #0ea5e9}.time-card.nightlen{border-top:3px solid #334155}
+        .section-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:22px 20px;margin-bottom:20px}
+        .section-card h3{font-size:1rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:var(--text)}
+        .day-bar-wrap{position:relative;margin-bottom:8px}
+        .day-bar{height:40px;border-radius:20px;overflow:hidden;position:relative}
+        .bar-marker{position:absolute;top:0;height:100%;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%);z-index:2;pointer-events:none}
+        .bar-marker .m-line{width:2px;height:40px;flex-shrink:0}
+        .bar-marker .m-line.white{background:rgba(255,255,255,.85)}.bar-marker .m-line.red{background:#dc2626;width:3px}
+        .bar-marker .m-label{font-size:.68rem;margin-top:4px;white-space:nowrap;font-weight:500}
+        .bar-marker .m-label.red{color:#dc2626;font-weight:700}
+        .bar-hours{display:flex;justify-content:space-between;font-size:.7rem;color:var(--text-light);padding:4px 2px 0;user-select:none}
+        .status-banner{padding:14px 18px;border-radius:var(--radius);margin-bottom:20px;font-weight:500;font-size:.95rem;display:flex;align-items:center;gap:10px;line-height:1.5}
+        .status-banner.day{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+        .status-banner.twilight{background:#e0e7ff;color:#3730a3;border:1px solid #c7d2fe}
+        .status-banner.night{background:#1e293b;color:#94a3b8;border:1px solid #334155}
+        .status-banner.polar{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+        .detail-grid{display:grid;gap:0}
+        .detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:.93rem}.detail-row:last-child{border-bottom:none}
+        .detail-row .dl{color:var(--text-light)}.detail-row .dv{font-weight:600;text-align:right}
+        .trend-table{width:100%;border-collapse:collapse;font-size:.88rem}
+        .trend-table th{text-align:left;padding:8px 10px;font-weight:500;color:var(--text-light);border-bottom:2px solid var(--border);font-size:.82rem}
+        .trend-table td{padding:8px 10px;border-bottom:1px solid #f1f5f9;font-variant-numeric:tabular-nums}
+        .trend-table tr.today{background:#eff6ff;font-weight:600}
+        .trend-table .change{font-size:.78rem;border-radius:20px;padding:2px 8px;display:inline-block}
+        .change.up{background:#dcfce7;color:#15803d}.change.down{background:#fee2e2;color:#b91c1c}.change.same{background:#f1f5f9;color:#64748b}
+        .calc-note{font-size:.82rem;color:var(--text-light);line-height:1.6;padding:12px 16px;background:#f8fafc;border-radius:8px;margin-top:20px}
+        footer{background:#1e293b;color:rgba(255,255,255,.7);padding:36px 24px 20px;margin-top:auto}
+        .footer-grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;margin-bottom:28px}
+        .footer-col h4{color:#fff;font-size:.95rem;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+        .footer-col a{display:block;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;padding:4px 0;transition:color .2s}.footer-col a:hover{color:#fff}
+        .footer-col a.active-link{color:var(--accent);font-weight:500}
+        .footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,.1);padding-top:16px;font-size:.82rem}.footer-bottom a{color:rgba(255,255,255,.5);text-decoration:none}.footer-bottom a:hover{color:#fff}
+        @media(max-width:640px){
+            .page-title{font-size:1.3rem}
+            .selector-row{flex-direction:column}.selector-group{min-width:100%}
+            .search-btn-wrapper{width:100%}.search-btn{width:100%;justify-content:center}
+            .main-times{grid-template-columns:1fr 1fr}
+            .time-card .t-value{font-size:1.15rem}
+            .header-right a.contact-link{display:none}
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">Roam<span>wise</span></div>
+    <div class="header-right">
+        <a href="#" class="contact-link">聯絡我們</a>
+        <select class="lang-select"><option selected="">繁體中文</option><option>English</option><option>Español</option><option>Português</option><option>हिन्दी</option></select>
+    </div>
+</header>
+<main>
+    <h1 class="page-title">🌅 日出日落時間查詢</h1>
+    <div class="info-box"><span class="icon">ℹ️</span><div>選擇城市與日期，即可查詢日出日落、曙暮光、白天長度與攝影黃金時刻等資訊。支援全球超過 115 座城市，使用天文演算法即時計算。</div></div>
+    <div class="query-card">
+        <div class="selector-row">
+            <div class="selector-group" style="flex:2">
+                <label>🏙️ 選擇城市</label>
+                <div class="custom-select-wrapper">
+                    <input type="text" id="cityInput" placeholder="輸入城市或國家名稱…" autocomplete="off">
+                    <div class="dropdown-list" id="cityDropdown"></div>
+                </div>
+            </div>
+            <div class="selector-group" style="flex:1">
+                <label>📅 日期</label>
+                <input type="date" class="date-input" id="dateInput">
+            </div>
+            <div class="search-btn-wrapper">
+                <button class="search-btn" id="searchBtn">🔍 查詢</button>
+            </div>
+        </div>
+    </div>
+    <div class="no-result" id="noResult"><div class="big-icon">🔍</div><p>查無資料</p><p style="font-size:.85rem">請確認城市名稱是否正確，或從下拉選單中選取</p></div>
+    <div class="result-container" id="resultContainer">
+        <div class="result-header"><h2 id="rHeader"></h2><p id="rSubheader"></p></div>
+        <div class="main-times">
+            <div class="time-card sunrise"><span class="t-icon">🌅</span><span class="t-label">日出</span><span class="t-value" id="rSunrise">--:--</span></div>
+            <div class="time-card sunset"><span class="t-icon">🌇</span><span class="t-label">日落</span><span class="t-value" id="rSunset">--:--</span></div>
+            <div class="time-card daylen"><span class="t-icon">☀️</span><span class="t-label">白天長度</span><span class="t-value" id="rDayLen">--</span></div>
+            <div class="time-card nightlen"><span class="t-icon">🌙</span><span class="t-label">夜晚長度</span><span class="t-value" id="rNightLen">--</span></div>
+        </div>
+        <div class="section-card">
+            <h3>🕐 日照時間軸</h3>
+            <div class="day-bar-wrap">
+                <div class="day-bar" id="dayBar"></div>
+            </div>
+            <div class="bar-hours"><span>00</span><span>03</span><span>06</span><span>09</span><span>12</span><span>15</span><span>18</span><span>21</span><span>24</span></div>
+        </div>
+        <div class="status-banner" id="statusBanner"></div>
+        <div class="section-card">
+            <h3>📋 詳細時刻</h3>
+            <div class="detail-grid">
+                <div class="detail-row"><span class="dl">天文曙暮光（-18°）</span><span class="dv" id="rAstro"></span></div>
+                <div class="detail-row"><span class="dl">航海曙暮光（-12°）</span><span class="dv" id="rNaut"></span></div>
+                <div class="detail-row"><span class="dl">民用曙暮光（-6°）</span><span class="dv" id="rCivil"></span></div>
+                <div class="detail-row"><span class="dl">日出 / 日落</span><span class="dv" id="rOfficial"></span></div>
+                <div class="detail-row"><span class="dl">太陽正午</span><span class="dv" id="rNoon"></span></div>
+                <div class="detail-row"><span class="dl">正午最高仰角</span><span class="dv" id="rElev"></span></div>
+            </div>
+        </div>
+        <div class="section-card">
+            <h3>📷 攝影黃金時刻</h3>
+            <div class="detail-grid">
+                <div class="detail-row"><span class="dl">🌅 晨間黃金時刻</span><span class="dv" id="rGoldAM"></span></div>
+                <div class="detail-row"><span class="dl">🌆 傍晚黃金時刻</span><span class="dv" id="rGoldPM"></span></div>
+                <div class="detail-row"><span class="dl">🔵 晨間藍色時刻</span><span class="dv" id="rBlueAM"></span></div>
+                <div class="detail-row"><span class="dl">🔵 傍晚藍色時刻</span><span class="dv" id="rBluePM"></span></div>
+            </div>
+        </div>
+        <div class="section-card">
+            <h3>📊 前後一日比較</h3>
+            <table class="trend-table">
+                <thead><tr><th>日期</th><th>日出</th><th>日落</th><th>白天長度</th><th>變化</th></tr></thead>
+                <tbody id="trendBody"></tbody>
+            </table>
+        </div>
+        <div class="calc-note">⚠️ 以上為天文演算法近似計算結果，可能與實際時間有 1～2 分鐘誤差，且未考慮地形遮蔽與局部大氣折射變化。極地附近城市在夏至或冬至前後可能出現永晝或永夜。</div>
+    </div>
+</main>
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col"><h4>🔌 電力與時間</h4><a href="#">插頭規格查詢</a><a href="#">時區查詢</a><a href="#" class="active-link">日出日落時間</a></div>
+        <div class="footer-col"><h4>🎉 假期與節慶</h4><a href="#">各國國定假日</a><a href="#">節慶活動一覽</a></div>
+        <div class="footer-col"><h4>💱 金融與單位</h4><a href="#">匯率換算</a><a href="#">單位轉換</a></div>
+        <div class="footer-col"><h4>🌍 旅遊資訊</h4><a href="#">國家概覽</a><a href="#">各地詳細指南</a></div>
+    </div>
+    <div class="footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="#">隱私權政策</a> | <a href="#">使用條款</a></div>
+</footer>
+<script>
+// ============ CITY DATA ============
+// [city, country, region, iana, lat, lng]
+const raw=[
+["台北","台灣","亞洲","Asia/Taipei",25.03,121.57],
+["高雄","台灣","亞洲","Asia/Taipei",22.63,120.30],
+["東京","日本","亞洲","Asia/Tokyo",35.68,139.65],
+["大阪","日本","亞洲","Asia/Tokyo",34.69,135.50],
+["京都","日本","亞洲","Asia/Tokyo",35.01,135.77],
+["北京","中國","亞洲","Asia/Shanghai",39.90,116.41],
+["上海","中國","亞洲","Asia/Shanghai",31.23,121.47],
+["廣州","中國","亞洲","Asia/Shanghai",23.13,113.26],
+["深圳","中國","亞洲","Asia/Shanghai",22.54,114.06],
+["重慶","中國","亞洲","Asia/Shanghai",29.43,106.91],
+["成都","中國","亞洲","Asia/Shanghai",30.57,104.07],
+["香港","香港","亞洲","Asia/Hong_Kong",22.32,114.17],
+["澳門","澳門","亞洲","Asia/Macau",22.20,113.54],
+["首爾","南韓","亞洲","Asia/Seoul",37.57,126.98],
+["釜山","南韓","亞洲","Asia/Seoul",35.18,129.08],
+["曼谷","泰國","亞洲","Asia/Bangkok",13.76,100.50],
+["清邁","泰國","亞洲","Asia/Bangkok",18.79,98.99],
+["普吉島","泰國","亞洲","Asia/Bangkok",7.88,98.39],
+["胡志明市","越南","亞洲","Asia/Ho_Chi_Minh",10.82,106.63],
+["河內","越南","亞洲","Asia/Ho_Chi_Minh",21.03,105.83],
+["新加坡","新加坡","亞洲","Asia/Singapore",1.35,103.82],
+["吉隆坡","馬來西亞","亞洲","Asia/Kuala_Lumpur",3.14,101.69],
+["雅加達","印尼","亞洲","Asia/Jakarta",-6.21,106.85],
+["峇里島","印尼","亞洲","Asia/Makassar",-8.34,115.09],
+["馬尼拉","菲律賓","亞洲","Asia/Manila",14.60,120.98],
+["宿霧","菲律賓","亞洲","Asia/Manila",10.32,123.89],
+["新德里","印度","亞洲","Asia/Kolkata",28.61,77.21],
+["孟買","印度","亞洲","Asia/Kolkata",19.08,72.88],
+["班加羅爾","印度","亞洲","Asia/Kolkata",12.97,77.59],
+["可倫坡","斯里蘭卡","亞洲","Asia/Colombo",6.93,79.86],
+["加德滿都","尼泊爾","亞洲","Asia/Kathmandu",27.72,85.32],
+["金邊","柬埔寨","亞洲","Asia/Phnom_Penh",11.56,104.93],
+["暹粒","柬埔寨","亞洲","Asia/Phnom_Penh",13.36,103.86],
+["仰光","緬甸","亞洲","Asia/Yangon",16.87,96.20],
+["永珍","寮國","亞洲","Asia/Vientiane",17.98,102.63],
+["達卡","孟加拉","亞洲","Asia/Dhaka",23.81,90.41],
+["喀拉蚩","巴基斯坦","亞洲","Asia/Karachi",24.86,67.00],
+["伊斯蘭堡","巴基斯坦","亞洲","Asia/Karachi",33.68,73.05],
+["杜拜","阿聯酋","中東","Asia/Dubai",25.20,55.27],
+["阿布達比","阿聯酋","中東","Asia/Dubai",24.45,54.38],
+["利雅德","沙烏地阿拉伯","中東","Asia/Riyadh",24.71,46.68],
+["多哈","卡達","中東","Asia/Qatar",25.29,51.53],
+["耶路撒冷","以色列","中東","Asia/Jerusalem",31.77,35.21],
+["特拉維夫","以色列","中東","Asia/Jerusalem",32.09,34.78],
+["安曼","約旦","中東","Asia/Amman",31.95,35.93],
+["伊斯坦堡","土耳其","中東","Europe/Istanbul",41.01,28.98],
+["馬累","馬爾地夫","中東","Indian/Maldives",4.18,73.51],
+["倫敦","英國","歐洲","Europe/London",51.51,-0.13],
+["愛丁堡","英國","歐洲","Europe/London",55.95,-3.19],
+["曼徹斯特","英國","歐洲","Europe/London",53.48,-2.24],
+["巴黎","法國","歐洲","Europe/Paris",48.86,2.35],
+["尼斯","法國","歐洲","Europe/Paris",43.71,7.26],
+["柏林","德國","歐洲","Europe/Berlin",52.52,13.41],
+["慕尼黑","德國","歐洲","Europe/Berlin",48.14,11.58],
+["法蘭克福","德國","歐洲","Europe/Berlin",50.11,8.68],
+["羅馬","義大利","歐洲","Europe/Rome",41.90,12.50],
+["米蘭","義大利","歐洲","Europe/Rome",45.46,9.19],
+["威尼斯","義大利","歐洲","Europe/Rome",45.44,12.32],
+["馬德里","西班牙","歐洲","Europe/Madrid",40.42,-3.70],
+["巴塞隆納","西班牙","歐洲","Europe/Madrid",41.39,2.17],
+["里斯本","葡萄牙","歐洲","Europe/Lisbon",38.72,-9.14],
+["阿姆斯特丹","荷蘭","歐洲","Europe/Amsterdam",52.37,4.90],
+["布魯塞爾","比利時","歐洲","Europe/Brussels",50.85,4.35],
+["蘇黎世","瑞士","歐洲","Europe/Zurich",47.38,8.54],
+["日內瓦","瑞士","歐洲","Europe/Zurich",46.20,6.14],
+["維也納","奧地利","歐洲","Europe/Vienna",48.21,16.37],
+["斯德哥爾摩","瑞典","歐洲","Europe/Stockholm",59.33,18.07],
+["奧斯陸","挪威","歐洲","Europe/Oslo",59.91,10.75],
+["哥本哈根","丹麥","歐洲","Europe/Copenhagen",55.68,12.57],
+["赫爾辛基","芬蘭","歐洲","Europe/Helsinki",60.17,24.94],
+["雷克雅維克","冰島","歐洲","Atlantic/Reykjavik",64.15,-21.94],
+["都柏林","愛爾蘭","歐洲","Europe/Dublin",53.35,-6.26],
+["雅典","希臘","歐洲","Europe/Athens",37.98,23.73],
+["華沙","波蘭","歐洲","Europe/Warsaw",52.23,21.01],
+["布拉格","捷克","歐洲","Europe/Prague",50.08,14.44],
+["布達佩斯","匈牙利","歐洲","Europe/Budapest",47.50,19.04],
+["札格雷布","克羅埃西亞","歐洲","Europe/Zagreb",45.82,15.98],
+["莫斯科","俄羅斯","歐洲","Europe/Moscow",55.76,37.62],
+["聖彼得堡","俄羅斯","歐洲","Europe/Moscow",59.93,30.36],
+["葉卡捷琳堡","俄羅斯","歐洲","Asia/Yekaterinburg",56.84,60.61],
+["新西伯利亞","俄羅斯","歐洲","Asia/Novosibirsk",55.01,82.94],
+["海參崴","俄羅斯","歐洲","Asia/Vladivostok",43.13,131.91],
+["基輔","烏克蘭","歐洲","Europe/Kyiv",50.45,30.52],
+["里加","拉脫維亞","歐洲","Europe/Riga",56.95,24.11],
+["蒙特卡洛","摩納哥","歐洲","Europe/Monaco",43.74,7.42],
+["紐約","美國","北美洲","America/New_York",40.71,-74.01],
+["華盛頓特區","美國","北美洲","America/New_York",38.91,-77.04],
+["波士頓","美國","北美洲","America/New_York",42.36,-71.06],
+["邁阿密","美國","北美洲","America/New_York",25.76,-80.19],
+["亞特蘭大","美國","北美洲","America/New_York",33.75,-84.39],
+["芝加哥","美國","北美洲","America/Chicago",41.88,-87.63],
+["休士頓","美國","北美洲","America/Chicago",29.76,-95.37],
+["達拉斯","美國","北美洲","America/Chicago",32.78,-96.80],
+["丹佛","美國","北美洲","America/Denver",39.74,-104.99],
+["鳳凰城","美國","北美洲","America/Phoenix",33.45,-112.07],
+["洛杉磯","美國","北美洲","America/Los_Angeles",34.05,-118.24],
+["舊金山","美國","北美洲","America/Los_Angeles",37.77,-122.42],
+["西雅圖","美國","北美洲","America/Los_Angeles",47.61,-122.33],
+["拉斯維加斯","美國","北美洲","America/Los_Angeles",36.17,-115.14],
+["安克拉治","美國","北美洲","America/Anchorage",61.22,-149.90],
+["檀香山","美國","北美洲","Pacific/Honolulu",21.31,-157.86],
+["多倫多","加拿大","北美洲","America/Toronto",43.65,-79.38],
+["蒙特婁","加拿大","北美洲","America/Toronto",45.50,-73.57],
+["渥太華","加拿大","北美洲","America/Toronto",45.42,-75.70],
+["卡加利","加拿大","北美洲","America/Edmonton",51.04,-114.07],
+["溫哥華","加拿大","北美洲","America/Vancouver",49.28,-123.12],
+["墨西哥城","墨西哥","北美洲","America/Mexico_City",19.43,-99.13],
+["坎昆","墨西哥","北美洲","America/Cancun",21.16,-86.85],
+["哈瓦那","古巴","北美洲","America/Havana",23.11,-82.37],
+["巴拿馬城","巴拿馬","北美洲","America/Panama",8.98,-79.52],
+["聖荷西","哥斯大黎加","北美洲","America/Costa_Rica",9.93,-84.09],
+["聖保羅","巴西","南美洲","America/Sao_Paulo",-23.55,-46.63],
+["里約熱內盧","巴西","南美洲","America/Sao_Paulo",-22.91,-43.17],
+["布宜諾斯艾利斯","阿根廷","南美洲","America/Argentina/Buenos_Aires",-34.60,-58.38],
+["聖地牙哥","智利","南美洲","America/Santiago",-33.45,-70.67],
+["波哥大","哥倫比亞","南美洲","America/Bogota",4.71,-74.07],
+["利馬","秘魯","南美洲","America/Lima",-12.05,-77.04],
+["蒙特維多","烏拉圭","南美洲","America/Montevideo",-34.90,-56.16],
+["雪梨","澳洲","大洋洲","Australia/Sydney",-33.87,151.21],
+["墨爾本","澳洲","大洋洲","Australia/Melbourne",-37.81,144.96],
+["布里斯本","澳洲","大洋洲","Australia/Brisbane",-27.47,153.03],
+["伯斯","澳洲","大洋洲","Australia/Perth",-31.95,115.86],
+["阿德萊德","澳洲","大洋洲","Australia/Adelaide",-34.93,138.60],
+["奧克蘭","紐西蘭","大洋洲","Pacific/Auckland",-36.85,174.76],
+["威靈頓","紐西蘭","大洋洲","Pacific/Auckland",-41.29,174.78],
+["蘇瓦","斐濟","大洋洲","Pacific/Fiji",-18.14,178.44],
+["開羅","埃及","非洲","Africa/Cairo",30.04,31.24],
+["約翰尼斯堡","南非","非洲","Africa/Johannesburg",-26.20,28.05],
+["開普敦","南非","非洲","Africa/Johannesburg",-33.92,18.42],
+["奈洛比","肯亞","非洲","Africa/Nairobi",-1.29,36.82],
+["卡薩布蘭加","摩洛哥","非洲","Africa/Casablanca",33.57,-7.59],
+["馬拉喀什","摩洛哥","非洲","Africa/Casablanca",31.63,-7.98],
+["拉哥斯","奈及利亞","非洲","Africa/Lagos",6.52,3.38],
+["三蘭港","坦尚尼亞","非洲","Africa/Dar_es_Salaam",-6.79,39.21],
+["阿克拉","迦納","非洲","Africa/Accra",5.60,-0.19],
+["阿迪斯阿貝巴","衣索比亞","非洲","Africa/Addis_Ababa",9.03,38.75]
+];
+
+const regionOrder=["亞洲","中東","歐洲","北美洲","南美洲","大洋洲","非洲"];
+const cities=raw.map(r=>({city:r[0],country:r[1],region:r[2],iana:r[3],lat:r[4],lng:r[5],label:r[0]+"（"+r[1]+"）"}));
+const cityMap={};cities.forEach(c=>cityMap[c.label]=c);
+
+// ============ DROPDOWN ============
+(function(){
+    const input=document.getElementById('cityInput'),dd=document.getElementById('cityDropdown');
+    function render(f){
+        f=(f||'').trim().toLowerCase();
+        const m=f?cities.filter(c=>c.city.toLowerCase().includes(f)||c.country.toLowerCase().includes(f)):cities;
+        const g={};regionOrder.forEach(r=>g[r]=[]);m.forEach(c=>{if(g[c.region])g[c.region].push(c)});
+        dd.innerHTML='';let n=0;
+        regionOrder.forEach(r=>{if(!g[r]||!g[r].length)return;const h=document.createElement('div');h.className='dropdown-group-header';h.textContent=r;dd.appendChild(h);
+            g[r].forEach(c=>{const d=document.createElement('div');d.className='dropdown-item';d.innerHTML='<span>'+c.city+'（'+c.country+'）</span><span class="city-extra">'+c.lat.toFixed(1)+'°, '+c.lng.toFixed(1)+'°</span>';
+            d.addEventListener('mousedown',e=>{e.preventDefault();input.value=c.label;dd.classList.remove('show')});dd.appendChild(d);n++})});
+        if(!n){const d=document.createElement('div');d.className='dropdown-item';d.textContent='找不到相符的城市';d.style.color='#94a3b8';dd.appendChild(d)}
+    }
+    input.addEventListener('focus',()=>{render(input.value);dd.classList.add('show')});
+    input.addEventListener('input',()=>{render(input.value);dd.classList.add('show')});
+    input.addEventListener('blur',()=>setTimeout(()=>dd.classList.remove('show'),200));
+})();
+
+// Default date = today
+document.getElementById('dateInput').valueAsDate=new Date();
+
+// ============ SUN CALCULATION ============
+function getOffset(iana,y,m,d){
+    const dt=new Date(Date.UTC(y,m-1,d,12,0,0));
+    const u=dt.toLocaleString('en-US',{timeZone:'UTC'});
+    const t=dt.toLocaleString('en-US',{timeZone:iana});
+    return(new Date(t)-new Date(u))/36e5;
+}
+function doy(y,m,d){return Math.floor((new Date(y,m-1,d)-new Date(y,0,0))/864e5)}
+function calcSun(lat,lng,y,m,d,iana){
+    const off=getOffset(iana,y,m,d);
+    const n=doy(y,m,d);
+    const gamma=(2*Math.PI/365)*(n-1+0.5);
+    const eqtime=229.18*(0.000075+0.001868*Math.cos(gamma)-0.032077*Math.sin(gamma)-0.014615*Math.cos(2*gamma)-0.040849*Math.sin(2*gamma));
+    const decl=0.006918-0.399912*Math.cos(gamma)+0.070257*Math.sin(gamma)-0.006758*Math.cos(2*gamma)+0.000907*Math.sin(2*gamma)-0.002697*Math.cos(3*gamma)+0.00148*Math.sin(3*gamma);
+    const snoon=720-4*lng-eqtime+off*60;
+    const latR=lat*Math.PI/180;
+    function getTimes(zenith){
+        const zR=zenith*Math.PI/180;
+        const cosH=(Math.cos(zR)-Math.sin(latR)*Math.sin(decl))/(Math.cos(latR)*Math.cos(decl));
+        if(cosH>1)return{state:'never_rises'};
+        if(cosH<-1)return{state:'never_sets'};
+        const ha=Math.acos(cosH)*180/Math.PI;
+        return{rise:snoon-ha*4,set:snoon+ha*4};
+    }
+    const official=getTimes(90.833);
+    const civil=getTimes(96);
+    const nautical=getTimes(102);
+    const astro=getTimes(108);
+    const golden=getTimes(84);
+    const declDeg=decl*180/Math.PI;
+    let maxElev=90-Math.abs(lat-declDeg);
+    if(maxElev<0)maxElev=0;
+    return{official,civil,nautical,astro,golden,snoon,maxElev,declDeg,off};
+}
+
+// ============ FORMATTING ============
+function mt(m){
+    if(!m&&m!==0||isNaN(m))return'--:--';
+    let h=Math.floor(m/60),mn=Math.round(m%60);
+    if(mn===60){h++;mn=0}h=((h%24)+24)%24;
+    return String(h).padStart(2,'0')+':'+String(mn).padStart(2,'0');
+}
+function dur(m){
+    if(!m&&m!==0||isNaN(m))return'--';
+    m=Math.round(m);const h=Math.floor(m/60),mn=m%60;
+    return h+' 時 '+mn+' 分';
+}
+function fmtDate(y,m,d){
+    const dt=new Date(y,m-1,d);
+    const wd=['日','一','二','三','四','五','六'][dt.getDay()];
+    return y+'年'+m+'月'+d+'日（星期'+wd+'）';
+}
+
+// ============ SEARCH ============
+document.getElementById('searchBtn').addEventListener('click',doSearch);
+document.getElementById('cityInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch()});
+
+function doSearch(){
+    const cVal=document.getElementById('cityInput').value.trim();
+    const dStr=document.getElementById('dateInput').value;
+    const noR=document.getElementById('noResult'),res=document.getElementById('resultContainer');
+    const c=cityMap[cVal];
+    if(!c||!dStr){noR.style.display='block';res.classList.remove('show');return}
+    noR.style.display='none';res.classList.add('show');
+    const[y,m,d]=dStr.split('-').map(Number);
+    const sun=calcSun(c.lat,c.lng,y,m,d,c.iana);
+
+    // Header
+    document.getElementById('rHeader').textContent='🏙️ '+c.city+'（'+c.country+'）';
+    document.getElementById('rSubheader').textContent='📅 '+fmtDate(y,m,d)+'　📍 '+c.lat.toFixed(2)+'°N, '+c.lng.toFixed(2)+'°E';
+
+    // Main times
+    if(sun.official.state){
+        const isPolar=sun.official.state==='never_rises';
+        document.getElementById('rSunrise').textContent=isPolar?'不升起':'不落下';
+        document.getElementById('rSunset').textContent=isPolar?'不升起':'不落下';
+        document.getElementById('rDayLen').textContent=isPolar?'0 時 0 分':'24 時 0 分';
+        document.getElementById('rNightLen').textContent=isPolar?'24 時 0 分':'0 時 0 分';
+    }else{
+        document.getElementById('rSunrise').textContent=mt(sun.official.rise);
+        document.getElementById('rSunset').textContent=mt(sun.official.set);
+        const dayMins=sun.official.set-sun.official.rise;
+        document.getElementById('rDayLen').textContent=dur(dayMins);
+        document.getElementById('rNightLen').textContent=dur(1440-dayMins);
+    }
+
+    // Visual bar
+    renderBar(sun);
+
+    // Status
+    renderStatus(c,sun,y,m,d);
+
+    // Details
+    document.getElementById('rAstro').textContent=sun.astro.state?'—':mt(sun.astro.rise)+' / '+mt(sun.astro.set);
+    document.getElementById('rNaut').textContent=sun.nautical.state?'—':mt(sun.nautical.rise)+' / '+mt(sun.nautical.set);
+    document.getElementById('rCivil').textContent=sun.civil.state?'—':mt(sun.civil.rise)+' / '+mt(sun.civil.set);
+    document.getElementById('rOfficial').textContent=sun.official.state?'—':mt(sun.official.rise)+' / '+mt(sun.official.set);
+    document.getElementById('rNoon').textContent=mt(sun.snoon);
+    document.getElementById('rElev').textContent=sun.maxElev.toFixed(1)+'°';
+
+    // Photography
+    if(!sun.official.state&&!sun.golden.state){
+        document.getElementById('rGoldAM').textContent=mt(sun.official.rise)+' ~ '+mt(sun.golden.rise);
+        document.getElementById('rGoldPM').textContent=mt(sun.golden.set)+' ~ '+mt(sun.official.set);
+    }else{
+        document.getElementById('rGoldAM').textContent='—';
+        document.getElementById('rGoldPM').textContent='—';
+    }
+    if(!sun.official.state&&!sun.civil.state){
+        document.getElementById('rBlueAM').textContent=mt(sun.civil.rise)+' ~ '+mt(sun.official.rise);
+        document.getElementById('rBluePM').textContent=mt(sun.official.set)+' ~ '+mt(sun.civil.set);
+    }else{
+        document.getElementById('rBlueAM').textContent='—';
+        document.getElementById('rBluePM').textContent='—';
+    }
+
+    // Trend
+    renderTrend(c,y,m,d);
+
+    res.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ============ VISUAL BAR ============
+function renderBar(sun){
+    const bar=document.getElementById('dayBar');
+    bar.innerHTML='';
+    function pct(m){return Math.max(0,Math.min(100,m/1440*100))}
+
+    if(sun.official.state){
+        bar.style.background=sun.official.state==='never_rises'?'linear-gradient(135deg,#0f172a,#1e293b)':'linear-gradient(135deg,#38bdf8,#7dd3fc)';
+        bar.style.height='40px';bar.style.borderRadius='20px';return;
+    }
+    const cd=sun.civil.state?pct(sun.official.rise):pct(sun.civil.rise);
+    const sr=pct(sun.official.rise);
+    const ss=pct(sun.official.set);
+    const ck=sun.civil.state?pct(sun.official.set):pct(sun.civil.set);
+
+    bar.style.background=`linear-gradient(to right,#0f172a 0%,#0f172a ${cd}%,#334155 ${cd}%,#fb923c ${sr}%,#fbbf24 ${sr}%,#38bdf8 ${sr+3>ss-3?sr:sr+3}%,#38bdf8 ${ss-3<sr+3?ss:ss-3}%,#fbbf24 ${ss}%,#fb923c ${ss}%,#334155 ${ck}%,#0f172a ${ck}%,#0f172a 100%)`;
+    bar.style.height='40px';bar.style.borderRadius='20px';bar.style.position='relative';bar.style.overflow='visible';
+
+    function addMarker(mins,label,color){
+        const mk=document.createElement('div');mk.className='bar-marker';mk.style.left=pct(mins)+'%';
+        const ln=document.createElement('div');ln.className='m-line '+(color==='red'?'red':'white');
+        const lb=document.createElement('div');lb.className='m-label'+(color==='red'?' red':'');lb.textContent=label;
+        mk.appendChild(ln);mk.appendChild(lb);bar.appendChild(mk);
+    }
+    addMarker(sun.official.rise,mt(sun.official.rise),'white');
+    addMarker(sun.official.set,mt(sun.official.set),'white');
+    addMarker(sun.snoon,'正午','white');
+
+    // Current time marker if today
+    const today=new Date();const ds=document.getElementById('dateInput').value;
+    const todayStr=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+    if(ds===todayStr){
+        try{
+            const nowStr=today.toLocaleTimeString('en-US',{timeZone:cities.find(x=>x.label===document.getElementById('cityInput').value.trim())?.iana||'UTC',hour12:false,hour:'2-digit',minute:'2-digit'});
+            const[nh,nm]=nowStr.split(':').map(Number);
+            addMarker(nh*60+nm,'現在','red');
+        }catch(e){}
+    }
+}
+
+// ============ STATUS BANNER ============
+function renderStatus(c,sun,y,m,d){
+    const banner=document.getElementById('statusBanner');
+    const today=new Date();
+    const todayStr=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+    const ds=document.getElementById('dateInput').value;
+    if(ds!==todayStr){
+        banner.className='status-banner day';
+        banner.innerHTML='📅 顯示的是 '+fmtDate(y,m,d)+' 的資料（非今日）';return;
+    }
+    if(sun.official.state){
+        banner.className='status-banner polar';
+        banner.innerHTML=sun.official.state==='never_rises'?'🌑 永夜 — 今日太陽不會升起':'☀️ 永晝 — 今日太陽不會落下';return;
+    }
+    try{
+        const nowStr=today.toLocaleTimeString('en-US',{timeZone:c.iana,hour12:false,hour:'2-digit',minute:'2-digit'});
+        const[nh,nm]=nowStr.split(':').map(Number);const now=nh*60+nm;
+        const sr=sun.official.rise,ss=sun.official.set;
+        const cd=sun.civil.state?sr:sun.civil.rise,ck=sun.civil.state?ss:sun.civil.set;
+        if(now<cd){banner.className='status-banner night';banner.innerHTML='🌑 夜晚 — 距離天亮約 '+dur(cd-now)}
+        else if(now<sr){banner.className='status-banner twilight';banner.innerHTML='🌆 曙光 — 距離日出約 '+dur(sr-now)}
+        else if(now<ss){banner.className='status-banner day';banner.innerHTML='☀️ 白天 — 距離日落約 '+dur(ss-now)}
+        else if(now<ck){banner.className='status-banner twilight';banner.innerHTML='🌆 暮光 — 距離天黑約 '+dur(ck-now)}
+        else{banner.className='status-banner night';banner.innerHTML='🌑 夜晚 — 今日太陽已落下'}
+    }catch(e){banner.className='status-banner day';banner.innerHTML='📍 '+c.city+'當地時間資訊'}
+}
+
+// ============ TREND TABLE ============
+function renderTrend(c,y,m,d){
+    const tbody=document.getElementById('trendBody');tbody.innerHTML='';
+    const dates=[];
+    for(let i=-1;i<=1;i++){
+        const dt=new Date(y,m-1,d+i);
+        dates.push({y:dt.getFullYear(),m:dt.getMonth()+1,d:dt.getDate(),offset:i});
+    }
+    let prevDayLen=null;
+    dates.forEach(dt=>{
+        const s=calcSun(c.lat,c.lng,dt.y,dt.m,dt.d,c.iana);
+        const tr=document.createElement('tr');
+        if(dt.offset===0)tr.className='today';
+        const dateLabel=dt.offset===-1?'前一天':dt.offset===0?'▶ '+dt.m+'/'+dt.d:' 後一天';
+        let srT='—',ssT='—',dlT='—',dayLen=null;
+        if(!s.official.state){
+            srT=mt(s.official.rise);ssT=mt(s.official.set);
+            dayLen=s.official.set-s.official.rise;dlT=dur(dayLen);
+        }else if(s.official.state==='never_sets'){dayLen=1440;dlT='24 時 0 分';srT='不落下';ssT='不落下'}
+        else{dayLen=0;dlT='0 時 0 分';srT='不升起';ssT='不升起'}
+        let changeHtml='';
+        if(prevDayLen!==null&&dayLen!==null){
+            const diff=Math.round(dayLen-prevDayLen);
+            if(diff>0)changeHtml='<span class="change up">+'+diff+' 分</span>';
+            else if(diff<0)changeHtml='<span class="change down">'+diff+' 分</span>';
+            else changeHtml='<span class="change same">±0</span>';
+        }
+        prevDayLen=dayLen;
+        tr.innerHTML='<td>'+dateLabel+'</td><td>'+srT+'</td><td>'+ssT+'</td><td>'+dlT+'</td><td>'+changeHtml+'</td>';
+        tbody.appendChild(tr);
+    });
+}
+</script>
+
+
+</body></html>
