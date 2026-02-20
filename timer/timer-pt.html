@@ -165,9 +165,26 @@ footer{background:#1e293b;color:rgba(255,255,255,.7);padding:32px 24px 18px;marg
 <body>
 
 <header>
-    <div class="logo">Roam<span>wise</span></div>
-    <div class="hdr-r"><a href="#">聯絡我們</a></div>
+    <div class="logo">
+        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
+        Roam<span>wise</span>
+    </div>
+    <div class="header-right">
+        <a href="#" class="contact-link">Contacte-nos</a>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+            <option value="timer-pt.html" selected="">Português</option>
+            <option value="timer-en.html">English</option>
+            <option value="timer-es.html">Español</option>
+            <option value="timer-zh.html">繁體中文</option>
+        </select>
+    </div>
 </header>
+
+<script>
+    function changeLanguage(filename) {
+        window.location.href = filename;
+    }
+</script>
 
 <main>
 <h1 class="pg-title hide-f">⏱️ 計時器與倒計時</h1>
@@ -251,13 +268,31 @@ footer{background:#1e293b;color:rgba(255,255,255,.7);padding:32px 24px 18px;marg
 </main>
 
 <footer class="hide-f">
-    <div class="ft-grid">
-        <div class="ft-col"><h4>🔌 工具</h4><a href="#">插頭規格查詢</a><a href="#" class="al">計時器與倒計時</a><a href="#">單位轉換</a></div>
-        <div class="ft-col"><h4>💱 金融</h4><a href="#">匯率換算</a><a href="#">旅遊預算計算</a></div>
-        <div class="ft-col"><h4>🌍 旅遊</h4><a href="#">國家概覽</a><a href="#">各地詳細指南</a></div>
-        <div class="ft-col"><h4>🎉 假期</h4><a href="#">各國國定假日</a><a href="#">節慶活動</a></div>
+<div class="footer-grid">
+    <div class="footer-col">
+        <h4>🔌 Energia e Hora</h4>
+        <a href="plug/plug-pt.html" class="active-link">Padrões de Fichas</a>
+        <a href="time-zone/time-zone-pt.html">Consulta de Fusos Horários</a>
+        <a href="sunset/sunset-pt.html">Hora do Nascer e Pôr do Sol</a>
+        <a href="timer/timer-pt.html">Temporizador</a>
     </div>
-    <div class="ft-bot">© 2026 Roamwise. All rights reserved. | <a href="#">隱私權政策</a> | <a href="#">使用條款</a></div>
+    <div class="footer-col">
+        <h4>🎉 Férias e Eventos</h4>
+        <a href="#">Consulta de Férias Locais</a>
+        <a href="#">Festividades e Eventos</a>
+    </div>
+    <div class="footer-col">
+        <h4>💱 Finanças e Unidades</h4>
+        <a href="currency/currency-pt.html">Conversor de Taxas de Câmbio</a>
+        <a href="unit/unit-pt.html">Conversor de Unidades</a>
+    </div>
+    <div class="footer-col">
+        <h4>🌍 Informações de Viagem</h4>
+        <a href="#">Informações Básicas de Países</a>
+        <a href="#">Guias Detalhados de Regiões</a>
+    </div>
+</div>
+    <div class="ft-bot">© 2026 Roamwise. Todos os direitos reservados. | <a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></div>
 </footer>
 
 <!-- Finish Overlay -->
