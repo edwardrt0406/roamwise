@@ -444,19 +444,28 @@
 <body>
 
     <!-- CABECERA -->
-    <header>
-        <div class="logo">Roam<span>wise</span></div>
-        <div class="header-right">
-            <a href="#" class="contact-link">Contacto</a>
-            <select class="lang-select" id="langSelect">
-                <option value="zh-Hant">繁體中文</option>
-                <option value="en">English</option>
-                <option value="es" selected="">Español</option>
-                <option value="pt">Português</option>
-                <option value="hi">हिन्दी</option>
-            </select>
-        </div>
-    </header>
+<header>
+    <div class="logo">
+        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
+        Roam<span>wise</span>
+    </div>
+    <div class="logo">Roam<span>wise</span></div>
+    <div class="header-right">
+        <a href="#" class="contact-link">Contáctenos</a>
+        <select class="lang-select" id="langSelect">
+            <option value="plug-zh.html">Chino tradicional</option>
+            <option value="plug-en.html">Inglés</option>
+            <option value="plug-es.html" selected="">Español</option>
+            <option value="plug-pt.html">Portugués</option>
+        </select>
+    </div>
+</header>
+    
+<script>
+    function changeLanguage(filename) {
+        window.location.href = filename;
+    }
+</script>
 
     <!-- CONTENIDO PRINCIPAL -->
     <main>
@@ -551,36 +560,32 @@
     </main>
 
     <!-- PIE DE PÁGINA -->
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>🔌 Electricidad y Horarios</h4>
-                <a href="#" class="active-link">Normas de enchufes</a>
-                <a href="#">Consulta de huso horario</a>
-                <a href="#">Amanecer y atardecer</a>
-            </div>
-            <div class="footer-col">
-                <h4>🎉 Festivos y Eventos</h4>
-                <a href="#">Festivos por país</a>
-                <a href="#">Festividades</a>
-            </div>
-            <div class="footer-col">
-                <h4>💱 Finanzas y Unidades</h4>
-                <a href="#">Cambio de divisas</a>
-                <a href="#">Conversor de unidades</a>
-            </div>
-            <div class="footer-col">
-                <h4>🌍 Información de Viaje</h4>
-                <a href="#">Información básica por país</a>
-                <a href="#">Guías regionales detalladas</a>
-            </div>
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>🔌 Electricidad y Hora</h4>
+            <a href="plug/plug-es.html">Búsqueda de Especificaciones de Enchufe</a>
+            <a href="time-zone/time-zone-es.html" class="active-link">Búsqueda de Zona Horaria</a>
+            <a href="sunset/sunset-es.html">Horarios de Amanecer y Atardecer</a>
         </div>
-        <div class="footer-bottom">
-            © 2026 Roamwise. Todos los derechos reservados. |
-            <a href="#">Política de Privacidad</a> |
-            <a href="#">Condiciones de Uso</a>
+        <div class="footer-col">
+            <h4>🎉 Festivos y Festivales</h4>
+            <a href="#">Días Festivos por País</a>
+            <a href="#">Resumen de Eventos Festivos</a>
         </div>
-    </footer>
+        <div class="footer-col">
+            <h4>💱 Finanzas y Unidades</h4>
+            <a href="currency/currency-es.html">Conversión de Divisas</a>
+            <a href="unit/unit-es.html">Conversión de Unidades</a>
+        </div>
+        <div class="footer-col">
+            <h4>🌍 Información de Viaje</h4>
+            <a href="#">Resumen por País</a>
+            <a href="#">Guías Locales Detalladas</a>
+        </div>
+    </div>
+    <div class="footer-bottom">© 2026 Roamwise. Todos los derechos reservados. | <a href="#">Política de Privacidad</a> | <a href="#">Términos de Uso</a></div>
+</footer>
 
     <script>
     // ===== DATOS DE ENCHUFES POR PAÍS =====
