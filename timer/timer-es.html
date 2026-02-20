@@ -169,19 +169,18 @@ footer{background:#1e293b;color:rgba(255,255,255,.7);padding:32px 24px 18px;marg
         <img src="logo.png" alt="Roamwise Logo" class="logo-img">
         Roam<span>wise</span>
     </div>
-    <div class="logo">Roam<span>wise</span></div>
     <div class="header-right">
         <a href="#" class="contact-link">Contáctenos</a>
-        <select class="lang-select" id="langSelect">
-            <option value="timer-zh.html">Chino tradicional</option>
-            <option value="timer-en.html">Inglés</option>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+            <option value="timer-zh.html" >繁體中文</option>
+            <option value="timer-en.html" >English</option>
             <option value="timer-es.html" selected="">Español</option>
-            <option value="timer-pt.html">Portugués</option>
+            <option value="timer-pt.html" >Português</option>
         </select>
     </div>
 </header>
-    
-<script>
+
+    <script>
     function changeLanguage(filename) {
         window.location.href = filename;
     }
@@ -273,6 +272,7 @@ footer{background:#1e293b;color:rgba(255,255,255,.7);padding:32px 24px 18px;marg
             <h4>🔌 Electricidad y Hora</h4>
             <a href="plug/plug-es.html">Búsqueda de Especificaciones de Enchufe</a>
             <a href="time-zone/time-zone-es.html" class="active-link">Búsqueda de Zona Horaria</a>
+            <a href="timer/timer-es.html" class="active-link">Temporizador y Cuenta Atrás</a>
             <a href="sunset/sunset-es.html">Horarios de Amanecer y Atardecer</a>
         </div>
         <div class="footer-col">
