@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roamwise - 日出日落時間查詢</title>
+    <title>Roamwise - Sunrise & Sunset Look up</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
     <style>
         :root{--primary:#2563eb;--primary-dark:#1d4ed8;--primary-light:#dbeafe;--accent:#f59e0b;--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.07);--shadow-sm:0 2px 8px rgba(0,0,0,.05)}
@@ -84,42 +84,42 @@
 <header>
     <div class="logo">Roam<span>wise</span></div>
     <div class="header-right">
-        <a href="#" class="contact-link">聯絡我們</a>
+        <a href="#" class="contact-link">Contact us</a>
         <select class="lang-select"><option selected="">繁體中文</option><option>English</option><option>Español</option><option>Português</option><option>हिन्दी</option></select>
     </div>
 </header>
 <main>
-    <h1 class="page-title">🌅 日出日落時間查詢</h1>
-    <div class="info-box"><span class="icon">ℹ️</span><div>選擇城市與日期，即可查詢日出日落、曙暮光、白天長度與攝影黃金時刻等資訊。支援全球超過 115 座城市，使用天文演算法即時計算。</div></div>
+    <h1 class="page-title">🌅 sunrise and sunset look up</h1>
+    <div class="info-box"><span class="icon">ℹ️</span><div>Select a city and date to look up sunrise and sunset times, twilight periods, day length, and photography golden hours. Supports over 115 cities worldwide with real-time calculations using astronomical algorithms.</div></div>
     <div class="query-card">
         <div class="selector-row">
             <div class="selector-group" style="flex:2">
-                <label>🏙️ 選擇城市</label>
+                <label>🏙️ Select city</label>
                 <div class="custom-select-wrapper">
-                    <input type="text" id="cityInput" placeholder="輸入城市或國家名稱…" autocomplete="off">
+                    <input type="text" id="cityInput" placeholder="Enter city or country name…" autocomplete="off">
                     <div class="dropdown-list" id="cityDropdown"></div>
                 </div>
             </div>
             <div class="selector-group" style="flex:1">
-                <label>📅 日期</label>
+                <label>📅 Date</label>
                 <input type="date" class="date-input" id="dateInput">
             </div>
             <div class="search-btn-wrapper">
-                <button class="search-btn" id="searchBtn">🔍 查詢</button>
+                <button class="search-btn" id="searchBtn">🔍 Search</button>
             </div>
         </div>
     </div>
-    <div class="no-result" id="noResult"><div class="big-icon">🔍</div><p>查無資料</p><p style="font-size:.85rem">請確認城市名稱是否正確，或從下拉選單中選取</p></div>
+    <div class="no-result" id="noResult"><div class="big-icon">🔍</div><p>No data</p><p style="font-size:.85rem">Please enter correct city name or select the city from the list</p></div>
     <div class="result-container" id="resultContainer">
         <div class="result-header"><h2 id="rHeader"></h2><p id="rSubheader"></p></div>
         <div class="main-times">
-            <div class="time-card sunrise"><span class="t-icon">🌅</span><span class="t-label">日出</span><span class="t-value" id="rSunrise">--:--</span></div>
-            <div class="time-card sunset"><span class="t-icon">🌇</span><span class="t-label">日落</span><span class="t-value" id="rSunset">--:--</span></div>
-            <div class="time-card daylen"><span class="t-icon">☀️</span><span class="t-label">白天長度</span><span class="t-value" id="rDayLen">--</span></div>
-            <div class="time-card nightlen"><span class="t-icon">🌙</span><span class="t-label">夜晚長度</span><span class="t-value" id="rNightLen">--</span></div>
+            <div class="time-card sunrise"><span class="t-icon">🌅</span><span class="t-label">sunrise</span><span class="t-value" id="rSunrise">--:--</span></div>
+            <div class="time-card sunset"><span class="t-icon">🌇</span><span class="t-label">sunset</span><span class="t-value" id="rSunset">--:--</span></div>
+            <div class="time-card daylen"><span class="t-icon">☀️</span><span class="t-label">day length</span><span class="t-value" id="rDayLen">--</span></div>
+            <div class="time-card nightlen"><span class="t-icon">🌙</span><span class="t-label">night length</span><span class="t-value" id="rNightLen">--</span></div>
         </div>
         <div class="section-card">
-            <h3>🕐 日照時間軸</h3>
+            <h3>🕐 sunlight timeline</h3>
             <div class="day-bar-wrap">
                 <div class="day-bar" id="dayBar"></div>
             </div>
@@ -127,187 +127,203 @@
         </div>
         <div class="status-banner" id="statusBanner"></div>
         <div class="section-card">
-            <h3>📋 詳細時刻</h3>
-            <div class="detail-grid">
-                <div class="detail-row"><span class="dl">天文曙暮光（-18°）</span><span class="dv" id="rAstro"></span></div>
-                <div class="detail-row"><span class="dl">航海曙暮光（-12°）</span><span class="dv" id="rNaut"></span></div>
-                <div class="detail-row"><span class="dl">民用曙暮光（-6°）</span><span class="dv" id="rCivil"></span></div>
-                <div class="detail-row"><span class="dl">日出 / 日落</span><span class="dv" id="rOfficial"></span></div>
-                <div class="detail-row"><span class="dl">太陽正午</span><span class="dv" id="rNoon"></span></div>
-                <div class="detail-row"><span class="dl">正午最高仰角</span><span class="dv" id="rElev"></span></div>
+            <h3>📋 Details</h3>
+<div class="detail-grid">
+                <div class="detail-row"><span class="dl">Astronomical Twilight (-18°)</span><span class="dv" id="rAstro"></span></div>
+                <div class="detail-row"><span class="dl">Nautical Twilight (-12°)</span><span class="dv" id="rNaut"></span></div>
+                <div class="detail-row"><span class="dl">Civil Twilight (-6°)</span><span class="dv" id="rCivil"></span></div>
+                <div class="detail-row"><span class="dl">Sunrise / Sunset</span><span class="dv" id="rOfficial"></span></div>
+                <div class="detail-row"><span class="dl">Solar Noon</span><span class="dv" id="rNoon"></span></div>
+                <div class="detail-row"><span class="dl">Noon Elevation Angle</span><span class="dv" id="rElev"></span></div>
             </div>
         </div>
         <div class="section-card">
-            <h3>📷 攝影黃金時刻</h3>
+            <h3>📷 Golden Hour for Photography</h3>
             <div class="detail-grid">
-                <div class="detail-row"><span class="dl">🌅 晨間黃金時刻</span><span class="dv" id="rGoldAM"></span></div>
-                <div class="detail-row"><span class="dl">🌆 傍晚黃金時刻</span><span class="dv" id="rGoldPM"></span></div>
-                <div class="detail-row"><span class="dl">🔵 晨間藍色時刻</span><span class="dv" id="rBlueAM"></span></div>
-                <div class="detail-row"><span class="dl">🔵 傍晚藍色時刻</span><span class="dv" id="rBluePM"></span></div>
+                <div class="detail-row"><span class="dl">🌅 Morning Golden Hour</span><span class="dv" id="rGoldAM"></span></div>
+                <div class="detail-row"><span class="dl">🌆 Evening Golden Hour</span><span class="dv" id="rGoldPM"></span></div>
+                <div class="detail-row"><span class="dl">🔵 Morning Blue Hour</span><span class="dv" id="rBlueAM"></span></div>
+                <div class="detail-row"><span class="dl">🔵 Evening Blue Hour</span><span class="dv" id="rBluePM"></span></div>
             </div>
         </div>
         <div class="section-card">
-            <h3>📊 前後一日比較</h3>
+<h3>📊 Compare with Yesterday and Today</h3>
             <table class="trend-table">
-                <thead><tr><th>日期</th><th>日出</th><th>日落</th><th>白天長度</th><th>變化</th></tr></thead>
+                <thead><tr><th>Date</th><th>Sunrise</th><th>Sunset</th><th>Day Length</th><th>Change</th></tr></thead>
                 <tbody id="trendBody"></tbody>
             </table>
         </div>
-        <div class="calc-note">⚠️ 以上為天文演算法近似計算結果，可能與實際時間有 1～2 分鐘誤差，且未考慮地形遮蔽與局部大氣折射變化。極地附近城市在夏至或冬至前後可能出現永晝或永夜。</div>
+        <div class="calc-note">⚠️ The above results are approximations based on astronomical algorithms and may have a margin of error of 1-2 minutes compared to actual times. Terrain obstruction and local atmospheric refraction variations are not considered. Cities near the polar regions may experience polar day or polar night around the summer or winter solstice.</div>
     </div>
 </main>
 <footer>
     <div class="footer-grid">
-        <div class="footer-col"><h4>🔌 電力與時間</h4><a href="#">插頭規格查詢</a><a href="#">時區查詢</a><a href="#" class="active-link">日出日落時間</a></div>
-        <div class="footer-col"><h4>🎉 假期與節慶</h4><a href="#">各國國定假日</a><a href="#">節慶活動一覽</a></div>
-        <div class="footer-col"><h4>💱 金融與單位</h4><a href="#">匯率換算</a><a href="#">單位轉換</a></div>
-        <div class="footer-col"><h4>🌍 旅遊資訊</h4><a href="#">國家概覽</a><a href="#">各地詳細指南</a></div>
-    </div>
+<div class="footer-col">
+<h4>🔌 Power & Time</h4>
+<a href="plug/plug-en.html">Plug Specification Lookup</a>
+<a href="time-zone/time-zone-en.html" class="active-link">Time Zone Lookup</a>
+<a href="sunset/sunset-en.html">Sunset & Sunset Times</a>
+</div>
+<div class="footer-col">
+<h4>🎉 Holidays & Festivals</h4>
+<a href="#">Public Holidays by Country</a>
+<a href="#">Festival Events Overview</a>
+</div>
+<div class="footer-col">
+<h4>💱 Finance & Units</h4>
+<a href="currency/currency-en.html">Currency Conversion</a>
+<a href="unit/unit-en.html">Unit Conversion</a>
+</div>
+<div class="footer-col">
+<h4>🌍 Travel Information</h4>
+<a href="#">Country Overview</a>
+<a href="#">Detailed Local Guides</a>
+</div>
     <div class="footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="#">隱私權政策</a> | <a href="#">使用條款</a></div>
 </footer>
 <script>
 // ============ CITY DATA ============
 // [city, country, region, iana, lat, lng]
 const raw=[
-["台北","台灣","亞洲","Asia/Taipei",25.03,121.57],
-["高雄","台灣","亞洲","Asia/Taipei",22.63,120.30],
-["東京","日本","亞洲","Asia/Tokyo",35.68,139.65],
-["大阪","日本","亞洲","Asia/Tokyo",34.69,135.50],
-["京都","日本","亞洲","Asia/Tokyo",35.01,135.77],
-["北京","中國","亞洲","Asia/Shanghai",39.90,116.41],
-["上海","中國","亞洲","Asia/Shanghai",31.23,121.47],
-["廣州","中國","亞洲","Asia/Shanghai",23.13,113.26],
-["深圳","中國","亞洲","Asia/Shanghai",22.54,114.06],
-["重慶","中國","亞洲","Asia/Shanghai",29.43,106.91],
-["成都","中國","亞洲","Asia/Shanghai",30.57,104.07],
-["香港","香港","亞洲","Asia/Hong_Kong",22.32,114.17],
-["澳門","澳門","亞洲","Asia/Macau",22.20,113.54],
-["首爾","南韓","亞洲","Asia/Seoul",37.57,126.98],
-["釜山","南韓","亞洲","Asia/Seoul",35.18,129.08],
-["曼谷","泰國","亞洲","Asia/Bangkok",13.76,100.50],
-["清邁","泰國","亞洲","Asia/Bangkok",18.79,98.99],
-["普吉島","泰國","亞洲","Asia/Bangkok",7.88,98.39],
-["胡志明市","越南","亞洲","Asia/Ho_Chi_Minh",10.82,106.63],
-["河內","越南","亞洲","Asia/Ho_Chi_Minh",21.03,105.83],
-["新加坡","新加坡","亞洲","Asia/Singapore",1.35,103.82],
-["吉隆坡","馬來西亞","亞洲","Asia/Kuala_Lumpur",3.14,101.69],
-["雅加達","印尼","亞洲","Asia/Jakarta",-6.21,106.85],
-["峇里島","印尼","亞洲","Asia/Makassar",-8.34,115.09],
-["馬尼拉","菲律賓","亞洲","Asia/Manila",14.60,120.98],
-["宿霧","菲律賓","亞洲","Asia/Manila",10.32,123.89],
-["新德里","印度","亞洲","Asia/Kolkata",28.61,77.21],
-["孟買","印度","亞洲","Asia/Kolkata",19.08,72.88],
-["班加羅爾","印度","亞洲","Asia/Kolkata",12.97,77.59],
-["可倫坡","斯里蘭卡","亞洲","Asia/Colombo",6.93,79.86],
-["加德滿都","尼泊爾","亞洲","Asia/Kathmandu",27.72,85.32],
-["金邊","柬埔寨","亞洲","Asia/Phnom_Penh",11.56,104.93],
-["暹粒","柬埔寨","亞洲","Asia/Phnom_Penh",13.36,103.86],
-["仰光","緬甸","亞洲","Asia/Yangon",16.87,96.20],
-["永珍","寮國","亞洲","Asia/Vientiane",17.98,102.63],
-["達卡","孟加拉","亞洲","Asia/Dhaka",23.81,90.41],
-["喀拉蚩","巴基斯坦","亞洲","Asia/Karachi",24.86,67.00],
-["伊斯蘭堡","巴基斯坦","亞洲","Asia/Karachi",33.68,73.05],
-["杜拜","阿聯酋","中東","Asia/Dubai",25.20,55.27],
-["阿布達比","阿聯酋","中東","Asia/Dubai",24.45,54.38],
-["利雅德","沙烏地阿拉伯","中東","Asia/Riyadh",24.71,46.68],
-["多哈","卡達","中東","Asia/Qatar",25.29,51.53],
-["耶路撒冷","以色列","中東","Asia/Jerusalem",31.77,35.21],
-["特拉維夫","以色列","中東","Asia/Jerusalem",32.09,34.78],
-["安曼","約旦","中東","Asia/Amman",31.95,35.93],
-["伊斯坦堡","土耳其","中東","Europe/Istanbul",41.01,28.98],
-["馬累","馬爾地夫","中東","Indian/Maldives",4.18,73.51],
-["倫敦","英國","歐洲","Europe/London",51.51,-0.13],
-["愛丁堡","英國","歐洲","Europe/London",55.95,-3.19],
-["曼徹斯特","英國","歐洲","Europe/London",53.48,-2.24],
-["巴黎","法國","歐洲","Europe/Paris",48.86,2.35],
-["尼斯","法國","歐洲","Europe/Paris",43.71,7.26],
-["柏林","德國","歐洲","Europe/Berlin",52.52,13.41],
-["慕尼黑","德國","歐洲","Europe/Berlin",48.14,11.58],
-["法蘭克福","德國","歐洲","Europe/Berlin",50.11,8.68],
-["羅馬","義大利","歐洲","Europe/Rome",41.90,12.50],
-["米蘭","義大利","歐洲","Europe/Rome",45.46,9.19],
-["威尼斯","義大利","歐洲","Europe/Rome",45.44,12.32],
-["馬德里","西班牙","歐洲","Europe/Madrid",40.42,-3.70],
-["巴塞隆納","西班牙","歐洲","Europe/Madrid",41.39,2.17],
-["里斯本","葡萄牙","歐洲","Europe/Lisbon",38.72,-9.14],
-["阿姆斯特丹","荷蘭","歐洲","Europe/Amsterdam",52.37,4.90],
-["布魯塞爾","比利時","歐洲","Europe/Brussels",50.85,4.35],
-["蘇黎世","瑞士","歐洲","Europe/Zurich",47.38,8.54],
-["日內瓦","瑞士","歐洲","Europe/Zurich",46.20,6.14],
-["維也納","奧地利","歐洲","Europe/Vienna",48.21,16.37],
-["斯德哥爾摩","瑞典","歐洲","Europe/Stockholm",59.33,18.07],
-["奧斯陸","挪威","歐洲","Europe/Oslo",59.91,10.75],
-["哥本哈根","丹麥","歐洲","Europe/Copenhagen",55.68,12.57],
-["赫爾辛基","芬蘭","歐洲","Europe/Helsinki",60.17,24.94],
-["雷克雅維克","冰島","歐洲","Atlantic/Reykjavik",64.15,-21.94],
-["都柏林","愛爾蘭","歐洲","Europe/Dublin",53.35,-6.26],
-["雅典","希臘","歐洲","Europe/Athens",37.98,23.73],
-["華沙","波蘭","歐洲","Europe/Warsaw",52.23,21.01],
-["布拉格","捷克","歐洲","Europe/Prague",50.08,14.44],
-["布達佩斯","匈牙利","歐洲","Europe/Budapest",47.50,19.04],
-["札格雷布","克羅埃西亞","歐洲","Europe/Zagreb",45.82,15.98],
-["莫斯科","俄羅斯","歐洲","Europe/Moscow",55.76,37.62],
-["聖彼得堡","俄羅斯","歐洲","Europe/Moscow",59.93,30.36],
-["葉卡捷琳堡","俄羅斯","歐洲","Asia/Yekaterinburg",56.84,60.61],
-["新西伯利亞","俄羅斯","歐洲","Asia/Novosibirsk",55.01,82.94],
-["海參崴","俄羅斯","歐洲","Asia/Vladivostok",43.13,131.91],
-["基輔","烏克蘭","歐洲","Europe/Kyiv",50.45,30.52],
-["里加","拉脫維亞","歐洲","Europe/Riga",56.95,24.11],
-["蒙特卡洛","摩納哥","歐洲","Europe/Monaco",43.74,7.42],
-["紐約","美國","北美洲","America/New_York",40.71,-74.01],
-["華盛頓特區","美國","北美洲","America/New_York",38.91,-77.04],
-["波士頓","美國","北美洲","America/New_York",42.36,-71.06],
-["邁阿密","美國","北美洲","America/New_York",25.76,-80.19],
-["亞特蘭大","美國","北美洲","America/New_York",33.75,-84.39],
-["芝加哥","美國","北美洲","America/Chicago",41.88,-87.63],
-["休士頓","美國","北美洲","America/Chicago",29.76,-95.37],
-["達拉斯","美國","北美洲","America/Chicago",32.78,-96.80],
-["丹佛","美國","北美洲","America/Denver",39.74,-104.99],
-["鳳凰城","美國","北美洲","America/Phoenix",33.45,-112.07],
-["洛杉磯","美國","北美洲","America/Los_Angeles",34.05,-118.24],
-["舊金山","美國","北美洲","America/Los_Angeles",37.77,-122.42],
-["西雅圖","美國","北美洲","America/Los_Angeles",47.61,-122.33],
-["拉斯維加斯","美國","北美洲","America/Los_Angeles",36.17,-115.14],
-["安克拉治","美國","北美洲","America/Anchorage",61.22,-149.90],
-["檀香山","美國","北美洲","Pacific/Honolulu",21.31,-157.86],
-["多倫多","加拿大","北美洲","America/Toronto",43.65,-79.38],
-["蒙特婁","加拿大","北美洲","America/Toronto",45.50,-73.57],
-["渥太華","加拿大","北美洲","America/Toronto",45.42,-75.70],
-["卡加利","加拿大","北美洲","America/Edmonton",51.04,-114.07],
-["溫哥華","加拿大","北美洲","America/Vancouver",49.28,-123.12],
-["墨西哥城","墨西哥","北美洲","America/Mexico_City",19.43,-99.13],
-["坎昆","墨西哥","北美洲","America/Cancun",21.16,-86.85],
-["哈瓦那","古巴","北美洲","America/Havana",23.11,-82.37],
-["巴拿馬城","巴拿馬","北美洲","America/Panama",8.98,-79.52],
-["聖荷西","哥斯大黎加","北美洲","America/Costa_Rica",9.93,-84.09],
-["聖保羅","巴西","南美洲","America/Sao_Paulo",-23.55,-46.63],
-["里約熱內盧","巴西","南美洲","America/Sao_Paulo",-22.91,-43.17],
-["布宜諾斯艾利斯","阿根廷","南美洲","America/Argentina/Buenos_Aires",-34.60,-58.38],
-["聖地牙哥","智利","南美洲","America/Santiago",-33.45,-70.67],
-["波哥大","哥倫比亞","南美洲","America/Bogota",4.71,-74.07],
-["利馬","秘魯","南美洲","America/Lima",-12.05,-77.04],
-["蒙特維多","烏拉圭","南美洲","America/Montevideo",-34.90,-56.16],
-["雪梨","澳洲","大洋洲","Australia/Sydney",-33.87,151.21],
-["墨爾本","澳洲","大洋洲","Australia/Melbourne",-37.81,144.96],
-["布里斯本","澳洲","大洋洲","Australia/Brisbane",-27.47,153.03],
-["伯斯","澳洲","大洋洲","Australia/Perth",-31.95,115.86],
-["阿德萊德","澳洲","大洋洲","Australia/Adelaide",-34.93,138.60],
-["奧克蘭","紐西蘭","大洋洲","Pacific/Auckland",-36.85,174.76],
-["威靈頓","紐西蘭","大洋洲","Pacific/Auckland",-41.29,174.78],
-["蘇瓦","斐濟","大洋洲","Pacific/Fiji",-18.14,178.44],
-["開羅","埃及","非洲","Africa/Cairo",30.04,31.24],
-["約翰尼斯堡","南非","非洲","Africa/Johannesburg",-26.20,28.05],
-["開普敦","南非","非洲","Africa/Johannesburg",-33.92,18.42],
-["奈洛比","肯亞","非洲","Africa/Nairobi",-1.29,36.82],
-["卡薩布蘭加","摩洛哥","非洲","Africa/Casablanca",33.57,-7.59],
-["馬拉喀什","摩洛哥","非洲","Africa/Casablanca",31.63,-7.98],
-["拉哥斯","奈及利亞","非洲","Africa/Lagos",6.52,3.38],
-["三蘭港","坦尚尼亞","非洲","Africa/Dar_es_Salaam",-6.79,39.21],
-["阿克拉","迦納","非洲","Africa/Accra",5.60,-0.19],
-["阿迪斯阿貝巴","衣索比亞","非洲","Africa/Addis_Ababa",9.03,38.75]
+["Taipei","Taiwan","Asia","Asia/Taipei",25.03,121.57],
+["Kaohsiung","Taiwan","Asia","Asia/Taipei",22.63,120.30],
+["Tokyo","Japan","Asia","Asia/Tokyo",35.68,139.65],
+["Osaka","Japan","Asia","Asia/Tokyo",34.69,135.50],
+["Kyoto","Japan","Asia","Asia/Tokyo",35.01,135.77],
+["Beijing","China","Asia","Asia/Shanghai",39.90,116.41],
+["Shanghai","China","Asia","Asia/Shanghai",31.23,121.47],
+["Guangzhou","China","Asia","Asia/Shanghai",23.13,113.26],
+["Shenzhen","China","Asia","Asia/Shanghai",22.54,114.06],
+["Chongqing","China","Asia","Asia/Shanghai",29.43,106.91],
+["Chengdu","China","Asia","Asia/Shanghai",30.57,104.07],
+["Hong Kong","Hong Kong","Asia","Asia/Hong_Kong",22.32,114.17],
+["Macao","Macao","Asia","Asia/Macau",22.20,113.54],
+["Seoul","South Korea","Asia","Asia/Seoul",37.57,126.98],
+["Busan","South Korea","Asia","Asia/Seoul",35.18,129.08],
+["Bangkok","Thailand","Asia","Asia/Bangkok",13.76,100.50],
+["Chiang Mai","Thailand","Asia","Asia/Bangkok",18.79,98.99],
+["Phuket","Thailand","Asia","Asia/Bangkok",7.88,98.39],
+["Ho Chi Minh City","Vietnam","Asia","Asia/Ho_Chi_Minh",10.82,106.63],
+["Hanoi","Vietnam","Asia","Asia/Ho_Chi_Minh",21.03,105.83],
+["Singapore","Singapore","Asia","Asia/Singapore",1.35,103.82],
+["Kuala Lumpur","Malaysia","Asia","Asia/Kuala_Lumpur",3.14,101.69],
+["Jakarta","Indonesia","Asia","Asia/Jakarta",-6.21,106.85],
+["Bali","Indonesia","Asia","Asia/Makassar",-8.34,115.09],
+["Manila","Philippines","Asia","Asia/Manila",14.60,120.98],
+["Cebu","Philippines","Asia","Asia/Manila",10.32,123.89],
+["New Delhi","India","Asia","Asia/Kolkata",28.61,77.21],
+["Mumbai","India","Asia","Asia/Kolkata",19.08,72.88],
+["Bangalore","India","Asia","Asia/Kolkata",12.97,77.59],
+["Colombo","Sri Lanka","Asia","Asia/Colombo",6.93,79.86],
+["Kathmandu","Nepal","Asia","Asia/Kathmandu",27.72,85.32],
+["Phnom Penh","Cambodia","Asia","Asia/Phnom_Penh",11.56,104.93],
+["Siem Reap","Cambodia","Asia","Asia/Phnom_Penh",13.36,103.86],
+["Yangon","Myanmar","Asia","Asia/Yangon",16.87,96.20],
+["Vientiane","Laos","Asia","Asia/Vientiane",17.98,102.63],
+["Dhaka","Bangladesh","Asia","Asia/Dhaka",23.81,90.41],
+["Karachi","Pakistan","Asia","Asia/Karachi",24.86,67.00],
+["Islamabad","Pakistan","Asia","Asia/Karachi",33.68,73.05],
+["Dubai","UAE","Middle East","Asia/Dubai",25.20,55.27],
+["Abu Dhabi","UAE","Middle East","Asia/Dubai",24.45,54.38],
+["Riyadh","Saudi Arabia","Middle East","Asia/Riyadh",24.71,46.68],
+["Doha","Qutar","Middle East","Asia/Qatar",25.29,51.53],
+["Jerusalem","Israel","Middle East","Asia/Jerusalem",31.77,35.21],
+["Tel Aviv","Israel","Middle East","Asia/Jerusalem",32.09,34.78],
+["Amman","Jordan","Middle East","Asia/Amman",31.95,35.93],
+["Istanbul","Turkey","Middle East","Europe/Istanbul",41.01,28.98],
+["Male","Maldives","Asia","Indian/Maldives",4.18,73.51],
+["London","UK","Europe","Europe/London",51.51,-0.13],
+["Edinburgh","UK","Europe","Europe/London",55.95,-3.19],
+["Manchester","UK","Europe","Europe/London",53.48,-2.24],
+["Paris","France","Europe","Europe/Paris",48.86,2.35],
+["Nice","France","Europe","Europe/Paris",43.71,7.26],
+["Berlin","Germany","Europe","Europe/Berlin",52.52,13.41],
+["Munich","Germany","Europe","Europe/Berlin",48.14,11.58],
+["Frankfurt","Germany","Europe","Europe/Berlin",50.11,8.68],
+["Rome","Itlay","Europe","Europe/Rome",41.90,12.50],
+["Milan","Itlay","Europe","Europe/Rome",45.46,9.19],
+["Brussels","Itlay","Europe","Europe/Rome",45.44,12.32],
+["Madrid","Spain","Europe","Europe/Madrid",40.42,-3.70],
+["Barcelona","Spain","Europe","Europe/Madrid",41.39,2.17],
+["Lisbon","Portugal","Europe","Europe/Lisbon",38.72,-9.14],
+["Amsterdam","The Netherlands","Europe","Europe/Amsterdam",52.37,4.90],
+["Brussels","Belgium","Europe","Europe/Brussels",50.85,4.35],
+["Zurich","Switzerland","Europe","Europe/Zurich",47.38,8.54],
+["Geneva","Switzerland","Europe","Europe/Zurich",46.20,6.14],
+["Vienna","Austria","Europe","Europe/Vienna",48.21,16.37],
+["Stockholm","Sweden","Europe","Europe/Stockholm",59.33,18.07],
+["Oslo","Norway","Europe","Europe/Oslo",59.91,10.75],
+["Copenhagen","Denmark","Europe","Europe/Copenhagen",55.68,12.57],
+["Helsinki","Finland","Europe","Europe/Helsinki",60.17,24.94],
+["Reykjavik","Iceland","Europe","Atlantic/Reykjavik",64.15,-21.94],
+["Dublin","Ireland","Europe","Europe/Dublin",53.35,-6.26],
+["Athens","Greece","Europe","Europe/Athens",37.98,23.73],
+["Warsaw","Poland","Europe","Europe/Warsaw",52.23,21.01],
+["Prague","Czech Republic","Europe","Europe/Prague",50.08,14.44],
+["Budapest","Hungary","Europe","Europe/Budapest",47.50,19.04],
+["Zaqreb","Croatia","Europe","Europe/Zagreb",45.82,15.98],
+["Moscow","Russia","Europe","Europe/Moscow",55.76,37.62],
+["Saint Paterburg","Russia","Europe","Europe/Moscow",59.93,30.36],
+["Yekaterinburg","Russia","Europe","Asia/Yekaterinburg",56.84,60.61],
+["Novosibirsk","Russia","Europe","Asia/Novosibirsk",55.01,82.94],
+["Vladivostok","Russia","Europe","Asia/Vladivostok",43.13,131.91],
+["Kyiv","Ukraine","Europe","Europe/Kyiv",50.45,30.52],
+["Riga","Latvia","Europe","Europe/Riga",56.95,24.11],
+["Monte Carlo","Monaco","Europe","Europe/Monaco",43.74,7.42],
+["New York","USA","North America","America/New_York",40.71,-74.01],
+["Washington D.C.","USA","North America","America/New_York",38.91,-77.04],
+["Boston","USA","North America","America/New_York",42.36,-71.06],
+["Miami","USA","North America","America/New_York",25.76,-80.19],
+["Atlanta","USA","North America","America/New_York",33.75,-84.39],
+["Chicago","USA","North America","America/Chicago",41.88,-87.63],
+["Houston","USA","North America","America/Chicago",29.76,-95.37],
+["Dallas","USA","North America","America/Chicago",32.78,-96.80],
+["Denver","USA","North America","America/Denver",39.74,-104.99],
+["Phoenix","USA","North America","America/Phoenix",33.45,-112.07],
+["Las Angeles","USA","North America","America/Los_Angeles",34.05,-118.24],
+["San Francisco","USA","North America","America/Los_Angeles",37.77,-122.42],
+["Seattle","USA","North America洲","America/Los_Angeles",47.61,-122.33],
+["Las Vegas","USA","North America","America/Los_Angeles",36.17,-115.14],
+["Anchorage","USA","North America","America/Anchorage",61.22,-149.90],
+["Honolulu","USA","North America","Pacific/Honolulu",21.31,-157.86],
+["Toronto","Canada","North America","America/Toronto",43.65,-79.38],
+["Montreal","Canada","North America","America/Toronto",45.50,-73.57],
+["Ottawa","Canada","North America","America/Toronto",45.42,-75.70],
+["Calgary","Canada","North America","America/Edmonton",51.04,-114.07],
+["Vancouver","Canada","North America","America/Vancouver",49.28,-123.12],
+["Mexico City","Mexico","North America","America/Mexico_City",19.43,-99.13],
+["Cancun","Mexico","North America","America/Cancun",21.16,-86.85],
+["Havana","Cuba","North America","America/Havana",23.11,-82.37],
+["Panama City","Panama","North America","America/Panama",8.98,-79.52],
+["San José","Costa Rica","North America","America/Costa_Rica",9.93,-84.09],
+["São Paulo","Brazil","South America","America/Sao_Paulo",-23.55,-46.63],
+["Rio de Janeiro","Brazil","South America","America/Sao_Paulo",-22.91,-43.17],
+["Burnos Aires","Argentina","South America","America/Argentina/Buenos_Aires",-34.60,-58.38],
+["Santiago","Chile","South America","America/Santiago",-33.45,-70.67],
+["Bogotá","Colombia","South America","America/Bogota",4.71,-74.07],
+["Lima","Peru","South America","America/Lima",-12.05,-77.04],
+["Montevideo","Uruguay","South America","America/Montevideo",-34.90,-56.16],
+["Sydney","Australia","Oceania","Australia/Sydney",-33.87,151.21],
+["Melbourne","Australia","Oceania","Australia/Melbourne",-37.81,144.96],
+["Brisbane","Australia","Oceania","Australia/Brisbane",-27.47,153.03],
+["Perth","Australia","Oceania","Australia/Perth",-31.95,115.86],
+["Adelaide","Australia","Oceania","Australia/Adelaide",-34.93,138.60],
+["Auckland","New Zealand","Oceania","Pacific/Auckland",-36.85,174.76],
+["Wellington","New Zealand","Oceania","Pacific/Auckland",-41.29,174.78],
+["Suva","Fiji","Oceania","Pacific/Fiji",-18.14,178.44],
+["Cairo","Egypt","Africa","Africa/Cairo",30.04,31.24],
+["Johnnesburg","South Africa","Africa","Africa/Johannesburg",-26.20,28.05],
+["Cape Town","South Africa","Africa","Africa/Johannesburg",-33.92,18.42],
+["Nairobi","Kenya","Africa","Africa/Nairobi",-1.29,36.82],
+["Casabkanca","Morocco","Africa","Africa/Casablanca",33.57,-7.59],
+["Marrakech","Morocco","Africa","Africa/Casablanca",31.63,-7.98],
+["Lagos","Nigeria","Africa","Africa/Lagos",6.52,3.38],
+["Dae es Salaam","Tanzania","Africa","Africa/Dar_es_Salaam",-6.79,39.21],
+["Accra","Ghana","Africa","Africa/Accra",5.60,-0.19],
+["Addis Ababa","Ethiopia","Africa","Africa/Addis_Ababa",9.03,38.75]
 ];
 
-const regionOrder=["亞洲","中東","歐洲","北美洲","南美洲","大洋洲","非洲"];
+const regionOrder=["Asia","Middle East","Europe","North America","South America","Oceania","Africa"];
 const cities=raw.map(r=>({city:r[0],country:r[1],region:r[2],iana:r[3],lat:r[4],lng:r[5],label:r[0]+"（"+r[1]+"）"}));
 const cityMap={};cities.forEach(c=>cityMap[c.label]=c);
 
@@ -377,12 +393,12 @@ function mt(m){
 function dur(m){
     if(!m&&m!==0||isNaN(m))return'--';
     m=Math.round(m);const h=Math.floor(m/60),mn=m%60;
-    return h+' 時 '+mn+' 分';
+    return h+' Hours '+mn+' Minutes';
 }
 function fmtDate(y,m,d){
     const dt=new Date(y,m-1,d);
-    const wd=['日','一','二','三','四','五','六'][dt.getDay()];
-    return y+'年'+m+'月'+d+'日（星期'+wd+'）';
+    const wd=['SUN','MON','TUE','WED','THU','FRI','SAT'][dt.getDay()];
+    return y+'Year'+m+'Month'+d+'Day（'+wd+'）';
 }
 
 // ============ SEARCH ============
@@ -404,12 +420,13 @@ function doSearch(){
     document.getElementById('rSubheader').textContent='📅 '+fmtDate(y,m,d)+'　📍 '+c.lat.toFixed(2)+'°N, '+c.lng.toFixed(2)+'°E';
 
     // Main times
-    if(sun.official.state){
-        const isPolar=sun.official.state==='never_rises';
-        document.getElementById('rSunrise').textContent=isPolar?'不升起':'不落下';
-        document.getElementById('rSunset').textContent=isPolar?'不升起':'不落下';
-        document.getElementById('rDayLen').textContent=isPolar?'0 時 0 分':'24 時 0 分';
-        document.getElementById('rNightLen').textContent=isPolar?'24 時 0 分':'0 時 0 分';
+ if(sun.official.state){
+    const isPolar=sun.official.state==='never_rises';
+    document.getElementById('rSunrise').textContent=isPolar?'Never rises':'Never sets';
+    document.getElementById('rSunset').textContent=isPolar?'Never rises':'Never sets';
+    document.getElementById('rDayLen').textContent=isPolar?'0 h 0 m':'24 h 0 m';
+    document.getElementById('rNightLen').textContent=isPolar?'24 h 0 m':'0 h 0 m';
+}
     }else{
         document.getElementById('rSunrise').textContent=mt(sun.official.rise);
         document.getElementById('rSunset').textContent=mt(sun.official.set);
@@ -502,25 +519,24 @@ function renderStatus(c,sun,y,m,d){
     const ds=document.getElementById('dateInput').value;
     if(ds!==todayStr){
         banner.className='status-banner day';
-        banner.innerHTML='📅 顯示的是 '+fmtDate(y,m,d)+' 的資料（非今日）';return;
-    }
+        banner.innerHTML='📅 shows '+fmtDate(y,m,d)+' data（NOT TODAY）';return;
+}
     if(sun.official.state){
         banner.className='status-banner polar';
-        banner.innerHTML=sun.official.state==='never_rises'?'🌑 永夜 — 今日太陽不會升起':'☀️ 永晝 — 今日太陽不會落下';return;
+        banner.innerHTML=sun.official.state==='never_rises'?'🌑 Polar Night — Sun will not rise today':'☀️ Polar Day — Sun will not set today';return;
     }
     try{
         const nowStr=today.toLocaleTimeString('en-US',{timeZone:c.iana,hour12:false,hour:'2-digit',minute:'2-digit'});
         const[nh,nm]=nowStr.split(':').map(Number);const now=nh*60+nm;
         const sr=sun.official.rise,ss=sun.official.set;
         const cd=sun.civil.state?sr:sun.civil.rise,ck=sun.civil.state?ss:sun.civil.set;
-        if(now<cd){banner.className='status-banner night';banner.innerHTML='🌑 夜晚 — 距離天亮約 '+dur(cd-now)}
-        else if(now<sr){banner.className='status-banner twilight';banner.innerHTML='🌆 曙光 — 距離日出約 '+dur(sr-now)}
-        else if(now<ss){banner.className='status-banner day';banner.innerHTML='☀️ 白天 — 距離日落約 '+dur(ss-now)}
-        else if(now<ck){banner.className='status-banner twilight';banner.innerHTML='🌆 暮光 — 距離天黑約 '+dur(ck-now)}
-        else{banner.className='status-banner night';banner.innerHTML='🌑 夜晚 — 今日太陽已落下'}
-    }catch(e){banner.className='status-banner day';banner.innerHTML='📍 '+c.city+'當地時間資訊'}
+        if(now<cd){banner.className='status-banner night';banner.innerHTML='🌑 Night — Sunrise in '+dur(cd-now)}
+        else if(now<sr){banner.className='status-banner twilight';banner.innerHTML='🌆 Dawn — Sunrise in '+dur(sr-now)}
+        else if(now<ss){banner.className='status-banner day';banner.innerHTML='☀️ Daytime — Sunset in '+dur(ss-now)}
+        else if(now<ck){banner.className='status-banner twilight';banner.innerHTML='🌆 Dusk — Sunset in '+dur(ck-now)}
+        else{banner.className='status-banner night';banner.innerHTML='🌑 Night — Sun has set today'}
+    }catch(e){banner.className='status-banner day';banner.innerHTML='📍 Local time information for '+c.city}
 }
-
 // ============ TREND TABLE ============
 function renderTrend(c,y,m,d){
     const tbody=document.getElementById('trendBody');tbody.innerHTML='';
@@ -529,23 +545,23 @@ function renderTrend(c,y,m,d){
         const dt=new Date(y,m-1,d+i);
         dates.push({y:dt.getFullYear(),m:dt.getMonth()+1,d:dt.getDate(),offset:i});
     }
-    let prevDayLen=null;
+let prevDayLen=null;
     dates.forEach(dt=>{
         const s=calcSun(c.lat,c.lng,dt.y,dt.m,dt.d,c.iana);
         const tr=document.createElement('tr');
         if(dt.offset===0)tr.className='today';
-        const dateLabel=dt.offset===-1?'前一天':dt.offset===0?'▶ '+dt.m+'/'+dt.d:' 後一天';
+        const dateLabel=dt.offset===-1?'Previous day':dt.offset===0?'▶ '+dt.m+'/'+dt.d:' Next day';
         let srT='—',ssT='—',dlT='—',dayLen=null;
         if(!s.official.state){
             srT=mt(s.official.rise);ssT=mt(s.official.set);
             dayLen=s.official.set-s.official.rise;dlT=dur(dayLen);
-        }else if(s.official.state==='never_sets'){dayLen=1440;dlT='24 時 0 分';srT='不落下';ssT='不落下'}
-        else{dayLen=0;dlT='0 時 0 分';srT='不升起';ssT='不升起'}
+        }else if(s.official.state==='never_sets'){dayLen=1440;dlT='24 h 0 m';srT='Never sets';ssT='Never sets'}
+        else{dayLen=0;dlT='0 h 0 m';srT='Never rises';ssT='Never rises'}
         let changeHtml='';
         if(prevDayLen!==null&&dayLen!==null){
             const diff=Math.round(dayLen-prevDayLen);
-            if(diff>0)changeHtml='<span class="change up">+'+diff+' 分</span>';
-            else if(diff<0)changeHtml='<span class="change down">'+diff+' 分</span>';
+            if(diff>0)changeHtml='<span class="change up">+'+diff+' min</span>';
+            else if(diff<0)changeHtml='<span class="change down">'+diff+' min</span>';
             else changeHtml='<span class="change same">±0</span>';
         }
         prevDayLen=dayLen;
