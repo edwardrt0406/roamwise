@@ -82,12 +82,26 @@
 </head>
 <body>
 <header>
-    <div class="logo">Roam<span>wise</span></div>
+    <div class="logo">
+        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
+        Roam<span>wise</span>
+    </div>
     <div class="header-right">
         <a href="#" class="contact-link">聯絡我們</a>
-        <select class="lang-select"><option selected="">繁體中文</option><option>English</option><option>Español</option><option>Português</option><option>हिन्दी</option></select>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+            <option value="sunset-zh.html" selected="">繁體中文</option>
+            <option value="sunset-en.html">English</option>
+            <option value="sunset-es.html">Español</option>
+            <option value="sunset-pt.html">Português</option>
+        </select>
     </div>
 </header>
+
+<script>
+    function changeLanguage(filename) {
+        window.location.href = filename;
+    }
+</script>
 <main>
     <h1 class="page-title">🌅 日出日落時間查詢</h1>
     <div class="info-box"><span class="icon">ℹ️</span><div>選擇城市與日期，即可查詢日出日落、曙暮光、白天長度與攝影黃金時刻等資訊。支援全球超過 115 座城市，使用天文演算法即時計算。</div></div>
@@ -157,12 +171,30 @@
     </div>
 </main>
 <footer>
-    <div class="footer-grid">
-        <div class="footer-col"><h4>🔌 電力與時間</h4><a href="#">插頭規格查詢</a><a href="#">時區查詢</a><a href="#" class="active-link">日出日落時間</a></div>
-        <div class="footer-col"><h4>🎉 假期與節慶</h4><a href="#">各國國定假日</a><a href="#">節慶活動一覽</a></div>
-        <div class="footer-col"><h4>💱 金融與單位</h4><a href="#">匯率換算</a><a href="#">單位轉換</a></div>
-        <div class="footer-col"><h4>🌍 旅遊資訊</h4><a href="#">國家概覽</a><a href="#">各地詳細指南</a></div>
+<div class="footer-grid">
+    <div class="footer-col">
+        <h4>🔌 電源與時間</h4>
+        <a href="plug/plug-zh.html" class="active-link">插頭標準</a>
+        <a href="time-zone/time-zone-zh.html">時差查詢</a>
+        <a href="sunset/sunset-zh.html">日出日落時間</a>
+        <a href="timer/timer-zh.html">計時器</a>
     </div>
+    <div class="footer-col">
+        <h4>🎉 假期與活動</h4>
+        <a href="#">各地假期查詢</a>
+        <a href="#">節慶活動</a>
+    </div>
+    <div class="footer-col">
+        <h4>💱 金融與單位</h4>
+        <a href="currency/currency-zh.html">匯率兌換</a>
+        <a href="unit/unit-zh.html">單位轉換器</a>
+    </div>
+    <div class="footer-col">
+        <h4>🌍 旅遊資訊</h4>
+        <a href="#">國家基本資訊</a>
+        <a href="#">地區詳細指南</a>
+    </div>
+</div>
     <div class="footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="#">隱私權政策</a> | <a href="#">使用條款</a></div>
 </footer>
 <script>
