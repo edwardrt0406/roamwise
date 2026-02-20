@@ -92,12 +92,26 @@
 <body>
 
 <header>
-    <div class="logo">Roam<span>wise</span></div>
+    <div class="logo">
+        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
+        Roam<span>wise</span>
+    </div>
     <div class="header-right">
-        <a href="#" class="contact-link">Contact Us</a>
-        <select class="lang-select"><option>Traditional Chinese</option><option selected="">English</option><option>Español</option><option>Português</option><option>हिन्दी</option></select>
+        <a href="#" class="contact-link">聯絡我們</a>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+            <option value="unit-zh.html" selected="">繁體中文</option>
+            <option value="unit-en.html">English</option>
+            <option value="unit-es.html">Español</option>
+            <option value="unit-pt.html">Português</option>
+        </select>
     </div>
 </header>
+
+<script>
+    function changeLanguage(filename) {
+        window.location.href = filename;
+    }
+</script>
 
 <main>
     <h1 class="page-title">📐 Unit Converter</h1>
@@ -155,12 +169,35 @@
 </main>
 
 <footer>
-    <div class="footer-grid">
-        <div class="footer-col"><h4>🔌 Electricity &amp; Time</h4><a href="#">Plug Specification Search</a><a href="#">Time Zone Search</a><a href="#">Sunrise &amp; Sunset Times</a></div>
-        <div class="footer-col"><h4>🎉 Holidays &amp; Festivals</h4><a href="#">Public Holidays by Country</a><a href="#">Festival &amp; Events Overview</a></div>
-        <div class="footer-col"><h4>💱 Finance &amp; Units</h4><a href="#">Currency Exchange</a><a href="#" class="active-link">Unit Converter</a></div>
-        <div class="footer-col"><h4>🌍 Travel Information</h4><a href="#">Country Overview</a><a href="#">Detailed Local Guides</a></div>
-    </div>
+<div class="footer-grid">
+            <div class="footer-col">
+                <h4>🔌 Electricity &amp; Time</h4>
+                <a href="plug/plug-en.html" class="active-link">Power Plug Standards</a>
+                <a href="time-zone/time-zone-en.html">Time Zone Lookup</a>
+                <a href="timer/timer-en.html">Timer</a>
+                <a href="sunrise/sunrise-en.html">Sunrise &amp; Sunset</a>
+            </div>
+            <div class="footer-col">
+                <h4>🎉 Holidays &amp; Festivals</h4>
+                <a href="#">Public Holidays by Country</a>
+                <a href="#">Festivals &amp; Events</a>
+            </div>
+            <div class="footer-col">
+                <h4>💱 Finance &amp; Units</h4>
+                <a href="currency/currency.html">Currency Exchange</a>
+                <a href="unit/unit.html">Unit Converter</a>
+            </div>
+            <div class="footer-col">
+                <h4>🌍 Travel Info</h4>
+                <a href="#">Country Overview</a>
+                <a href="#">Detailed Regional Guides</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Roamwise. All rights reserved. |
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Use</a>
+        </div>   
     <div class="footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></div>
 </footer>
 
