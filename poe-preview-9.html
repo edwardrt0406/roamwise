@@ -142,7 +142,6 @@
         <div class="hero-tags">
             <span class="hero-tag" data-t="tag1" onclick="fillSearch(this.textContent)">🇯🇵 日本插頭</span>
             <span class="hero-tag" data-t="tag2" onclick="fillSearch(this.textContent)">💵 美金匯率</span>
-            <span class="hero-tag" data-t="tag3" onclick="fillSearch(this.textContent)">🇹🇭 泰國假日</span>
             <span class="hero-tag" data-t="tag4" onclick="fillSearch(this.textContent)">⚖️ 公斤換磅</span>
             <span class="hero-tag" data-t="tag5" onclick="fillSearch(this.textContent)">🇬🇧 英國時差</span>
         </div>
@@ -151,7 +150,7 @@
 
 <main>
     <div class="ticker-section">
-        <h3 data-t="ticker_t">💱 即時匯率速覽</h3>
+        <h3 data-t="ticker_t">💱 匯率速覽</h3>
         <div class="ticker-wrap"><div class="ticker-track" id="tickerTrack"></div></div>
     </div>
 
@@ -179,15 +178,49 @@
         <p data-t="tools_s">從出發到落地，每一步都替你想好了</p>
     </div>
     <div class="tools-grid" id="toolsGrid">
-        <div class="tool-card"><span class="tc-arrow">→</span><span class="tc-icon">💱</span><h3 data-t="t1t">匯率換算</h3><p data-t="t1d">即時匯率、歷史走勢，支援全球 150+ 種貨幣</p></div>
-        <div class="tool-card"><span class="tc-arrow">→</span><span class="tc-icon">📐</span><h3 data-t="t2t">單位轉換</h3><p data-t="t2d">長度、重量、面積、溫度、電力等 10 大分類一鍵換算</p></div>
-        <div class="tool-card"><span class="tc-arrow">→</span><span class="tc-icon">🕐</span><h3 data-t="t3t">時區查詢</h3><p data-t="t3d">全球時區對照，快速查詢兩地時差，再也不怕算錯時間</p></div>
-        <div class="tool-card"><span class="tc-arrow">→</span><span class="tc-icon">🔌</span><h3 data-t="t4t">插頭規格查詢</h3><p data-t="t4d">各國電壓、頻率、插頭類型速查，出國不再帶錯轉接頭</p></div>
-        <div class="tool-card"><span class="tc-arrow">→</span><span class="tc-icon">🎌</span><h3 data-t="t5t">各國國定假日</h3><p data-t="t5d">避開公眾假期或巧妙利用連假，讓行程規劃更有彈性</p></div>
-        <div class="tool-card"><span class="tc-arrow">→</span><span class="tc-icon">🌅</span><h3 data-t="t6t">日出日落時間</h3><p data-t="t6d">精準查詢各地日出日落，抓住黃金時刻拍下最美照片</p></div>
-        <div class="tool-card"><span class="tc-arrow">→</span><span class="tc-icon">🌍</span><h3 data-t="t7t">國家概覽</h3><p data-t="t7d">人口、語言、貨幣、簽證需求等旅行基本資訊一覽</p></div>
-        <div class="tool-card"><span class="tc-arrow">→</span><span class="tc-icon">📖</span><h3 data-t="t8t">目的地指南</h3><p data-t="t8d">深度圖文攻略，在地文化、美食推薦和安全提示</p></div>
-        <div class="tool-card"><span class="tc-arrow">→</span><span class="tc-icon">🎉</span><h3 data-t="t9t">節慶活動一覽</h3><p data-t="t9d">世界各地精彩節慶，讓你的旅程多一份驚喜和感動</p></div>
+         <div class="tool-card" onclick="goTool('匯率換算'); return false;" style="cursor:pointer;">
+    <div class="tool-card">
+        <span class="tc-arrow">→</span>
+        <span class="tc-icon">💱</span>
+        <h3 data-t="t1t">匯率換算</h3>
+        <p data-t="t1d">即時匯率，支援全球 40+ 種貨幣</p>
+    </div>
+
+        <div class="tool-card" onclick="goTool('單位轉換'); return false;" style="cursor:pointer;">
+    <span class="tc-arrow">→</span>
+    <span class="tc-icon">📐</span>
+    <h3 data-t="t2t">單位轉換</h3>
+    <p data-t="t2d">長度、重量、面積、溫度、電力等 10 大分類一鍵換算</p>
+</div>
+
+<div class="tool-card" onclick="goTool('時區查詢'); return false;" style="cursor:pointer;">
+    <span class="tc-arrow">→</span>
+    <span class="tc-icon">🕐</span>
+    <h3 data-t="t3t">時區查詢</h3>
+    <p data-t="t3d">全球時區對照，快速查詢兩地時差，再也不怕算錯時間</p>
+</div>
+
+<div class="tool-card" onclick="goTool('插頭規格'); return false;" style="cursor:pointer;">
+    <span class="tc-arrow">→</span>
+    <span class="tc-icon">🔌</span>
+    <h3 data-t="t4t">插頭規格查詢</h3>
+    <p data-t="t4d">各國電壓、頻率、插頭類型速查，出國不再帶錯轉接頭</p>
+</div>
+
+<div class="tool-card" onclick="goTool('國定假日'); return false;" style="cursor:pointer;">
+    <span class="tc-arrow">→</span>
+    <span class="tc-icon">🎌</span>
+    <h3 data-t="t5t">各國國定假日</h3>
+    <p data-t="t5d">避開公眾假期或巧妙利用連假，讓行程規劃更有彈性</p>
+</div>
+
+<div class="tool-card" onclick="goTool('日出日落'); return false;" style="cursor:pointer;">
+    <span class="tc-arrow">→</span>
+    <span class="tc-icon">🌅</span>
+    <h3 data-t="t6t">日出日落時間</h3>
+    <p data-t="t6d">精準查詢各地日出日落，抓住黃金時刻拍下最美照片</p>
+</div>
+
     </div>
 
     <div class="tips-banner">
@@ -229,15 +262,49 @@
 
 <footer>
     <div class="footer-grid">
-        <div class="footer-col"><h4 data-t="f1h">🔌 電力與時間</h4><a href="#" data-t="f1a">插頭規格查詢</a><a href="#" data-t="f1b">時區查詢</a><a href="#" data-t="f1c">日出日落時間</a></div>
-        <div class="footer-col"><h4 data-t="f2h">🎉 假期與節慶</h4><a href="#" data-t="f2a">各國國定假日</a><a href="#" data-t="f2b">節慶活動一覽</a></div>
-        <div class="footer-col"><h4 data-t="f3h">💱 金融與單位</h4><a href="#" data-t="f3a">匯率換算</a><a href="#" data-t="f3b">單位轉換</a></div>
-        <div class="footer-col"><h4 data-t="f4h">🌍 旅遊資訊</h4><a href="#" data-t="f4a">國家概覽</a><a href="#" data-t="f4b">各地詳細指南</a></div>
+        <div class="footer-col"><h4 data-t="f1h">🔌 電力與時間</h4>
+            <a href="#" onclick="goTool('插頭規格'); return false;">插頭規格查詢</a>
+            <a href="#" onclick="goTool('時區查詢'); return false;">時區查詢</a>
+            <a href="#" onclick="goTool('日出日落'); return false;">日出日落時間</a></div>
+        <div class="footer-col"><h4 data-t="f2h">🎉 假期與節慶</h4>
+            <a href="#" onclick="goTool('國定假日'); return false;">各國國定假日</a>
+            <a href="#" onclick="goTool('節慶活動'); return false;">節慶活動一覽</a></div>
+        <div class="footer-col"><h4 data-t="f3h">💱 金融與單位</h4>
+            <a href="#" onclick="goTool('匯率換算'); return false;">匯率換算</a>
+            <a href="#" onclick="goTool('單位轉換'); return false;">單位轉換</a></div>
+        <div class="footer-col"><h4 data-t="f4h">🌍 旅遊資訊</h4>
+            <a href="#" onclick="goTool('國家概覽'); return false;">國家概覽</a>
+            <a href="#" onclick="goTool('目的地指南'); return false;">各地詳細指南</a></div>
     </div>
     <div class="footer-bottom"><span data-t="fc">© 2026 Roamwise. All rights reserved.</span> | <a href="#" data-t="fp">隱私權政策</a> | <a href="#" data-t="ft">使用條款</a></div>
 </footer>
 
 <script>
+    let currentLang = 'zh';
+
+    const toolPages = {
+        '匯率換算':   { zh: 'currency/currency-zh.html',   en: 'currency/currency-en.html',   es: 'currency/currency-es.html',   pt: 'currency/currency-pt.html' },
+        '單位轉換':   { zh: 'unit/unit-zh.html',        en: 'unit/unit-en.html',       es: 'unit/unit-es.html',       pt: 'unit/unit-pt.html' },
+        '時區查詢':   { zh: 'time-zone/time-zone-zh.html',   en: 'time-zone/time-zone-en.html',  es: 'time-zone/time-zone-es.html',  pt: 'time-zone-pt.html' },
+        '插頭規格':   { zh: 'plug/plug-zh.html',        en: 'plug/plug-en.html',       es: 'plug/plug-es.html',       pt: 'plug/plug-pt.html' },
+        '國定假日':   { zh: 'holiday-zh.html',     en: 'holiday-en.html' },
+        '日出日落':   { zh: 'sunset/sunset-zh.html',      en: 'sunset/sunset-en.html',     es: 'sunset/sunset-es.html',     pt: 'sunset/sunset-pt.html' },
+        '國家概覽':   { zh: 'country-zh.html',     en: 'country-en.html' },
+        '目的地指南': { zh: 'guide-zh.html',       en: 'guide-en.html' },
+        '節慶活動':   { zh: 'festival-zh.html',    en: 'festival-en.html' },
+    };
+
+    function switchLang(lang) {
+        currentLang = lang;
+    }
+
+    function goTool(name) {
+        const pages = toolPages[name];
+        if (pages) {
+            window.location.href = pages[currentLang] || pages['zh'];
+        }
+    }
+</script> 
 /* ====== TRANSLATIONS ====== */
 const T={
 'zh-TW':{
