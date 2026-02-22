@@ -2,546 +2,701 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roamwise - 單位轉換</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
     <style>
-        :root{--primary:#2563eb;--primary-dark:#1d4ed8;--primary-light:#dbeafe;--accent:#f59e0b;--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.07);--shadow-sm:0 2px 8px rgba(0,0,0,.05);--green:#10b981;--red:#ef4444}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(37,99,235,.3)}
-        .logo{font-size:1.4rem;font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:8px}.logo span{color:var(--accent)}
-        .header-right{display:flex;align-items:center;gap:16px}
-        .header-right a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;transition:color .2s}.header-right a:hover{color:#fff}
-        .lang-select{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:8px;font-size:.85rem;cursor:pointer;font-family:inherit}.lang-select option{color:#333;background:#fff}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+            background: #f0f4f8;
+            color: #1a202c;
+            line-height: 1.6;
+        }
 
-        main{flex:1;max-width:920px;width:100%;margin:0 auto;padding:32px 16px}
-        .page-title{text-align:center;font-size:1.7rem;font-weight:700;margin-bottom:24px;color:var(--primary-dark)}
-        .info-box{background:var(--primary-light);border-left:4px solid var(--primary);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start;font-size:.92rem;color:var(--primary-dark);line-height:1.6}.info-box .icon{font-size:1.2rem;flex-shrink:0;margin-top:2px}
+        /* ===== Header ===== */
+        header {
+            background: #1a202c;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
 
-        .cat-tabs-wrap{margin-bottom:22px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
-        .cat-tabs-wrap::-webkit-scrollbar{display:none}
-        .cat-tabs{display:flex;gap:8px;min-width:max-content}
-        .cat-chip{padding:10px 16px;border-radius:24px;border:2px solid var(--border);background:#fff;font-size:.88rem;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap;font-weight:500;color:var(--text)}
-        .cat-chip:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark)}
-        .cat-chip.active{border-color:var(--primary);background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.25)}
-        .cat-chip .ci{font-size:1.05rem}
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-        .converter-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;margin-bottom:20px}
-        .converter-row{display:flex;gap:12px;align-items:stretch}
-        .conv-side{flex:1;min-width:0}
-        .conv-side label{font-weight:500;font-size:.9rem;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-        .unit-select{width:100%;padding:12px 40px 12px 14px;border:2px solid var(--border);border-radius:10px;background:#fff;font-size:.93rem;font-family:inherit;font-weight:600;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;transition:border-color .2s;margin-bottom:10px;color:var(--text)}
-        .unit-select:focus,.unit-select:hover{border-color:var(--primary);outline:none;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
-        .amount-input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:10px;font-size:1.45rem;font-family:inherit;font-weight:700;text-align:right;transition:border-color .2s,box-shadow .2s;color:var(--text)}
-        .amount-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
-        .amount-input.result{background:#f8fafc;color:var(--primary-dark)}
-        .swap-col{display:flex;align-items:center;justify-content:center;flex-shrink:0;padding-top:28px}
-        .swap-btn{width:48px;height:48px;border-radius:50%;border:2px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .25s;color:var(--primary)}
-        .swap-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary);transform:rotate(180deg);box-shadow:0 4px 16px rgba(37,99,235,.3)}
+        .logo { font-size: 1.8rem; font-weight: 700; cursor: pointer; text-decoration: none; }
+        .logo-roam { color: #60a5fa; }
+        .logo-wise { color: #f59e0b; }
 
-        .formula-display{text-align:center;margin-top:16px;padding:14px;background:linear-gradient(135deg,#f8fafc,#eff6ff);border-radius:10px;border:1px solid var(--border);position:relative}
-        .formula-main{font-size:1.03rem;font-weight:600;color:var(--text);margin-bottom:3px;font-variant-numeric:tabular-nums}
-        .formula-reverse{font-size:.86rem;color:var(--text-light);font-variant-numeric:tabular-nums}
+        .header-nav { display: flex; align-items: center; gap: 1.5rem; }
+        .header-nav > a { color: #cbd5e1; text-decoration: none; font-size: 0.95rem; }
+        .header-nav > a:hover { color: #fff; }
 
-        .copy-row{display:flex;justify-content:center;gap:10px;margin-top:12px}
-        .copy-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border:1.5px solid var(--border);border-radius:9px;background:#fff;cursor:pointer;font-size:.87rem;font-family:inherit;color:var(--text-light);font-weight:500;transition:all .2s}
-        .copy-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
-        .copy-btn.copied{border-color:var(--green);color:var(--green);background:#ecfdf5}
+        .lang-selector { position: relative; }
+        .lang-btn {
+            background: #374151; color: #fff; border: 1px solid #4b5563;
+            padding: 0.45rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem;
+        }
+        .lang-dropdown {
+            display: none; position: absolute; right: 0; top: calc(100% + 6px);
+            background: #1f2937; border: 1px solid #374151; border-radius: 8px;
+            overflow: hidden; min-width: 150px; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .lang-selector:hover .lang-dropdown { display: block; }
+        .lang-dropdown a {
+            display: block; padding: 0.6rem 1rem; color: #cbd5e1;
+            text-decoration: none; font-size: 0.9rem;
+        }
+        .lang-dropdown a:hover { background: #374151; color: #fff; }
+        .lang-dropdown a.active-lang { color: #60a5fa; font-weight: 600; }
 
-        .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:13px 28px;border-radius:11px;font-size:.92rem;z-index:1000;opacity:0;transition:all .35s cubic-bezier(.4,0,.2,1);pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px;white-space:nowrap}
-        .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+        /* ===== Main ===== */
+        main { max-width: 920px; margin: 0 auto; padding: 2rem 1rem 1rem; }
 
-        .section-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:22px 20px;margin-bottom:20px}
-        .section-card h3{font-size:1rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:var(--text)}
+        /* Hero */
+        .hero { text-align: center; margin-bottom: 1.5rem; }
+        .hero h1 { font-size: 2rem; margin-bottom: 1rem; }
 
-        .all-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
-        .all-tile{border:1px solid var(--border);border-radius:10px;padding:11px 13px;display:flex;flex-direction:column;gap:4px;transition:all .15s;cursor:pointer}
-        .all-tile:hover{border-color:var(--primary);box-shadow:var(--shadow-sm)}
-        .all-tile.highlight{border-color:var(--primary);background:var(--primary-light)}
-        .all-tile .at-name{font-size:.78rem;color:var(--text-light);display:flex;align-items:center;gap:4px}
-        .all-tile .at-value{font-size:1.05rem;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;word-break:break-all}
-        .all-tile.highlight .at-value{color:var(--primary-dark)}
+        .info-box {
+            background: #ebf5ff; border-left: 4px solid #3b82f6;
+            padding: 1rem 1.2rem; border-radius: 0 10px 10px 0;
+            display: flex; gap: 0.8rem; align-items: flex-start; text-align: left;
+        }
+        .info-box .icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1.8; }
+        .info-box p { font-size: 0.95rem; color: #374151; }
+        .info-box strong { color: #1d4ed8; }
 
-        .ref-item{padding:10px 14px;background:#f8fafc;border-radius:8px;margin-bottom:8px;font-size:.9rem;line-height:1.6;border-left:3px solid var(--accent);color:var(--text)}
-        .ref-item:last-child{margin-bottom:0}
+        /* Category Tabs */
+        .category-tabs {
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+            justify-content: center; margin: 1.8rem 0;
+        }
+        .cat-tab {
+            padding: 0.5rem 1.1rem; border: 2px solid #e2e8f0; border-radius: 25px;
+            background: #fff; cursor: pointer; font-size: 0.9rem; font-weight: 500;
+            transition: all 0.25s;
+        }
+        .cat-tab:hover { border-color: #3b82f6; color: #3b82f6; }
+        .cat-tab.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
 
-        .tip-item{margin-bottom:10px;font-size:.92rem;line-height:1.8}
-        .tip-item:last-child{margin-bottom:0}
+        /* Converter Card */
+        .card {
+            background: #fff; border-radius: 16px; padding: 1.8rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07); margin-bottom: 1.8rem;
+        }
 
-        .calc-note{font-size:.82rem;color:var(--text-light);line-height:1.6;padding:12px 16px;background:#f8fafc;border-radius:8px;margin-top:8px}
+        .converter-body { display: flex; align-items: center; gap: 1rem; }
+        .conv-col { flex: 1; }
+        .conv-col label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: #374151; }
+        .conv-col select {
+            width: 100%; padding: 0.65rem; border: 2px solid #e2e8f0;
+            border-radius: 10px; font-size: 1rem; margin-bottom: 0.7rem; background: #f8fafc;
+        }
+        .conv-col select:focus { outline: none; border-color: #3b82f6; }
+        .conv-col input {
+            width: 100%; padding: 0.75rem; border: 2px solid #e2e8f0;
+            border-radius: 10px; font-size: 1.15rem; text-align: center; font-weight: 600;
+        }
+        .conv-col input:focus { outline: none; border-color: #3b82f6; }
+        .conv-col input[readonly] { background: #f0f9ff; color: #1d4ed8; border-color: #bfdbfe; }
 
-        footer{background:#1e293b;color:rgba(255,255,255,.7);padding:36px 24px 20px;margin-top:auto}
-        .footer-grid{max-width:920px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;margin-bottom:28px}
-        .footer-col h4{color:#fff;font-size:.95rem;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-        .footer-col a{display:block;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;padding:4px 0;transition:color .2s}.footer-col a:hover{color:#fff}
-        .footer-col a.active-link{color:var(--accent);font-weight:500}
-        .footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,.1);padding-top:16px;font-size:.82rem}.footer-bottom a{color:rgba(255,255,255,.5);text-decoration:none}.footer-bottom a:hover{color:#fff}
+        .swap-btn {
+            background: #3b82f6; color: #fff; border: none;
+            width: 48px; height: 48px; border-radius: 50%; font-size: 1.3rem;
+            cursor: pointer; flex-shrink: 0; margin-top: 1.5rem;
+            transition: all 0.35s;
+        }
+        .swap-btn:hover { background: #2563eb; transform: rotate(180deg); }
 
-        @media(max-width:640px){
-            .page-title{font-size:1.3rem}
-            .converter-row{flex-direction:column}
-            .swap-col{padding-top:0;padding-bottom:0}.swap-btn{transform:rotate(90deg)}.swap-btn:hover{transform:rotate(270deg)}
-            .amount-input{font-size:1.2rem}
-            .all-grid{grid-template-columns:1fr 1fr}
-            .header-right a.contact-link{display:none}
-            .converter-card{padding:20px 16px}
-            .cat-chip{padding:9px 13px;font-size:.83rem}
+        .copy-row { display: flex; gap: 0.8rem; margin-top: 1.2rem; }
+        .copy-btn {
+            flex: 1; padding: 0.65rem; background: #f1f5f9; border: 2px solid #e2e8f0;
+            border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 500;
+            transition: all 0.25s;
+        }
+        .copy-btn:hover { background: #e2e8f0; }
+        .copy-btn.copied { background: #dcfce7; border-color: #86efac; color: #166534; }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.3rem; margin-bottom: 1rem;
+            padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0;
+        }
+
+        /* All Conversions Grid */
+        .conv-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.7rem;
+        }
+        .conv-item {
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+            padding: 0.7rem 1rem; display: flex; justify-content: space-between; align-items: center;
+        }
+        .conv-item .name { font-size: 0.85rem; color: #64748b; }
+        .conv-item .val { font-weight: 700; color: #1d4ed8; }
+
+        /* Reference Grid */
+        .ref-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0.8rem;
+        }
+        .ref-item {
+            background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 1rem;
+        }
+        .ref-item h4 { color: #92400e; margin-bottom: 0.3rem; font-size: 0.95rem; }
+        .ref-item p { font-size: 0.88rem; color: #78350f; }
+
+        /* Tips */
+        .tips-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1rem;
+        }
+        .tip-card {
+            background: #fff; border-radius: 12px; padding: 1.2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 4px solid #3b82f6;
+        }
+        .tip-card h4 { color: #1e40af; margin-bottom: 0.4rem; }
+        .tip-card p { font-size: 0.9rem; color: #475569; line-height: 1.75; }
+
+        /* Disclaimer */
+        .disclaimer {
+            background: #fef3c7; border: 1px solid #fcd34d; border-radius: 12px;
+            padding: 1rem 1.2rem; font-size: 0.85rem; color: #92400e;
+            margin-bottom: 2rem; line-height: 1.7;
+        }
+
+        /* ===== Footer ===== */
+        footer { background: #1a202c; color: #94a3b8; padding: 3rem 2rem 1.5rem; }
+        .footer-inner { max-width: 1200px; margin: 0 auto; }
+        .footer-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem; margin-bottom: 2rem;
+        }
+        .footer-col h4 { color: #fff; margin-bottom: 0.8rem; font-size: 1rem; }
+        .footer-col a {
+            display: block; color: #94a3b8; text-decoration: none;
+            padding: 0.3rem 0; font-size: 0.9rem; transition: color 0.3s;
+        }
+        .footer-col a:hover { color: #60a5fa; }
+        .footer-col a.active-link { color: #60a5fa; font-weight: 600; }
+        .footer-bottom {
+            border-top: 1px solid #374151; padding-top: 1.5rem;
+            text-align: center; font-size: 0.85rem;
+        }
+        .footer-bottom a { color: #94a3b8; text-decoration: none; margin: 0 0.3rem; }
+        .footer-bottom a:hover { color: #60a5fa; }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .converter-body { flex-direction: column; }
+            .swap-btn { margin-top: 0; transform: rotate(90deg); }
+            .swap-btn:hover { transform: rotate(270deg); }
+            .copy-row { flex-direction: column; }
+            .tips-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.6rem; }
+            header { padding: 0.8rem 1rem; }
+            .card { padding: 1.2rem; }
         }
     </style>
 </head>
 <body>
 
+<!-- ==================== HEADER ==================== -->
 <header>
-<header>
-    <div class="logo">
-        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
-        Roam<span>wise</span>
-    </div>
-    <div class="header-right">
-        <a href="#" class="contact-link">聯絡我們</a>
-        <select class="lang-select" onchange="changeLanguage(this.value)">
-            <option value="unit-zh.html" selected="">繁體中文</option>
-            <option value="unit-en.html">English</option>
-            <option value="unit-es.html">Español</option>
-            <option value="unit-pt.html">Português</option>
-        </select>
+    <div class="header-inner">
+        <a class="logo" href="../index.html">
+            <span class="logo-roam">Roam</span><span class="logo-wise">wise</span>
+        </a>
+        <nav class="header-nav">
+            <a href="#">聯絡我們</a>
+            <div class="lang-selector">
+                <button class="lang-btn">繁體中文 ▾</button>
+                <div class="lang-dropdown">
+                    <a href="unit-zh.html" class="active-lang">繁體中文</a>
+                    <a href="unit-en.html">English</a>
+                    <a href="unit-es.html">Español</a>
+                    <a href="unit-pt.html">Português</a>
+                </div>
+            </div>
+        </nav>
     </div>
 </header>
 
-<script>
-    function changeLanguage(filename) {
-        window.location.href = filename;
-    }
-</script>
-
+<!-- ==================== MAIN ==================== -->
 <main>
-    <h1 class="page-title">📐 單位轉換</h1>
-    <div class="info-box"><span class="icon">ℹ️</span><div>支援長度、重量、溫度、面積、體積、速度、時間、數據、能量、功率共 <strong>10 大分類</strong>即時換算，涵蓋台灣（坪、台斤）、港澳（平方呎、港斤）及國際常用單位。輸入數值後自動顯示結果。</div></div>
 
-    <div class="cat-tabs-wrap"><div class="cat-tabs" id="catTabs"></div></div>
-
-    <div class="converter-card">
-        <div class="converter-row">
-            <div class="conv-side">
-                <label>📌 從</label>
-                <select class="unit-select" id="fromUnit"></select>
-                <input type="text" inputmode="decimal" class="amount-input" id="fromAmount" value="1" placeholder="輸入數值">
-            </div>
-            <div class="swap-col"><button class="swap-btn" id="swapBtn" title="互換">⇄</button></div>
-            <div class="conv-side">
-                <label>📌 換算為</label>
-                <select class="unit-select" id="toUnit"></select>
-                <input type="text" class="amount-input result" id="toAmount" placeholder="結果" inputmode="decimal">
-            </div>
+    <!-- Hero -->
+    <section class="hero">
+        <h1>📐 單位轉換</h1>
+        <div class="info-box">
+            <span class="icon">ℹ️</span>
+            <p>支援長度、重量、溫度、面積、體積、速度、時間、數據、能量、功率共 <strong>10 大分類</strong><br>
+            即時換算，涵蓋台灣（坪、台斤）、港澳（平方呎、港斤）及國際常用單位。輸入數值後自動顯示結果。</p>
         </div>
-        <div class="formula-display" id="formulaDisplay">
-            <div class="formula-main" id="formulaMain"></div>
-            <div class="formula-reverse" id="formulaReverse"></div>
+    </section>
+
+    <!-- Category Tabs -->
+    <div class="category-tabs" id="categoryTabs"></div>
+
+    <!-- Converter -->
+    <div class="card">
+        <div class="converter-body">
+            <div class="conv-col">
+                <label>📌 從</label>
+                <select id="fromUnit"></select>
+                <input type="number" id="fromValue" placeholder="輸入數值" value="1">
+            </div>
+            <button class="swap-btn" id="swapBtn" title="交換">⇄</button>
+            <div class="conv-col">
+                <label>📌 換算為</label>
+                <select id="toUnit"></select>
+                <input type="text" id="toValue" readonly="" placeholder="結果">
+            </div>
         </div>
         <div class="copy-row">
-            <button class="copy-btn" id="copyFormula"><span>📋</span> 複製換算公式</button>
-            <button class="copy-btn" id="copyResult"><span>📋</span> 複製換算結果</button>
+            <button class="copy-btn" id="copyFormula">📋 複製換算公式</button>
+            <button class="copy-btn" id="copyResult">📋 複製換算結果</button>
         </div>
     </div>
 
-    <div class="section-card">
-        <h3 id="allTitle">📋 所有單位換算</h3>
-        <div class="all-grid" id="allGrid"></div>
+    <!-- All Conversions -->
+    <div class="card">
+        <h2 class="section-title">📋 所有單位換算</h2>
+        <div class="conv-grid" id="allConversions"></div>
     </div>
 
-    <div class="section-card" id="refSection">
-        <h3>📝 常用參考</h3>
-        <div id="refList"></div>
+    <!-- Common References -->
+    <div class="card">
+        <h2 class="section-title">📝 常用參考</h2>
+        <div class="ref-grid" id="references"></div>
     </div>
 
-    <div class="section-card">
-        <h3>💡 換算小提醒</h3>
-        <div style="font-size:.92rem;line-height:1.8;color:var(--text)">
-            <p class="tip-item">🌍 <strong>公制 vs 英制</strong>：多數國家使用公制（公尺、公斤），美國、緬甸、賴比瑞亞主要使用英制（英里、磅）。旅行前了解當地單位制度有助於日常溝通。</p>
-            <p class="tip-item">🏠 <strong>港澳面積</strong>：香港與澳門的房地產以<strong>平方呎（ft²）</strong>計價，1 平方呎 ≈ 0.093 平方米。台灣則常用「坪」，1 坪 ≈ 3.3 平方米 ≈ 35.6 平方呎。</p>
-            <p class="tip-item">⚖️ <strong>台港斤兩差異</strong>：台斤 = 600g、台兩 = 37.5g；港斤 ≈ 604.8g、港兩 ≈ 37.8g。雖然差異不大，但在傳統市場交易時需留意。</p>
-            <p class="tip-item">🌡️ <strong>溫度判讀</strong>：美國使用華氏（°F），其他多數國家使用攝氏（°C）。快速心算：°F ≈ °C × 2 + 30（大致估算）。</p>
-            <p class="tip-item">⚡ <strong>電力計費</strong>：台灣與港澳電費均以「度」（kWh）計算。1 度電 = 1 千瓦時 = 3,600 千焦耳。了解家電功率有助於估算電費。</p>
-            <p class="tip-item">⛽ <strong>油耗換算</strong>：台灣用 km/L，美國用 MPG（miles per gallon），歐洲用 L/100km。加油前可先確認當地的計量方式。</p>
+    <!-- Tips -->
+    <section class="tips-grid" style="margin-bottom:1.8rem;">
+        <h2 class="section-title" style="grid-column:1/-1;">💡 換算小提醒</h2>
+
+        <div class="tip-card">
+            <h4>🌍 公制 vs 英制</h4>
+            <p>多數國家使用公制（公尺、公斤），美國、緬甸、賴比瑞亞主要使用英制（英里、磅）。旅行前了解當地單位制度有助於日常溝通。</p>
         </div>
+        <div class="tip-card">
+            <h4>🏠 港澳面積</h4>
+            <p>香港與澳門的房地產以<strong>平方呎（ft²）</strong>計價，1 平方呎 ≈ 0.093 平方米。台灣則常用「坪」，1 坪 ≈ 3.3 平方米 ≈ 35.6 平方呎。</p>
+        </div>
+        <div class="tip-card">
+            <h4>⚖️ 台港斤兩差異</h4>
+            <p>台斤 = 600g、台兩 = 37.5g；港斤 ≈ 604.8g、港兩 ≈ 37.8g。雖然差異不大，但在傳統市場交易時需留意。</p>
+        </div>
+        <div class="tip-card">
+            <h4>🌡️ 溫度判讀</h4>
+            <p>美國使用華氏（°F），其他多數國家使用攝氏（°C）。快速心算：°F ≈ °C × 2 + 30（大致估算）。</p>
+        </div>
+        <div class="tip-card">
+            <h4>⚡ 電力計費</h4>
+            <p>台灣與港澳電費均以「度」（kWh）計算。1 度電 = 1 千瓦時 = 3,600 千焦耳。了解家電功率有助於估算電費。</p>
+        </div>
+        <div class="tip-card">
+            <h4>⛽ 油耗換算</h4>
+            <p>台灣用 km/L，美國用 MPG（miles per gallon），歐洲用 L/100km。加油前可先確認當地的計量方式。</p>
+        </div>
+    </section>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+        ⚠️ 本站換算結果僅供參考。部分單位（如月、年）使用近似值。公制馬力（PS）與英制馬力（hp）略有差異。科學或工程用途請參考精確標準值。
     </div>
 
-    <div class="calc-note">⚠️ 本站換算結果僅供參考。部分單位（如月、年）使用近似值。公制馬力（PS）與英制馬力（hp）略有差異。科學或工程用途請參考精確標準值。</div>
 </main>
 
+<!-- ==================== FOOTER ==================== -->
 <footer>
-<div class="footer-grid">
-    <div class="footer-col">
-        <h4>🔌 電源與時間</h4>
-        <a href="../plug/plug-zh.html">插頭標準</a>
-        <a href="../time-zone/time-zone-zh.html">時差查詢</a>
-        <a href="../sunset/sunset-zh.html">日出日落時間</a>
-        <a href="../timer/timer-zh.html">計時器</a>
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>🔌 電源與時間</h4>
+                <a href="../plug/plug-zh.html">插頭標準</a>
+                <a href="../time-zone/time-zone-zh.html">時差查詢</a>
+                <a href="../sunset/sunset-zh.html">日出日落時間</a>
+                <a href="../timer/timer-zh.html">計時器</a>
+            </div>
+            <div class="footer-col">
+                <h4>🎉 假期與活動</h4>
+                <a href="#">各地假期查詢</a>
+                <a href="#">節慶活動</a>
+            </div>
+            <div class="footer-col">
+                <h4>💱 金融與單位</h4>
+                <a href="../currency/currency-zh.html">匯率兌換</a>
+                <a href="unit-zh.html" class="active-link">單位轉換器</a>
+            </div>
+            <div class="footer-col">
+                <h4>🌍 旅遊資訊</h4>
+                <a href="#">國家基本資訊</a>
+                <a href="#">地區詳細指南</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Roamwise. All rights reserved. |
+            <a href="#">隱私權政策</a> |
+            <a href="#">使用條款</a>
+        </div>
     </div>
-    <div class="footer-col">
-        <h4>🎉 假期與活動</h4>
-        <a href="#">各地假期查詢</a>
-        <a href="#">節慶活動</a>
-    </div>
-    <div class="footer-col">
-        <h4>💱 金融與單位</h4>
-        <a href="../currency/currency-zh.html">匯率兌換</a>
-        <a href="../unit/unit-zh.html"  class="active-link">單位轉換器</a>
-    </div>
-    <div class="footer-col">
-        <h4>🌍 旅遊資訊</h4>
-        <a href="#">國家基本資訊</a>
-        <a href="#">地區詳細指南</a>
-    </div>
-</div>
-    <div class="footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="#">隱私權政策</a> | <a href="#">使用條款</a></div>
 </footer>
 
-<div class="toast" id="toast"></div>
-
+<!-- ==================== JAVASCRIPT ==================== -->
 <script>
-// ============ DATA ============
-const categories=[
-{id:'length',name:'長度',icon:'📏',dfFrom:'cm',dfTo:'in',
- units:[
-  {code:'mm',name:'毫米',sym:'mm',toBase:0.001},
-  {code:'cm',name:'公分',sym:'cm',toBase:0.01},
-  {code:'m',name:'公尺',sym:'m',toBase:1},
-  {code:'km',name:'公里',sym:'km',toBase:1000},
-  {code:'in',name:'英寸（吋）',sym:'in',toBase:0.0254},
-  {code:'ft',name:'英尺（呎）',sym:'ft',toBase:0.3048},
-  {code:'yd',name:'碼',sym:'yd',toBase:0.9144},
-  {code:'mi',name:'英里',sym:'mi',toBase:1609.344},
-  {code:'nmi',name:'海浬',sym:'nmi',toBase:1852}
- ],
- refs:['1 英尺（呎）= 12 英寸（吋）≈ 30.48 cm，港澳日常最常使用','一般成年男性身高 170 cm ≈ 5 呎 7 吋','馬拉松全程 42.195 km ≈ 26.2 mi','一張 A4 紙長度 ≈ 29.7 cm ≈ 11.69 吋']
-},
-{id:'weight',name:'重量',icon:'⚖️',dfFrom:'kg',dfTo:'lb',
- units:[
-  {code:'mg',name:'毫克',sym:'mg',toBase:0.001},
-  {code:'g',name:'公克',sym:'g',toBase:1},
-  {code:'kg',name:'公斤',sym:'kg',toBase:1000},
-  {code:'ton',name:'公噸',sym:'t',toBase:1000000},
-  {code:'oz',name:'盎司（安士）',sym:'oz',toBase:28.3495},
-  {code:'lb',name:'磅',sym:'lb',toBase:453.592},
-  {code:'jin',name:'台斤',sym:'台斤',toBase:600},
-  {code:'tliang',name:'台兩',sym:'台兩',toBase:37.5},
-  {code:'hkjin',name:'港斤（司馬斤）',sym:'港斤',toBase:604.79},
-  {code:'hkliang',name:'港兩（司馬兩）',sym:'港兩',toBase:37.799},
-  {code:'st',name:'英石',sym:'st',toBase:6350.29}
- ],
- refs:['台斤 = 600g（16 台兩），港斤 ≈ 604.8g（16 港兩），兩者略有不同','1 磅 ≈ 453.6g ≈ 0.756 台斤 ≈ 0.75 港斤','航空行李限重通常 23 kg ≈ 50.7 lb ≈ 38.3 台斤','1 盎司（安士）≈ 28.35g，港澳常稱「安士」','港兩（司馬兩）是黃金買賣常用單位，1 港兩 ≈ 37.8g']
-},
-{id:'temp',name:'溫度',icon:'🌡️',dfFrom:'C',dfTo:'F',isTemp:true,
- units:[
-  {code:'C',name:'攝氏',sym:'°C'},
-  {code:'F',name:'華氏',sym:'°F'},
-  {code:'K',name:'凱氏',sym:'K'}
- ],
- refs:['水的冰點：0°C = 32°F = 273.15 K','人體正常體溫：37°C ≈ 98.6°F','室溫舒適範圍：20–25°C ≈ 68–77°F','水的沸點：100°C = 212°F = 373.15 K']
-},
-{id:'area',name:'面積',icon:'📐',dfFrom:'ft2',dfTo:'m2',
- units:[
-  {code:'cm2',name:'平方公分',sym:'cm²',toBase:0.0001},
-  {code:'m2',name:'平方公尺（平方米）',sym:'m²',toBase:1},
-  {code:'km2',name:'平方公里',sym:'km²',toBase:1e6},
-  {code:'ha',name:'公頃',sym:'ha',toBase:10000},
-  {code:'ping',name:'坪',sym:'坪',toBase:3.305785},
-  {code:'jia',name:'甲',sym:'甲',toBase:9699.17},
-  {code:'ft2',name:'平方呎（平方英尺）',sym:'ft²',toBase:0.092903},
-  {code:'yd2',name:'平方碼',sym:'yd²',toBase:0.836127},
-  {code:'ac',name:'英畝',sym:'ac',toBase:4046.86}
- ],
- refs:['香港、澳門房地產以平方呎（ft²）計價，1 ft² ≈ 0.093 m²','1 坪 ≈ 3.306 m² ≈ 35.58 ft²（台灣房地產常用）','香港一般小型單位 300–400 ft² ≈ 27.9–37.2 m² ≈ 8.4–11.2 坪','1 甲 ≈ 2,934 坪 ≈ 0.97 公頃（台灣農地常用）','標準足球場 ≈ 7,140 m² ≈ 76,854 ft²']
-},
-{id:'volume',name:'體積',icon:'🧪',dfFrom:'L',dfTo:'galUS',
- units:[
-  {code:'mL',name:'毫升',sym:'mL',toBase:1},
-  {code:'L',name:'公升',sym:'L',toBase:1000},
-  {code:'cc',name:'立方公分',sym:'cc',toBase:1},
-  {code:'m3',name:'立方公尺',sym:'m³',toBase:1e6},
-  {code:'tsp',name:'茶匙',sym:'tsp',toBase:4.929},
-  {code:'tbsp',name:'湯匙',sym:'tbsp',toBase:14.787},
-  {code:'cupUS',name:'美制杯',sym:'cup',toBase:236.588},
-  {code:'flozUS',name:'液量盎司',sym:'fl oz',toBase:29.5735},
-  {code:'galUS',name:'美制加侖',sym:'gal(US)',toBase:3785.41},
-  {code:'galUK',name:'英制加侖',sym:'gal(UK)',toBase:4546.09}
- ],
- refs:['1 公升 = 1,000 mL = 1,000 cc','1 美制加侖 ≈ 3.785 公升，1 英制加侖 ≈ 4.546 公升','1 美制杯 ≈ 237 mL（烘焙量杯標準）','1 液量盎司 ≈ 29.6 mL']
-},
-{id:'speed',name:'速度',icon:'🚀',dfFrom:'kmh',dfTo:'mph',
- units:[
-  {code:'ms',name:'公尺/秒',sym:'m/s',toBase:1},
-  {code:'kmh',name:'公里/時',sym:'km/h',toBase:0.277778},
-  {code:'mph',name:'英里/時',sym:'mph',toBase:0.44704},
-  {code:'kn',name:'節',sym:'kt',toBase:0.514444},
-  {code:'fts',name:'英尺/秒',sym:'ft/s',toBase:0.3048},
-  {code:'mach',name:'馬赫',sym:'Mach',toBase:343}
- ],
- refs:['高速公路限速 110 km/h ≈ 68.4 mph','1 節 = 1.852 km/h（航海與航空常用）','音速（海平面 20°C）≈ 343 m/s ≈ 1,235 km/h','百米世界紀錄速度 ≈ 37.6 km/h ≈ 23.4 mph']
-},
-{id:'time',name:'時間',icon:'⏱️',dfFrom:'hr',dfTo:'min',
- units:[
-  {code:'msec',name:'毫秒',sym:'ms',toBase:0.001},
-  {code:'sec',name:'秒',sym:'s',toBase:1},
-  {code:'min',name:'分鐘',sym:'min',toBase:60},
-  {code:'hr',name:'小時',sym:'hr',toBase:3600},
-  {code:'day',name:'天',sym:'day',toBase:86400},
-  {code:'wk',name:'週',sym:'wk',toBase:604800},
-  {code:'mo',name:'月（≈30天）',sym:'mo',toBase:2592000},
-  {code:'yr',name:'年（≈365天）',sym:'yr',toBase:31536000}
- ],
- refs:['1 天 = 24 小時 = 1,440 分鐘 = 86,400 秒','1 週 = 7 天 = 168 小時','台北飛東京 ≈ 3 小時 = 180 分鐘','台北飛香港 ≈ 1 小時 50 分鐘']
-},
-{id:'data',name:'數據',icon:'💾',dfFrom:'GB',dfTo:'MB',
- units:[
-  {code:'bit',name:'位元',sym:'bit',toBase:0.125},
-  {code:'B',name:'位元組',sym:'B',toBase:1},
-  {code:'KB',name:'千位元組',sym:'KB',toBase:1024},
-  {code:'MB',name:'百萬位元組',sym:'MB',toBase:1048576},
-  {code:'GB',name:'十億位元組',sym:'GB',toBase:1073741824},
-  {code:'TB',name:'兆位元組',sym:'TB',toBase:1099511627776},
-  {code:'PB',name:'千兆位元組',sym:'PB',toBase:1125899906842624}
- ],
- refs:['1 KB = 1,024 Bytes','1 MB = 1,024 KB = 1,048,576 B','1 GB = 1,024 MB（約可存 250 首 MP3）','1 TB = 1,024 GB（約可存 250 部高畫質電影）']
-},
-{id:'energy',name:'能量',icon:'⚡',dfFrom:'kWh',dfTo:'kJ',
- units:[
-  {code:'J',name:'焦耳',sym:'J',toBase:1},
-  {code:'kJ',name:'千焦',sym:'kJ',toBase:1000},
-  {code:'MJ',name:'百萬焦耳',sym:'MJ',toBase:1e6},
-  {code:'cal',name:'卡路里',sym:'cal',toBase:4.184},
-  {code:'kcal',name:'千卡（大卡）',sym:'kcal',toBase:4184},
-  {code:'Wh',name:'瓦時',sym:'Wh',toBase:3600},
-  {code:'kWh',name:'千瓦時（度）',sym:'kWh',toBase:3600000},
-  {code:'BTU',name:'英熱單位',sym:'BTU',toBase:1055.06},
-  {code:'eV',name:'電子伏特',sym:'eV',toBase:1.602176634e-19},
-  {code:'ft_lb',name:'呎磅',sym:'ft·lb',toBase:1.35582}
- ],
- refs:['1 度電 = 1 kWh = 3,600 kJ = 860 kcal','台灣住宅電費約 NT$2.5–6.4/度（累進計費）','香港住宅電費約 HK$1.0–1.6/度','一碗白飯熱量 ≈ 280 kcal ≈ 1,172 kJ','1 BTU ≈ 1,055 J（冷氣能力常用單位）']
-},
-{id:'power',name:'功率',icon:'🔌',dfFrom:'kW',dfTo:'hp',
- units:[
-  {code:'W',name:'瓦特',sym:'W',toBase:1},
-  {code:'kW',name:'千瓦',sym:'kW',toBase:1000},
-  {code:'MW',name:'百萬瓦',sym:'MW',toBase:1e6},
-  {code:'hp',name:'英制馬力',sym:'hp',toBase:745.7},
-  {code:'PS',name:'公制馬力',sym:'PS',toBase:735.499},
-  {code:'BTUh',name:'BTU/時',sym:'BTU/h',toBase:0.293071},
-  {code:'kcalh',name:'千卡/時',sym:'kcal/h',toBase:1.163},
-  {code:'ftlbs',name:'呎磅/秒',sym:'ft·lb/s',toBase:1.35582}
- ],
- refs:['1 英制馬力（hp）= 745.7 W，1 公制馬力（PS）= 735.5 W','家用冷氣 1 噸冷凍噸 ≈ 12,000 BTU/h ≈ 3,517 W','一般家用微波爐功率 ≈ 700–1,200 W','電動車功率通常 100–400 kW ≈ 134–536 hp','香港電壓 220V/50Hz，台灣 110V/60Hz']
-}
-];
-
-const catMap={};categories.forEach(c=>{catMap[c.id]=c});
-
-// ============ STATE ============
-let curCat='length';
-let fromU,toU,lastEdited='from';
-
-// ============ HELPERS ============
-function getCat(){return catMap[curCat]}
-function getUnit(cat,code){return cat.units.find(u=>u.code===code)}
-
-function convertVal(val,fromCode,toCode,cat){
-    if(cat.isTemp)return convertTemp(val,fromCode,toCode);
-    const fu=getUnit(cat,fromCode),tu=getUnit(cat,toCode);
-    if(!fu||!tu)return 0;
-    return val*fu.toBase/tu.toBase;
-}
-function convertTemp(val,from,to){
-    let c;
-    if(from==='C')c=val;else if(from==='F')c=(val-32)*5/9;else c=val-273.15;
-    if(to==='C')return c;if(to==='F')return c*9/5+32;return c+273.15;
-}
-
-function fmtNum(n){
-    if(n===0)return '0';
-    const a=Math.abs(n);
-    if(a>=1e15||a<0.0001&&a!==0)return n.toExponential(4);
-    let d;
-    if(a>=10000)d=2;else if(a>=100)d=3;else if(a>=10)d=4;else if(a>=1)d=5;else if(a>=0.01)d=6;else d=8;
-    return n.toLocaleString('zh-TW',{minimumFractionDigits:0,maximumFractionDigits:d});
-}
-function fmtRate(n){
-    if(n===0)return '0';
-    const a=Math.abs(n);
-    if(a>=1e12||a<0.00001&&a!==0)return n.toExponential(4);
-    let d;
-    if(a>=1000)d=3;else if(a>=10)d=4;else if(a>=1)d=5;else if(a>=0.01)d=6;else d=8;
-    return n.toLocaleString('zh-TW',{minimumFractionDigits:0,maximumFractionDigits:d});
-}
-
-// ============ DOM ============
-const fromSel=document.getElementById('fromUnit');
-const toSel=document.getElementById('toUnit');
-const fromAmt=document.getElementById('fromAmount');
-const toAmt=document.getElementById('toAmount');
-const toastEl=document.getElementById('toast');
-
-// Build tabs
-const tabsEl=document.getElementById('catTabs');
-categories.forEach(cat=>{
-    const chip=document.createElement('button');
-    chip.className='cat-chip'+(cat.id===curCat?' active':'');
-    chip.dataset.id=cat.id;
-    chip.innerHTML='<span class="ci">'+cat.icon+'</span>'+cat.name;
-    chip.addEventListener('click',()=>switchCategory(cat.id));
-    tabsEl.appendChild(chip);
-});
-
-function switchCategory(id){
-    curCat=id;
-    document.querySelectorAll('.cat-chip').forEach(c=>c.classList.toggle('active',c.dataset.id===id));
-    const cat=getCat();
-    fromU=cat.dfFrom;toU=cat.dfTo;
-    populateSelects();
-    fromAmt.value='1';lastEdited='from';
-    doConvert();updateAllGrid();updateRefs();
-}
-
-function populateSelects(){
-    const cat=getCat();
-    fromSel.innerHTML='';toSel.innerHTML='';
-    cat.units.forEach(u=>{
-        const o1=document.createElement('option');
-        o1.value=u.code;o1.textContent=u.name+' ('+u.sym+')';
-        if(u.code===fromU)o1.selected=true;
-        fromSel.appendChild(o1);
-        const o2=document.createElement('option');
-        o2.value=u.code;o2.textContent=u.name+' ('+u.sym+')';
-        if(u.code===toU)o2.selected=true;
-        toSel.appendChild(o2);
-    });
-}
-
-function doConvert(){
-    const cat=getCat();
-    fromU=fromSel.value;toU=toSel.value;
-    if(lastEdited==='from'){
-        const v=parseFloat(fromAmt.value.replace(/,/g,''));
-        if(isNaN(v)||fromAmt.value.trim()===''){toAmt.value='';updateFormula();return}
-        toAmt.value=fmtNum(convertVal(v,fromU,toU,cat));
-    }else{
-        const v=parseFloat(toAmt.value.replace(/,/g,''));
-        if(isNaN(v)||toAmt.value.trim()===''){fromAmt.value='';updateFormula();return}
-        fromAmt.value=fmtNum(convertVal(v,toU,fromU,cat));
+// ===== Unit Data =====
+const categories = {
+    "長度": {
+        icon: "📏",
+        base: "公尺 (m)",
+        units: {
+            "公里 (km)": 1000,
+            "公尺 (m)": 1,
+            "公分 (cm)": 0.01,
+            "毫米 (mm)": 0.001,
+            "英里 (mi)": 1609.344,
+            "碼 (yd)": 0.9144,
+            "英尺 (ft)": 0.3048,
+            "英寸 (in)": 0.0254,
+            "海里 (nmi)": 1852
+        },
+        refs: [
+            { title: "成人身高", desc: "約 170 cm = 5 ft 7 in" },
+            { title: "馬拉松", desc: "42.195 km ≈ 26.2 mi" }
+        ]
+    },
+    "重量": {
+        icon: "⚖️",
+        base: "公克 (g)",
+        units: {
+            "公噸 (t)": 1000000,
+            "公斤 (kg)": 1000,
+            "公克 (g)": 1,
+            "毫克 (mg)": 0.001,
+            "磅 (lb)": 453.592,
+            "盎司 (oz)": 28.3495,
+            "台斤": 600,
+            "台兩": 37.5,
+            "港斤": 604.8,
+            "港兩": 37.8
+        },
+        refs: [
+            { title: "託運行李", desc: "經濟艙通常限 23 kg ≈ 50.7 lb" },
+            { title: "手提行李", desc: "通常限 7 kg ≈ 15.4 lb" },
+            { title: "1 台斤", desc: "= 600 g ≈ 1.32 lb" }
+        ]
+    },
+    "溫度": {
+        icon: "🌡️",
+        base: "攝氏 (°C)",
+        units: {
+            "攝氏 (°C)": "temp",
+            "華氏 (°F)": "temp",
+            "克氏 (K)": "temp"
+        },
+        isTemp: true,
+        refs: [
+            { title: "水的冰點", desc: "0 °C = 32 °F = 273.15 K" },
+            { title: "體溫", desc: "37 °C = 98.6 °F" },
+            { title: "水的沸點", desc: "100 °C = 212 °F" }
+        ]
+    },
+    "面積": {
+        icon: "📐",
+        base: "平方公尺 (m²)",
+        units: {
+            "平方公里 (km²)": 1000000,
+            "公頃 (ha)": 10000,
+            "平方公尺 (m²)": 1,
+            "平方公分 (cm²)": 0.0001,
+            "平方英里 (mi²)": 2589988.11,
+            "英畝 (acre)": 4046.856,
+            "平方碼 (yd²)": 0.836127,
+            "平方英尺 (ft²)": 0.092903,
+            "坪": 3.305785,
+            "甲": 9699.17
+        },
+        refs: [
+            { title: "1 坪", desc: "≈ 3.31 m² ≈ 35.6 ft²" },
+            { title: "香港房屋", desc: "以平方呎計價，400 ft² ≈ 37.2 m² ≈ 11.2 坪" }
+        ]
+    },
+    "體積": {
+        icon: "🧪",
+        base: "公升 (L)",
+        units: {
+            "立方公尺 (m³)": 1000,
+            "公升 (L)": 1,
+            "毫升 (mL)": 0.001,
+            "立方公分 (cm³)": 0.001,
+            "美制加侖 (US gal)": 3.78541,
+            "美制品脫 (US pt)": 0.473176,
+            "美制杯 (US cup)": 0.236588,
+            "液量盎司 (US fl oz)": 0.0295735,
+            "英制加侖 (imp gal)": 4.54609
+        },
+        refs: [
+            { title: "隨身液體限制", desc: "搭機隨身限每瓶 100 mL = 3.4 fl oz" },
+            { title: "1 美制加侖", desc: "≈ 3.785 L" }
+        ]
+    },
+    "速度": {
+        icon: "🚀",
+        base: "公尺/秒 (m/s)",
+        units: {
+            "公里/時 (km/h)": 0.277778,
+            "公尺/秒 (m/s)": 1,
+            "英里/時 (mph)": 0.44704,
+            "節 (knot)": 0.514444,
+            "馬赫 (Mach)": 340.29
+        },
+        refs: [
+            { title: "高速公路", desc: "台灣限速 110 km/h ≈ 68 mph" },
+            { title: "商用飛機", desc: "巡航約 900 km/h ≈ 0.85 Mach" }
+        ]
+    },
+    "時間": {
+        icon: "⏱️",
+        base: "秒 (s)",
+        units: {
+            "年 (yr)": 31536000,
+            "月 (mo)": 2592000,
+            "週 (wk)": 604800,
+            "天 (d)": 86400,
+            "時 (h)": 3600,
+            "分 (min)": 60,
+            "秒 (s)": 1,
+            "毫秒 (ms)": 0.001
+        },
+        refs: [
+            { title: "1 年", desc: "≈ 365 天 = 8,760 小時" },
+            { title: "1 月", desc: "≈ 30 天（近似值）" }
+        ]
+    },
+    "數據": {
+        icon: "💾",
+        base: "Byte",
+        units: {
+            "TB": 1099511627776,
+            "GB": 1073741824,
+            "MB": 1048576,
+            "KB": 1024,
+            "Byte": 1,
+            "Bit": 0.125
+        },
+        refs: [
+            { title: "一張照片", desc: "約 3–8 MB" },
+            { title: "一部 HD 電影", desc: "約 4–5 GB" }
+        ]
+    },
+    "能量": {
+        icon: "⚡",
+        base: "焦耳 (J)",
+        units: {
+            "千焦耳 (kJ)": 1000,
+            "焦耳 (J)": 1,
+            "千瓦時 (kWh)": 3600000,
+            "卡路里 (cal)": 4.184,
+            "千卡 (kcal)": 4184,
+            "英熱單位 (BTU)": 1055.06
+        },
+        refs: [
+            { title: "1 度電", desc: "= 1 kWh = 3,600 kJ" },
+            { title: "成人每日所需", desc: "約 2,000 kcal = 8,368 kJ" }
+        ]
+    },
+    "功率": {
+        icon: "🔋",
+        base: "瓦特 (W)",
+        units: {
+            "千瓦 (kW)": 1000,
+            "瓦特 (W)": 1,
+            "公制馬力 (PS)": 735.499,
+            "英制馬力 (hp)": 745.7,
+            "BTU/時 (BTU/h)": 0.293071
+        },
+        refs: [
+            { title: "家用冷氣", desc: "約 1–2 kW ≈ 1.4–2.7 hp" },
+            { title: "PS vs hp", desc: "1 PS = 735.5 W、1 hp = 745.7 W" }
+        ]
     }
-    updateFormula();updateAllGrid();
-}
+};
 
-function updateFormula(){
-    const cat=getCat();
-    const fu=getUnit(cat,fromU),tu=getUnit(cat,toU);
-    if(!fu||!tu)return;
-    const r1=convertVal(1,fromU,toU,cat),r2=convertVal(1,toU,fromU,cat);
-    document.getElementById('formulaMain').textContent='1 '+fu.name+'（'+fu.sym+'）= '+fmtRate(r1)+' '+tu.name+'（'+tu.sym+'）';
-    document.getElementById('formulaReverse').textContent='1 '+tu.name+'（'+tu.sym+'）= '+fmtRate(r2)+' '+fu.name+'（'+fu.sym+'）';
-}
+// ===== State =====
+let currentCategory = "長度";
 
-function updateAllGrid(){
-    const cat=getCat();const grid=document.getElementById('allGrid');grid.innerHTML='';
-    let baseVal=parseFloat(fromAmt.value.replace(/,/g,''));
-    if(isNaN(baseVal))baseVal=0;
-    const fromCode=fromU;
-    const fu=getUnit(cat,fromCode);
-    document.getElementById('allTitle').textContent='📋 '+fmtNum(baseVal)+' '+(fu?fu.sym:'')+' 等於…';
-    cat.units.forEach(u=>{
-        const tile=document.createElement('div');
-        tile.className='all-tile';
-        if(u.code===fromU||u.code===toU)tile.classList.add('highlight');
-        const val=convertVal(baseVal,fromCode,u.code,cat);
-        tile.innerHTML='<div class="at-name">'+u.name+'（'+u.sym+'）</div><div class="at-value">'+fmtNum(val)+'</div>';
-        tile.addEventListener('click',()=>{toU=u.code;toSel.value=u.code;lastEdited='from';doConvert()});
-        grid.appendChild(tile);
+// ===== DOM =====
+const $tabs = document.getElementById("categoryTabs");
+const $fromUnit = document.getElementById("fromUnit");
+const $toUnit = document.getElementById("toUnit");
+const $fromValue = document.getElementById("fromValue");
+const $toValue = document.getElementById("toValue");
+const $swapBtn = document.getElementById("swapBtn");
+const $allConv = document.getElementById("allConversions");
+const $refs = document.getElementById("references");
+const $copyFormula = document.getElementById("copyFormula");
+const $copyResult = document.getElementById("copyResult");
+
+// ===== Build Category Tabs =====
+function buildTabs() {
+    $tabs.innerHTML = "";
+    Object.keys(categories).forEach(name => {
+        const btn = document.createElement("button");
+        btn.className = "cat-tab" + (name === currentCategory ? " active" : "");
+        btn.textContent = categories[name].icon + " " + name;
+        btn.addEventListener("click", () => {
+            currentCategory = name;
+            buildTabs();
+            populateSelects();
+            convert();
+        });
+        $tabs.appendChild(btn);
     });
 }
 
-function updateRefs(){
-    const cat=getCat();const list=document.getElementById('refList');list.innerHTML='';
-    (cat.refs||[]).forEach(r=>{const d=document.createElement('div');d.className='ref-item';d.textContent=r;list.appendChild(d)});
-}
+// ===== Populate Unit Selects =====
+function populateSelects() {
+    const cat = categories[currentCategory];
+    const unitNames = Object.keys(cat.units);
 
-// ============ COPY FUNCTIONS ============
-function showToast(msg){
-    toastEl.textContent='';
-    toastEl.innerHTML='<span style="font-size:1.1rem">✅</span> '+msg;
-    toastEl.classList.add('show');
-    clearTimeout(showToast._t);
-    showToast._t=setTimeout(()=>toastEl.classList.remove('show'),2200);
-}
-
-function getFormulaText(){
-    const cat=getCat();const fu=getUnit(cat,fromU),tu=getUnit(cat,toU);
-    if(!fu||!tu)return '';
-    const r1=convertVal(1,fromU,toU,cat);
-    return '1 '+fu.name+' ('+fu.sym+') = '+fmtRate(r1)+' '+tu.name+' ('+tu.sym+')';
-}
-function getResultText(){
-    const cat=getCat();const fu=getUnit(cat,fromU),tu=getUnit(cat,toU);
-    if(!fu||!tu)return '';
-    const fv=fromAmt.value.trim(),tv=toAmt.value.trim();
-    if(!fv||!tv)return '';
-    return fv+' '+fu.name+' ('+fu.sym+') = '+tv+' '+tu.name+' ('+tu.sym+')';
-}
-
-function doCopy(text,btnEl){
-    if(!text)return;
-    navigator.clipboard.writeText(text).then(()=>{
-        showToast('已複製到剪貼簿');
-        btnEl.classList.add('copied');
-        btnEl.innerHTML='<span>✅</span> 已複製';
-        setTimeout(()=>{
-            btnEl.classList.remove('copied');
-            if(btnEl.id==='copyFormula')btnEl.innerHTML='<span>📋</span> 複製換算公式';
-            else btnEl.innerHTML='<span>📋</span> 複製換算結果';
-        },2000);
-    }).catch(()=>{
-        /* fallback for sandbox */
-        const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';
-        document.body.appendChild(ta);ta.select();
-        try{document.execCommand('copy');showToast('已複製到剪貼簿');btnEl.classList.add('copied');btnEl.innerHTML='<span>✅</span> 已複製';setTimeout(()=>{btnEl.classList.remove('copied');if(btnEl.id==='copyFormula')btnEl.innerHTML='<span>📋</span> 複製換算公式';else btnEl.innerHTML='<span>📋</span> 複製換算結果';},2000)}catch(e){}
-        document.body.removeChild(ta);
+    $fromUnit.innerHTML = "";
+    $toUnit.innerHTML = "";
+    unitNames.forEach((u, i) => {
+        const o1 = new Option(u, u);
+        const o2 = new Option(u, u);
+        $fromUnit.appendChild(o1);
+        $toUnit.appendChild(o2);
     });
+
+    // default: first → second
+    if (unitNames.length >= 2) {
+        $fromUnit.value = unitNames[0];
+        $toUnit.value = unitNames[1];
+    }
 }
 
-document.getElementById('copyFormula').addEventListener('click',function(){doCopy(getFormulaText(),this)});
-document.getElementById('copyResult').addEventListener('click',function(){doCopy(getResultText(),this)});
-
-// ============ INPUT EVENTS ============
-function sanitizeInput(el,allowNeg){
-    let v=el.value;
-    if(allowNeg){v=v.replace(/[^0-9.\-]/g,'')}else{v=v.replace(/[^0-9.]/g,'')}
-    // only one dot
-    const pts=v.split('.');if(pts.length>2)v=pts[0]+'.'+pts.slice(1).join('');
-    // only leading minus
-    if(allowNeg&&v.lastIndexOf('-')>0){const first=v[0]==='-'?'-':'';v=first+v.replace(/-/g,'')}
-    el.value=v;
+// ===== Temperature Conversion Helpers =====
+function tempToC(value, unit) {
+    if (unit.includes("°C")) return value;
+    if (unit.includes("°F")) return (value - 32) * 5 / 9;
+    if (unit.includes("K"))  return value - 273.15;
+    return value;
+}
+function cToTemp(c, unit) {
+    if (unit.includes("°C")) return c;
+    if (unit.includes("°F")) return c * 9 / 5 + 32;
+    if (unit.includes("K"))  return c + 273.15;
+    return c;
 }
 
-fromAmt.addEventListener('input',()=>{lastEdited='from';sanitizeInput(fromAmt,getCat().isTemp);doConvert()});
-fromAmt.addEventListener('focus',()=>{lastEdited='from';fromAmt.select()});
-toAmt.addEventListener('input',()=>{lastEdited='to';sanitizeInput(toAmt,getCat().isTemp);doConvert()});
-toAmt.addEventListener('focus',()=>{lastEdited='to';toAmt.select()});
-fromSel.addEventListener('change',()=>{fromU=fromSel.value;lastEdited='from';doConvert()});
-toSel.addEventListener('change',()=>{toU=toSel.value;lastEdited='from';doConvert()});
+// ===== Core Convert =====
+function convertValue(val, fromU, toU) {
+    const cat = categories[currentCategory];
+    if (cat.isTemp) {
+        const celsius = tempToC(val, fromU);
+        return cToTemp(celsius, toU);
+    }
+    const baseVal = val * cat.units[fromU];
+    return baseVal / cat.units[toU];
+}
 
-document.getElementById('swapBtn').addEventListener('click',()=>{
-    const tmp=fromU;fromU=toU;toU=tmp;
-    fromSel.value=fromU;toSel.value=toU;
-    const tmpV=fromAmt.value;fromAmt.value=toAmt.value;toAmt.value=tmpV;
-    lastEdited='from';doConvert();
+function formatNum(n) {
+    if (n === 0) return "0";
+    const abs = Math.abs(n);
+    if (abs >= 1) return parseFloat(n.toPrecision(10)).toLocaleString("en-US", { maximumFractionDigits: 8 });
+    return parseFloat(n.toPrecision(6)).toString();
+}
+
+// ===== Convert & Update UI =====
+function convert() {
+    const val = parseFloat($fromValue.value);
+    if (isNaN(val)) {
+        $toValue.value = "";
+        $allConv.innerHTML = '<p style="color:#94a3b8;text-align:center;">請輸入數值</p>';
+        return;
+    }
+
+    const fromU = $fromUnit.value;
+    const toU = $toUnit.value;
+    const result = convertValue(val, fromU, toU);
+    $toValue.value = formatNum(result);
+
+    // all conversions
+    const cat = categories[currentCategory];
+    let html = "";
+    Object.keys(cat.units).forEach(u => {
+        const r = convertValue(val, fromU, u);
+        const isActive = (u === toU) ? ' style="border-color:#3b82f6;background:#eff6ff;"' : "";
+        html += `<div class="conv-item"${isActive}>
+            <span class="name">${u}</span>
+            <span class="val">${formatNum(r)}</span>
+        </div>`;
+    });
+    $allConv.innerHTML = html;
+
+    // references
+    buildRefs();
+}
+
+// ===== Build References =====
+function buildRefs() {
+    const cat = categories[currentCategory];
+    if (!cat.refs || cat.refs.length === 0) {
+        $refs.innerHTML = '<p style="color:#94a3b8;">此分類暫無參考資料。</p>';
+        return;
+    }
+    $refs.innerHTML = cat.refs.map(r =>
+        `<div class="ref-item"><h4>${r.title}</h4><p>${r.desc}</p></div>`
+    ).join("");
+}
+
+// ===== Swap =====
+$swapBtn.addEventListener("click", () => {
+    const tmpU = $fromUnit.value;
+    $fromUnit.value = $toUnit.value;
+    $toUnit.value = tmpU;
+    convert();
 });
 
-// ============ INIT ============
-(function init(){
-    const cat=getCat();fromU=cat.dfFrom;toU=cat.dfTo;
-    populateSelects();fromAmt.value='1';lastEdited='from';
-    doConvert();updateRefs();
-})();
+// ===== Copy =====
+function flashCopied(btn) {
+    btn.classList.add("copied");
+    const orig = btn.textContent;
+    btn.textContent = "✅ 已複製！";
+    setTimeout(() => { btn.classList.remove("copied"); btn.textContent = orig; }, 1500);
+}
+
+$copyFormula.addEventListener("click", () => {
+    const val = parseFloat($fromValue.value);
+    if (isNaN(val)) return;
+    const fromU = $fromUnit.value;
+    const toU = $toUnit.value;
+    const result = convertValue(val, fromU, toU);
+    const text = `${val} ${fromU} = ${formatNum(result)} ${toU}`;
+    navigator.clipboard.writeText(text).then(() => flashCopied($copyFormula));
+});
+
+$copyResult.addEventListener("click", () => {
+    const text = $toValue.value;
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => flashCopied($copyResult));
+});
+
+// ===== Event Listeners =====
+$fromValue.addEventListener("input", convert);
+$fromUnit.addEventListener("change", convert);
+$toUnit.addEventListener("change", convert);
+
+// ===== Init =====
+buildTabs();
+populateSelects();
+convert();
 </script>
+
 
 
 </body></html>
