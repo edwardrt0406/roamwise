@@ -16,6 +16,18 @@
         .page-title{text-align:center;font-size:1.7rem;font-weight:700;margin-bottom:24px;color:var(--primary-dark)}
         .info-box{background:var(--primary-light);border-left:4px solid var(--primary);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin-bottom:28px;display:flex;gap:12px;align-items:flex-start;font-size:.92rem;color:var(--primary-dark);line-height:1.6}.info-box .icon{font-size:1.2rem;flex-shrink:0;margin-top:2px}
 
+        nav, .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 2rem;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
         /* Converter Card */
         .converter-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;margin-bottom:20px}
         .converter-row{display:flex;gap:12px;align-items:stretch}
@@ -125,8 +137,10 @@
     <div class="logo">
         <img src="logo.png" alt="Roamwise Logo" class="logo-img">
         Roam<span>wise</span>
-    <div class="header-right">
-        <a href="#" class="contact-link">聯絡我們</a>
+    <nav>
+    <div class="logo">Roam<span>wise</span></div>
+    <div class="nav-right">
+        <a href="#">聯絡我們</a>
         <select class="lang-select" onchange="changeLanguage(this.value)">
             <option value="currency-zh.html" selected="">繁體中文</option>
             <option value="currency-en.html">English</option>
