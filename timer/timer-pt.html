@@ -140,13 +140,95 @@ body.focus .toolbar{margin:10px 0 16px}
 body.focus .cd-num input{font-size:clamp(3rem,12vw,8rem)}
 body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
 
-footer{background:#1e293b;color:rgba(255,255,255,.7);padding:32px 24px 18px;margin-top:auto}
-.ft-grid{max-width:820px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:24px;margin-bottom:24px}
-.ft-col h4{color:#fff;font-size:.92rem;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.ft-col a{display:block;color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;padding:3px 0;transition:.2s}.ft-col a:hover{color:#fff}
-.ft-col a.al{color:var(--acc);font-weight:500}
-.ft-bot{text-align:center;border-top:1px solid rgba(255,255,255,.1);padding-top:14px;font-size:.8rem}.ft-bot a{color:rgba(255,255,255,.5);text-decoration:none}.ft-bot a:hover{color:#fff}
+        /* 右上角「聯絡我們」去掉藍色和底線 */
+    nav a,
+    .navbar a {
+        color: #f1f5f9;
+        text-decoration: none;
+    }
 
+    nav a:hover,
+    .navbar a:hover {
+        color: #60a5fa;
+    }
+        
+    /* ===== Footer ===== */
+    footer {
+        background: #1e293b;
+        color: #94a3b8;
+        padding: 3rem 2rem 1.5rem;
+    }
+
+    .footer-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .footer-col h4 {
+        color: #fff;
+        margin-bottom: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .footer-col a {
+        display: block;
+        color: #94a3b8;
+        text-decoration: none;
+        padding: 0.3rem 0;
+        font-size: 0.9rem;
+        transition: color 0.3s;
+    }
+
+    .footer-col a:hover {
+        color: #60a5fa;
+    }
+
+    .footer-col a.active-link {
+        color: #60a5fa;
+        font-weight: 600;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid #374151;
+        padding-top: 1.5rem;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+
+    .footer-bottom a {
+        color: #94a3b8;
+        text-decoration: none;
+        margin: 0 0.3rem;
+    }
+
+    .footer-bottom a:hover {
+        color: #60a5fa;
+    }
+
+        /* Footer 底部「隱私權政策、使用條款」去掉藍色和底線 */
+    .footer-bottom a {
+        color: #94a3b8;
+        text-decoration: none;
+    }
+
+    .footer-bottom a:hover {
+        color: #60a5fa;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid #374151;
+        padding-top: 1.5rem;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+    
 @media(max-width:640px){
     .timer-card{padding:20px 16px}
     .main-v .time-val{font-size:3.2rem}
