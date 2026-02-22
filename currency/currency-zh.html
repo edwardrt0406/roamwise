@@ -86,6 +86,28 @@
         .footer-col a.active-link{color:var(--accent);font-weight:500}
         .footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,.1);padding-top:16px;font-size:.82rem}.footer-bottom a{color:rgba(255,255,255,.5);text-decoration:none}.footer-bottom a:hover{color:#fff}
 
+        .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* 手機版自動變直排 */
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+        
         @media(max-width:640px){
             .page-title{font-size:1.3rem}
             .converter-row{flex-direction:column}
