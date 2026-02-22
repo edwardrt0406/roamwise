@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roamwise - 計時器與倒計時</title>
+<title>Roamwise - Timer</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
 <style>
 :root{--pri:#2563eb;--pri-dk:#1d4ed8;--pri-lt:#dbeafe;--acc:#f59e0b;--bg:#f0f4f8;--card:#fff;--tx:#1e293b;--tx2:#64748b;--bdr:#e2e8f0;--rad:12px;--sh:0 4px 24px rgba(0,0,0,.07);--grn:#10b981;--red:#ef4444;--org:#f59e0b}
@@ -222,13 +222,13 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
         <img src="logo.png" alt="Roamwise Logo" class="logo-img">
         Roam<span>wise</span>
     </div>
-    <div class="header-right">
-        <a href="#" class="contact-link">聯絡我們</a>
+<div class="header-right">
+        <a href="#" class="contact-link">contact us</a>
         <select class="lang-select" onchange="changeLanguage(this.value)">
-            <option value="timer-zh.html" selected="">繁體中文</option>
-            <option value="timer-en.html">English</option>
-            <option value="timer-es.html">Español</option>
-            <option value="timer-pt.html">Português</option>
+            <option value="timer-zh.html" >繁體中文</option>
+            <option value="timer-en.html" selected="">English</option>
+            <option value="timer-es.html" >Español</option>
+            <option value="timer-pt.html" >Português</option>
         </select>
     </div>
 </header>
@@ -240,25 +240,24 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
 </script>
 
 <main>
-<h1 class="pg-title hide-f">⏱️ 計時器與倒計時</h1>
-<div class="info-box hide-f"><span class="ic">ℹ️</span><div>支援<strong>即時時鐘</strong>與<strong>倒計時</strong>兩種模式，適用於考試、會議、演講等場景。輸入主題名稱後，切換模式即可使用。支援全球 <strong>130+</strong> 城市時區。點擊 🔳 進入專注模式可放大顯示。</div></div>
+<h1 class="pg-title hide-f">⏱️ Countdown and Timer</h1>
+<div class="info-box hide-f"><span class="ic">ℹ️</span><div>Supports <strong>live clock</strong> and <strong>countdown</strong> modes for exams, meetings, presentations, and more. Enter a topic name and switch modes to get started. Supports <strong>130+</strong> city time zones worldwide. Click 🔳 to enter focus mode for enlarged display.</div></div>
 
 <div class="timer-card" id="timerCard">
-    <input type="text" class="topic-input" id="topic" placeholder="輸入主題名稱（例如：期中考試、下午會議）" maxlength="60">
-
+    <input type="text" class="topic-input" id="topic" placeholder="Enter topic name (e.g., Midterm Exam, Afternoon Meeting)" maxlength="60">
     <div class="toolbar">
         <div class="mode-tog">
-            <button class="mode-btn active" id="modeClk" onclick="setMode('clock')">🕐 時鐘模式</button>
-            <button class="mode-btn" id="modeCd" onclick="setMode('countdown')">⏳ 倒計時模式</button>
+            <button class="mode-btn active" id="modeClk" onclick="setMode('clock')">🕐 Clock Mode</button>
+            <button class="mode-btn" id="modeCd" onclick="setMode('countdown')">⏳ Countdown Mode</button>
         </div>
-        <button class="focus-btn" id="focusBtn" onclick="toggleFocus()" title="專注模式">🔳</button>
+        <button class="focus-btn" id="focusBtn" onclick="toggleFocus()" title="Focus Mode">🔳</button>
     </div>
 
     <div class="disp-area" id="dispArea">
 
         <!-- ===== CLOCK BLOCK ===== -->
         <div id="clockBlock" class="dblock main-v" style="order:1">
-            <div class="mini-hdr"><span>🕐</span> 目前時間</div>
+            <div class="mini-hdr"><span>🕐</span> Current time</div>
             <div class="time-val" id="clockTime">--:--:--</div>
             <div class="clock-date big-only" id="clockDate" style=""></div>
             <div class="tz-row">
@@ -269,12 +268,12 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
 
         <!-- ===== SEPARATOR ===== -->
         <div class="sec-sep" id="secSep">
-            <div class="sep-inner"><div class="sep-line"></div><span class="sep-label" id="sepLabel">⏳ 倒計時</span><div class="sep-line"></div></div>
+            <div class="sep-inner"><div class="sep-line"></div><span class="sep-label" id="sepLabel">⏳ countdown </span><div class="sep-line"></div></div>
         </div>
 
         <!-- ===== COUNTDOWN BLOCK ===== -->
         <div id="cdBlock" class="dblock mini-v" style="order:3">
-            <div class="mini-hdr"><span>⏳</span> 倒計時</div>
+            <div class="mini-hdr"><span>⏳</span> Countdown</div>
 
             <!-- IDLE -->
             <div id="cdIdle">
@@ -286,7 +285,7 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
                     <div class="cd-num"><input id="cdS" type="text" inputmode="numeric" value="00" maxlength="2"><small>秒</small></div>
                 </div>
                 <div class="cd-presets" id="cdPresets"></div>
-                <button class="cd-start big-only" id="cdStartBtn" onclick="startCd()">▶ 開始倒計時</button>
+                <button class="cd-start big-only" id="cdStartBtn" onclick="startCd()">▶ Start</button>
             </div>
 
             <!-- ACTIVE (running/paused) -->
@@ -294,15 +293,15 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
                 <div class="time-val" id="cdTime">00:25:00</div>
                 <div class="cd-prog big-only" id="cdProgWrap"><div class="cd-prog-fill" id="cdProgFill"></div></div>
                 <div class="cd-ctrl">
-                    <button class="ctrl-btn primary" id="cdPauseBtn" onclick="togglePause()">⏸ 暫停</button>
-                    <button class="ctrl-btn" onclick="resetCd()">🔄 重置</button>
+                    <button class="ctrl-btn primary" id="cdPauseBtn" onclick="togglePause()">⏸ Pause</button>
+                    <button class="ctrl-btn" onclick="resetCd()">🔄 Reset</button>
                 </div>
             </div>
 
             <!-- FINISHED -->
             <div id="cdDone" style="display:none">
                 <div class="time-val cd-done-flash" id="cdDoneTime">00:00:00</div>
-                <div class="cd-done-text">⏰ 時間到！</div>
+                <div class="cd-done-text">⏰ Time up！</div>
                 <div class="cd-ctrl"><button class="ctrl-btn primary" onclick="resetCd()">🔄 重新設定</button></div>
             </div>
         </div>
@@ -310,42 +309,42 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
 </div>
 
 <div class="tips-card hide-f">
-    <h3>💡 使用小提醒</h3>
-    <p class="tip-item">🖥️ <strong>專注模式</strong>：點擊工具列的 🔳 按鈕可進入專注模式，隱藏多餘資訊並放大時間顯示，非常適合教室或會議室投影使用。</p>
-    <p class="tip-item">⏳ <strong>快速倒計時</strong>：在時鐘模式下，下方的倒計時區域提供快速預設按鈕，點擊即可啟動倒計時，無需切換模式。</p>
-    <p class="tip-item">🔔 <strong>時間到提醒</strong>：倒計時結束時會有聲音提示與全螢幕提醒，確保不會錯過。最後 60 秒時間會變色警示。</p>
-    <p class="tip-item">🌍 <strong>時區切換</strong>：支援全球 130+ 城市時區，適合跨國會議確認對方的當地時間。</p>
-    <p class="tip-item">📝 <strong>主題標記</strong>：在上方文字欄輸入考試名稱或會議主題，方便辨識用途。倒計時結束的提醒畫面也會顯示主題名稱。</p>
+    <h3>💡 Usage Tips</h3>
+    <p class="tip-item">🖥️ <strong>Focus Mode</strong>: Click the 🔳 button in the toolbar to enter focus mode, which hides unnecessary information and enlarges the time display. Perfect for classroom or conference room projections.</p>
+    <p class="tip-item">⏳ <strong>Quick Countdown</strong>: In clock mode, the countdown section below provides quick preset buttons. Click to start the countdown without switching modes.</p>
+    <p class="tip-item">🔔 <strong>Time's Up Alert</strong>: When the countdown ends, you'll receive sound notifications and a full-screen alert to ensure you don't miss it. The display changes color during the final 60 seconds as a warning.</p>
+    <p class="tip-item">🌍 <strong>Time Zone Switching</strong>: Supports 130+ city time zones worldwide, perfect for international meetings to confirm the local time of participants in different regions.</p>
+    <p class="tip-item">📝 <strong>Topic Label</strong>: Enter an exam name or meeting topic in the text field above for easy identification. The topic name will also appear on the alert screen when the countdown ends.</p>
 </div>
 
 </main>
 
 <footer class="hide-f">
 <div class="footer-grid">
-    <div class="footer-col">
-        <h4>🔌 電源與時間</h4>
-        <a href="../plug/plug-zh.html">插頭標準</a>
-        <a href="../time-zone/time-zone-zh.html">時差查詢</a>
-        <a href="../sunset/sunset-zh.html">日出日落時間</a>
-        <a href="../timer/timer-zh.html"  class="active-link">計時器</a>
-    </div>
-    <div class="footer-col">
-        <h4>🎉 假期與活動</h4>
-        <a href="#">各地假期查詢</a>
-        <a href="#">節慶活動</a>
-    </div>
-    <div class="footer-col">
-        <h4>💱 金融與單位</h4>
-        <a href="../currency/currency-zh.html">匯率兌換</a>
-        <a href="../unit/unit-zh.html">單位轉換器</a>
-    </div>
-    <div class="footer-col">
-        <h4>🌍 旅遊資訊</h4>
-        <a href="#">國家基本資訊</a>
-        <a href="#">地區詳細指南</a>
-    </div>
+        <div class="footer-col">
+            <h4>🔌 Power &amp; Time</h4>
+            <a href="../plug/plug-en.html">Plug Specification Lookup</a>
+            <a href="../time-zone/time-zone-en.html">Time Zone Lookup</a>
+            <a href="../timer/timer-en.html" class="active-link">Timer</a>
+            <a href="../sunset/sunset-en.html">Sunset &amp; Sunset Times</a>
+        </div>
+        <div class="footer-col">
+            <h4>🎉 Holidays &amp; Festivals</h4>
+            <a href="#">Public Holidays by Country</a>
+            <a href="#">Festival Events Overview</a>
+        </div>
+        <div class="footer-col">
+            <h4>💱 Finance &amp; Units</h4>
+            <a href="../currency/currency-en.html">Currency Conversion</a>
+            <a href="../unit/unit-en.html">Unit Conversion</a>
+        </div>
+        <div class="footer-col">
+            <h4>🌍 Travel Information</h4>
+            <a href="#">Country Overview</a>
+            <a href="#">Detailed Local Guides</a>
+        </div>
 </div>
-    <div class="ft-bot">© 2026 Roamwise. All rights reserved. | <a href="#">隱私權政策</a> | <a href="#">使用條款</a></div>
+   <div class="ft-bot">© 2026 Roamwise. All rights reserved. | <a href="#">隱私權政策</a> | <a href="#">使用條款</a></div>
 </footer>
 
 <!-- Finish Overlay -->
@@ -353,9 +352,9 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
     <div class="finish-bg"></div>
     <div class="finish-card">
         <div class="finish-emoji">⏰</div>
-        <div class="finish-title">時間到！</div>
+        <div class="finish-title">Time up！</div>
         <div class="finish-topic" id="finishTopic"></div>
-        <button class="finish-dismiss" onclick="dismissFinish()">確認</button>
+        <button class="finish-dismiss" onclick="dismissFinish()">Confirm</button>
     </div>
 </div>
 
@@ -364,21 +363,21 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
 <script>
 // ============ TIMEZONE DATA ============
 const TZ=[
-['🌏 東亞',[['台北','Asia/Taipei'],['香港','Asia/Hong_Kong'],['澳門','Asia/Macau'],['北京','Asia/Shanghai'],['上海','Asia/Shanghai'],['東京','Asia/Tokyo'],['大阪','Asia/Tokyo'],['首爾','Asia/Seoul'],['烏蘭巴托','Asia/Ulaanbaatar']]],
-['🌏 東南亞',[['新加坡','Asia/Singapore'],['吉隆坡','Asia/Kuala_Lumpur'],['曼谷','Asia/Bangkok'],['雅加達','Asia/Jakarta'],['馬尼拉','Asia/Manila'],['胡志明市','Asia/Ho_Chi_Minh'],['河內','Asia/Ho_Chi_Minh'],['仰光','Asia/Yangon'],['金邊','Asia/Phnom_Penh'],['永珍','Asia/Vientiane'],['汶萊','Asia/Brunei']]],
-['🌏 南亞',[['新德里','Asia/Kolkata'],['孟買','Asia/Kolkata'],['加爾各答','Asia/Kolkata'],['清奈','Asia/Kolkata'],['可倫坡','Asia/Colombo'],['達卡','Asia/Dhaka'],['加德滿都','Asia/Kathmandu'],['卡拉蚩','Asia/Karachi'],['伊斯蘭堡','Asia/Karachi']]],
-['🌏 中亞',[['阿拉木圖','Asia/Almaty'],['塔什干','Asia/Tashkent'],['阿什哈巴德','Asia/Ashgabat'],['比什凱克','Asia/Bishkek'],['杜尚別','Asia/Dushanbe']]],
-['🌍 西亞／中東',[['杜拜','Asia/Dubai'],['阿布達比','Asia/Dubai'],['利雅德','Asia/Riyadh'],['多哈','Asia/Qatar'],['科威特城','Asia/Kuwait'],['麥納瑪','Asia/Bahrain'],['馬斯喀特','Asia/Muscat'],['德黑蘭','Asia/Tehran'],['巴格達','Asia/Baghdad'],['耶路撒冷','Asia/Jerusalem'],['安曼','Asia/Amman'],['貝魯特','Asia/Beirut'],['大馬士革','Asia/Damascus'],['安卡拉','Europe/Istanbul'],['伊斯坦堡','Europe/Istanbul']]],
-['🌍 西歐',[['倫敦','Europe/London'],['巴黎','Europe/Paris'],['柏林','Europe/Berlin'],['阿姆斯特丹','Europe/Amsterdam'],['布魯塞爾','Europe/Brussels'],['維也納','Europe/Vienna'],['蘇黎世','Europe/Zurich'],['日內瓦','Europe/Zurich'],['盧森堡','Europe/Luxembourg'],['法蘭克福','Europe/Berlin'],['慕尼黑','Europe/Berlin'],['都柏林','Europe/Dublin']]],
-['🌍 南歐',[['馬德里','Europe/Madrid'],['巴塞隆納','Europe/Madrid'],['羅馬','Europe/Rome'],['米蘭','Europe/Rome'],['里斯本','Europe/Lisbon'],['雅典','Europe/Athens'],['貝爾格勒','Europe/Belgrade'],['薩格勒布','Europe/Zagreb']]],
-['🌍 北歐',[['斯德哥爾摩','Europe/Stockholm'],['奧斯陸','Europe/Oslo'],['哥本哈根','Europe/Copenhagen'],['赫爾辛基','Europe/Helsinki'],['雷克雅維克','Atlantic/Reykjavik'],['塔林','Europe/Tallinn'],['里加','Europe/Riga']]],
-['🌍 東歐',[['莫斯科','Europe/Moscow'],['聖彼得堡','Europe/Moscow'],['基輔','Europe/Kyiv'],['明斯克','Europe/Minsk'],['華沙','Europe/Warsaw'],['布拉格','Europe/Prague'],['布達佩斯','Europe/Budapest'],['布加勒斯特','Europe/Bucharest'],['索菲亞','Europe/Sofia']]],
-['🌎 北美洲',[['紐約','America/New_York'],['華盛頓特區','America/New_York'],['洛杉磯','America/Los_Angeles'],['芝加哥','America/Chicago'],['休斯頓','America/Chicago'],['鳳凰城','America/Phoenix'],['舊金山','America/Los_Angeles'],['西雅圖','America/Los_Angeles'],['丹佛','America/Denver'],['邁阿密','America/New_York'],['波士頓','America/New_York'],['多倫多','America/Toronto'],['溫哥華','America/Vancouver'],['蒙特婁','America/Toronto'],['安克拉治','America/Anchorage'],['檀香山','Pacific/Honolulu']]],
-['🌎 中美洲',[['墨西哥城','America/Mexico_City'],['巴拿馬城','America/Panama'],['聖荷西','America/Costa_Rica'],['哈瓦那','America/Havana'],['金斯敦','America/Jamaica']]],
-['🌎 南美洲',[['聖保羅','America/Sao_Paulo'],['里約熱內盧','America/Sao_Paulo'],['布宜諾斯艾利斯','America/Argentina/Buenos_Aires'],['聖地亞哥','America/Santiago'],['利馬','America/Lima'],['波哥大','America/Bogota'],['基多','America/Guayaquil'],['加拉加斯','America/Caracas'],['蒙特維多','America/Montevideo']]],
-['🌍 非洲',[['開羅','Africa/Cairo'],['拉各斯','Africa/Lagos'],['奈洛比','Africa/Nairobi'],['約翰尼斯堡','Africa/Johannesburg'],['開普敦','Africa/Johannesburg'],['卡薩布蘭卡','Africa/Casablanca'],['阿迪斯阿貝巴','Africa/Addis_Ababa'],['阿克拉','Africa/Accra'],['突尼斯','Africa/Tunis'],['阿爾及爾','Africa/Algiers']]],
-['🌏 大洋洲',[['雪梨','Australia/Sydney'],['墨爾本','Australia/Melbourne'],['布里斯本','Australia/Brisbane'],['柏斯','Australia/Perth'],['奧克蘭','Pacific/Auckland'],['威靈頓','Pacific/Auckland'],['蘇瓦','Pacific/Fiji'],['努美阿','Pacific/Noumea']]]
-];
+['🌏 East Asia',[['Taipei','Asia/Taipei'],['Hong Kong','Asia/Hong_Kong'],['Macau','Asia/Macau'],['Beijing','Asia/Shanghai'],['Shanghai','Asia/Shanghai'],['Tokyo','Asia/Tokyo'],['Osaka','Asia/Tokyo'],['Seoul','Asia/Seoul'],['Ulaanbaatar','Asia/Ulaanbaatar']]],
+['🌏 Southeast Asia',[['Singapore','Asia/Singapore'],['Kuala Lumpur','Asia/Kuala_Lumpur'],['Bangkok','Asia/Bangkok'],['Jakarta','Asia/Jakarta'],['Manila','Asia/Manila'],['Ho Chi Minh City','Asia/Ho_Chi_Minh'],['Hanoi','Asia/Ho_Chi_Minh'],['Yangon','Asia/Yangon'],['Phnom Penh','Asia/Phnom_Penh'],['Vientiane','Asia/Vientiane'],['Brunei','Asia/Brunei']]],
+['🌏 South Asia',[['New Delhi','Asia/Kolkata'],['Mumbai','Asia/Kolkata'],['Kolkata','Asia/Kolkata'],['Chennai','Asia/Kolkata'],['Colombo','Asia/Colombo'],['Dhaka','Asia/Dhaka'],['Kathmandu','Asia/Kathmandu'],['Karachi','Asia/Karachi'],['Islamabad','Asia/Karachi']]],
+['🌏 Central Asia',[['Almaty','Asia/Almaty'],['Tashkent','Asia/Tashkent'],['Ashgabat','Asia/Ashgabat'],['Bishkek','Asia/Bishkek'],['Dushanbe','Asia/Dushanbe']]],
+['🌍 West Asia / Middle East',[['Dubai','Asia/Dubai'],['Abu Dhabi','Asia/Dubai'],['Riyadh','Asia/Riyadh'],['Doha','Asia/Qatar'],['Kuwait City','Asia/Kuwait'],['Manama','Asia/Bahrain'],['Muscat','Asia/Muscat'],['Tehran','Asia/Tehran'],['Baghdad','Asia/Baghdad'],['Jerusalem','Asia/Jerusalem'],['Amman','Asia/Amman'],['Beirut','Asia/Beirut'],['Damascus','Asia/Damascus'],['Ankara','Europe/Istanbul'],['Istanbul','Europe/Istanbul']]],
+['🌍 Western Europe',[['London','Europe/London'],['Paris','Europe/Paris'],['Berlin','Europe/Berlin'],['Amsterdam','Europe/Amsterdam'],['Brussels','Europe/Brussels'],['Vienna','Europe/Vienna'],['Zurich','Europe/Zurich'],['Geneva','Europe/Zurich'],['Luxembourg','Europe/Luxembourg'],['Frankfurt','Europe/Berlin'],['Munich','Europe/Berlin'],['Dublin','Europe/Dublin']]],
+['🌍 Southern Europe',[['Madrid','Europe/Madrid'],['Barcelona','Europe/Madrid'],['Rome','Europe/Rome'],['Milan','Europe/Rome'],['Lisbon','Europe/Lisbon'],['Athens','Europe/Athens'],['Belgrade','Europe/Belgrade'],['Zagreb','Europe/Zagreb']]],
+['🌍 Northern Europe',[['Stockholm','Europe/Stockholm'],['Oslo','Europe/Oslo'],['Copenhagen','Europe/Copenhagen'],['Helsinki','Europe/Helsinki'],['Reykjavik','Atlantic/Reykjavik'],['Tallinn','Europe/Tallinn'],['Riga','Europe/Riga']]],
+['🌍 Eastern Europe',[['Moscow','Europe/Moscow'],['Saint Petersburg','Europe/Moscow'],['Kyiv','Europe/Kyiv'],['Minsk','Europe/Minsk'],['Warsaw','Europe/Warsaw'],['Prague','Europe/Prague'],['Budapest','Europe/Budapest'],['Bucharest','Europe/Bucharest'],['Sofia','Europe/Sofia']]],
+['🌎 North America',[['New York','America/New_York'],['Washington DC','America/New_York'],['Los Angeles','America/Los_Angeles'],['Chicago','America/Chicago'],['Houston','America/Chicago'],['Phoenix','America/Phoenix'],['San Francisco','America/Los_Angeles'],['Seattle','America/Los_Angeles'],['Denver','America/Denver'],['Miami','America/New_York'],['Boston','America/New_York'],['Toronto','America/Toronto'],['Vancouver','America/Vancouver'],['Montreal','America/Toronto'],['Anchorage','America/Anchorage'],['Honolulu','Pacific/Honolulu']]],
+['🌎 Central America',[['Mexico City','America/Mexico_City'],['Panama City','America/Panama'],['San Jose','America/Costa_Rica'],['Havana','America/Havana'],['Kingston','America/Jamaica']]],
+['🌎 South America',[['Sao Paulo','America/Sao_Paulo'],['Rio de Janeiro','America/Sao_Paulo'],['Buenos Aires','America/Argentina/Buenos_Aires'],['Santiago','America/Santiago'],['Lima','America/Lima'],['Bogota','America/Bogota'],['Quito','America/Guayaquil'],['Caracas','America/Caracas'],['Montevideo','America/Montevideo']]],
+['🌍 Africa',[['Cairo','Africa/Cairo'],['Lagos','Africa/Lagos'],['Nairobi','Africa/Nairobi'],['Johannesburg','Africa/Johannesburg'],['Cape Town','Africa/Johannesburg'],['Casablanca','Africa/Casablanca'],['Addis Ababa','Africa/Addis_Ababa'],['Accra','Africa/Accra'],['Tunis','Africa/Tunis'],['Algiers','Africa/Algiers']]],
+['🌏 Oceania',[['Sydney','Australia/Sydney'],['Melbourne','Australia/Melbourne'],['Brisbane','Australia/Brisbane'],['Perth','Australia/Perth'],['Auckland','Pacific/Auckland'],['Wellington','Pacific/Auckland'],['Suva','Pacific/Fiji'],['Noumea','Pacific/Noumea']]]
+
 
 const PRESETS=[5,10,15,20,25,30,45,60,90,120];
 const PRESETS_MINI=[5,10,15,25,30,60];
@@ -441,8 +440,8 @@ function updatePresetVisibility(){
         }
         const m=parseInt(b.textContent);
         if(isMini){
-            const label=b.textContent.replace('小時','').replace('分','');
-            const min=b.textContent.includes('小時')?parseInt(label)*60:parseInt(label);
+            const label=b.textContent.replace('h','').replace('min','');
+            const min=b.textContent.includes('h')?parseInt(label)*60:parseInt(label);
             b.style.display=PRESETS_MINI.includes(min)?'':'none';
         }else{
             b.style.display='';
@@ -472,12 +471,12 @@ function setMode(m){
 }
 
 function updateLayout(){
-    const cm=mode==='clock';
+const cm=mode==='clock';
     clockBlock.className='dblock '+(cm?'main-v':'mini-v');
     cdBlock.className='dblock '+(cm?'mini-v':'main-v');
     clockBlock.style.order=cm?1:3;
     cdBlock.style.order=cm?3:1;
-    sepLabel.textContent=cm?'⏳ 倒計時':'🕐 目前時間';
+    sepLabel.textContent=cm?'⏳ Countdown':'🕐 Current Time';
     // big-only / mini-only via parent class
     const bigOnlys=document.querySelectorAll('.big-only');
     // We handle this purely via CSS parent class already in most cases
@@ -580,7 +579,7 @@ function updateCdStateUI(){
 
     if(active){
         const paused=cdState==='paused';
-        cdPauseBtn.textContent=paused?'▶ 繼續':'⏸ 暫停';
+        cdPauseBtn.textContent=paused?'▶ continue':'⏸ pause';
         cdPauseBtn.classList.toggle('primary',true);
     }
 
