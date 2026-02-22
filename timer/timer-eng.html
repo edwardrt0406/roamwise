@@ -1,0 +1,697 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roamwise - 計時器與倒計時</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--pri:#2563eb;--pri-dk:#1d4ed8;--pri-lt:#dbeafe;--acc:#f59e0b;--bg:#f0f4f8;--card:#fff;--tx:#1e293b;--tx2:#64748b;--bdr:#e2e8f0;--rad:12px;--sh:0 4px 24px rgba(0,0,0,.07);--grn:#10b981;--red:#ef4444;--org:#f59e0b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column}
+header{background:linear-gradient(135deg,var(--pri),var(--pri-dk));color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(37,99,235,.3)}
+.logo{font-size:1.4rem;font-weight:700;letter-spacing:1px}.logo span{color:var(--acc)}
+.hdr-r{display:flex;align-items:center;gap:12px}.hdr-r a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem}.hdr-r a:hover{color:#fff}
+main{flex:1;max-width:820px;width:100%;margin:0 auto;padding:28px 16px}
+.pg-title{text-align:center;font-size:1.6rem;font-weight:700;margin-bottom:12px;color:var(--pri-dk)}
+.info-box{background:var(--pri-lt);border-left:4px solid var(--pri);border-radius:0 var(--rad) var(--rad) 0;padding:14px 18px;margin-bottom:20px;font-size:.9rem;color:var(--pri-dk);line-height:1.65;display:flex;gap:10px;align-items:flex-start}.info-box .ic{flex-shrink:0;font-size:1.15rem;margin-top:2px}
+
+.timer-card{background:var(--card);border-radius:var(--rad);box-shadow:var(--sh);padding:28px 24px;margin-bottom:20px;position:relative}
+.topic-input{width:100%;padding:13px 16px;border:2px dashed var(--bdr);border-radius:10px;font-size:1.15rem;font-family:inherit;text-align:center;background:transparent;color:var(--tx);font-weight:600;transition:.2s}
+.topic-input:focus{outline:none;border-color:var(--pri);border-style:solid;background:var(--pri-lt)}
+.topic-input::placeholder{color:var(--tx2);font-weight:400}
+
+.toolbar{display:flex;align-items:center;justify-content:center;gap:12px;margin:18px 0 20px}
+.mode-tog{display:flex;background:#f1f5f9;border-radius:10px;padding:4px;flex:0 1 380px}
+.mode-btn{flex:1;padding:10px 14px;border:none;border-radius:8px;background:transparent;font-size:.9rem;font-family:inherit;cursor:pointer;transition:.2s;font-weight:500;color:var(--tx2);white-space:nowrap}
+.mode-btn.active{background:var(--pri);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.3)}
+.focus-btn{width:40px;height:40px;border-radius:10px;border:2px solid var(--bdr);background:#fff;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
+.focus-btn:hover{border-color:var(--pri);background:var(--pri-lt)}
+body.focus .focus-btn{background:var(--pri);border-color:var(--pri);color:#fff}
+
+.disp-area{display:flex;flex-direction:column}
+.dblock{transition:opacity .2s}
+
+/* Big time */
+.time-val{font-weight:700;font-variant-numeric:tabular-nums;text-align:center;line-height:1.15;letter-spacing:2px;transition:color .3s,font-size .3s}
+.main-v .time-val{font-size:5.5rem;padding:16px 0}
+.mini-v .time-val{font-size:1.7rem;padding:6px 0}
+
+/* Clock section */
+.clock-date{text-align:center;font-size:1rem;color:var(--tx2);margin-bottom:14px}
+.tz-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.tz-sel{padding:9px 32px 9px 12px;border:2px solid var(--bdr);border-radius:9px;font-size:.88rem;font-family:inherit;cursor:pointer;appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E") no-repeat right 10px center;transition:border-color .2s;color:var(--tx);max-width:220px}
+.tz-sel:focus{outline:none;border-color:var(--pri)}
+.utc-tag{font-size:.82rem;color:var(--tx2);background:#f1f5f9;padding:5px 10px;border-radius:6px;font-weight:600;white-space:nowrap}
+
+.main-v .tz-row{margin-top:0}.mini-v .tz-row{margin-top:4px}
+.mini-v .tz-sel{padding:6px 28px 6px 10px;font-size:.82rem;max-width:160px}
+.mini-v .utc-tag{font-size:.78rem;padding:3px 8px}
+
+/* Section separator */
+.sec-sep{padding:20px 0 14px;order:2}
+.sep-inner{display:flex;align-items:center;gap:12px}
+.sep-line{flex:1;height:1px;background:var(--bdr)}
+.sep-label{font-size:.85rem;color:var(--tx2);white-space:nowrap;font-weight:500}
+
+/* Mini header */
+.mini-hdr{font-size:.85rem;color:var(--tx2);font-weight:500;margin-bottom:4px;display:none;align-items:center;gap:6px}
+.mini-v .mini-hdr{display:flex}
+
+/* CD Inputs (main idle) */
+.cd-inp-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:16px}
+.cd-num{display:flex;flex-direction:column;align-items:center;gap:4px}
+.cd-num input{width:3.6ch;font-size:4rem;font-weight:700;text-align:center;border:2px solid var(--bdr);border-radius:12px;padding:8px 4px;font-family:inherit;font-variant-numeric:tabular-nums;color:var(--tx);transition:border-color .2s}
+.cd-num input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.cd-num small{font-size:.82rem;color:var(--tx2);font-weight:500}
+.cd-colon{font-size:3.5rem;font-weight:700;color:var(--tx2);padding:0 2px;padding-bottom:22px}
+
+/* CD Presets */
+.cd-presets{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+.mini-v .cd-presets{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:6px;padding-bottom:4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.mini-v .cd-presets::-webkit-scrollbar{display:none}
+.pre-btn{padding:8px 14px;border:1.5px solid var(--bdr);border-radius:8px;background:#fff;font-size:.86rem;font-family:inherit;cursor:pointer;transition:.2s;font-weight:500;color:var(--tx);white-space:nowrap}
+.pre-btn:hover{border-color:var(--pri);background:var(--pri-lt);color:var(--pri-dk)}
+.pre-btn.pa{border-color:var(--pri);background:var(--pri);color:#fff}
+.mini-v .pre-btn{padding:6px 11px;font-size:.8rem}
+.pre-custom{background:var(--pri-lt)!important;color:var(--pri-dk)!important;border-color:var(--pri)!important}
+
+/* CD Start */
+.cd-start{width:100%;padding:14px;border:none;border-radius:10px;background:var(--grn);color:#fff;font-size:1.1rem;font-family:inherit;font-weight:600;cursor:pointer;transition:.2s;letter-spacing:1px}
+.cd-start:hover{background:#059669;box-shadow:0 4px 16px rgba(16,185,129,.3)}
+.cd-start:disabled{opacity:.4;cursor:not-allowed}
+
+/* CD Progress */
+.cd-prog{height:8px;background:#e2e8f0;border-radius:8px;overflow:hidden;margin:12px 0 16px}
+.cd-prog-fill{height:100%;border-radius:8px;background:var(--pri);transition:width .3s linear,background .3s}
+.cd-prog-fill.warn{background:var(--org)}
+.cd-prog-fill.danger{background:var(--red)}
+
+/* CD Controls */
+.cd-ctrl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.mini-v .cd-ctrl{gap:8px}
+.ctrl-btn{padding:11px 22px;border:2px solid var(--bdr);border-radius:10px;background:#fff;font-size:.95rem;font-family:inherit;font-weight:600;cursor:pointer;transition:.2s;color:var(--tx);display:inline-flex;align-items:center;gap:6px}
+.ctrl-btn:hover{border-color:var(--pri);color:var(--pri);background:var(--pri-lt)}
+.ctrl-btn.primary{background:var(--pri);color:#fff;border-color:var(--pri)}
+.ctrl-btn.primary:hover{background:var(--pri-dk)}
+.mini-v .ctrl-btn{padding:7px 14px;font-size:.82rem}
+
+/* CD Time color states */
+.cd-warn{color:var(--org)!important}
+.cd-danger{color:var(--red)!important}
+.cd-pulse{animation:cdPulse .5s infinite alternate}
+@keyframes cdPulse{from{opacity:1}to{opacity:.4}}
+
+/* CD Done flash */
+.cd-done-flash{animation:doneFlash .6s infinite alternate}
+@keyframes doneFlash{from{color:var(--red)}to{color:var(--bdr)}}
+.cd-done-text{text-align:center;font-size:1.5rem;font-weight:700;color:var(--red);margin:8px 0 16px}
+.mini-v .cd-done-text{font-size:1rem;margin:4px 0 8px}
+
+/* Finish Overlay */
+.finish-ov{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.3s}
+.finish-ov.show{opacity:1;pointer-events:auto}
+.finish-bg{position:absolute;inset:0;background:rgba(0,0,0,.55);animation:finBg .8s infinite alternate}
+@keyframes finBg{from{background:rgba(239,68,68,.25)}to{background:rgba(239,68,68,.5)}}
+.finish-card{position:relative;background:#fff;border-radius:20px;padding:48px 40px;text-align:center;max-width:420px;width:90%;box-shadow:0 24px 80px rgba(0,0,0,.3);animation:finPop .3s ease-out}
+@keyframes finPop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.finish-emoji{font-size:4rem;margin-bottom:12px}
+.finish-title{font-size:2rem;font-weight:700;color:var(--red);margin-bottom:8px}
+.finish-topic{font-size:1.15rem;color:var(--tx2);margin-bottom:24px;min-height:1.4em}
+.finish-dismiss{padding:14px 48px;border:none;border-radius:12px;background:var(--pri);color:#fff;font-size:1.1rem;font-family:inherit;font-weight:600;cursor:pointer;transition:.2s}
+.finish-dismiss:hover{background:var(--pri-dk)}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:12px 24px;border-radius:10px;font-size:.9rem;z-index:600;opacity:0;transition:.35s;pointer-events:none;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* Tips */
+.tips-card{background:var(--card);border-radius:var(--rad);box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid var(--bdr);padding:22px 20px;margin-bottom:20px}
+.tips-card h3{font-size:1rem;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.tip-item{margin-bottom:10px;font-size:.9rem;line-height:1.7}.tip-item:last-child{margin-bottom:0}
+
+/* Focus mode */
+body.focus .hide-f{display:none!important}
+body.focus main{max-width:100%;padding:3vh 5vw}
+body.focus .timer-card{box-shadow:none;border-radius:0;min-height:85vh;display:flex;flex-direction:column;justify-content:center;padding:24px 32px}
+body.focus .main-v .time-val{font-size:clamp(4rem,18vw,14rem)}
+body.focus .topic-input{font-size:clamp(1.2rem,3vw,2.2rem);border:none;margin-bottom:12px}
+body.focus .mini-v{display:none!important}
+body.focus .sec-sep{display:none!important}
+body.focus .toolbar{margin:10px 0 16px}
+body.focus .cd-num input{font-size:clamp(3rem,12vw,8rem)}
+body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
+    
+    /* ===== Footer ===== */
+    footer {
+        background: #1e293b;
+        color: #94a3b8;
+        padding: 3rem 2rem 1.5rem;
+    }
+
+    .footer-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .footer-col h4 {
+        color: #fff;
+        margin-bottom: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .footer-col a {
+        display: block;
+        color: #94a3b8;
+        text-decoration: none;
+        padding: 0.3rem 0;
+        font-size: 0.9rem;
+        transition: color 0.3s;
+    }
+
+    .footer-col a:hover {
+        color: #60a5fa;
+    }
+
+    .footer-col a.active-link {
+        color: #60a5fa;
+        font-weight: 600;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid #374151;
+        padding-top: 1.5rem;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+
+    .footer-bottom a {
+        color: #94a3b8;
+        text-decoration: none;
+        margin: 0 0.3rem;
+    }
+
+    .footer-bottom a:hover {
+        color: #60a5fa;
+    }
+    
+@media(max-width:640px){
+    .timer-card{padding:20px 16px}
+    .main-v .time-val{font-size:3.2rem}
+    .cd-num input{font-size:2.5rem;width:2.8ch}
+    .cd-colon{font-size:2.2rem;padding-bottom:18px}
+    .toolbar{flex-wrap:wrap}
+    .mode-tog{flex:1 1 100%;order:1}
+    .focus-btn{order:2}
+    .pg-title{font-size:1.3rem}
+    .finish-card{padding:36px 24px}
+    .finish-emoji{font-size:3rem}
+    .finish-title{font-size:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
+        Roam<span>wise</span>
+    </div>
+    <div class="header-right">
+        <a href="#" class="contact-link">聯絡我們</a>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+            <option value="timer-zh.html" selected="">繁體中文</option>
+            <option value="timer-en.html">English</option>
+            <option value="timer-es.html">Español</option>
+            <option value="timer-pt.html">Português</option>
+        </select>
+    </div>
+</header>
+
+<script>
+    function changeLanguage(filename) {
+        window.location.href = filename;
+    }
+</script>
+
+<main>
+<h1 class="pg-title hide-f">⏱️ 計時器與倒計時</h1>
+<div class="info-box hide-f"><span class="ic">ℹ️</span><div>支援<strong>即時時鐘</strong>與<strong>倒計時</strong>兩種模式，適用於考試、會議、演講等場景。輸入主題名稱後，切換模式即可使用。支援全球 <strong>130+</strong> 城市時區。點擊 🔳 進入專注模式可放大顯示。</div></div>
+
+<div class="timer-card" id="timerCard">
+    <input type="text" class="topic-input" id="topic" placeholder="輸入主題名稱（例如：期中考試、下午會議）" maxlength="60">
+
+    <div class="toolbar">
+        <div class="mode-tog">
+            <button class="mode-btn active" id="modeClk" onclick="setMode('clock')">🕐 時鐘模式</button>
+            <button class="mode-btn" id="modeCd" onclick="setMode('countdown')">⏳ 倒計時模式</button>
+        </div>
+        <button class="focus-btn" id="focusBtn" onclick="toggleFocus()" title="專注模式">🔳</button>
+    </div>
+
+    <div class="disp-area" id="dispArea">
+
+        <!-- ===== CLOCK BLOCK ===== -->
+        <div id="clockBlock" class="dblock main-v" style="order:1">
+            <div class="mini-hdr"><span>🕐</span> 目前時間</div>
+            <div class="time-val" id="clockTime">--:--:--</div>
+            <div class="clock-date big-only" id="clockDate" style=""></div>
+            <div class="tz-row">
+                <select class="tz-sel" id="tzSel" onchange="onTzChange()"></select>
+                <span class="utc-tag" id="utcTag">UTC+8</span>
+            </div>
+        </div>
+
+        <!-- ===== SEPARATOR ===== -->
+        <div class="sec-sep" id="secSep">
+            <div class="sep-inner"><div class="sep-line"></div><span class="sep-label" id="sepLabel">⏳ 倒計時</span><div class="sep-line"></div></div>
+        </div>
+
+        <!-- ===== COUNTDOWN BLOCK ===== -->
+        <div id="cdBlock" class="dblock mini-v" style="order:3">
+            <div class="mini-hdr"><span>⏳</span> 倒計時</div>
+
+            <!-- IDLE -->
+            <div id="cdIdle">
+                <div class="cd-inp-row big-only" id="cdInpRow">
+                    <div class="cd-num"><input id="cdH" type="text" inputmode="numeric" value="00" maxlength="2"><small>時</small></div>
+                    <span class="cd-colon">:</span>
+                    <div class="cd-num"><input id="cdM" type="text" inputmode="numeric" value="25" maxlength="2"><small>分</small></div>
+                    <span class="cd-colon">:</span>
+                    <div class="cd-num"><input id="cdS" type="text" inputmode="numeric" value="00" maxlength="2"><small>秒</small></div>
+                </div>
+                <div class="cd-presets" id="cdPresets"></div>
+                <button class="cd-start big-only" id="cdStartBtn" onclick="startCd()">▶ 開始倒計時</button>
+            </div>
+
+            <!-- ACTIVE (running/paused) -->
+            <div id="cdActive" style="display:none">
+                <div class="time-val" id="cdTime">00:25:00</div>
+                <div class="cd-prog big-only" id="cdProgWrap"><div class="cd-prog-fill" id="cdProgFill"></div></div>
+                <div class="cd-ctrl">
+                    <button class="ctrl-btn primary" id="cdPauseBtn" onclick="togglePause()">⏸ 暫停</button>
+                    <button class="ctrl-btn" onclick="resetCd()">🔄 重置</button>
+                </div>
+            </div>
+
+            <!-- FINISHED -->
+            <div id="cdDone" style="display:none">
+                <div class="time-val cd-done-flash" id="cdDoneTime">00:00:00</div>
+                <div class="cd-done-text">⏰ 時間到！</div>
+                <div class="cd-ctrl"><button class="ctrl-btn primary" onclick="resetCd()">🔄 重新設定</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tips-card hide-f">
+    <h3>💡 使用小提醒</h3>
+    <p class="tip-item">🖥️ <strong>專注模式</strong>：點擊工具列的 🔳 按鈕可進入專注模式，隱藏多餘資訊並放大時間顯示，非常適合教室或會議室投影使用。</p>
+    <p class="tip-item">⏳ <strong>快速倒計時</strong>：在時鐘模式下，下方的倒計時區域提供快速預設按鈕，點擊即可啟動倒計時，無需切換模式。</p>
+    <p class="tip-item">🔔 <strong>時間到提醒</strong>：倒計時結束時會有聲音提示與全螢幕提醒，確保不會錯過。最後 60 秒時間會變色警示。</p>
+    <p class="tip-item">🌍 <strong>時區切換</strong>：支援全球 130+ 城市時區，適合跨國會議確認對方的當地時間。</p>
+    <p class="tip-item">📝 <strong>主題標記</strong>：在上方文字欄輸入考試名稱或會議主題，方便辨識用途。倒計時結束的提醒畫面也會顯示主題名稱。</p>
+</div>
+
+</main>
+
+<footer class="hide-f">
+<div class="footer-grid">
+    <div class="footer-col">
+        <h4>🔌 電源與時間</h4>
+        <a href="../plug/plug-zh.html">插頭標準</a>
+        <a href="../time-zone/time-zone-zh.html">時差查詢</a>
+        <a href="../sunset/sunset-zh.html">日出日落時間</a>
+        <a href="../timer/timer-zh.html"  class="active-link">計時器</a>
+    </div>
+    <div class="footer-col">
+        <h4>🎉 假期與活動</h4>
+        <a href="#">各地假期查詢</a>
+        <a href="#">節慶活動</a>
+    </div>
+    <div class="footer-col">
+        <h4>💱 金融與單位</h4>
+        <a href="../currency/currency-zh.html">匯率兌換</a>
+        <a href="../unit/unit-zh.html">單位轉換器</a>
+    </div>
+    <div class="footer-col">
+        <h4>🌍 旅遊資訊</h4>
+        <a href="#">國家基本資訊</a>
+        <a href="#">地區詳細指南</a>
+    </div>
+</div>
+    <div class="ft-bot">© 2026 Roamwise. All rights reserved. | <a href="#">隱私權政策</a> | <a href="#">使用條款</a></div>
+</footer>
+
+<!-- Finish Overlay -->
+<div class="finish-ov" id="finishOv">
+    <div class="finish-bg"></div>
+    <div class="finish-card">
+        <div class="finish-emoji">⏰</div>
+        <div class="finish-title">時間到！</div>
+        <div class="finish-topic" id="finishTopic"></div>
+        <button class="finish-dismiss" onclick="dismissFinish()">確認</button>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ TIMEZONE DATA ============
+const TZ=[
+['🌏 東亞',[['台北','Asia/Taipei'],['香港','Asia/Hong_Kong'],['澳門','Asia/Macau'],['北京','Asia/Shanghai'],['上海','Asia/Shanghai'],['東京','Asia/Tokyo'],['大阪','Asia/Tokyo'],['首爾','Asia/Seoul'],['烏蘭巴托','Asia/Ulaanbaatar']]],
+['🌏 東南亞',[['新加坡','Asia/Singapore'],['吉隆坡','Asia/Kuala_Lumpur'],['曼谷','Asia/Bangkok'],['雅加達','Asia/Jakarta'],['馬尼拉','Asia/Manila'],['胡志明市','Asia/Ho_Chi_Minh'],['河內','Asia/Ho_Chi_Minh'],['仰光','Asia/Yangon'],['金邊','Asia/Phnom_Penh'],['永珍','Asia/Vientiane'],['汶萊','Asia/Brunei']]],
+['🌏 南亞',[['新德里','Asia/Kolkata'],['孟買','Asia/Kolkata'],['加爾各答','Asia/Kolkata'],['清奈','Asia/Kolkata'],['可倫坡','Asia/Colombo'],['達卡','Asia/Dhaka'],['加德滿都','Asia/Kathmandu'],['卡拉蚩','Asia/Karachi'],['伊斯蘭堡','Asia/Karachi']]],
+['🌏 中亞',[['阿拉木圖','Asia/Almaty'],['塔什干','Asia/Tashkent'],['阿什哈巴德','Asia/Ashgabat'],['比什凱克','Asia/Bishkek'],['杜尚別','Asia/Dushanbe']]],
+['🌍 西亞／中東',[['杜拜','Asia/Dubai'],['阿布達比','Asia/Dubai'],['利雅德','Asia/Riyadh'],['多哈','Asia/Qatar'],['科威特城','Asia/Kuwait'],['麥納瑪','Asia/Bahrain'],['馬斯喀特','Asia/Muscat'],['德黑蘭','Asia/Tehran'],['巴格達','Asia/Baghdad'],['耶路撒冷','Asia/Jerusalem'],['安曼','Asia/Amman'],['貝魯特','Asia/Beirut'],['大馬士革','Asia/Damascus'],['安卡拉','Europe/Istanbul'],['伊斯坦堡','Europe/Istanbul']]],
+['🌍 西歐',[['倫敦','Europe/London'],['巴黎','Europe/Paris'],['柏林','Europe/Berlin'],['阿姆斯特丹','Europe/Amsterdam'],['布魯塞爾','Europe/Brussels'],['維也納','Europe/Vienna'],['蘇黎世','Europe/Zurich'],['日內瓦','Europe/Zurich'],['盧森堡','Europe/Luxembourg'],['法蘭克福','Europe/Berlin'],['慕尼黑','Europe/Berlin'],['都柏林','Europe/Dublin']]],
+['🌍 南歐',[['馬德里','Europe/Madrid'],['巴塞隆納','Europe/Madrid'],['羅馬','Europe/Rome'],['米蘭','Europe/Rome'],['里斯本','Europe/Lisbon'],['雅典','Europe/Athens'],['貝爾格勒','Europe/Belgrade'],['薩格勒布','Europe/Zagreb']]],
+['🌍 北歐',[['斯德哥爾摩','Europe/Stockholm'],['奧斯陸','Europe/Oslo'],['哥本哈根','Europe/Copenhagen'],['赫爾辛基','Europe/Helsinki'],['雷克雅維克','Atlantic/Reykjavik'],['塔林','Europe/Tallinn'],['里加','Europe/Riga']]],
+['🌍 東歐',[['莫斯科','Europe/Moscow'],['聖彼得堡','Europe/Moscow'],['基輔','Europe/Kyiv'],['明斯克','Europe/Minsk'],['華沙','Europe/Warsaw'],['布拉格','Europe/Prague'],['布達佩斯','Europe/Budapest'],['布加勒斯特','Europe/Bucharest'],['索菲亞','Europe/Sofia']]],
+['🌎 北美洲',[['紐約','America/New_York'],['華盛頓特區','America/New_York'],['洛杉磯','America/Los_Angeles'],['芝加哥','America/Chicago'],['休斯頓','America/Chicago'],['鳳凰城','America/Phoenix'],['舊金山','America/Los_Angeles'],['西雅圖','America/Los_Angeles'],['丹佛','America/Denver'],['邁阿密','America/New_York'],['波士頓','America/New_York'],['多倫多','America/Toronto'],['溫哥華','America/Vancouver'],['蒙特婁','America/Toronto'],['安克拉治','America/Anchorage'],['檀香山','Pacific/Honolulu']]],
+['🌎 中美洲',[['墨西哥城','America/Mexico_City'],['巴拿馬城','America/Panama'],['聖荷西','America/Costa_Rica'],['哈瓦那','America/Havana'],['金斯敦','America/Jamaica']]],
+['🌎 南美洲',[['聖保羅','America/Sao_Paulo'],['里約熱內盧','America/Sao_Paulo'],['布宜諾斯艾利斯','America/Argentina/Buenos_Aires'],['聖地亞哥','America/Santiago'],['利馬','America/Lima'],['波哥大','America/Bogota'],['基多','America/Guayaquil'],['加拉加斯','America/Caracas'],['蒙特維多','America/Montevideo']]],
+['🌍 非洲',[['開羅','Africa/Cairo'],['拉各斯','Africa/Lagos'],['奈洛比','Africa/Nairobi'],['約翰尼斯堡','Africa/Johannesburg'],['開普敦','Africa/Johannesburg'],['卡薩布蘭卡','Africa/Casablanca'],['阿迪斯阿貝巴','Africa/Addis_Ababa'],['阿克拉','Africa/Accra'],['突尼斯','Africa/Tunis'],['阿爾及爾','Africa/Algiers']]],
+['🌏 大洋洲',[['雪梨','Australia/Sydney'],['墨爾本','Australia/Melbourne'],['布里斯本','Australia/Brisbane'],['柏斯','Australia/Perth'],['奧克蘭','Pacific/Auckland'],['威靈頓','Pacific/Auckland'],['蘇瓦','Pacific/Fiji'],['努美阿','Pacific/Noumea']]]
+];
+
+const PRESETS=[5,10,15,20,25,30,45,60,90,120];
+const PRESETS_MINI=[5,10,15,25,30,60];
+
+// ============ STATE ============
+let mode='clock'; // clock | countdown
+let tz='Asia/Taipei';
+let cdState='idle'; // idle | running | paused | finished
+let cdTotalMs=0,cdRemainMs=0,cdStartTs=0,cdElapsed=0;
+let tickId=null;
+
+// ============ DOM ============
+const $=id=>document.getElementById(id);
+const clockBlock=$('clockBlock'),cdBlock=$('cdBlock');
+const clockTime=$('clockTime'),clockDate=$('clockDate');
+const tzSel=$('tzSel'),utcTag=$('utcTag');
+const cdIdle=$('cdIdle'),cdActive=$('cdActive'),cdDone=$('cdDone');
+const cdTimeEl=$('cdTime'),cdDoneTime=$('cdDoneTime');
+const cdProgFill=$('cdProgFill'),cdProgWrap=$('cdProgWrap');
+const cdPauseBtn=$('cdPauseBtn'),cdStartBtn=$('cdStartBtn');
+const sepLabel=$('sepLabel');
+const finishOv=$('finishOv'),finishTopic=$('finishTopic');
+const toastEl=$('toast');
+
+// ============ INIT TZ SELECT ============
+(function buildTzSel(){
+    let html='';
+    TZ.forEach(([group,cities])=>{
+        html+='<optgroup label="'+group+'">';
+        cities.forEach(([name,tzid])=>{
+            const sel=tzid===tz?' selected':'';
+            html+='<option value="'+tzid+'" data-city="'+name+'"'+sel+'>'+name+'</option>';
+        });
+        html+='</optgroup>';
+    });
+    tzSel.innerHTML=html;
+})();
+
+// ============ INIT PRESETS ============
+(function buildPresets(){
+    const box=$('cdPresets');
+    let html='';
+    PRESETS.forEach(m=>{
+        const label=m>=60?(m/60)+'小時':m+'分';
+        html+='<button class="pre-btn" onclick="applyPreset('+m+',this)">'+label+'</button>';
+    });
+    // Mini custom button
+    html+='<button class="pre-btn pre-custom mini-only-btn" onclick="setMode(\'countdown\')" style="display:none">⚙ 自訂</button>';
+    box.innerHTML=html;
+    updatePresetVisibility();
+})();
+
+function updatePresetVisibility(){
+    const isMini=cdBlock.classList.contains('mini-v');
+    const btns=$('cdPresets').querySelectorAll('.pre-btn');
+    btns.forEach(b=>{
+        if(b.classList.contains('mini-only-btn')){
+            b.style.display=isMini?'':'none';
+            return;
+        }
+        const m=parseInt(b.textContent);
+        if(isMini){
+            const label=b.textContent.replace('小時','').replace('分','');
+            const min=b.textContent.includes('小時')?parseInt(label)*60:parseInt(label);
+            b.style.display=PRESETS_MINI.includes(min)?'':'none';
+        }else{
+            b.style.display='';
+        }
+    });
+}
+
+// ============ CD INPUT SETUP ============
+['cdH','cdM','cdS'].forEach(id=>{
+    const el=$(id);
+    el.addEventListener('input',()=>{el.value=el.value.replace(/\D/g,'').slice(0,2)});
+    el.addEventListener('blur',()=>{
+        let v=parseInt(el.value)||0;
+        const mx=id==='cdH'?99:59;
+        v=Math.min(Math.max(v,0),mx);
+        el.value=String(v).padStart(2,'0');
+    });
+    el.addEventListener('focus',()=>el.select());
+});
+
+// ============ MODE ============
+function setMode(m){
+    mode=m;
+    $('modeClk').classList.toggle('active',m==='clock');
+    $('modeCd').classList.toggle('active',m==='countdown');
+    updateLayout();
+}
+
+function updateLayout(){
+    const cm=mode==='clock';
+    clockBlock.className='dblock '+(cm?'main-v':'mini-v');
+    cdBlock.className='dblock '+(cm?'mini-v':'main-v');
+    clockBlock.style.order=cm?1:3;
+    cdBlock.style.order=cm?3:1;
+    sepLabel.textContent=cm?'⏳ 倒計時':'🕐 目前時間';
+    // big-only / mini-only via parent class
+    const bigOnlys=document.querySelectorAll('.big-only');
+    // We handle this purely via CSS parent class already in most cases
+    // But for the cd input row and start btn we need to show/hide
+    $('cdInpRow').style.display=(!cm&&cdState==='idle')?'flex':'none';
+    cdStartBtn.style.display=(!cm&&cdState==='idle')?'':'none';
+    clockDate.style.display=cm?'':'none';
+    cdProgWrap.style.display=(!cm&&cdState==='running'||!cm&&cdState==='paused')?'':'none';
+    updatePresetVisibility();
+    updateCdStateUI();
+}
+
+function toggleFocus(){
+    document.body.classList.toggle('focus');
+}
+
+// ============ CLOCK ============
+function getClockTime(){
+    try{
+        return new Date().toLocaleTimeString('en-GB',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+    }catch(e){return '--:--:--'}
+}
+function getClockDate(){
+    try{
+        return new Date().toLocaleDateString('zh-TW',{timeZone:tz,year:'numeric',month:'long',day:'numeric',weekday:'long'});
+    }catch(e){return ''}
+}
+function getUTC(){
+    try{
+        const now=new Date();
+        const u=new Date(now.toLocaleString('en-US',{timeZone:'UTC'}));
+        const t=new Date(now.toLocaleString('en-US',{timeZone:tz}));
+        const diff=(t-u)/3600000;
+        const h=Math.floor(Math.abs(diff));
+        const m=Math.round((Math.abs(diff)-h)*60);
+        const sign=diff>=0?'+':'-';
+        return 'UTC'+sign+String(h).padStart(2,'0')+(m?':'+String(m).padStart(2,'0'):'');
+    }catch(e){return 'UTC'}
+}
+
+function onTzChange(){
+    tz=tzSel.value;
+    utcTag.textContent=getUTC();
+}
+
+// ============ COUNTDOWN ============
+function applyPreset(min,btnEl){
+    // Remove active from all
+    $('cdPresets').querySelectorAll('.pre-btn').forEach(b=>b.classList.remove('pa'));
+    if(btnEl)btnEl.classList.add('pa');
+
+    const isMini=cdBlock.classList.contains('mini-v');
+    const h=Math.floor(min/60),m=min%60;
+    if(!isMini){
+        $('cdH').value=String(h).padStart(2,'0');
+        $('cdM').value=String(m).padStart(2,'0');
+        $('cdS').value='00';
+    }else{
+        startCd(h,m,0);
+    }
+}
+
+function startCd(h,m,s){
+    if(h===undefined){
+        h=parseInt($('cdH').value)||0;
+        m=parseInt($('cdM').value)||0;
+        s=parseInt($('cdS').value)||0;
+    }
+    cdTotalMs=(h*3600+m*60+s)*1000;
+    if(cdTotalMs<=0)return;
+    cdRemainMs=cdTotalMs;
+    cdElapsed=0;
+    cdStartTs=Date.now();
+    cdState='running';
+    updateLayout();
+}
+
+function togglePause(){
+    if(cdState==='running'){
+        cdElapsed+=Date.now()-cdStartTs;
+        cdState='paused';
+    }else if(cdState==='paused'){
+        cdStartTs=Date.now();
+        cdState='running';
+    }
+    updateCdStateUI();
+}
+
+function resetCd(){
+    cdState='idle';cdRemainMs=0;cdTotalMs=0;cdElapsed=0;
+    dismissFinish();
+    updateLayout();
+}
+
+function updateCdStateUI(){
+    const idle=cdState==='idle',active=cdState==='running'||cdState==='paused',done=cdState==='finished';
+    cdIdle.style.display=idle?'':'none';
+    cdActive.style.display=active?'':'none';
+    cdDone.style.display=done?'':'none';
+
+    if(active){
+        const paused=cdState==='paused';
+        cdPauseBtn.textContent=paused?'▶ 繼續':'⏸ 暫停';
+        cdPauseBtn.classList.toggle('primary',true);
+    }
+
+    const isMini=cdBlock.classList.contains('mini-v');
+    $('cdInpRow').style.display=(!isMini&&idle)?'flex':'none';
+    cdStartBtn.style.display=(!isMini&&idle)?'':'none';
+    cdProgWrap.style.display=(!isMini&&active)?'':'none';
+}
+
+function fmtMs(ms){
+    const t=Math.ceil(ms/1000);
+    const h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;
+    return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+
+function onFinish(){
+    playBeep();
+    const topic=$('topic').value.trim();
+    finishTopic.textContent=topic||'';
+    finishOv.classList.add('show');
+}
+
+function dismissFinish(){
+    finishOv.classList.remove('show');
+}
+
+// ============ AUDIO ============
+function playBeep(){
+    try{
+        const ac=new(window.AudioContext||window.webkitAudioContext)();
+        function b(freq,start,dur){
+            const o=ac.createOscillator(),g=ac.createGain();
+            o.connect(g);g.connect(ac.destination);
+            o.frequency.value=freq;o.type='sine';
+            g.gain.setValueAtTime(0.35,ac.currentTime+start);
+            g.gain.exponentialRampToValueAtTime(0.01,ac.currentTime+start+dur);
+            o.start(ac.currentTime+start);o.stop(ac.currentTime+start+dur);
+        }
+        b(880,0,.25);b(880,.35,.25);b(1320,.7,.45);
+    }catch(e){}
+}
+
+// ============ TICK ============
+let lastSec=-1;
+function tick(){
+    // Clock
+    const tStr=getClockTime();
+    if(clockTime.textContent!==tStr){
+        clockTime.textContent=tStr;
+        const curSec=parseInt(tStr.split(':')[2]);
+        if(curSec!==lastSec){
+            clockDate.textContent=getClockDate();
+            utcTag.textContent=getUTC();
+            lastSec=curSec;
+        }
+    }
+
+    // Countdown
+    if(cdState==='running'){
+        const elapsed=cdElapsed+(Date.now()-cdStartTs);
+        cdRemainMs=Math.max(0,cdTotalMs-elapsed);
+        if(cdRemainMs<=0){
+            cdState='finished';cdRemainMs=0;
+            onFinish();updateCdStateUI();
+            return;
+        }
+        const str=fmtMs(cdRemainMs);
+        cdTimeEl.textContent=str;
+
+        // Colors
+        cdTimeEl.classList.remove('cd-warn','cd-danger','cd-pulse');
+        cdProgFill.classList.remove('warn','danger');
+        if(cdRemainMs<=10000){
+            cdTimeEl.classList.add('cd-danger','cd-pulse');
+            cdProgFill.classList.add('danger');
+        }else if(cdRemainMs<=60000){
+            cdTimeEl.classList.add('cd-warn');
+            cdProgFill.classList.add('warn');
+        }
+
+        // Progress
+        const pct=((cdTotalMs-cdRemainMs)/cdTotalMs)*100;
+        cdProgFill.style.width=pct+'%';
+    }
+}
+
+tickId=setInterval(tick,150);
+
+// ============ KEYBOARD ============
+document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&document.body.classList.contains('focus')){
+        document.body.classList.remove('focus');
+    }
+    // Don't handle space if typing in input
+    if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+    if(e.key===' '&&(cdState==='running'||cdState==='paused')){
+        e.preventDefault();togglePause();
+    }
+});
+
+// ============ TOAST ============
+function showToast(msg){
+    toastEl.textContent=msg;toastEl.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t=setTimeout(()=>toastEl.classList.remove('show'),2000);
+}
+
+// ============ INIT ============
+updateLayout();
+tick();
+</script>
+
+
+</body></html>
