@@ -139,16 +139,66 @@ body.focus .sec-sep{display:none!important}
 body.focus .toolbar{margin:10px 0 16px}
 body.focus .cd-num input{font-size:clamp(3rem,12vw,8rem)}
 body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
+    
+    /* ===== Footer ===== */
+    footer {
+        background: #1e293b;
+        color: #94a3b8;
+        padding: 3rem 2rem 1.5rem;
+    }
 
-footer { background: #1e293b; color: rgba(255,255,255,0.7); padding: 36px 24px 20px; margin-top: auto; }
-.footer-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 28px; margin-bottom: 28px; }
-.footer-col h4 { color: #fff; font-size: 0.95rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-.footer-col a { display: block; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.88rem; padding: 4px 0; transition: color 0.2s; }
-.footer-col a:hover { color: #fff; }
-.footer-col a.active-link { color: var(--accent); font-weight: 500; }
-.footer-bottom { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; font-size: 0.82rem; }
-.footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
-.footer-bottom a:hover { color: #fff; }
+    .footer-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .footer-col h4 {
+        color: #fff;
+        margin-bottom: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .footer-col a {
+        display: block;
+        color: #94a3b8;
+        text-decoration: none;
+        padding: 0.3rem 0;
+        font-size: 0.9rem;
+        transition: color 0.3s;
+    }
+
+    .footer-col a:hover {
+        color: #60a5fa;
+    }
+
+    .footer-col a.active-link {
+        color: #60a5fa;
+        font-weight: 600;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid #374151;
+        padding-top: 1.5rem;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+
+    .footer-bottom a {
+        color: #94a3b8;
+        text-decoration: none;
+        margin: 0 0.3rem;
+    }
+
+    .footer-bottom a:hover {
+        color: #60a5fa;
+    }
     
 @media(max-width:640px){
     .timer-card{padding:20px 16px}
