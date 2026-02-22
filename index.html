@@ -278,6 +278,7 @@
             <a href="#" onclick="goTool('插頭規格'); return false;" data-t="f1a">插頭規格查詢</a>
             <a href="#" onclick="goTool('時區查詢'); return false;" data-t="f1b">時區查詢</a>
             <a href="#" onclick="goTool('日出日落'); return false;" data-t="f1c">日出日落時間</a>
+             <a href="#" onclick="goTool('計時器'); return false;" data-t="f1c">計時器</a>
         </div>
         <div class="footer-col">
             <h4 data-t="f2h">🎉 假期與節慶</h4>
@@ -305,12 +306,13 @@
 <script>
 /* ====== TOOL PAGE ROUTES ====== */
 const toolPages = {
-    '匯率換算':   { zh: 'currency/currency-zh.html',     en: 'currency/currency-en.html',     es: 'currency/currency-es.html',     pt: 'currency/currency-pt.html' },
-    '單位轉換':   { zh: 'unit/unit-zh.html',              en: 'unit/unit-en.html',              es: 'unit/unit-es.html',              pt: 'unit/unit-pt.html' },
-    '時區查詢':   { zh: 'time-zone/time-zone-zh.html',    en: 'time-zone/time-zone-en.html',    es: 'time-zone/time-zone-es.html',    pt: 'time-zone/time-zone-pt.html' },
-    '插頭規格':   { zh: 'plug/plug-zh.html',              en: 'plug/plug-en.html',              es: 'plug/plug-es.html',              pt: 'plug/plug-pt.html' },
-    '國定假日':   { zh: 'holiday-zh.html',                en: 'holiday-en.html' },
-    '日出日落':   { zh: 'sunset/sunset-zh.html',          en: 'sunset/sunset-en.html',          es: 'sunset/sunset-es.html',          pt: 'sunset/sunset-pt.html' },
+    '匯率換算':   { zh: '/currency/currency-zh.html',     en: '/currency/currency-en.html',     es: '/currency/currency-es.html',     pt: '/currency/currency-pt.html' },
+    '單位轉換':   { zh: '/unit/unit-zh.html',              en: '/unit/unit-en.html',              es: '/unit/unit-es.html',              pt: '/unit/unit-pt.html' },
+    '時區查詢':   { zh: '/time-zone/time-zone-zh.html',    en: '/time-zone/time-zone-en.html',    es: '/time-zone/time-zone-es.html',    pt: '/time-zone/time-zone-pt.html' },
+    '插頭規格':   { zh: '/plug/plug-zh.html',              en: '/plug/plug-en.html',              es: '/plug/plug-es.html',              pt: '/plug/plug-pt.html' },
+    '計時器':   { zh: '/timer/timer-zh.html',              en: '/timer/timer-en.html',              es: '/timer/timer-es.html',              pt: '/timer/timer-pt.html' },
+    '國定假日':   { zh: 'holiday-zh.html',                en: '/holiday-en.html' },
+    '日出日落':   { zh: '/sunset/sunset-zh.html',          en: '/sunset/sunset-en.html',          es: '/sunset/sunset-es.html',          pt: '/sunset/sunset-pt.html' },
     '國家概覽':   { zh: 'country-zh.html',                en: 'country-en.html' },
     '目的地指南': { zh: 'guide-zh.html',                  en: 'guide-en.html' },
     '節慶活動':   { zh: 'festival-zh.html',               en: 'festival-en.html' }
