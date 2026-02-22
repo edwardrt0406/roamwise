@@ -139,7 +139,19 @@ body.focus .sec-sep{display:none!important}
 body.focus .toolbar{margin:10px 0 16px}
 body.focus .cd-num input{font-size:clamp(3rem,12vw,8rem)}
 body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
-    
+
+        /* 右上角「聯絡我們」去掉藍色和底線 */
+    nav a,
+    .navbar a {
+        color: #f1f5f9;
+        text-decoration: none;
+    }
+
+    nav a:hover,
+    .navbar a:hover {
+        color: #60a5fa;
+    }
+        
     /* ===== Footer ===== */
     footer {
         background: #1e293b;
@@ -199,7 +211,16 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
     .footer-bottom a:hover {
         color: #60a5fa;
     }
-    
+
+        /* Footer 底部「隱私權政策、使用條款」去掉藍色和底線 */
+    .footer-bottom a {
+        color: #94a3b8;
+        text-decoration: none;
+    }
+
+    .footer-bottom a:hover {
+        color: #60a5fa;
+        
 @media(max-width:640px){
     .timer-card{padding:20px 16px}
     .main-v .time-val{font-size:3.2rem}
