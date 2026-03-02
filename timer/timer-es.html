@@ -7,9 +7,16 @@
 :root{--pri:#2563eb;--pri-dk:#1d4ed8;--pri-lt:#dbeafe;--acc:#f59e0b;--bg:#f0f4f8;--card:#fff;--tx:#1e293b;--tx2:#64748b;--bdr:#e2e8f0;--rad:12px;--sh:0 4px 24px rgba(0,0,0,.07);--grn:#10b981;--red:#ef4444;--org:#f59e0b}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column}
-header{background:linear-gradient(135deg,var(--pri),var(--pri-dk));color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(37,99,235,.3)}
-.logo{font-size:1.4rem;font-weight:700;letter-spacing:1px}.logo span{color:var(--acc)}
-.hdr-r{display:flex;align-items:center;gap:12px}.hdr-r a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem}.hdr-r a:hover{color:#fff}
+        
+header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(37,99,235,0.3); }
+.logo { font-size: 1.4rem; font-weight: 700; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+.logo span { color: var(--accent); }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.header-right a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+.header-right a:hover { color: #fff; }
+.lang-select { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-family: inherit; }
+.lang-select option { color: #333; background: #fff; }
+      
 main{flex:1;max-width:820px;width:100%;margin:0 auto;padding:28px 16px}
 .pg-title{text-align:center;font-size:1.6rem;font-weight:700;margin-bottom:12px;color:var(--pri-dk)}
 .info-box{background:var(--pri-lt);border-left:4px solid var(--pri);border-radius:0 var(--rad) var(--rad) 0;padding:14px 18px;margin-bottom:20px;font-size:.9rem;color:var(--pri-dk);line-height:1.65;display:flex;gap:10px;align-items:flex-start}.info-box .ic{flex-shrink:0;font-size:1.15rem;margin-top:2px}
@@ -153,81 +160,13 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
     }
         
     /* ===== Footer ===== */
-    footer {
-        background: #1e293b;
-        color: #94a3b8;
-        padding: 3rem 2rem 1.5rem;
-    }
+footer{background:#1e293b;color:rgba(255,255,255,.7);padding:36px 24px 20px;margin-top:auto}
+.footer-grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;margin-bottom:28px}
+.footer-col h4{color:#fff;font-size:.95rem;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.footer-col a{display:block;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;padding:4px 0;transition:color .2s}.footer-col a:hover{color:#fff}
+.footer-col a.active-link{color:var(--accent);font-weight:500}
+.footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,.1);padding-top:16px;font-size:.82rem}.footer-bottom a{color:rgba(255,255,255,.5);text-decoration:none}.footer-bottom a:hover{color:#fff}
 
-    .footer-inner {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .footer-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2rem;
-        margin-bottom: 2rem;
-    }
-
-    .footer-col h4 {
-        color: #fff;
-        margin-bottom: 0.8rem;
-        font-size: 1rem;
-    }
-
-    .footer-col a {
-        display: block;
-        color: #94a3b8;
-        text-decoration: none;
-        padding: 0.3rem 0;
-        font-size: 0.9rem;
-        transition: color 0.3s;
-    }
-
-    .footer-col a:hover {
-        color: #60a5fa;
-    }
-
-    .footer-col a.active-link {
-        color: #60a5fa;
-        font-weight: 600;
-    }
-
-    .footer-bottom {
-        border-top: 1px solid #374151;
-        padding-top: 1.5rem;
-        text-align: center;
-        font-size: 0.85rem;
-    }
-
-    .footer-bottom a {
-        color: #94a3b8;
-        text-decoration: none;
-        margin: 0 0.3rem;
-    }
-
-    .footer-bottom a:hover {
-        color: #60a5fa;
-    }
-
-        /* Footer 底部「隱私權政策、使用條款」去掉藍色和底線 */
-    .footer-bottom a {
-        color: #94a3b8;
-        text-decoration: none;
-    }
-
-    .footer-bottom a:hover {
-        color: #60a5fa;
-    }
-
-    .footer-bottom {
-        border-top: 1px solid #374151;
-        padding-top: 1.5rem;
-        text-align: center;
-        font-size: 0.85rem;
-    }
     
 @media(max-width:640px){
     .timer-card{padding:20px 16px}
