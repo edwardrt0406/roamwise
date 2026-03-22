@@ -1,0 +1,602 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球曆法地圖 – 同一天，不同年 | Roamwise</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
+
+/* NAV */
+nav{background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:.75rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.logo{font-size:1.5rem;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.5px}.logo span{color:#facc15}
+.nav-links{display:flex;gap:1.2rem;flex-wrap:wrap}
+.nav-links a{color:rgba(255,255,255,.78);text-decoration:none;font-size:.88rem;font-weight:600;padding:4px 0;border-bottom:2px solid transparent;transition:.2s}
+.nav-links a:hover{color:#fff}.nav-links a.active{color:#fff;border-bottom-color:#facc15}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1e3a8a 0%,#7c3aed 100%);color:#fff;padding:2.5rem 2rem 2rem;text-align:center}
+.hero h1{font-size:2rem;font-weight:900;margin-bottom:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap}
+.hero p{font-size:.95rem;color:rgba(255,255,255,.82);max-width:800px;margin:0 auto;line-height:1.7}
+.hero-stats{display:flex;justify-content:center;gap:2rem;margin-top:1.2rem;flex-wrap:wrap}
+.hs{text-align:center}
+.hs-num{font-size:2rem;font-weight:900;color:#facc15;line-height:1}
+.hs-label{font-size:.72rem;color:rgba(255,255,255,.7);margin-top:2px;font-weight:600}
+
+main{max-width:1360px;width:100%;margin:0 auto;padding:1.5rem}
+
+/* CARD */
+.card{background:#fff;border-radius:16px;padding:1.4rem 1.6rem;box-shadow:0 2px 16px rgba(0,0,0,.06);margin-bottom:1.2rem;border:1px solid #e2e8f0}
+
+/* TIMELINE */
+.section-title{font-size:.82rem;color:#64748b;font-weight:700;margin-bottom:.8rem;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:.5rem}
+.tl-wrap{overflow-x:auto;padding-bottom:.6rem;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent}
+.tl-wrap::-webkit-scrollbar{height:6px}.tl-wrap::-webkit-scrollbar-track{background:transparent}.tl-wrap::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
+.tl-strip{display:flex;gap:0;min-width:max-content;position:relative;padding:6px 0}
+.tl-line{position:absolute;bottom:16px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#e2e8f0 3%,#e2e8f0 97%,transparent);z-index:0}
+.tl-card{flex-shrink:0;width:92px;text-align:center;cursor:pointer;padding:10px 6px 8px;border-radius:14px;transition:all .2s;position:relative;z-index:1;border:2px solid transparent;background:#fff}
+.tl-card:hover{transform:translateY(-4px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.tl-card.active{border-color:var(--c);background:var(--cbg,#f8fafc);transform:translateY(-4px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.tl-year{font-size:1.35rem;font-weight:900;line-height:1.1;color:var(--c)}
+.tl-name{font-size:.62rem;color:#64748b;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+.tl-flags{font-size:.82rem;margin-top:2px}
+.tl-dot{width:8px;height:8px;border-radius:50%;margin:5px auto 0;background:var(--c);opacity:.5}
+
+.diff-badge{display:inline-block;font-size:.9rem;padding:8px 18px;border-radius:24px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;font-weight:700;margin:10px 4px 0;box-shadow:0 2px 10px rgba(124,58,237,.3)}
+
+/* INFO BAR */
+.info-bar{display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;padding:1rem 0;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;margin-top:.8rem;min-height:68px}
+.info-flag{font-size:2.4rem;line-height:1}
+.info-name{font-size:1.15rem;font-weight:800;color:#1e293b}
+.info-sub{font-size:.82rem;color:#64748b;margin-top:4px;line-height:1.6}
+.info-placeholder{color:#94a3b8;font-size:.92rem}
+.cal-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:14px;font-size:.76rem;font-weight:700;color:#fff;margin-top:4px;margin-right:4px}
+.tier-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:.68rem;font-weight:700;margin-top:4px;border:1.5px solid}
+.year-hero{font-size:2rem;font-weight:900;margin-top:6px;line-height:1}
+.receipt-box{background:#fffbeb;border:1.5px dashed #f59e0b;border-radius:10px;padding:12px 16px;margin-top:10px;font-family:'Courier New',monospace;font-size:.85rem;color:#78350f;display:none}
+.receipt-box.show{display:block}
+.rb-title{font-size:.7rem;color:#92400e;font-weight:700;margin-bottom:4px;font-family:-apple-system,sans-serif;text-transform:uppercase;letter-spacing:.3px}
+
+/* MAP */
+.map-wrap{position:relative;width:100%;background:#f8fafc;border-radius:12px;overflow:hidden;cursor:grab;margin-top:.8rem;border:1px solid #e2e8f0}.map-wrap:active{cursor:grabbing}
+.map-wrap svg{display:block;width:100%;height:auto}
+.loading-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f8fafc;z-index:10}
+.spinner{width:40px;height:40px;border:4px solid #e2e8f0;border-top-color:#3b82f6;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:.8rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.map-legend{position:absolute;bottom:8px;left:8px;right:8px;background:rgba(255,255,255,.94);border-radius:12px;padding:8px 12px;font-size:.68rem;display:flex;flex-wrap:wrap;gap:4px 10px;backdrop-filter:blur(10px);z-index:5;border:1px solid #e2e8f0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.ml-item{display:flex;align-items:center;gap:3px;white-space:nowrap;font-weight:600;color:#64748b;cursor:pointer;padding:2px 6px;border-radius:6px;transition:all .15s}
+.ml-item:hover,.ml-item.active{color:#1e293b;background:rgba(0,0,0,.05)}
+.ml-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.tips{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.6rem;font-size:.74rem;color:#94a3b8}
+.bar-row{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-top:.8rem;padding-top:.8rem;border-top:1px solid #e2e8f0}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:400px}
+.search-input{width:100%;padding:.5rem 1rem .5rem 2.3rem;border:2px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;background:#fff;color:#1e293b;transition:border .2s}.search-input:focus{border-color:#3b82f6}
+.search-icon{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
+.search-dd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);max-height:280px;overflow-y:auto;z-index:100;display:none}
+.search-dd.show{display:block}
+.sd-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1rem;cursor:pointer;transition:background .1s;font-size:.88rem}.sd-item:hover{background:#f1f5f9}
+.btn{padding:.5rem 1.2rem;border:none;border-radius:10px;font-size:.88rem;cursor:pointer;font-weight:600;transition:all .15s;white-space:nowrap}
+.btn-primary{background:#3b82f6;color:#fff;box-shadow:0 2px 8px rgba(59,130,246,.25)}.btn-primary:hover{background:#2563eb;transform:translateY(-1px)}
+
+/* TWO PANELS */
+.two-panel{display:grid;grid-template-columns:400px 1fr;gap:1.2rem;align-items:start}
+.panel{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,.06);overflow:hidden;border:1px solid #e2e8f0}
+.panel-hdr{padding:.8rem 1.2rem;font-weight:700;font-size:.92rem;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;gap:.5rem;position:sticky;top:0;background:#fff;z-index:2;color:#1e293b}
+.panel-body{padding:.5rem;max-height:720px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent}
+.panel-body::-webkit-scrollbar{width:5px}.panel-body::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
+
+.cal-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;transition:all .16s;border:2px solid transparent;margin-bottom:4px;background:#fff}
+.cal-card:hover{background:#f8fafc;transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.cal-card.active{border-color:var(--c);background:var(--cbg,#f8fafc)}
+.cal-icon{width:42px;height:42px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.cal-info{flex:1;min-width:0}
+.cal-name{font-weight:700;font-size:.82rem;color:#1e293b}
+.cal-yr{font-size:.72rem;font-weight:800;margin-top:1px}
+.cal-desc{font-size:.68rem;color:#94a3b8;margin-top:1px}
+.cal-cnt{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;color:#fff}
+
+.divider{height:1px;background:#e2e8f0;margin:8px 6px}
+
+.today-section{padding:10px 14px}
+.today-title{font-size:.76rem;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.today-row{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:.8rem;border-bottom:1px solid #f1f5f9}
+.today-row:last-of-type{border-bottom:none}
+.today-icon{flex-shrink:0;font-size:.88rem;width:22px;text-align:center}
+.today-cal{flex:1;color:#64748b;font-weight:600;font-size:.74rem}
+.today-date{color:#1e293b;font-weight:700;font-size:.8rem;text-align:right}
+.today-note{font-size:.66rem;color:#d97706;font-weight:700;background:#fffbeb;padding:1px 6px;border-radius:4px}
+
+.fact-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin:4px 8px}
+.fact-item{display:flex;align-items:flex-start;gap:6px;padding:5px 0;font-size:.78rem;line-height:1.5;color:#475569;border-bottom:1px solid #f1f5f9}
+.fact-item:last-child{border-bottom:none}
+
+.pc-count{background:#e2e8f0;color:#64748b;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px}
+
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px}
+.cc-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:all .12s;border:1.5px solid transparent}
+.cc-item:hover{background:#f8fafc;border-color:#e2e8f0}
+.cc-item.active{background:#eff6ff;border-color:#3b82f6}
+.cc-flag{font-size:1.2rem;flex-shrink:0}
+.cc-info{flex:1;min-width:0}
+.cc-name{font-weight:600;font-size:.84rem;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-cal{font-size:.68rem;color:#94a3b8;margin-top:2px;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.cc-yr{font-weight:800;font-size:.72rem;padding:1px 6px;border-radius:4px;color:#fff}
+.cc-tier{font-size:.62rem;font-weight:700;padding:1px 5px;border-radius:3px}
+
+/* TOOLTIP */
+.tooltip{position:fixed;pointer-events:none;background:rgba(255,255,255,.97);color:#1e293b;padding:14px 18px;border-radius:14px;font-size:.85rem;z-index:1000;opacity:0;transition:opacity .12s;box-shadow:0 8px 32px rgba(0,0,0,.15);line-height:1.5;max-width:380px;border:1px solid #e2e8f0;backdrop-filter:blur(10px)}.tooltip.show{opacity:1}
+.tt-name{font-weight:800;font-size:.98rem;color:#1e293b}
+.tt-sub{color:#64748b;font-size:.72rem;display:block;margin-top:2px}
+.tt-year{font-size:1.5rem;font-weight:900;margin-top:6px;display:block}
+.tt-cal{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:8px;font-size:.72rem;font-weight:700;color:#fff;margin-top:4px}
+.tt-note{font-size:.74rem;color:#64748b;margin-top:6px;border-top:1px solid #e2e8f0;padding-top:6px}
+
+/* FOOTER */
+footer{background:#fff;color:#64748b;margin-top:auto;border-top:1px solid #e2e8f0}
+.footer-inner{max-width:1360px;margin:0 auto;padding:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;font-size:.82rem}
+.footer-inner a{color:#64748b;text-decoration:none}.footer-inner a:hover{color:#3b82f6}
+
+@media(max-width:900px){.two-panel{grid-template-columns:1fr}.hero h1{font-size:1.4rem}.hero-stats{gap:1rem}}
+@media(max-width:600px){nav{padding:.5rem .8rem}.nav-links{gap:.6rem}.nav-links a{font-size:.76rem}main{padding:0 .8rem .8rem}.card{padding:1rem}.tl-card{width:78px}.tl-year{font-size:1.1rem}.cc-grid{grid-template-columns:1fr}.hero{padding:1.5rem 1rem 1.2rem}.hero h1{font-size:1.2rem}.hero-stats{gap:.8rem}.hs-num{font-size:1.5rem}.info-bar{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<nav>
+<a class="logo" href="#">Roam<span>wise</span></a>
+<div class="nav-links">
+<a href="#">🔌 插頭電壓</a>
+<a href="#">🚗 駕駛方向</a>
+<a href="#">📡 行動網路</a>
+<a href="#" class="active">📆 曆法年份</a>
+<a href="#">🕐 時區</a>
+</div>
+</nav>
+
+<div class="hero">
+<h1>📆 全球曆法地圖 — 同一天，不同年</h1>
+<p>此刻全球有超過15種現行曆法同時運作。從令和8年到希伯來曆5786年，同一張收據上的日期可能讓你愣住。出發前了解目的地的紀年方式，是旅人與商務人士的必備功課。</p>
+<div class="hero-stats">
+<div class="hs"><div class="hs-num">17</div><div class="hs-label">現行曆法</div></div>
+<div class="hs"><div class="hs-num">5,778</div><div class="hs-label">最大年份差距</div></div>
+<div class="hs"><div class="hs-num">40+</div><div class="hs-label">非純公曆國家</div></div>
+<div class="hs"><div class="hs-num">13</div><div class="hs-label">衣索比亞的月份數</div></div>
+</div>
+</div>
+
+<main>
+
+<div class="card">
+<div class="section-title">⏳ 同一個瞬間，全球的年份 —</div>
+<div class="tl-wrap"><div class="tl-strip" id="tlStrip"><div class="tl-line"></div></div></div>
+<div style="text-align:center;margin-top:4px">
+<span class="diff-badge">📏 最大年份差距：5786 − 8 = <b>5,778 年</b></span>
+</div>
+
+<div class="info-bar" id="infoBar">
+<div class="info-flag" id="infoFlag">🌍</div>
+<div style="flex:1;min-width:200px">
+<div class="info-name" id="infoName"><span class="info-placeholder">🖱️ 將滑鼠移至地圖上，探索各國活在「哪一年」</span></div>
+<div id="infoBadges"></div>
+<div class="year-hero" id="infoYear"></div>
+<div class="info-sub" id="infoSub"></div>
+<div class="receipt-box" id="receiptBox"><div class="rb-title">🧾 你的收據可能長這樣：</div><div id="receiptContent"></div></div>
+</div>
+</div>
+
+<div class="map-wrap" id="mapWrap">
+<div class="loading-overlay" id="loadOv"><div class="spinner"></div><p style="color:#64748b">載入世界地圖中…</p></div>
+<div class="map-legend" id="mapLegend"></div>
+</div>
+<div class="tips"><span>🖱️ 滑入查看年份</span><span>👆 點擊鎖定</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span></div>
+<div class="bar-row">
+<div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchIn" type="text" placeholder="搜尋國家或地區（如：衣索比亞、臺灣、香港）…" autocomplete="off"><div class="search-dd" id="searchDD"></div></div>
+<button class="btn btn-primary" id="btnReset">🔄 重設地圖</button>
+</div>
+</div>
+
+<div class="two-panel">
+<div class="panel">
+<div class="panel-hdr">📊 全球現行曆法系統</div>
+<div class="panel-body" id="calPanel"></div>
+</div>
+<div class="panel">
+<div class="panel-hdr" id="cHdr">🌍 所有國家與地區 <span class="pc-count" id="cCnt">0</span></div>
+<div class="panel-body" id="cBody"><div class="cc-grid" id="cGrid"></div></div>
+</div>
+</div>
+</main>
+
+<div class="tooltip" id="tooltip"></div>
+
+<footer>
+<div class="footer-inner">
+<span>© 2026 Roamwise — 旅行者的實用工具箱</span>
+<div><a href="#">隱私權政策</a> · <a href="#">使用條款</a> · <a href="#">意見回饋</a></div>
+</div>
+</footer>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(function(){
+
+var CALS={
+greg:{n:'公曆（格里曆）',y:'2026',yn:2026,col:'#94a3b8',fill:'#e2e8f0',hi:'#64748b',icon:'📅',ep:'公元1年',base:'太陽曆',mo:'12個月',ny:'1月1日',note:'全球通用標準曆法，1582年由教宗格列高利十三世改革儒略曆而來。',bg:'#f8fafc'},
+eth:{n:'衣索比亞曆（吉茲曆）',y:'2018',yn:2018,col:'#059669',fill:'#d1fae5',hi:'#047857',icon:'☀️',ep:'≈ 公元前8年',base:'太陽曆',mo:'13個月',ny:'9月11日（Enkutatash）',note:'全球唯一以13個月計算的現行曆法。旅遊局標語：「13 Months of Sunshine」。',bg:'#ecfdf5'},
+sh:{n:'太陽回曆（伊朗曆）',y:'1405',yn:1405,col:'#d97706',fill:'#fef3c7',hi:'#b45309',icon:'🌞',ep:'公元622年',base:'太陽曆',mo:'12個月',ny:'3月20-21日（諾魯茲）',note:'天文學上最精確的曆法之一。諾魯茲被聯合國列為人類非物質文化遺產。',bg:'#fffbeb'},
+heb:{n:'希伯來曆（猶太曆）',y:'5786',yn:5786,col:'#7c3aed',fill:'#ede9fe',hi:'#6d28d9',icon:'✡️',ep:'≈ 公元前3761年',base:'陰陽合曆',mo:'12-13個月',ny:'9-10月（Rosh Hashana）',note:'年份數字最大的現行曆法，從「世界創造之日」起算。',bg:'#f5f3ff'},
+hij:{n:'伊斯蘭曆（希吉拉曆）',y:'1447',yn:1447,col:'#0891b2',fill:'#cffafe',hi:'#0e7490',icon:'☪️',ep:'公元622年',base:'純陰曆',mo:'12個月',ny:'每年提前約11天',note:'全球唯一仍廣泛使用的純陰曆。齋月等節日每年在公曆中不斷前移。',bg:'#ecfeff'},
+bud:{n:'佛曆（佛教紀元）',y:'2569',yn:2569,col:'#ca8a04',fill:'#fef9c3',hi:'#a16207',icon:'☸️',ep:'≈ 公元前543年',base:'公曆+偏移',mo:'與公曆同',ny:'4月',note:'泰國+543=2569。7-Eleven收據上的年份讓遊客驚訝不已！',bg:'#fefce8'},
+rei:{n:'日本皇紀（令和）',y:'令和8年',yn:8,col:'#dc2626',fill:'#fee2e2',hi:'#b91c1c',icon:'🏯',ep:'2019年',base:'天皇年號制',mo:'與公曆同',ny:'年號隨天皇更替改變',note:'「令和」取自《萬葉集》。政府文件、駕照、保險單常用。',bg:'#fef2f2'},
+roc:{n:'民國紀年',y:'民國115年',yn:115,col:'#e11d48',fill:'#ffe4e6',hi:'#be123c',icon:'🏛️',ep:'1912年',base:'公曆−1911',mo:'與公曆同',ny:'1月1日',note:'臺灣官方曆法。統一發票、身分證、銀行文件上都寫「民國115年」。',bg:'#fff1f2'},
+juc:{n:'主體曆（北韓）',y:'主體115年',yn:115,col:'#475569',fill:'#e2e8f0',hi:'#334155',icon:'⭐',ep:'1912年',base:'公曆−1911',mo:'與公曆同',ny:'4月15日（太陽節）',note:'所有官方文件標示「主體」年，與民國紀年恰巧同為115年。',bg:'#f1f5f9'},
+sak:{n:'沙卡曆（印度國定曆）',y:'1948',yn:1948,col:'#ea580c',fill:'#ffedd5',hi:'#c2410c',icon:'🕉️',ep:'公元78年',base:'太陽曆',mo:'12個月',ny:'≈ 3月22日',note:'1957年成為印度官方曆法。3月22日附近恰逢沙卡曆新年！',bg:'#fff7ed'},
+bs:{n:'毗克拉姆曆（尼泊爾曆）',y:'2082',yn:2082,col:'#be123c',fill:'#ffe4e6',hi:'#9f1239',icon:'🏔️',ep:'公元前57年',base:'太陽曆',mo:'12個月',ny:'4月中旬',note:'尼泊爾唯一官方曆法。所有政府文件、報紙、銀行全部使用。',bg:'#fff1f2'},
+ben:{n:'孟加拉曆',y:'1432',yn:1432,col:'#16a34a',fill:'#dcfce7',hi:'#15803d',icon:'🌿',ep:'公元593年',base:'太陽曆',mo:'12個月',ny:'4月14日',note:'孟加拉國及印度西孟加拉邦使用。新年（Pohela Boishakh）是盛大文化節日。',bg:'#f0fdf4'},
+mya:{n:'緬甸曆',y:'1387',yn:1387,col:'#d97706',fill:'#fef3c7',hi:'#92400e',icon:'🪷',ep:'公元638年',base:'陰陽合曆',mo:'12個月',ny:'4月中旬（潑水節）',note:'1387是全球現行曆法中年份最小的之一。潑水節就是緬甸新年！',bg:'#fffbeb'},
+chn:{n:'農曆（黃帝紀年）',y:'4724',yn:4724,col:'#dc2626',fill:'#fee2e2',hi:'#991b1b',icon:'🐉',ep:'≈ 公元前2697年',base:'陰陽合曆',mo:'12-13個月',ny:'1-2月（春節）',note:'2026年為丙午馬年。農曆影響東亞數十億人的節日。',bg:'#fef2f2'},
+dan:{n:'檀紀（韓國）',y:'4359',yn:4359,col:'#7c3aed',fill:'#ede9fe',hi:'#5b21b6',icon:'🇰🇷',ep:'公元前2333年',base:'與公曆同',mo:'與公曆同',ny:'10月3日（開天節）',note:'以傳說中檀君建國起算。目前僅國慶偶爾提及。',bg:'#f5f3ff'},
+cop:{n:'科普特曆',y:'1742',yn:1742,col:'#b45309',fill:'#fef3c7',hi:'#92400e',icon:'☦️',ep:'公元284年',base:'源自古埃及曆',mo:'13個月',ny:'9月11-12日',note:'與衣索比亞曆結構相似。埃及科普特基督徒（約人口10%）使用。',bg:'#fffbeb'},
+amz:{n:'亞馬齊格曆（柏柏爾曆）',y:'2976',yn:2976,col:'#0284c7',fill:'#e0f2fe',hi:'#0369a1',icon:'ⵣ',ep:'≈ 公元前950年',base:'太陽曆',mo:'12個月',ny:'1月13日（Yennayer）',note:'北非原住民傳統曆法。摩洛哥和阿爾及利亞已將Yennayer定為國定假日。',bg:'#f0f9ff'}
+};
+
+var CD={};
+CD[231]=['eth','2018',2018,'A','所有收據、文件、報紙均使用衣索比亞曆。一年13個月。在衣索比亞你彷彿「回到過去」了8年！咖啡店帳單上的日期都讓你「穿越」。','日期：12/07/2018 ☕ 咖啡 45 Birr'];
+CD[364]=['sh','1405',1405,'A','伊朗所有收據、地鐵票、機票、銀行文件均使用太陽回曆。護照入境章上也會印太陽回曆日期。','تاریخ: ۱۴۰۵/۰۱/۰۲ — ☕ ۱۵۰,۰۰۰ ریال'];
+CD[4]=['sh','1405',1405,'A','阿富汗與伊朗共用太陽回曆，月份名稱使用達里語。','تاریخ: ۱۴۰۵/۰۱/۰۲'];
+CD[764]=['bud','2569',2569,'A','泰國所有收據、7-Eleven小票、駕照均標示佛曆2569。遊客最常驚訝的「未來感」年份！','วันที่: 22/03/2569 — กาแฟ ☕ 65 ฿'];
+CD[158]=['roc','民國115年',115,'A','臺灣統一發票、身分證、駕照全部使用民國紀年。超商收據印「115年3月22日」。','日期：115/03/22 超商咖啡 $55'];
+CD[524]=['bs','2082',2082,'A','尼泊爾唯一官方曆法。所有政府文件、報紙、銀行均使用毗克拉姆曆。','मिति: २०८२/१२/०८ — चिया ☕ रु. ३०'];
+CD[376]=['heb','5786',5786,'B','以色列日常主要用公曆，但猶太節日、宗教活動、部分政府文件使用希伯來曆。超市收據常同時印兩種日期。','22/03/2026 — ב׳ ניסן ה׳תשפ״ו'];
+CD[392]=['rei','令和8年',8,'B','日本政府文件（駕照、保險、稅單）常用令和年號。便利商店收據大多已改用西曆。','日付：令和8年3月22日 コーヒー ¥180'];
+CD[682]=['hij','1447',1447,'B','沙烏地阿拉伯2016年起財政改用公曆，但伊斯蘭曆仍廣泛用於宗教、法律及部分官方文件。','التاريخ: ١٤٤٧/٠٩/٢٢ — ☕ ١٥ ر.س'];
+CD[50]=['ben','1432',1432,'B','孟加拉曆廣泛用於報紙、文化活動及官方文告。新年是最盛大的文化慶典。','তারিখ: ০৮/১২/১৪৩২'];
+CD[408]=['juc','主體115年',115,'B','北韓所有官方文件、報紙、紀念碑均使用主體曆。與臺灣民國紀年恰巧同為115年。','날짜: 주체115.3.22'];
+CD[356]=['sak','1948',1948,'B','印度官方公報使用沙卡曆。3月22日附近恰逢沙卡曆新年！日常生活普遍使用公曆。','Date: 1 Chaitra 1948 (Saka)'];
+CD[104]=['mya','1387',1387,'B','緬甸曆用於傳統節日（潑水節即緬曆新年）及部分官方場合。1387是現行曆法中最「年輕」的。','ရက်စွဲ: ၁၃၈၇'];
+CD[116]=['bud','2570',2570,'B','柬埔寨使用佛曆（+544），出現在部分官方文件及寺廟節慶文告。','ថ្ងៃទី ២២ មីនា ព.ស. ២៥៧០'];
+CD[144]=['bud','2570',2570,'B','斯里蘭卡使用佛曆（+544），在佛教節日、國定假日公告中廣泛使用。','දිනය: 2570.03.22'];
+CD[418]=['bud','2569',2569,'B','寮國使用佛曆（+543），與泰國相同計算方式。','ວັນທີ: 22/03/2569'];
+CD[156]=['chn','農曆4724',4724,'C','中國日常使用公曆，但農曆深植文化。春節、中秋、端午等重要節日依農曆。2026年為丙午馬年。',''];
+CD[410]=['dan','檀紀4359',4359,'C','韓國日常完全使用公曆。檀紀僅在10月3日「開天節」偶爾被提及。',''];
+CD[704]=['chn','農曆4724',4724,'C','越南農曆與中國農曆幾乎相同。越南新年（Tết）是最重要的節日。',''];
+CD[818]=['cop','科普特1742',1742,'C','埃及日常使用公曆，但科普特基督徒使用科普特曆過宗教節日。',''];
+CD[504]=['amz','亞馬齊格2976',2976,'C','摩洛哥日常使用公曆和伊斯蘭曆。2018年起將Yennayer定為國定假日。同時使用三種曆法。',''];
+CD[12]=['amz','亞馬齊格2976',2976,'C','阿爾及利亞2018年起將Yennayer定為國定假日。同時三種曆法並行。',''];
+CD[784]=['hij','1447',1447,'C','阿聯酋回曆用於宗教節日。日常商業使用公曆。',''];
+CD[634]=['hij','1447',1447,'C','卡達回曆用於宗教場合和部分政府文件。',''];
+CD[414]=['hij','1447',1447,'C','科威特回曆用於宗教和部分官方場合。',''];
+CD[48]=['hij','1447',1447,'C','巴林回曆用於宗教節日和部分官方場合。',''];
+CD[512]=['hij','1447',1447,'C','阿曼回曆用於宗教場合和文化活動。',''];
+CD[400]=['hij','1447',1447,'C','約旦回曆用於宗教及部分官方文件。',''];
+CD[586]=['hij','1447',1447,'C','巴基斯坦回曆用於宗教場合。',''];
+CD[275]=['hij','1447',1447,'C','巴勒斯坦回曆用於宗教場合。',''];
+CD[368]=['hij','1447',1447,'C','伊拉克回曆用於宗教場合和部分政府文件。',''];
+CD[788]=['hij','1447',1447,'C','突尼西亞回曆主要用於宗教場合。',''];
+CD[434]=['hij','1447',1447,'C','利比亞回曆用於宗教場合。',''];
+CD[729]=['hij','1447',1447,'C','蘇丹回曆在宗教和部分官方場合使用。',''];
+CD[887]=['hij','1447',1447,'C','葉門回曆用於宗教場合。',''];
+CD[760]=['hij','1447',1447,'C','敘利亞回曆用於宗教場合。',''];
+CD[422]=['hij','1447',1447,'C','黎巴嫩穆斯林社群使用回曆。多元並存的典型。',''];
+CD[458]=['hij','1447',1447,'C','馬來西亞回曆用於伊斯蘭事務及部分官方場合。',''];
+CD[360]=['hij','1447',1447,'C','印尼回曆用於伊斯蘭節日。另有爪哇曆和峇里島沙卡曆。',''];
+CD[96]=['hij','1447',1447,'C','汶萊回曆用於宗教和官方場合。',''];
+CD[478]=['hij','1447',1447,'C','茅利塔尼亞回曆在宗教和官方場合廣泛使用。',''];
+
+var EXTRAS=[
+{id:'HK',name:'香港',flag:'🇭🇰',cal:'chn',year:'農曆4724',yearN:4724,tier:'C',note:'香港日常完全使用公曆。農曆主要用於傳統節日：春節、中秋節、端午節、清明節等。2026年為丙午馬年。',receipt:''},
+{id:'MO',name:'澳門',flag:'🇲🇴',cal:'chn',year:'農曆4724',yearN:4724,tier:'C',note:'澳門與香港相似，日常使用公曆。農曆用於傳統節日和文化活動。中葡文化交融。',receipt:''}
+];
+
+var A2={4:'AF',8:'AL',12:'DZ',16:'AS',20:'AD',24:'AO',28:'AG',31:'AZ',32:'AR',36:'AU',40:'AT',44:'BS',48:'BH',50:'BD',51:'AM',52:'BB',56:'BE',64:'BT',68:'BO',70:'BA',72:'BW',76:'BR',84:'BZ',90:'SB',96:'BN',100:'BG',104:'MM',108:'BI',112:'BY',116:'KH',120:'CM',124:'CA',132:'CV',140:'CF',144:'LK',148:'TD',152:'CL',156:'CN',158:'TW',170:'CO',174:'KM',178:'CG',180:'CD',188:'CR',191:'HR',192:'CU',196:'CY',203:'CZ',204:'BJ',208:'DK',214:'DO',218:'EC',222:'SV',226:'GQ',231:'ET',232:'ER',233:'EE',242:'FJ',246:'FI',250:'FR',262:'DJ',266:'GA',268:'GE',270:'GM',275:'PS',276:'DE',288:'GH',296:'KI',300:'GR',304:'GL',320:'GT',324:'GN',328:'GY',332:'HT',336:'VA',340:'HN',348:'HU',352:'IS',356:'IN',360:'ID',364:'IR',368:'IQ',372:'IE',376:'IL',380:'IT',384:'CI',388:'JM',392:'JP',398:'KZ',400:'JO',404:'KE',408:'KP',410:'KR',414:'KW',417:'KG',418:'LA',422:'LB',426:'LS',428:'LV',430:'LR',434:'LY',440:'LT',442:'LU',450:'MG',454:'MW',458:'MY',462:'MV',466:'ML',470:'MT',478:'MR',480:'MU',484:'MX',492:'MC',496:'MN',498:'MD',499:'ME',504:'MA',508:'MZ',512:'OM',516:'NA',524:'NP',528:'NL',540:'NC',548:'VU',554:'NZ',558:'NI',562:'NE',566:'NG',578:'NO',586:'PK',591:'PA',598:'PG',600:'PY',604:'PE',608:'PH',616:'PL',620:'PT',624:'GW',626:'TL',630:'PR',634:'QA',642:'RO',643:'RU',646:'RW',674:'SM',682:'SA',686:'SN',688:'RS',694:'SL',702:'SG',703:'SK',705:'SI',706:'SO',710:'ZA',716:'ZW',724:'ES',728:'SS',729:'SD',732:'EH',740:'SR',748:'SZ',752:'SE',756:'CH',760:'SY',762:'TJ',764:'TH',768:'TG',776:'TO',780:'TT',784:'AE',788:'TN',792:'TR',795:'TM',800:'UG',804:'UA',807:'MK',818:'EG',826:'GB',834:'TZ',840:'US',854:'BF',858:'UY',860:'UZ',862:'VE',882:'WS',887:'YE',894:'ZM',704:'VN'};
+
+var zhN;try{zhN=new Intl.DisplayNames(['zh-Hant'],{type:'region'});}catch(e){}
+function nameOf(id){var a=A2[id];if(a&&zhN)try{return zhN.of(a);}catch(e){}return a||'';}
+function flagOf(id){var a=A2[id];if(!a)return'🏳️';return a.replace(/./g,function(c){return String.fromCodePoint(0x1F1E6+c.charCodeAt(0)-65);});}
+
+var allC=[];
+(function(){
+var seen={};
+for(var id in A2){if(seen[id])continue;seen[id]=1;
+var d=CD[id],calId=d?d[0]:'greg',yr=d?d[1]:'2026',yrN=d?d[2]:2026,tier=d?d[3]:'D',note=d?d[4]:'此國家日常使用公曆（格里曆），紀年2026年。',rcpt=d?d[5]:'';
+allC.push({id:+id,a2:A2[id],name:nameOf(id),flag:flagOf(id),cal:calId,year:yr,yearN:yrN,tier:tier,note:note,receipt:rcpt,isExtra:false});
+}
+EXTRAS.forEach(function(e){allC.push({id:e.id,a2:e.id,name:e.name,flag:e.flag,cal:e.cal,year:e.year,yearN:e.yearN,tier:e.tier,note:e.note,receipt:e.receipt,isExtra:true});});
+allC.sort(function(a,b){return a.name.localeCompare(b.name,'zh-Hant');});
+})();
+
+var calCounts={};allC.forEach(function(c){calCounts[c.cal]=(calCounts[c.cal]||0)+1;});
+var TIERS={A:['🔴','主要曆法','#dc2626'],B:['🟠','官方並用','#d97706'],C:['🟡','文化宗教','#ca8a04'],D:['🔵','純公曆','#3b82f6']};
+
+var TL=[
+{y:'8',l:'令和',f:'🇯🇵',cal:'rei'},{y:'115',l:'民國 / 主體',f:'🇹🇼🇰🇵',cal:'roc'},
+{y:'1387',l:'緬甸曆',f:'🇲🇲',cal:'mya'},{y:'1405',l:'太陽回曆',f:'🇮🇷🇦🇫',cal:'sh'},
+{y:'1432',l:'孟加拉曆',f:'🇧🇩',cal:'ben'},{y:'1447',l:'伊斯蘭曆',f:'🇸🇦☪️',cal:'hij'},
+{y:'1742',l:'科普特曆',f:'🇪🇬',cal:'cop'},{y:'1948',l:'沙卡曆',f:'🇮🇳',cal:'sak'},
+{y:'2018',l:'衣索比亞曆',f:'🇪🇹',cal:'eth'},{y:'2026',l:'公曆',f:'🌍',cal:'greg'},
+{y:'2082',l:'毗克拉姆曆',f:'🇳🇵',cal:'bs'},{y:'2569',l:'佛曆',f:'🇹🇭🇱🇦',cal:'bud'},
+{y:'2976',l:'亞馬齊格曆',f:'🇲🇦🇩🇿',cal:'amz'},{y:'4359',l:'檀紀',f:'🇰🇷',cal:'dan'},
+{y:'4724',l:'農曆',f:'🇨🇳🐴',cal:'chn'},{y:'5786',l:'希伯來曆',f:'🇮🇱',cal:'heb'}
+];
+
+var TODAY=[
+{icon:'📅',cal:'公曆',date:'2026年3月22日',note:''},
+{icon:'☀️',cal:'衣索比亞曆',date:'2018年 Megabit 12日',note:''},
+{icon:'🌞',cal:'太陽回曆',date:'1405年 Farvardin 2日',note:'🎉 新年剛過2天'},
+{icon:'✡️',cal:'希伯來曆',date:'5786年 Nisan 2日',note:''},
+{icon:'☪️',cal:'伊斯蘭曆',date:'≈ 1447年 Ramadan 22日',note:'🌙 齋月中'},
+{icon:'☸️',cal:'佛曆（泰國）',date:'2569年 3月22日',note:''},
+{icon:'🏯',cal:'日本令和',date:'令和8年3月22日',note:''},
+{icon:'🏛️',cal:'民國紀年',date:'民國115年3月22日',note:''},
+{icon:'🕉️',cal:'沙卡曆',date:'1948年 Chaitra 1日',note:'🎊 新年！'},
+{icon:'🏔️',cal:'毗克拉姆曆',date:'2082年 Chaitra 8日',note:''},
+{icon:'🌿',cal:'孟加拉曆',date:'1432年 Chaitra 8日',note:''},
+{icon:'🪷',cal:'緬甸曆',date:'1387年 Tabaung月',note:''},
+{icon:'🐉',cal:'農曆',date:'丙午年 二月初四',note:'🐴 馬年'},
+{icon:'ⵣ',cal:'亞馬齊格曆',date:'2976年',note:''},
+{icon:'☦️',cal:'科普特曆',date:'1742年 Baramhat 13日',note:''}
+];
+
+var $flag=document.getElementById('infoFlag'),$name=document.getElementById('infoName'),$badges=document.getElementById('infoBadges'),$year=document.getElementById('infoYear'),$sub=document.getElementById('infoSub'),$rcpt=document.getElementById('receiptBox'),$rcptC=document.getElementById('receiptContent');
+var $tip=document.getElementById('tooltip');
+var $sIn=document.getElementById('searchIn'),$sDD=document.getElementById('searchDD');
+var $calPanel=document.getElementById('calPanel'),$cGrid=document.getElementById('cGrid'),$cHdr=document.getElementById('cHdr'),$cCnt=document.getElementById('cCnt');
+var locked=null,selCal=null;
+
+/* TIMELINE */
+(function(){
+var h='<div class="tl-line"></div>';
+TL.forEach(function(t){
+var cal=CALS[t.cal];
+h+='<div class="tl-card" data-cal="'+t.cal+'" style="--c:'+cal.col+';--cbg:'+cal.bg+'">';
+h+='<div class="tl-year">'+t.y+'</div>';
+h+='<div class="tl-name">'+t.l+'</div>';
+h+='<div class="tl-flags">'+t.f+'</div>';
+h+='<div class="tl-dot"></div></div>';
+});
+document.getElementById('tlStrip').innerHTML=h;
+document.querySelectorAll('.tl-card').forEach(function(el){
+el.addEventListener('click',function(){
+var c=this.getAttribute('data-cal');
+if(selCal===c){selCal=null;}else{selCal=c;locked=null;resetInfo();}
+paintMap();renderCalPanel();renderCountries();updateTLActive();updateLegActive();
+});
+});
+})();
+function updateTLActive(){document.querySelectorAll('.tl-card').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-cal')===selCal);});}
+function updateLegActive(){document.querySelectorAll('.ml-item').forEach(function(m){m.classList.toggle('active',m.getAttribute('data-cal')===selCal);});}
+
+/* LEGEND */
+(function(){
+var order=['eth','sh','heb','hij','bud','rei','roc','juc','sak','bs','ben','mya','chn','dan','cop','amz','greg'];
+var h='';order.forEach(function(k){var c=CALS[k];h+='<span class="ml-item" data-cal="'+k+'"><span class="ml-dot" style="background:'+c.fill+';border:2px solid '+c.col+'"></span>'+c.n.split('（')[0]+'</span>';});
+document.getElementById('mapLegend').innerHTML=h;
+document.querySelectorAll('.ml-item').forEach(function(el){
+el.addEventListener('click',function(){
+var c=this.getAttribute('data-cal');
+if(selCal===c){selCal=null;}else{selCal=c;locked=null;resetInfo();}
+paintMap();renderCalPanel();renderCountries();updateTLActive();updateLegActive();
+});
+});
+})();
+
+function calOf(id){var d=CD[id];return d?d[0]:'greg';}
+function resetInfo(){$flag.textContent='🌍';$name.innerHTML='<span class="info-placeholder">🖱️ 將滑鼠移至地圖上，探索各國活在「哪一年」</span>';$badges.innerHTML='';$year.textContent='';$sub.textContent='';$rcpt.classList.remove('show');}
+function showInfo(c,isLock){
+var cal=CALS[c.cal],ti=TIERS[c.tier];
+$flag.textContent=c.flag;
+$name.textContent=c.name+(isLock?' 🔒':'');
+$badges.innerHTML='<span class="cal-badge" style="background:'+cal.col+'">'+cal.icon+' '+cal.n.split('（')[0]+'</span><span class="tier-badge" style="border-color:'+ti[2]+';color:'+ti[2]+'">'+ti[0]+' '+ti[1]+'</span>';
+$year.innerHTML='<span style="color:'+cal.hi+'">'+c.year+'</span>';
+$sub.textContent=c.note;
+if(isLock&&c.receipt){$rcpt.classList.add('show');$rcptC.textContent=c.receipt;}else{$rcpt.classList.remove('show');}
+}
+
+/* MAP */
+var W=960,H=500;
+var svg=d3.select('#mapWrap').append('svg').attr('viewBox','0 0 '+W+' '+H).attr('preserveAspectRatio','xMidYMid meet');
+var proj=d3.geoNaturalEarth1().scale(158).translate([W/2,H/2]);
+var path=d3.geoPath().projection(proj);
+var g=svg.append('g');
+g.append('path').datum({type:'Sphere'}).attr('d',path).attr('fill','#f8fafc').attr('stroke','#e2e8f0').attr('stroke-width',.5);
+g.append('path').datum(d3.geoGraticule()()).attr('d',path).attr('fill','none').attr('stroke','#e2e8f0').attr('stroke-width',.3);
+var zoom=d3.zoom().scaleExtent([1,12]).on('zoom',function(ev){g.attr('transform',ev.transform);});
+svg.call(zoom);
+
+function fillFor(id){var c=calOf(id),cal=CALS[c];return cal.fill;}
+function hiFor(id){var c=calOf(id),cal=CALS[c];return cal.col;}
+function strokeFor(id){var c=calOf(id);return c==='greg'?'#cbd5e1':CALS[c].col;}
+
+function paintMap(){
+g.selectAll('.country').each(function(){
+var el=d3.select(this),id=+el.attr('data-id'),c=calOf(id);
+if(selCal!==null){
+if(c===selCal){el.attr('fill',locked===id?CALS[c].col:fillFor(id)).attr('stroke',locked===id?'#1e293b':CALS[c].col).attr('stroke-width',locked===id?2:.8).attr('opacity',1);}
+else{el.attr('fill','#f1f5f9').attr('stroke','#e2e8f0').attr('stroke-width',.2).attr('opacity',.35);}
+}else if(locked!==null){
+if(id===locked){el.attr('fill',CALS[c].col).attr('stroke','#1e293b').attr('stroke-width',2).attr('opacity',1);}
+else{el.attr('fill','#f1f5f9').attr('stroke','#e2e8f0').attr('stroke-width',.2).attr('opacity',.4);}
+}else{el.attr('fill',fillFor(id)).attr('stroke',strokeFor(id)).attr('stroke-width',c==='greg'?.3:.7).attr('opacity',1);}
+});
+}
+function zoomTo(id){
+var el=g.selectAll('.country').filter(function(){return +d3.select(this).attr('data-id')===id;});
+if(el.empty())return;
+var b=path.bounds(el.datum()),dx=b[1][0]-b[0][0],dy=b[1][1]-b[0][1],cx=(b[0][0]+b[1][0])/2,cy=(b[0][1]+b[1][1])/2;
+var s=Math.max(1,Math.min(8,.85/Math.max(dx/W,dy/H)));
+svg.transition().duration(600).call(zoom.transform,d3.zoomIdentity.translate(W/2-s*cx,H/2-s*cy).scale(s));
+}
+
+/* LEFT PANEL */
+function renderCalPanel(){
+var order=['eth','sh','heb','hij','bud','rei','roc','juc','sak','bs','ben','mya','chn','dan','cop','amz','greg'];
+var h='';
+order.forEach(function(k){
+var c=CALS[k],cnt=calCounts[k]||0,ac=selCal===k?' active':'';
+h+='<div class="cal-card'+ac+'" data-cal="'+k+'" style="--c:'+c.col+';--cbg:'+c.bg+'">';
+h+='<div class="cal-icon" style="background:'+c.bg+';border:1.5px solid '+c.col+'">'+c.icon+'</div>';
+h+='<div class="cal-info"><div class="cal-name">'+c.n+'</div>';
+h+='<div class="cal-yr" style="color:'+c.hi+'">'+c.y+'</div>';
+h+='<div class="cal-desc">'+c.note.substring(0,45)+'…</div></div>';
+h+='<span class="cal-cnt" style="background:'+c.col+'">'+cnt+'</span>';
+h+='</div>';
+});
+h+='<div class="divider"></div>';
+h+='<div class="today-section"><div class="today-title">📅 今天（2026/3/22）各曆法日期</div>';
+TODAY.forEach(function(t){
+h+='<div class="today-row"><span class="today-icon">'+t.icon+'</span><span class="today-cal">'+t.cal+'</span><span class="today-date">'+t.date+'</span></div>';
+if(t.note)h+='<div style="text-align:right;margin-top:-2px;margin-bottom:2px"><span class="today-note">'+t.note+'</span></div>';
+});
+h+='</div>';
+h+='<div class="divider"></div>';
+h+='<div class="today-section"><div class="today-title">💡 旅行冷知識</div>';
+h+='<div class="fact-box">';
+[
+{i:'📆',t:'衣索比亞曆有13個月，每月30天，第13月只有5-6天。旅遊局標語：「13 Months of Sunshine」。'},
+{i:'🎊',t:'諾魯茲（Nowruz）被聯合國列為「人類非物質文化遺產」，全球超過3億人慶祝。'},
+{i:'⏳',t:'伊斯蘭曆是純陰曆，每年只有354天，齋月每年在公曆上「提前」約11天。'},
+{i:'🏪',t:'在泰國7-Eleven買咖啡，收據年份寫2569，不是印錯！這是佛曆。'},
+{i:'📝',t:'臺灣辦手機SIM卡被問「出生年」，記得說民國年（西元年−1911）！'},
+{i:'🤝',t:'北韓「主體115年」和臺灣「民國115年」數字恰好相同，因為起算年都是1912年。'},
+{i:'🔢',t:'希伯來曆5786是全球最大的「現行年份數字」，從聖經記載的世界創造之日起算。'},
+{i:'🪷',t:'緬甸曆1387年是全球最「年輕」的年份。比公曆少了639年。'}
+].forEach(function(f){h+='<div class="fact-item"><span style="flex-shrink:0">'+f.i+'</span><span>'+f.t+'</span></div>';});
+h+='</div></div>';
+$calPanel.innerHTML=h;
+$calPanel.querySelectorAll('.cal-card').forEach(function(el){
+el.addEventListener('click',function(){
+var k=this.getAttribute('data-cal');
+if(selCal===k){selCal=null;}else{selCal=k;locked=null;resetInfo();}
+paintMap();renderCalPanel();renderCountries();updateTLActive();updateLegActive();
+});
+});
+}
+
+/* RIGHT PANEL */
+function renderCountries(){
+var list;
+if(selCal!==null){
+list=allC.filter(function(c){return c.cal===selCal;});
+var cal=CALS[selCal];
+$cHdr.innerHTML=cal.icon+' '+cal.n+' <span class="pc-count">'+list.length+'</span>';
+}else{
+list=allC.filter(function(c){return c.cal!=='greg';}).concat(allC.filter(function(c){return c.cal==='greg';}));
+$cHdr.innerHTML='🌍 所有國家與地區 <span class="pc-count">'+allC.length+'</span>';
+}
+var h='';
+list.forEach(function(c){
+var cal=CALS[c.cal],ti=TIERS[c.tier],ac=(locked!==null&&locked===c.id)?' active':'';
+h+='<div class="cc-item'+ac+'" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'">';
+h+='<span class="cc-flag">'+c.flag+'</span><div class="cc-info"><div class="cc-name">'+c.name+'</div>';
+h+='<div class="cc-cal"><span class="cc-yr" style="background:'+cal.col+'">'+c.year+'</span>';
+h+='<span style="font-size:.66rem;color:#94a3b8">'+cal.n.split('（')[0]+'</span>';
+if(c.tier!=='D')h+='<span class="cc-tier" style="background:'+cal.bg+';color:'+cal.hi+';border:1px solid '+cal.col+'">'+ti[0]+ti[1]+'</span>';
+h+='</div></div></div>';
+});
+$cGrid.innerHTML=h;
+$cGrid.querySelectorAll('.cc-item').forEach(function(el){
+el.addEventListener('click',function(){
+var rawId=this.getAttribute('data-id'),isEx=this.getAttribute('data-extra')==='1';
+var cid=isEx?rawId:+rawId;
+if(locked===cid){locked=null;paintMap();resetInfo();renderCountries();return;}
+locked=cid;
+var c=allC.find(function(x){return x.id===cid;});
+if(c)showInfo(c,true);
+paintMap();renderCountries();
+if(!isEx&&typeof cid==='number')zoomTo(cid);
+});
+});
+}
+
+/* SEARCH */
+$sIn.addEventListener('input',function(){
+var q=this.value.trim().toLowerCase();
+if(!q){$sDD.classList.remove('show');return;}
+var res=allC.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1||(c.a2&&c.a2.toLowerCase().indexOf(q)>-1);}).slice(0,12);
+if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">找不到結果</div>';$sDD.classList.add('show');return;}
+var h='';res.forEach(function(c){
+var cal=CALS[c.cal];
+h+='<div class="sd-item" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'"><span style="font-size:1.2rem">'+c.flag+'</span><span style="font-weight:600;flex:1;color:#1e293b">'+c.name+'</span><span style="font-size:.78rem;font-weight:800;color:'+cal.hi+'">'+c.year+'</span></div>';
+});
+$sDD.innerHTML=h;$sDD.classList.add('show');
+$sDD.querySelectorAll('.sd-item').forEach(function(el){
+el.addEventListener('click',function(){
+var rawId=this.getAttribute('data-id'),isEx=this.getAttribute('data-extra')==='1';
+var cid=isEx?rawId:+rawId;
+locked=cid;selCal=null;
+var c=allC.find(function(x){return x.id===cid;});
+if(c){showInfo(c,true);$sIn.value=c.name;}
+paintMap();renderCalPanel();renderCountries();updateTLActive();updateLegActive();
+if(!isEx&&typeof cid==='number')zoomTo(cid);
+$sDD.classList.remove('show');
+});
+});
+});
+$sIn.addEventListener('blur',function(){setTimeout(function(){$sDD.classList.remove('show');},200);});
+
+/* RESET */
+document.getElementById('btnReset').addEventListener('click',function(){
+locked=null;selCal=null;$sIn.value='';
+resetInfo();paintMap();renderCalPanel();renderCountries();updateTLActive();updateLegActive();
+svg.transition().duration(500).call(zoom.transform,d3.zoomIdentity);
+});
+
+/* LOAD */
+d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(world){
+var countries=topojson.feature(world,world.objects.countries).features;
+g.selectAll('.country').data(countries).enter().append('path')
+  .attr('class','country')
+  .attr('data-id',function(d){return d.id;})
+  .attr('d',path)
+  .attr('fill',function(d){return fillFor(+d.id);})
+  .attr('stroke',function(d){return strokeFor(+d.id);})
+  .attr('stroke-width',function(d){return calOf(+d.id)==='greg'?.3:.7;});
+g.selectAll('.country')
+.on('mouseenter',function(){
+if(locked!==null)return;
+var el=d3.select(this),id=+el.attr('data-id'),c=calOf(id);
+if(selCal!==null&&c!==selCal)return;
+el.attr('fill',hiFor(id)).attr('stroke','#1e293b').attr('stroke-width',1.5);
+var co=allC.find(function(x){return x.id===id&&!x.isExtra;});
+if(co)showInfo(co,false);
+$tip.classList.add('show');
+})
+.on('mousemove',function(ev){
+var id=+d3.select(this).attr('data-id'),c=calOf(id);
+if(selCal!==null&&c!==selCal){$tip.classList.remove('show');return;}
+var co=allC.find(function(x){return x.id===id&&!x.isExtra;});
+if(co){
+var cal=CALS[co.cal],ti=TIERS[co.tier];
+$tip.innerHTML='<span style="font-size:1.3rem;vertical-align:middle;margin-right:4px">'+co.flag+'</span><span class="tt-name">'+co.name+'</span><span class="tt-sub">'+cal.n+'</span><span class="tt-year" style="color:'+cal.hi+'">'+co.year+'</span><span class="tt-cal" style="background:'+cal.col+'">'+cal.icon+' '+cal.n.split('（')[0]+'</span> <span class="tt-cal" style="background:'+cal.bg+';color:'+cal.hi+';border:1px solid '+cal.col+'">'+ti[0]+' '+ti[1]+'</span>'+(co.note?'<div class="tt-note">'+co.note.substring(0,120)+(co.note.length>120?'…':'')+'</div>':'');
+}
+var tx=ev.clientX+14,ty=ev.clientY-100;
+if(tx+360>window.innerWidth)tx=ev.clientX-360;if(ty<10)ty=ev.clientY+20;
+$tip.style.left=tx+'px';$tip.style.top=ty+'px';
+$tip.classList.add('show');
+})
+.on('mouseleave',function(){
+$tip.classList.remove('show');
+if(locked!==null)return;
+var el=d3.select(this),id=+el.attr('data-id'),c=calOf(id);
+if(selCal!==null){if(c===selCal)el.attr('fill',fillFor(id)).attr('stroke',CALS[c].col).attr('stroke-width',.8);}
+else{el.attr('fill',fillFor(id)).attr('stroke',strokeFor(id)).attr('stroke-width',c==='greg'?.3:.7);}
+resetInfo();
+})
+.on('click',function(){
+var id=+d3.select(this).attr('data-id'),c=calOf(id);
+if(selCal!==null&&c!==selCal)return;
+if(locked===id){locked=null;paintMap();resetInfo();renderCountries();return;}
+locked=id;
+var co=allC.find(function(x){return x.id===id&&!x.isExtra;});
+if(co)showInfo(co,true);
+paintMap();renderCountries();
+});
+document.getElementById('loadOv').style.display='none';
+renderCalPanel();renderCountries();
+}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#dc2626">⚠️ 地圖載入失敗，請重新整理。</p>';});
+
+})();
+</script>
+
+
+</body></html>
