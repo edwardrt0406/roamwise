@@ -118,14 +118,21 @@ td small{color:#f87171;font-weight:600;margin-left:2px}
 
 .empty-msg{text-align:center;color:#94a3b8;padding:2rem 0;font-size:.95rem}
 
-footer{background:#1e293b;color:#94a3b8;margin-top:auto}
-.footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;max-width:1200px;margin:0 auto;padding:2.5rem 1.5rem 2rem}
-.footer-grid h4{color:#f1f5f9;margin-bottom:.75rem;font-size:1rem}
-.footer-grid a{display:block;color:#94a3b8;text-decoration:none;margin-bottom:.5rem;font-size:.9rem}
-.footer-grid a:hover{color:#60a5fa}
-.footer-bottom{border-top:1px solid #374151;padding:1.5rem 1rem;font-size:.85rem;display:flex;justify-content:center;align-items:center;gap:.4rem;flex-wrap:wrap}
-.footer-bottom a{color:#94a3b8;text-decoration:none}
-.footer-bottom a:hover{color:#60a5fa}
+.rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#ffffff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#ffffff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
+@media(max-width:768px){.rw-footer-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(max-width:480px){.rw-footer{padding:36px 16px 0}.rw-footer-grid{grid-template-columns:1fr;gap:24px}}
+
 
 @media(max-width:768px){
   nav{padding:.6rem 1rem}
@@ -200,38 +207,44 @@ footer{background:#1e293b;color:#94a3b8;margin-top:auto}
 
 <div class="toast" id="toast"></div>
 
-<footer>
-  <div class="footer-grid">
-    <div>
-      <h4>⚡ 電源與時間</h4>
-      <a href="#">插頭標準</a>
-      <a href="#">時差查詢</a>
-      <a href="#">日出日落時間</a>
-      <a href="#">計時器</a>
+<footer class="rw-footer">
+  <div class="rw-footer-grid">
+    <div class="rw-footer-col">
+      <h4>⏰ 時間與日照</h4>
+      <ul>
+        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
+        <li><a href="meeting-zh.html" class="active">會議時間查找器</a></li>
+        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
+        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+      </ul>
     </div>
-    <div>
-      <h4>🎉 假期與活動</h4>
-      <a href="#">各地假期查詢</a>
-      <a href="#">節慶活動</a>
+    <div class="rw-footer-col">
+      <h4>🔧 換算與生活工具</h4>
+      <ul>
+        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
+        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
+        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+      </ul>
     </div>
-    <div>
-      <h4>💱 金融與單位</h4>
-      <a href="#">匯率兌換</a>
-      <a href="#">單位轉換器</a>
+    <div class="rw-footer-col">
+      <h4>🚗 交通與出行地圖</h4>
+      <ul>
+        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
+        <li><a href="../drivingdirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-zh.html">全球國際駕照承認互動地圖</a></li>
+      </ul>
     </div>
-    <div>
-      <h4>🌍 旅遊資訊</h4>
-      <a href="#">國家基本資訊</a>
-      <a href="#">地區詳細指南</a>
+    <div class="rw-footer-col">
+      <h4>🌍 全球資訊地圖</h4>
+      <ul>
+        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
+        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
+        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
+        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+      </ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2026 Roamwise. All rights reserved.</span>
-    <span>|</span>
-    <a href="#">隱私權政策</a>
-    <span>|</span>
-    <a href="#">使用條款</a>
-  </div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
 </footer>
 
 <script>
