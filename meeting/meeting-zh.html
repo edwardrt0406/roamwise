@@ -6,13 +6,12 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
 
-nav{background:#1e3a8a;display:flex;align-items:center;justify-content:space-between;padding:.75rem 2rem;flex-wrap:wrap}
-.logo{font-size:1.5rem;font-weight:700;color:#fff;text-decoration:none}
-.logo span{color:#facc15}
-.nav-right{display:flex;align-items:center;gap:1.2rem}
-nav a{color:#f1f5f9;text-decoration:none;font-size:.95rem}
-nav a:hover{color:#93c5fd}
-.lang-sel{padding:.35rem .6rem;border-radius:6px;border:1px solid #60a5fa;background:#1e3a8a;color:#f1f5f9;font-size:.9rem;cursor:pointer}
+
+header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(37,99,235,.3)}
+.logo{font-size:1.4rem;font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:8px}.logo span{color:var(--accent)}
+.header-right{display:flex;align-items:center;gap:16px}
+.header-right a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;transition:color .2s}.header-right a:hover{color:#fff}
+.lang-select{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:8px;font-size:.85rem;cursor:pointer;font-family:inherit}.lang-select option{color:#333;background:#fff}
 
 main{flex:1;max-width:1200px;width:100%;margin:2rem auto;padding:0 1.5rem}
 h1{font-size:1.7rem;margin-bottom:1.5rem}
@@ -116,16 +115,13 @@ footer{background:#1e293b;color:#94a3b8;margin-top:auto}
 </head>
 <body>
 
-<nav>
+<header>
   <a class="logo" href="#">Roam<span>wise</span></a>
   <div class="nav-right">
-    <a href="#">聯絡我們</a>
-    <select class="lang-sel">
-      <option>繁體中文</option>
-      <option>English</option>
-    </select>
-  </div>
-</nav>
+    <a href="contact-link">聯絡我們</a>
+    <select class="lang-select"><option selected="">繁體中文</option><option>English</option><option>Español</option><option>Português</option></select>
+    </div>
+</header>
 
 <main>
   <h1>🕐 會議時間查找器</h1>
