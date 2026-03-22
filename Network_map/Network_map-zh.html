@@ -22,6 +22,8 @@ body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;backgr
 .rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
 .rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
 .rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+@media(max-width:600px){.rw-header{padding:12px 16px}.rw-header-logo .brand-roam,.rw-header-logo .brand-wise{font-size:1.25rem}.rw-header-right{gap:12px}.rw-header-contact{font-size:.85rem}.rw-header-lang-btn{padding:6px 10px;font-size:.82rem}}
+
 
   main{flex:1;max-width:1280px;width:100%;margin:1.5rem auto;padding:0 1.5rem}
 h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
@@ -114,8 +116,8 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 .rw-footer-bottom a{color:#64748b;margin:0 6px}
 .rw-footer-bottom a:hover{color:#e2e8f0}
   
-@media(max-width:900px){.two-panel{grid-template-columns:1fr}.svc-row{gap:3px}}
-@media(max-width:600px){nav{padding:.6rem 1rem}.nav-r{gap:.7rem}nav a{font-size:.8rem}main{padding:0 .8rem}.card{padding:1rem}.info-bar{flex-direction:column}.cc-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.rw-footer-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(max-width:480px){.rw-footer{padding:36px 16px 0}.rw-footer-grid{grid-template-columns:1fr;gap:24px}}
 </style>
 </head>
 <body>
@@ -224,7 +226,7 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
         <li><a href="../time-zone-map/time-zone-map.zh.html">世界時區互動地圖</a></li>
         <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
         <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
-        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+        <li><a href="Network_map-zh.html" class="active">全球網路自由度互動地圖</a></li>
       </ul>
     </div>
   </div>
