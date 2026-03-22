@@ -33,7 +33,7 @@ header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)
 .lang-select option { color: #333; background: #fff; }
   
 main{flex:1;max-width:900px;width:100%;margin:2rem auto;padding:0 1.5rem}
-h1{font-size:1.7rem;margin-bottom:1.5rem}
+.page-title { text-align: center; font-size: 1.7rem; font-weight: 700; margin-bottom: 24px; color: var(--primary-dark); }
 
 .card{background:#fff;border-radius:14px;padding:1.5rem 2rem;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:1.5rem}
 .row{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;margin-bottom:1.2rem}
@@ -135,10 +135,16 @@ footer{background:#1e293b;color:#94a3b8;margin-top:auto}
 <body>
 
 <header>
-  <a class="logo" href="#">Roam<span>wise</span></a>
-  <div class="nav-right">
-    <a href="contact-link">聯絡我們</a>
-    <select class="lang-select"><option selected="">繁體中文</option><option>English</option><option>Español</option><option>Português</option></select>
+    <div class="logo">Roam<span>wise</span>
+    </div>
+    <div class="header-right">
+        <a href="#" class="contact-link">聯絡我們</a>
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+            <option value="meeting-zh.html" selected="">繁體中文</option>
+            <option value="meeting-en.html">English</option>
+            <option value="meeting-es.html">Español</option>
+            <option value="meeting-pt.html">Português</option>
+        </select>
     </div>
 </header>
 
