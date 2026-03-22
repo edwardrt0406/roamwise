@@ -19,76 +19,24 @@
         }
 
         /* ===== HEADER ===== */
-        header {
-            background: linear-gradient(135deg, #161822 0%, #1a1d2e 100%);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            padding: 0 24px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+.rw-header *{margin:0;padding:0;box-sizing:border-box}
+.rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:linear-gradient(135deg,#1e40af,#3b82f6);border-bottom:none;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
+.rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
+.rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#ffffff}
+.rw-header-logo .brand-wise{font-size:1.55rem;font-weight:800;color:#bfdbfe}
+.rw-header-right{display:flex;align-items:center;gap:20px}
+.rw-header-contact{text-decoration:none;color:#e0e7ff;font-size:.95rem;font-weight:500;transition:color .2s}
+.rw-header-contact:hover{color:#ffffff}
+.rw-header-lang{position:relative;display:inline-block}
+.rw-header-lang-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:.9rem;font-weight:500;color:#ffffff;cursor:pointer;transition:background .2s}
+.rw-header-lang-btn:hover{background:rgba(255,255,255,.25)}
+.rw-header-lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:160px;overflow:hidden;z-index:1001}
+.rw-header-lang:hover .rw-header-lang-menu,.rw-header-lang-menu.show{display:block}
+.rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
+.rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
+.rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+@media(max-width:600px){.rw-header{padding:12px 16px}.rw-header-logo .brand-roam,.rw-header-logo .brand-wise{font-size:1.25rem}.rw-header-right{gap:12px}.rw-header-contact{font-size:.85rem}.rw-header-lang-btn{padding:6px 10px;font-size:.82rem}}
 
-        .header-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-        }
-
-        .logo-roam {
-            font-size: 22px;
-            font-weight: 800;
-            color: #4fc3f7;
-            letter-spacing: 0.5px;
-        }
-
-        .logo-wise {
-            font-size: 22px;
-            font-weight: 800;
-            color: #ff8a65;
-            letter-spacing: 0.5px;
-        }
-
-        .header-nav {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .header-nav a {
-            color: #aaa;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-
-        .header-nav a:hover {
-            color: #4fc3f7;
-        }
-
-        .header-nav a.active {
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .lang-select {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #ccc;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-        }
 
         /* ===== HERO ===== */
         .hero {
@@ -366,100 +314,20 @@
         }
 
         /* ===== FOOTER ===== */
-        footer {
-            background: linear-gradient(180deg, #0f1117 0%, #0b0d14 100%);
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding: 40px 24px 28px;
-            margin-top: 20px;
-        }
-
-        .footer-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 32px;
-            margin-bottom: 32px;
-        }
-
-        .footer-col h4 {
-            font-size: 14px;
-            font-weight: 700;
-            color: #ccc;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .footer-col a {
-            display: block;
-            color: #777;
-            text-decoration: none;
-            font-size: 13px;
-            padding: 3px 0;
-            transition: color 0.2s;
-        }
-
-        .footer-col a:hover {
-            color: #4fc3f7;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .footer-copy {
-            font-size: 13px;
-            color: #555;
-        }
-
-        .footer-links a {
-            color: #666;
-            text-decoration: none;
-            font-size: 13px;
-            margin-left: 16px;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: #4fc3f7;
-        }
-
-        .footer-contact {
-            width: 100%;
-            text-align: center;
-            margin-top: 12px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(255,255,255,0.04);
-        }
-
-        .footer-contact a {
-            color: #ff8a65;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .footer-contact a:hover {
-            text-decoration: underline;
-        }
-
-        .footer-contact span {
-            font-size: 13px;
-            color: #555;
-            display: block;
-            margin-top: 4px;
-        }
+.rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#ffffff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#ffffff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
+@media(max-width:768px){.rw-footer-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(max-width:480px){.rw-footer{padding:36px 16px 0}.rw-footer-grid{grid-template-columns:1fr;gap:24px}}
 
         /* ===== SUCCESS MODAL ===== */
         .modal-overlay {
@@ -573,23 +441,22 @@
 <body>
 
     <!-- HEADER -->
-    <header>
-        <div class="header-inner">
-            <a href="#" class="logo">
-                <span class="logo-roam">Roam</span><span class="logo-wise">wise</span>
-            </a>
-            <div class="header-nav">
-                <a href="#">首頁</a>
-                <a href="#" class="active">聯絡我們</a>
-                <select class="lang-select">
-                    <option selected="">繁體中文</option>
-                    <option>English</option>
-                    <option>Español</option>
-                    <option>Português</option>
-                </select>
-            </div>
-        </div>
-    </header>
+<header class="rw-header">
+  <a href="/" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
+  <div class="rw-header-right">
+    <a href="/contact" class="contact-zh.html">聯絡我們</a>
+    <div class="rw-header-lang">
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
+      <div class="rw-header-lang-menu">
+        <a href="contact-zh.html" class="active">繁體中文</a>
+        <a href="contact-en.html">English</a>
+        <a href="contact-es.html">Español</a>
+        <a href="contact-pt.html">Português</a>
+      </div>
+    </div>
+  </div>
+</header>
+
 
     <!-- HERO -->
     <section class="hero">
@@ -690,49 +557,45 @@
     </main>
 
     <!-- FOOTER -->
-    <footer>
-        <div class="footer-inner">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>⏰ 時間與日照</h4>
-                    <a href="#">世界時區查詢</a>
-                    <a href="#">會議時間查找器</a>
-                    <a href="#">日出日落時間查詢</a>
-                    <a href="#">計時器與倒計時</a>
-                </div>
-                <div class="footer-col">
-                    <h4>🔧 換算與生活工具</h4>
-                    <a href="#">匯率換算</a>
-                    <a href="#">單位轉換</a>
-                    <a href="#">插頭標準查詢</a>
-                </div>
-                <div class="footer-col">
-                    <h4>🚗 交通與出行地圖</h4>
-                    <a href="#">世界國家與地區互動地圖</a>
-                    <a href="#">世界行車方向互動地圖</a>
-                    <a href="#">全球國際駕照承認互動地圖</a>
-                </div>
-                <div class="footer-col">
-                    <h4>🌍 全球資訊地圖</h4>
-                    <a href="#">世界時區互動地圖</a>
-                    <a href="#">世界插頭類型互動地圖</a>
-                    <a href="#">全球曆法互動地圖</a>
-                    <a href="#">全球網路自由度互動地圖</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <span class="footer-copy">© 2026 Roamwise. 所有權利保留。</span>
-                <div class="footer-links">
-                    <a href="#">隱私政策</a>
-                    <a href="#">使用條款</a>
-                </div>
-                <div class="footer-contact">
-                    <a href="mailto:explorer.rt.853@gmail.com">✉️ explorer.rt.853@gmail.com</a>
-                    <span>唯一官方聯絡信箱</span>
-                </div>
-            </div>
-        </div>
-    </footer>
+<footer class="rw-footer">
+  <div class="rw-footer-grid">
+    <div class="rw-footer-col">
+      <h4>⏰ 時間與日照</h4>
+      <ul>
+        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
+        <li><a href="../meeting/meeting-zh.html">會議時間查找器</a></li>
+        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
+        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🔧 換算與生活工具</h4>
+      <ul>
+        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
+        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
+        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🚗 交通與出行地圖</h4>
+      <ul>
+        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
+        <li><a href="../drivingdirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-zh.html">全球國際駕照承認互動地圖</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🌍 全球資訊地圖</h4>
+      <ul>
+        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
+        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
+        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
+        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+</footer>
 
     <!-- SUCCESS MODAL -->
     <div class="modal-overlay" id="successModal">
