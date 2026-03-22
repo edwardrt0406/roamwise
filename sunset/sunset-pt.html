@@ -7,11 +7,24 @@
         :root{--primary:#2563eb;--primary-dark:#1d4ed8;--primary-light:#dbeafe;--accent:#f59e0b;--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.07);--shadow-sm:0 2px 8px rgba(0,0,0,.05)}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
-        header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(37,99,235,.3)}
-        .logo{font-size:1.4rem;font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:8px}.logo span{color:var(--accent)}
-        .header-right{display:flex;align-items:center;gap:16px}
-        .header-right a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;transition:color .2s}.header-right a:hover{color:#fff}
-        .lang-select{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:8px;font-size:.85rem;cursor:pointer;font-family:inherit}.lang-select option{color:#333;background:#fff}
+
+        .rw-header *{margin:0;padding:0;box-sizing:border-box}
+        .rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:linear-gradient(135deg,#1e40af,#3b82f6);border-bottom:none;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
+.rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
+.rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#ffffff}
+.rw-header-logo .brand-wise{font-size:1.55rem;font-weight:800;color:#bfdbfe}
+.rw-header-right{display:flex;align-items:center;gap:20px}
+.rw-header-contact{text-decoration:none;color:#e0e7ff;font-size:.95rem;font-weight:500;transition:color .2s}
+.rw-header-contact:hover{color:#ffffff}
+.rw-header-lang{position:relative;display:inline-block}
+.rw-header-lang-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:.9rem;font-weight:500;color:#ffffff;cursor:pointer;transition:background .2s}
+.rw-header-lang-btn:hover{background:rgba(255,255,255,.25)}
+.rw-header-lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:160px;overflow:hidden;z-index:1001}
+.rw-header-lang:hover .rw-header-lang-menu,.rw-header-lang-menu.show{display:block}
+.rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
+.rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
+.rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+
         main{flex:1;max-width:900px;width:100%;margin:0 auto;padding:32px 16px}
         .page-title{text-align:center;font-size:1.7rem;font-weight:700;margin-bottom:24px;color:var(--primary-dark)}
         .info-box{background:var(--primary-light);border-left:4px solid var(--primary);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin-bottom:28px;display:flex;gap:12px;align-items:flex-start;font-size:.92rem;color:var(--primary-dark);line-height:1.6}.info-box .icon{font-size:1.2rem;flex-shrink:0;margin-top:2px}
@@ -82,19 +95,20 @@
 </head>
 <body>
 <header>
-    <div class="logo">
-        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
-        Roam<span>wise</span>
+<header class="rw-header">
+  <a href="/" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
+  <div class="rw-header-right">
+    <a href="/contact" class="rw-header-contact">Contacte-nos</a>
+    <div class="rw-header-lang">
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">Português ▾</button>
+      <div class="rw-header-lang-menu">
+        <a href="#" class="active">繁體中文</a>
+        <a href="#">English</a>
+        <a href="#">Español</a>
+        <a href="#">Português</a>
+      </div>
     </div>
-    <div class="header-right">
-        <a href="#" class="contact-link">Contacte-nos</a>
-        <select class="lang-select" onchange="changeLanguage(this.value)">
-            <option value="sunset-pt.html" selected="">Português</option>
-            <option value="sunset-en.html">English</option>
-            <option value="sunset-es.html">Español</option>
-            <option value="sunset-zh.html">繁體中文</option>
-        </select>
-    </div>
+  </div>
 </header>
 
 <script>
