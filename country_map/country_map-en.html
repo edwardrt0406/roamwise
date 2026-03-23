@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>世界國家與地區互動地圖 – Roamwise</title>
+<title>World Countries & Regions Map – Roamwise</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
@@ -96,8 +96,8 @@ h1{font-size:1.7rem;margin-bottom:1.5rem}
     <div class="rw-header-lang">
       <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
       <div class="rw-header-lang-menu">
-        <a href="country_map-zh.html" class="active">繁體中文</a>
-        <a href="country_map-en.html">English</a>
+        <a href="country_map-zh.html">繁體中文</a>
+        <a href="country_map-en.html" class="active">English</a>
         <a href="country_map-es.html">Español</a>
         <a href="country_map-pt.html">Português</a>
       </div>
@@ -106,7 +106,7 @@ h1{font-size:1.7rem;margin-bottom:1.5rem}
 </header>
 
 <main>
-  <h1>🗺️ 世界國家與地區互動地圖</h1>
+  <h1>🗺️ World Countries & Regions Map</h1>
 
   <div class="card">
     <div class="info-bar">
@@ -164,45 +164,44 @@ h1{font-size:1.7rem;margin-bottom:1.5rem}
 
 <div class="tooltip" id="tooltip"></div>
 
-<footer>
 <footer class="rw-footer">
   <div class="rw-footer-grid">
     <div class="rw-footer-col">
-      <h4>⏰ 時間與日照</h4>
+      <h4>⏰ Time & Daylight</h4>
       <ul>
-        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
-        <li><a href="../meeting/meeting-zh.html">會議時間查找器</a></li>
-        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
-        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+        <li><a href="../time-zone/time-zone-en.html">World Time Zone Lookup</a></li>
+        <li><a href="../meeting/meeting-en.html">Meeting Time Finder</a></li>
+        <li><a href="../sunset/sunset-en.html">Sunrise & Sunset Times</a></li>
+        <li><a href="../timer/timer-en.html">Timer & Countdown</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🔧 換算與生活工具</h4>
+      <h4>🔧 Converters & Tools</h4>
       <ul>
-        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
-        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
-        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+        <li><a href="../currency/currency-en.html">Currency Converter</a></li>
+        <li><a href="../unit/unit-en.html">Unit Converter</a></li>
+        <li><a href="../plug/plug-en.html">Power Plug Standards</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🚗 交通與出行地圖</h4>
+      <h4>🚗 Travel & Driving Maps</h4>
       <ul>
-        <li><a href="country_map-zh.html" class="active">世界國家與地區互動地圖</a></li>
-        <li><a href="../drivedirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
-        <li><a href="../drivinglicense_map/drivinglicense_map-zh.html">全球國際駕照承認互動地圖</a></li>
+        <li><a href="country_map-en.html">World Countries & Regions Map</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-en.html">Driving Direction Map</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-en.html">International Driving Permit Map</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🌍 全球資訊地圖</h4>
+      <h4>🌍 Global Info Maps</h4>
       <ul>
-        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
-        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
-        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
-        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+        <li><a href="../time-zone-map/time-zone-map-en.html">World Time Zone Map</a></li>
+        <li><a href="../plug_map/plug_map-en.html">World Power Plug Map</a></li>
+        <li><a href="../nationalday_map/nationalday_map-en.html">World Calendar Systems Map</a></li>
+        <li><a href="../Network_map/Network_map-en.html">Internet Freedom Map</a></li>
       </ul>
     </div>
   </div>
-  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></div>
 </footer>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -214,17 +213,35 @@ h1{font-size:1.7rem;margin-bottom:1.5rem}
 var CONT_MAP={
   4:'asia',8:'europe',12:'africa',16:'oceania',20:'europe',24:'africa',28:'namerica',31:'asia',32:'samerica',36:'oceania',40:'europe',44:'namerica',48:'asia',50:'asia',51:'asia',52:'namerica',56:'europe',64:'asia',68:'samerica',70:'europe',72:'africa',76:'samerica',84:'namerica',90:'oceania',96:'asia',100:'europe',104:'asia',108:'africa',112:'europe',116:'asia',120:'africa',124:'namerica',132:'africa',140:'africa',144:'asia',148:'africa',152:'samerica',156:'asia',158:'asia',170:'samerica',174:'africa',175:'oceania',178:'africa',180:'africa',184:'namerica',188:'namerica',191:'europe',192:'namerica',196:'europe',203:'europe',204:'africa',208:'europe',212:'namerica',214:'namerica',218:'samerica',222:'namerica',226:'africa',231:'africa',232:'africa',233:'europe',234:'europe',242:'oceania',246:'europe',250:'europe',258:'oceania',262:'africa',266:'africa',268:'asia',270:'africa',275:'asia',276:'europe',288:'africa',296:'oceania',300:'europe',304:'namerica',308:'namerica',320:'namerica',324:'africa',328:'samerica',332:'namerica',336:'europe',340:'namerica',348:'europe',352:'europe',356:'asia',360:'asia',364:'asia',368:'asia',372:'europe',376:'asia',380:'europe',384:'africa',388:'namerica',392:'asia',398:'asia',400:'asia',404:'africa',408:'asia',410:'asia',414:'asia',417:'asia',418:'asia',422:'asia',426:'africa',428:'europe',430:'africa',434:'africa',440:'europe',442:'europe',450:'africa',454:'africa',458:'asia',462:'asia',466:'africa',470:'europe',478:'africa',480:'africa',484:'namerica',492:'europe',496:'asia',498:'europe',499:'europe',504:'africa',508:'africa',512:'asia',516:'africa',520:'oceania',524:'asia',528:'europe',540:'oceania',548:'oceania',554:'oceania',558:'namerica',562:'africa',566:'africa',570:'oceania',578:'europe',580:'oceania',583:'oceania',584:'oceania',585:'oceania',586:'asia',591:'namerica',598:'oceania',600:'samerica',604:'samerica',608:'asia',616:'europe',620:'europe',624:'africa',626:'asia',630:'namerica',634:'asia',642:'europe',643:'europe',646:'africa',659:'namerica',660:'namerica',662:'namerica',670:'namerica',674:'europe',678:'africa',682:'asia',686:'africa',688:'europe',694:'africa',702:'asia',703:'europe',705:'europe',706:'africa',710:'africa',716:'africa',720:'asia',724:'europe',728:'africa',729:'africa',732:'africa',740:'samerica',748:'africa',752:'europe',756:'europe',760:'asia',762:'asia',764:'asia',768:'africa',776:'oceania',780:'namerica',784:'asia',788:'africa',792:'asia',795:'asia',798:'oceania',800:'africa',804:'europe',807:'europe',818:'africa',826:'europe',834:'africa',840:'namerica',854:'africa',858:'samerica',860:'asia',862:'samerica',876:'oceania',882:'oceania',887:'asia',894:'africa',704:'asia'
 };
-var CAP={4:'喀布爾',8:'地拉那',12:'阿爾及爾',16:'帕果帕果',20:'安道爾城',24:'羅安達',28:'聖約翰',31:'巴庫',32:'布宜諾斯艾利斯',36:'坎培拉',40:'維也納',44:'拿索',48:'麥納瑪',50:'達卡',51:'葉里溫',52:'乔治城',56:'布魯塞爾',64:'廷布',68:'蘇克雷',70:'塞拉耶佛',72:'嘉柏隆里',76:'巴西利亞',84:'貝爾莫潘',90:'荷尼阿拉',96:'斯里巴加灣',100:'索菲亞',104:'奈比多',108:'布松布拉',112:'明斯克',116:'金邊',120:'雅溫得',124:'渥太華',132:'普拉亞',140:'班基',144:'可倫坡',148:'恩將納',152:'聖地牙哥',156:'北京',158:'臺北',170:'波哥大',174:'莫洛尼',175:'帕利基爾',178:'布拉柴維爾',180:'金夏沙',184:'阿瓦魯阿',188:'聖荷西',191:'札格雷布',192:'哈瓦那',196:'尼科西亞',203:'布拉格',204:'波多諾伏',208:'哥本哈根',212:'羅索',214:'聖多明哥',218:'基多',222:'聖薩爾瓦多',226:'馬拉博',231:'阿迪斯阿貝巴',232:'阿斯馬拉',233:'塔林',234:'托爾斯港',242:'蘇瓦',246:'赫爾辛基',250:'巴黎',258:'帕皮提',262:'吉布提',266:'乐伯维尔',268:'提比里斯',270:'班竹',275:'拉姆安拉',276:'柏林',288:'阿克拉',296:'南塔拉瓦',300:'雅典',304:'努克',308:'聖喬治',320:'瓜地馬拉市',324:'柯那克里',328:'乔治城',332:'太子港',336:'梵蒂岡城',340:'特古西加爾巴',348:'布達佩斯',352:'雷克雅維克',356:'新德里',360:'雅加達',364:'德黑蘭',368:'巴格達',372:'都柏林',376:'耶路撒冷',380:'羅馬',384:'雅穆蘇克雷',388:'京斯敦',392:'東京',398:'阿斯塔納',400:'安曼',404:'奈洛比',408:'平壤',410:'首爾',414:'科威特城',417:'比什凱克',418:'永珍',422:'贝鲁特',426:'馬塞魯',428:'里加',430:'蒙羅維亞',434:'的黎波里',440:'維爾紐斯',442:'盧森堡市',450:'安塔那那利佛',454:'利隆威',458:'吉隆坡',462:'馬累',466:'巴馬科',470:'瓦萊塔',478:'諾克少',480:'路易港',484:'墨西哥城',492:'摩納哥',496:'烏蘭巴托',498:'基希訥烏',499:'波德戈里察',504:'拉巴特',508:'馬普托',512:'馬斯喀特',516:'溫得和克',520:'亞倫',524:'加德滿都',528:'阿姆斯特丹',540:'努美阿',548:'維拉港',554:'威靈頓',558:'馬納瓜',562:'尼阿美',566:'阿布賈',570:'阿洛菲',578:'奧斯陸',580:'塞班島',583:'帕利基爾',584:'馬朱羅',585:'乖胎',586:'伊斯蘭堡',591:'巴拿馬城',598:'莫爾茲比港',600:'亞松森',604:'利馬',608:'馬尼拉',616:'華沙',620:'里斯本',624:'比紹',626:'帝力',630:'聖胡安',634:'杜哈',642:'布加勒斯特',643:'莫斯科',646:'吉加利',659:'巴斯特爾',660:'瓦利',662:'卡斯翠',670:'金斯敦',674:'聖馬利諾',678:'聖多美',682:'利雅德',686:'達卡爾',688:'貝爾格勒',694:'自由城',702:'新加坡',703:'布拉提斯拉瓦',705:'盧比安那',706:'摩加迪休',710:'普利托利亞',716:'哈拉雷',720:'薩那',724:'馬德里',728:'朱巴',729:'喀土穆',732:'阿尤恩',740:'帕拉馬里博',748:'姆巴巴內',752:'斯德哥爾摩',756:'伯恩',760:'大馬士革',762:'杜尚別',764:'曼谷',768:'洛美',776:'努瓜婁發',780:'西班牙港',784:'阿布達比',788:'突尼斯',792:'安卡拉',795:'阿什哈巴德',798:'富納富提',800:'坎帕拉',804:'基輔',807:'史高比耶',818:'開羅',826:'倫敦',834:'杜篤瑪',840:'華盛頓',854:'瓦加杜古',858:'蒙特維多',860:'塔什干',862:'卡拉卡斯',876:'馬塔烏圖',882:'阿庇亞',887:'薩那',894:'盧薩卡',704:'河內'};
-var A2={4:'AF',8:'AL',12:'DZ',16:'AS',20:'AD',24:'AO',28:'AG',31:'AZ',32:'AR',36:'AU',40:'AT',44:'BS',48:'BH',50:'BD',51:'AM',52:'BB',56:'BE',64:'BT',68:'BO',70:'BA',72:'BW',76:'BR',84:'BZ',90:'SB',96:'BN',100:'BG',104:'MM',108:'BI',112:'BY',116:'KH',120:'CM',124:'CA',132:'CV',140:'CF',144:'LK',148:'TD',152:'CL',156:'CN',158:'TW',170:'CO',174:'KM',175:'FM',178:'CG',180:'CD',184:'CK',188:'CR',191:'HR',192:'CU',196:'CY',203:'CZ',204:'BJ',208:'DK',212:'DM',214:'DO',218:'EC',222:'SV',226:'GQ',231:'ET',232:'ER',233:'EE',234:'FO',242:'FJ',246:'FI',250:'FR',258:'PF',262:'DJ',266:'GA',268:'GE',270:'GM',275:'PS',276:'DE',288:'GH',296:'KI',300:'GR',304:'GL',308:'GD',320:'GT',324:'GN',328:'GY',332:'HT',336:'VA',340:'HN',348:'HU',352:'IS',356:'IN',360:'ID',364:'IR',368:'IQ',372:'IE',376:'IL',380:'IT',384:'CI',388:'JM',392:'JP',398:'KZ',400:'JO',404:'KE',408:'KP',410:'KR',414:'KW',417:'KG',418:'LA',422:'LB',426:'LS',428:'LV',430:'LR',434:'LY',440:'LT',442:'LU',450:'MG',454:'MW',458:'MY',462:'MV',466:'ML',470:'MT',478:'MR',480:'MU',484:'MX',492:'MC',496:'MN',498:'MD',499:'ME',504:'MA',508:'MZ',512:'OM',516:'NA',520:'NR',524:'NP',528:'NL',540:'NC',548:'VU',554:'NZ',558:'NI',562:'NE',566:'NG',570:'NU',578:'NO',580:'MP',583:'FM',584:'MH',585:'PW',586:'PK',591:'PA',598:'PG',600:'PY',604:'PE',608:'PH',616:'PL',620:'PT',624:'GW',626:'TL',630:'PR',634:'QA',642:'RO',643:'RU',646:'RW',659:'KN',660:'AI',662:'LC',670:'VC',674:'SM',678:'ST',682:'SA',686:'SN',688:'RS',694:'SL',702:'SG',703:'SK',705:'SI',706:'SO',710:'ZA',716:'ZW',720:'YE',724:'ES',728:'SS',729:'SD',732:'EH',740:'SR',748:'SZ',752:'SE',756:'CH',760:'SY',762:'TJ',764:'TH',768:'TG',776:'TO',780:'TT',784:'AE',788:'TN',792:'TR',795:'TM',798:'TV',800:'UG',804:'UA',807:'MK',818:'EG',826:'GB',834:'TZ',840:'US',854:'BF',858:'UY',860:'UZ',862:'VE',876:'WF',882:'WS',887:'YE',894:'ZM',704:'VN'};
-var CONT_LABELS={asia:'亞洲',europe:'歐洲',africa:'非洲',namerica:'北美洲',samerica:'南美洲',oceania:'大洋洲'};
-var CONT_COLORS={asia:'#ef4444',europe:'#3b82f6',africa:'#f59e0b',namerica:'#10b981',samerica:'#8b5cf6',oceania:'#06b6d4'};
-var CONT_FILL={asia:'#fca5a5',europe:'#93c5fd',africa:'#fcd34d',namerica:'#6ee7b7',samerica:'#c4b5fd',oceania:'#67e8f9'};
-var CONT_HI={asia:'#dc2626',europe:'#2563eb',africa:'#d97706',namerica:'#059669',samerica:'#7c3aed',oceania:'#0891b2'};
+var CAP = {
+  4:'Kabul', 8:'Tirana', 12:'Algiers', 16:'Pago Pago', 20:'Andorra la Vella', 24:'Luanda', 28:'St John\'s', 31:'Baku', 32:'Buenos Aires', 36:'Canberra', 40:'Vienna', 44:'Nassau', 48:'Manama', 50:'Dhaka', 51:'Yerevan', 52:'George Town', 56:'Brussels', 64:'Thimphu', 68:'Sucre', 70:'Sarajevo', 72:'Gaborone', 76:'Brasília', 84:'Belmopan', 90:'Honiara', 96:'Bandar Seri Begawan', 100:'Sofia', 104:'Naypyidaw', 108:'Bujumbura', 112:'Minsk', 116:'Phnom Penh', 120:'Yaoundé', 124:'Ottawa', 132:'Praia', 140:'Bangui', 144:'Colombo', 148:'N\'Djamena', 152:'Santiago', 156:'Beijing', 158:'Taipei', 170:'Bogotá', 174:'Moroni', 175:'Palikir', 178:'Brazzaville', 180:'Kinshasa', 184:'Avarua', 188:'San José', 191:'Zagreb', 192:'Havana', 196:'Nicosia', 203:'Prague', 204:'Porto-Novo', 208:'Copenhagen', 212:'Roseau', 214:'Santo Domingo', 218:'Quito', 222:'San Salvador', 226:'Malabo', 231:'Addis Ababa', 232:'Asmara', 233:'Tallinn', 234:'Tórshavn', 242:'Suva', 246:'Helsinki', 250:'Paris', 258:'Papeete', 262:'Djibouti', 266:'Libreville', 268:'Tbilisi', 270:'Banjul', 275:'Ramallah', 276:'Berlin', 288:'Accra', 296:'South Tarawa', 300:'Athens', 304:'Nuuk', 308:'St George\'s', 320:'Guatemala City', 324:'Conakry', 328:'Georgetown', 332:'Port-au-Prince', 336:'Vatican City', 340:'Tegucigalpa', 348:'Budapest', 352:'Reykjavík', 356:'New Delhi', 360:'Jakarta', 364:'Tehran', 368:'Baghdad', 372:'Dublin', 376:'Jerusalem', 380:'Rome', 384:'Yamoussoukro', 388:'Kingston', 392:'Tokyo', 398:'Astana', 400:'Amman', 404:'Nairobi', 408:'Pyongyang', 410:'Seoul', 414:'Kuwait City', 417:'Bishkek', 418:'Vientiane', 422:'Beirut', 426:'Maseru', 428:'Riga', 430:'Monrovia', 434:'Tripoli', 440:'Vilnius', 442:'Luxembourg City', 450:'Antananarivo', 454:'Lilongwe', 458:'Kuala Lumpur', 462:'Malé', 466:'Bamako', 470:'Valletta', 478:'Nouakchott', 480:'Port Louis', 484:'Mexico City', 492:'Monaco', 496:'Ulaanbaatar', 498:'Chişinău', 499:'Podgorica', 504:'Rabat', 508:'Maputo', 512:'Muscat', 516:'Windhoek', 520:'Yaren', 524:'Kathmandu', 528:'Amsterdam', 540:'Nouméa', 548:'Port Vila', 554:'Wellington', 558:'Managua', 562:'Niamey', 566:'Abuja', 570:'Alofi', 578:'Oslo', 580:'Saipan', 583:'Palikir', 584:'Majuro', 585:'Mejit', 586:'Islamabad', 591:'Panama City', 598:'Port Moresby', 600:'Asunción', 604:'Lima', 608:'Manila', 616:'Warsaw', 620:'Lisbon', 624:'Bissau', 626:'Dili', 630:'San Juan', 634:'Doha', 642:'Bucharest', 643:'Moscow', 646:'Kigali', 659:'Basseterre', 660:'The Valley', 662:'Castries', 670:'Kingstown', 674:'San Marino', 678:'São Tomé', 682:'Riyadh', 686:'Dakar', 688:'Belgrade', 694:'Freetown', 702:'Singapore', 703:'Bratislava', 705:'Ljubljana', 706:'Mogadishu', 710:'Pretoria', 716:'Harare', 720:'Sana\'a', 724:'Madrid', 728:'Juba', 729:'Khartoum', 732:'El Aaiún', 740:'Paramaribo', 748:'Mbabane', 752:'Stockholm', 756:'Bern', 760:'Damascus', 762:'Dushanbe', 764:'Bangkok', 768:'Lomé', 776:'Nukuʻalofa', 780:'Port of Spain', 784:'Abu Dhabi', 788:'Tunis', 792:'Ankara', 795:'Ashgabat', 798:'Funafuti', 800:'Kampala', 804:'Kyiv', 807:'Skopje', 818:'Cairo', 826:'London', 834:'Dodoma', 840:'Washington', 854:'Ouagadougou', 858:'Montevideo', 860:'Tashkent', 862:'Caracas', 876:'Mata-Utu', 882:'Apia', 887:'Sana\'a', 894:'Lusaka', 704:'Hanoi'
+};
 
-var zhN;try{zhN=new Intl.DisplayNames(['zh-Hant'],{type:'region'});}catch(e){zhN=null;}
-function nameA2(a2){if(a2&&zhN){try{return zhN.of(a2);}catch(e){}}return a2||'未知';}
-function flagA2(a2){if(!a2)return'🌐';return a2.replace(/./g,function(c){return String.fromCodePoint(0x1F1E6+c.charCodeAt(0)-65);});}
+var A2 = {
+  4:'AF', 8:'AL', 12:'DZ', 16:'AS', 20:'AD', 24:'AO', 28:'AG', 31:'AZ', 32:'AR', 36:'AU', 40:'AT', 44:'BS', 48:'BH', 50:'BD', 51:'AM', 52:'BB', 56:'BE', 64:'BT', 68:'BO', 70:'BA', 72:'BW', 76:'BR', 84:'BZ', 90:'SB', 96:'BN', 100:'BG', 104:'MM', 108:'BI', 112:'BY', 116:'KH', 120:'CM', 124:'CA', 132:'CV', 140:'CF', 144:'LK', 148:'TD', 152:'CL', 156:'CN', 158:'TW', 170:'CO', 174:'KM', 175:'FM', 178:'CG', 180:'CD', 184:'CK', 188:'CR', 191:'HR', 192:'CU', 196:'CY', 203:'CZ', 204:'BJ', 208:'DK', 212:'DM', 214:'DO', 218:'EC', 222:'SV', 226:'GQ', 231:'ET', 232:'ER', 233:'EE', 234:'FO', 242:'FJ', 246:'FI', 250:'FR', 258:'PF', 262:'DJ', 266:'GA', 268:'GE', 270:'GM', 275:'PS', 276:'DE', 288:'GH', 296:'KI', 300:'GR', 304:'GL', 308:'GD', 320:'GT', 324:'GN', 328:'GY', 332:'HT', 336:'VA', 340:'HN', 348:'HU', 352:'IS', 356:'IN', 360:'ID', 364:'IR', 368:'IQ', 372:'IE', 376:'IL', 380:'IT', 384:'CI', 388:'JM', 392:'JP', 398:'KZ', 400:'JO', 404:'KE', 408:'KP', 410:'KR', 414:'KW', 417:'KG', 418:'LA', 422:'LB', 426:'LS', 428:'LV', 430:'LR', 434:'LY', 440:'LT', 442:'LU', 450:'MG', 454:'MW', 458:'MY', 462:'MV', 466:'ML', 470:'MT', 478:'MR', 480:'MU', 484:'MX', 492:'MC', 496:'MN', 498:'MD', 499:'ME', 504:'MA', 508:'MZ', 512:'OM', 516:'NA', 520:'NR', 524:'NP', 528:'NL', 540:'NC', 548:'VU', 554:'NZ', 558:'NI', 562:'NE', 566:'NG', 570:'NU', 578:'NO', 580:'MP', 583:'FM', 584:'MH', 585:'PW', 586:'PK', 591:'PA', 598:'PG', 600:'PY', 604:'PE', 608:'PH', 616:'PL', 620:'PT', 624:'GW', 626:'TL', 630:'PR', 634:'QA', 642:'RO', 643:'RU', 646:'RW', 659:'KN', 660:'AI', 662:'LC', 670:'VC', 674:'SM', 678:'ST', 682:'SA', 686:'SN', 688:'RS', 694:'SL', 702:'SG', 703:'SK', 705:'SI', 706:'SO', 710:'ZA', 716:'ZW', 720:'YE', 724:'ES', 728:'SS', 729:'SD', 732:'EH', 740:'SR', 748:'SZ', 752:'SE', 756:'CH', 760:'SY', 762:'TJ', 764:'TH', 768:'TG', 776:'TO', 780:'TT', 784:'AE', 788:'TN', 792:'TR', 795:'TM', 798:'TV', 800:'UG', 804:'UA', 807:'MK', 818:'EG', 826:'GB', 834:'TZ', 840:'US', 854:'BF', 858:'UY', 860:'UZ', 862:'VE', 876:'WF', 882:'WS', 887:'YE', 894:'ZM', 704:'VN'
+};
 
+var CONT_LABELS = { asia:'Asia', europe:'Europe', africa:'Africa', namerica:'North America', samerica:'South America', oceania:'Oceania' };
+var CONT_COLORS = { asia:'#ef4444', europe:'#3b82f6', africa:'#f59e0b', namerica:'#10b981', samerica:'#8b5cf6', oceania:'#06b6d4' };
+var CONT_FILL = { asia:'#fca5a5', europe:'#93c5fd', africa:'#fcd34d', namerica:'#6ee7b7', samerica:'#c4b5fd', oceania:'#67e8f9' };
+var CONT_HI = { asia:'#dc2626', europe:'#2563eb', africa:'#d97706', namerica:'#059669', samerica:'#7c3aed', oceania:'#0891b2' };
+
+var zhN;
+try { zhN = new Intl.DisplayNames(['en-GB'], { type:'region' }); } catch(e) { zhN = null; }
+
+function nameA2(a2){
+  if(a2 && zhN){
+    try { return zhN.of(a2); } catch(e) {}
+  }
+  return a2 || 'Unknown';
+}
+
+function flagA2(a2){
+  if(!a2) return '🌐';
+  return a2.replace(/./g, function(c){
+    return String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65);
+  });
+}
 /* ===== BUILD COUNTRY LIST ===== */
 var allCountries=[];
 (function(){var seen={};for(var id in A2){if(seen[id])continue;seen[id]=1;var a2=A2[id];allCountries.push({id:+id,a2:a2,name:nameA2(a2),flag:flagA2(a2),cont:CONT_MAP[+id]||'',capital:CAP[+id]||''});}
@@ -244,16 +261,24 @@ var locked=null,hovId=null,activeCont='all';
 
 /* ===== INFO DISPLAY ===== */
 function resetInfo(){
-  $flag.textContent='🌐';$name.innerHTML='<span class="info-placeholder">將滑鼠移至地圖上的國家或地區</span>';
-  $a2.textContent='';$cap.textContent='';$cont.innerHTML='';
+  $flag.textContent = '🌐';
+  $name.innerHTML = '<span class="info-placeholder">Move your mouse over a country or territory on the map</span>';
+  $a2.textContent = '';
+  $cap.textContent = '';
+  $cont.innerHTML = '';
 }
-function showInfo(c,isLocked){
-  $flag.textContent=c.flag;
-  $name.textContent=c.name+(isLocked?' 🔒':'');
-  $a2.textContent='ISO 代碼：'+c.a2;
-  $cap.textContent=c.capital?'首都 / 首府：'+c.capital:'';
-  var cn=CONT_LABELS[c.cont]||'';
-  if(cn){$cont.innerHTML='<span class="info-continent" style="background:'+CONT_COLORS[c.cont]+'">'+cn+'</span>';}else{$cont.innerHTML='';}
+
+function showInfo(c, isLocked){
+  $flag.textContent = c.flag;
+  $name.textContent = c.name + (isLocked ? ' 🔒' : '');
+  $a2.textContent = 'ISO code: ' + c.a2;
+  $cap.textContent = c.capital ? 'Capital: ' + c.capital : '';
+  var cn = CONT_LABELS[c.cont] || '';
+  if(cn){
+    $cont.innerHTML = '<span class="info-continent" style="background:'+CONT_COLORS[c.cont]+'">'+cn+'</span>';
+  }else{
+    $cont.innerHTML = '';
+  }
 }
 
 /* ===== SVG MAP ===== */
@@ -288,23 +313,31 @@ function paintMap(){
 
 /* ===== COUNTRY GRID ===== */
 function renderGrid(){
-  var list=activeCont==='all'?allCountries:allCountries.filter(function(c){return c.cont===activeCont;});
-  $statTotal.textContent=allCountries.length;$statShown.textContent=list.length;
-  $lTitle.textContent='📋 '+(activeCont==='all'?'所有國家與地區':CONT_LABELS[activeCont])+' ('+list.length+')';
-  var h='';
+  var list = activeCont === 'all' ? allCountries : allCountries.filter(function(c){ return c.cont === activeCont; });
+  $statTotal.textContent = allCountries.length;
+  $statShown.textContent = list.length;
+  $lTitle.textContent = '📋 ' + (activeCont === 'all' ? 'All countries and territories' : CONT_LABELS[activeCont]) + ' (' + list.length + ')';
+  var h = '';
   list.forEach(function(c){
-    var ac=locked===c.id?' active':'';
-    h+='<div class="cg-item'+ac+'" data-id="'+c.id+'"><span class="cg-flag">'+c.flag+'</span><span class="cg-name">'+c.name+'</span></div>';
+    var ac = locked === c.id ? ' active' : '';
+    h += '<div class="cg-item'+ac+'" data-id="'+c.id+'"><span class="cg-flag">'+c.flag+'</span><span class="cg-name">'+c.name+'</span></div>';
   });
-  $grid.innerHTML=h;
+  $grid.innerHTML = h;
   $grid.querySelectorAll('.cg-item').forEach(function(el){
-    el.addEventListener('click',function(){
-      var id=+this.getAttribute('data-id');
-      if(locked===id){locked=null;paintMap();resetInfo();renderGrid();return;}
-      locked=id;
-      var c=allCountries.find(function(x){return x.id===id;});
-      if(c)showInfo(c,true);
-      paintMap();renderGrid();
+    el.addEventListener('click', function(){
+      var id = +this.getAttribute('data-id');
+      if(locked === id){
+        locked = null;
+        paintMap();
+        resetInfo();
+        renderGrid();
+        return;
+      }
+      locked = id;
+      var c = allCountries.find(function(x){ return x.id === id; });
+      if(c) showInfo(c, true);
+      paintMap();
+      renderGrid();
       zoomToCountry(id);
     });
   });
@@ -320,26 +353,53 @@ function zoomToCountry(id){
 }
 
 /* ===== SEARCH ===== */
-$sInput.addEventListener('input',function(){
-  var q=this.value.trim().toLowerCase();
-  if(!q){$sResults.classList.remove('show');return;}
-  var res=allCountries.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1||c.a2.toLowerCase().indexOf(q)>-1;}).slice(0,10);
-  if(!res.length){$sResults.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">找不到結果</div>';$sResults.classList.add('show');return;}
-  var h='';res.forEach(function(c){h+='<div class="sr-item" data-id="'+c.id+'"><span class="sr-flag">'+c.flag+'</span><span class="sr-name">'+c.name+'</span><span class="sr-a2">'+c.a2+'</span></div>';});
-  $sResults.innerHTML=h;$sResults.classList.add('show');
+$sInput.addEventListener('input', function(){
+  var q = this.value.trim().toLowerCase();
+  if(!q){
+    $sResults.classList.remove('show');
+    return;
+  }
+  var res = allCountries.filter(function(c){
+    return c.name.toLowerCase().indexOf(q) > -1 || c.a2.toLowerCase().indexOf(q) > -1;
+  }).slice(0, 10);
+
+  if(!res.length){
+    $sResults.innerHTML = '<div style="padding:.8rem;color:#94a3b8;text-align:center">No results found</div>';
+    $sResults.classList.add('show');
+    return;
+  }
+
+  var h = '';
+  res.forEach(function(c){
+    h += '<div class="sr-item" data-id="'+c.id+'"><span class="sr-flag">'+c.flag+'</span><span class="sr-name">'+c.name+'</span><span class="sr-a2">'+c.a2+'</span></div>';
+  });
+  $sResults.innerHTML = h;
+  $sResults.classList.add('show');
+
   $sResults.querySelectorAll('.sr-item').forEach(function(el){
-    el.addEventListener('click',function(){
-      var id=+this.getAttribute('data-id');locked=id;
-      var c=allCountries.find(function(x){return x.id===id;});
-      if(c)showInfo(c,true);
-      paintMap();renderGrid();zoomToCountry(id);
-      $sResults.classList.remove('show');$sInput.value=c?c.name:'';
+    el.addEventListener('click', function(){
+      var id = +this.getAttribute('data-id');
+      locked = id;
+      var c = allCountries.find(function(x){ return x.id === id; });
+      if(c) showInfo(c, true);
+      paintMap();
+      renderGrid();
+      zoomToCountry(id);
+      $sResults.classList.remove('show');
+      $sInput.value = c ? c.name : '';
     });
   });
 });
-$sInput.addEventListener('blur',function(){setTimeout(function(){$sResults.classList.remove('show');},200);});
-$sInput.addEventListener('focus',function(){if(this.value.trim())this.dispatchEvent(new Event('input'));});
 
+$sInput.addEventListener('blur', function(){
+  setTimeout(function(){
+    $sResults.classList.remove('show');
+  }, 200);
+});
+
+$sInput.addEventListener('focus', function(){
+  if(this.value.trim()) this.dispatchEvent(new Event('input'));
+});
 /* ===== CONTINENT FILTER ===== */
 document.querySelectorAll('.cont-btn').forEach(function(btn){
   btn.addEventListener('click',function(){
@@ -419,10 +479,12 @@ d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(f
       paintMap();renderGrid();
     });
 
-  elLoading.style.display='none';
-  paintMap();renderGrid();
-}).catch(function(){elLoading.innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗，請重新整理頁面。</p>';});
-
+elLoading.style.display = 'none';
+paintMap();
+renderGrid();
+}).catch(function(){
+  elLoading.innerHTML = '<p style="color:#ef4444">⚠️ Map failed to load. Please refresh the page.</p>';
+});
 })();
 </script>
 
