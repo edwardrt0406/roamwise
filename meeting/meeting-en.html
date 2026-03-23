@@ -1,0 +1,645 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>會議時間查找器 – Roamwise</title>
+<style>
+:root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --accent: #f59e0b;
+            --bg: #f0f4f8;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #16a34a;
+            --warning: #ea580c;
+            --danger: #dc2626;
+            --radius: 12px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.07);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+        }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+.rw-header *{margin:0;padding:0;box-sizing:border-box}
+.rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:linear-gradient(135deg,#1e40af,#3b82f6);border-bottom:none;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
+.rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
+.rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#ffffff}
+.rw-header-logo .brand-wise{font-size:1.55rem;font-weight:800;color:#bfdbfe}
+.rw-header-right{display:flex;align-items:center;gap:20px}
+.rw-header-contact{text-decoration:none;color:#e0e7ff;font-size:.95rem;font-weight:500;transition:color .2s}
+.rw-header-contact:hover{color:#ffffff}
+.rw-header-lang{position:relative;display:inline-block}
+.rw-header-lang-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:.9rem;font-weight:500;color:#ffffff;cursor:pointer;transition:background .2s}
+.rw-header-lang-btn:hover{background:rgba(255,255,255,.25)}
+.rw-header-lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:160px;overflow:hidden;z-index:1001}
+.rw-header-lang:hover .rw-header-lang-menu,.rw-header-lang-menu.show{display:block}
+.rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
+.rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
+.rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+  
+main{flex:1;max-width:900px;width:100%;margin:2rem auto;padding:0 1.5rem}
+.page-title { text-align: center; font-size: 1.7rem; font-weight: 700; margin-bottom: 24px; color: var(--primary-dark); }
+
+.card{background:#fff;border-radius:14px;padding:1.5rem 2rem;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:1.5rem}
+.row{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;margin-bottom:1.2rem}
+.field{display:flex;flex-direction:column;gap:.35rem}
+.field label{font-size:.85rem;font-weight:600;color:#475569}
+.field input[type="date"],
+.field select{
+  padding:.5rem .75rem;border:1px solid #cbd5e1;border-radius:8px;font-size:1rem;background:#fff;
+  -webkit-appearance:none;appearance:none;color:#1e293b;cursor:pointer;
+}
+.field input[type="date"]:focus,
+.field select:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.25)}
+
+.stag{font-weight:700;font-size:.95rem;color:#334155;margin-bottom:.6rem}
+
+.cities-wrap{display:flex;flex-wrap:wrap;gap:.75rem;align-items:flex-start}
+.city-item{position:relative;display:flex;align-items:flex-end;gap:.35rem}
+.city-input{
+  padding:.5rem .65rem;border:1px solid #cbd5e1;border-radius:8px;font-size:.95rem;width:185px;
+  background:#fff;color:#1e293b;
+}
+.city-input:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.25)}
+
+.city-dd{
+  position:absolute;top:100%;left:0;width:240px;max-height:220px;overflow-y:auto;
+  background:#fff;border:1px solid #cbd5e1;border-radius:8px;
+  box-shadow:0 6px 20px rgba(0,0,0,.12);z-index:99;display:none;
+}
+.city-dd.show{display:block}
+.city-dd-item{
+  padding:.5rem .75rem;cursor:pointer;font-size:.9rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.city-dd-item:hover,
+.city-dd-item.hl{background:#eff6ff}
+.city-dd-item .en{color:#94a3b8;font-size:.8rem}
+
+.btn-del{
+  width:28px;height:28px;border-radius:50%;border:none;background:#ef4444;color:#fff;
+  font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  margin-bottom:2px;flex-shrink:0;line-height:1;
+}
+.btn-del:hover{background:#dc2626}
+
+.btn-add{
+  margin-top:.85rem;padding:.55rem 1.3rem;border:none;border-radius:8px;
+  background:#3b82f6;color:#fff;font-size:.95rem;cursor:pointer;font-weight:600;
+}
+.btn-add:hover{background:#2563eb}
+
+.toast{
+  position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);
+  background:#ef4444;color:#fff;padding:.65rem 1.5rem;border-radius:8px;
+  font-size:.9rem;z-index:9999;opacity:0;pointer-events:none;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);transition:opacity .3s;
+}
+.toast.show{opacity:1;pointer-events:auto}
+
+.results{overflow-x:auto}
+.results h2{font-size:1.15rem;margin-bottom:1rem}
+table{width:100%;border-collapse:collapse;min-width:300px}
+th{padding:.7rem 1rem;text-align:center;font-weight:700;background:#f8fafc;border-bottom:2px solid #e2e8f0;white-space:nowrap;font-size:.9rem}
+td{padding:.55rem 1rem;text-align:center;border-bottom:1px solid #f1f5f9;white-space:nowrap;font-size:.95rem}
+tr:hover td{background:#fafbfd}
+.work{background:#dcfce7}
+.sleep{color:#bcc5d3}
+td small{color:#f87171;font-weight:600;margin-left:2px}
+
+.legend{display:flex;flex-wrap:wrap;gap:1.2rem;margin-top:.8rem;font-size:.82rem;color:#64748b}
+.legend span{display:inline-flex;align-items:center;gap:.3rem}
+.dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+.dot-w{background:#dcfce7;border:1px solid #86efac}
+.dot-s{background:#f1f5f9;border:1px solid #cbd5e1}
+
+.empty-msg{text-align:center;color:#94a3b8;padding:2rem 0;font-size:.95rem}
+
+.rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#ffffff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#ffffff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
+@media(max-width:768px){.rw-footer-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(max-width:480px){.rw-footer{padding:36px 16px 0}.rw-footer-grid{grid-template-columns:1fr;gap:24px}}
+
+
+@media(max-width:768px){
+  nav{padding:.6rem 1rem}
+  main{padding:0 1rem}
+  .card{padding:1.2rem 1rem}
+  .footer-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:600px){.rw-header{padding:12px 16px}.rw-header-logo .brand-roam,.rw-header-logo .brand-wise{font-size:1.25rem}.rw-header-right{gap:12px}.rw-header-contact{font-size:.85rem}.rw-header-lang-btn{padding:6px 10px;font-size:.82rem}}
+            
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr}
+  .city-input{width:140px}
+  h1{font-size:1.35rem}
+}
+</style>
+</head>
+<body>
+
+<header class="rw-header">
+  <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
+  <div class="rw-header-right">
+    <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
+    <div class="rw-header-lang">
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
+      <div class="rw-header-lang-menu">
+        <a href="meeting-zh.html" class="active">繁體中文</a>
+        <a href="meeting-en.html">English</a>
+        <a href="meeting-es.html">Español</a>
+        <a href="meeting-pt.html">Português</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1>🕐 會議時間查找器</h1>
+
+  <div class="card">
+    <div class="row">
+      <div class="field">
+        <label for="mDate">日期</label>
+        <input type="date" id="mDate">
+      </div>
+      <div class="field">
+        <label for="mStart">開始時間</label>
+        <select id="mStart"></select>
+      </div>
+      <div class="field">
+        <label for="mEnd">結束時間</label>
+        <select id="mEnd"></select>
+      </div>
+    </div>
+
+    <div class="stag">參與城市（第一個城市為基準時區）</div>
+    <div class="cities-wrap" id="cityRow"></div>
+    <button type="button" class="btn-add" id="btnAdd">＋ 新增城市</button>
+  </div>
+
+  <div class="card results">
+    <h2>各城市對應時間</h2>
+    <div id="tableWrap">
+      <p class="empty-msg">請選擇至少兩個城市以顯示結果</p>
+    </div>
+    <div class="legend">
+      <span><i class="dot dot-w"></i> 上班時段 09–18</span>
+      <span><i class="dot dot-s"></i> 深夜時段 23–07</span>
+      <span>• <small style="color:#f87171;font-weight:600">+1</small> / <small style="color:#f87171;font-weight:600">−1</small> = 隔天 / 前一天</span>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<footer class="rw-footer">
+  <div class="rw-footer-grid">
+    <div class="rw-footer-col">
+      <h4>⏰ 時間與日照</h4>
+      <ul>
+        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
+        <li><a href="meeting-zh.html" class="active">會議時間查找器</a></li>
+        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
+        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🔧 換算與生活工具</h4>
+      <ul>
+        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
+        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
+        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🚗 交通與出行地圖</h4>
+      <ul>
+        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
+        <li><a href="../drivingdirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-zh.html">全球國際駕照承認互動地圖</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🌍 全球資訊地圖</h4>
+      <ul>
+        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
+        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
+        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
+        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+</footer>
+
+<script>
+(function(){
+
+  /* ===== 城市資料庫 ===== */
+  var CITIES = [
+    {n:"丹佛",e:"Denver",t:"America/Denver"},
+    {n:"上海",e:"Shanghai",t:"Asia/Shanghai"},
+    {n:"伊斯坦堡",e:"Istanbul",t:"Europe/Istanbul"},
+    {n:"仰光",e:"Yangon",t:"Asia/Yangon"},
+    {n:"倫敦",e:"London",t:"Europe/London"},
+    {n:"加爾各答",e:"Kolkata",t:"Asia/Kolkata"},
+    {n:"北京",e:"Beijing",t:"Asia/Shanghai"},
+    {n:"卡拉奇",e:"Karachi",t:"Asia/Karachi"},
+    {n:"卡薩布蘭卡",e:"Casablanca",t:"Africa/Casablanca"},
+    {n:"台北",e:"Taipei",t:"Asia/Taipei"},
+    {n:"台中",e:"Taichung",t:"Asia/Taipei"},
+    {n:"吉隆坡",e:"Kuala Lumpur",t:"Asia/Kuala_Lumpur"},
+    {n:"多倫多",e:"Toronto",t:"America/Toronto"},
+    {n:"多哈",e:"Doha",t:"Asia/Qatar"},
+    {n:"大阪",e:"Osaka",t:"Asia/Tokyo"},
+    {n:"奈洛比",e:"Nairobi",t:"Africa/Nairobi"},
+    {n:"奧克蘭",e:"Auckland",t:"Pacific/Auckland"},
+    {n:"奧斯陸",e:"Oslo",t:"Europe/Oslo"},
+    {n:"威靈頓",e:"Wellington",t:"Pacific/Auckland"},
+    {n:"孟買",e:"Mumbai",t:"Asia/Kolkata"},
+    {n:"安克拉治",e:"Anchorage",t:"America/Anchorage"},
+    {n:"巴塞隆納",e:"Barcelona",t:"Europe/Madrid"},
+    {n:"巴黎",e:"Paris",t:"Europe/Paris"},
+    {n:"布宜諾斯艾利斯",e:"Buenos Aires",t:"America/Argentina/Buenos_Aires"},
+    {n:"布拉格",e:"Prague",t:"Europe/Prague"},
+    {n:"布達佩斯",e:"Budapest",t:"Europe/Budapest"},
+    {n:"布里斯本",e:"Brisbane",t:"Australia/Brisbane"},
+    {n:"布魯塞爾",e:"Brussels",t:"Europe/Brussels"},
+    {n:"廣州",e:"Guangzhou",t:"Asia/Shanghai"},
+    {n:"德黑蘭",e:"Tehran",t:"Asia/Tehran"},
+    {n:"成都",e:"Chengdu",t:"Asia/Shanghai"},
+    {n:"拉各斯",e:"Lagos",t:"Africa/Lagos"},
+    {n:"日內瓦",e:"Geneva",t:"Europe/Zurich"},
+    {n:"曼谷",e:"Bangkok",t:"Asia/Bangkok"},
+    {n:"柏林",e:"Berlin",t:"Europe/Berlin"},
+    {n:"法蘭克福",e:"Frankfurt",t:"Europe/Berlin"},
+    {n:"波哥大",e:"Bogota",t:"America/Bogota"},
+    {n:"波士頓",e:"Boston",t:"America/New_York"},
+    {n:"洛杉磯",e:"Los Angeles",t:"America/Los_Angeles"},
+    {n:"深圳",e:"Shenzhen",t:"Asia/Shanghai"},
+    {n:"溫哥華",e:"Vancouver",t:"America/Vancouver"},
+    {n:"澳門",e:"Macau",t:"Asia/Macau"},
+    {n:"珀斯",e:"Perth",t:"Australia/Perth"},
+    {n:"紐約",e:"New York",t:"America/New_York"},
+    {n:"維也納",e:"Vienna",t:"Europe/Vienna"},
+    {n:"羅馬",e:"Rome",t:"Europe/Rome"},
+    {n:"芝加哥",e:"Chicago",t:"America/Chicago"},
+    {n:"莫斯科",e:"Moscow",t:"Europe/Moscow"},
+    {n:"華沙",e:"Warsaw",t:"Europe/Warsaw"},
+    {n:"華盛頓",e:"Washington DC",t:"America/New_York"},
+    {n:"蒙特婁",e:"Montreal",t:"America/Toronto"},
+    {n:"蘇黎世",e:"Zurich",t:"Europe/Zurich"},
+    {n:"西雅圖",e:"Seattle",t:"America/Los_Angeles"},
+    {n:"達卡",e:"Dhaka",t:"Asia/Dhaka"},
+    {n:"達拉斯",e:"Dallas",t:"America/Chicago"},
+    {n:"邁阿密",e:"Miami",t:"America/New_York"},
+    {n:"里斯本",e:"Lisbon",t:"Europe/Lisbon"},
+    {n:"里約熱內盧",e:"Rio de Janeiro",t:"America/Sao_Paulo"},
+    {n:"金邊",e:"Phnom Penh",t:"Asia/Phnom_Penh"},
+    {n:"釜山",e:"Busan",t:"Asia/Seoul"},
+    {n:"開羅",e:"Cairo",t:"Africa/Cairo"},
+    {n:"阿克拉",e:"Accra",t:"Africa/Accra"},
+    {n:"阿姆斯特丹",e:"Amsterdam",t:"Europe/Amsterdam"},
+    {n:"阿布達比",e:"Abu Dhabi",t:"Asia/Dubai"},
+    {n:"雅典",e:"Athens",t:"Europe/Athens"},
+    {n:"雅加達",e:"Jakarta",t:"Asia/Jakarta"},
+    {n:"雪梨",e:"Sydney",t:"Australia/Sydney"},
+    {n:"首爾",e:"Seoul",t:"Asia/Seoul"},
+    {n:"香港",e:"Hong Kong",t:"Asia/Hong_Kong"},
+    {n:"高雄",e:"Kaohsiung",t:"Asia/Taipei"},
+    {n:"鳳凰城",e:"Phoenix",t:"America/Phoenix"},
+    {n:"墨爾本",e:"Melbourne",t:"Australia/Melbourne"},
+    {n:"墨西哥城",e:"Mexico City",t:"America/Mexico_City"},
+    {n:"新加坡",e:"Singapore",t:"Asia/Singapore"},
+    {n:"新德里",e:"New Delhi",t:"Asia/Kolkata"},
+    {n:"斯德哥爾摩",e:"Stockholm",t:"Europe/Stockholm"},
+    {n:"東京",e:"Tokyo",t:"Asia/Tokyo"},
+    {n:"杜拜",e:"Dubai",t:"Asia/Dubai"},
+    {n:"河內",e:"Hanoi",t:"Asia/Ho_Chi_Minh"},
+    {n:"利馬",e:"Lima",t:"America/Lima"},
+    {n:"利雅德",e:"Riyadh",t:"Asia/Riyadh"},
+    {n:"哥本哈根",e:"Copenhagen",t:"Europe/Copenhagen"},
+    {n:"科倫坡",e:"Colombo",t:"Asia/Colombo"},
+    {n:"聖地亞哥",e:"Santiago",t:"America/Santiago"},
+    {n:"聖保羅",e:"Sao Paulo",t:"America/Sao_Paulo"},
+    {n:"胡志明市",e:"Ho Chi Minh City",t:"Asia/Ho_Chi_Minh"},
+    {n:"舊金山",e:"San Francisco",t:"America/Los_Angeles"},
+    {n:"休士頓",e:"Houston",t:"America/Chicago"},
+    {n:"峇里島",e:"Bali",t:"Asia/Makassar"},
+    {n:"愛丁堡",e:"Edinburgh",t:"Europe/London"},
+    {n:"檀香山",e:"Honolulu",t:"Pacific/Honolulu"},
+    {n:"赫爾辛基",e:"Helsinki",t:"Europe/Helsinki"},
+    {n:"都柏林",e:"Dublin",t:"Europe/Dublin"},
+    {n:"馬尼拉",e:"Manila",t:"Asia/Manila"},
+    {n:"馬德里",e:"Madrid",t:"Europe/Madrid"},
+    {n:"米蘭",e:"Milan",t:"Europe/Rome"},
+    {n:"約翰尼斯堡",e:"Johannesburg",t:"Africa/Johannesburg"},
+    {n:"慕尼黑",e:"Munich",t:"Europe/Berlin"}
+  ];
+  CITIES.sort(function(a,b){ return a.n.localeCompare(b.n,'zh-Hant'); });
+
+  /* ===== DOM ===== */
+  var elDate    = document.getElementById('mDate');
+  var elStart   = document.getElementById('mStart');
+  var elEnd     = document.getElementById('mEnd');
+  var elCityRow = document.getElementById('cityRow');
+  var elTable   = document.getElementById('tableWrap');
+  var elToast   = document.getElementById('toast');
+  var elBtnAdd  = document.getElementById('btnAdd');
+
+  /* ===== 填充時間選單 ===== */
+  for(var h = 0; h < 24; h++){
+    var label = (h < 10 ? '0' : '') + h + ':00';
+    var o1 = document.createElement('option');
+    o1.value = String(h); o1.textContent = label;
+    elStart.appendChild(o1);
+    var o2 = document.createElement('option');
+    o2.value = String(h); o2.textContent = label;
+    elEnd.appendChild(o2);
+  }
+  elStart.value = '0';
+  elEnd.value = '23';
+
+  /* 預設今天日期 */
+  var now = new Date();
+  var yy = now.getFullYear();
+  var mmm = String(now.getMonth()+1).padStart(2,'0');
+  var ddd = String(now.getDate()).padStart(2,'0');
+  elDate.value = yy + '-' + mmm + '-' + ddd;
+
+  /* ===== Toast ===== */
+  var toastT = null;
+  function showToast(msg){
+    elToast.textContent = msg;
+    elToast.classList.add('show');
+    if(toastT) clearTimeout(toastT);
+    toastT = setTimeout(function(){ elToast.classList.remove('show'); }, 2500);
+  }
+
+  /* ===== 時區運算 ===== */
+  function tzOffset(d, tz){
+    var uStr = d.toLocaleString('en-US',{timeZone:'UTC'});
+    var lStr = d.toLocaleString('en-US',{timeZone:tz});
+    return new Date(lStr) - new Date(uStr);
+  }
+
+  function toUTC(y, m, d, hr, tz){
+    var guess = new Date(Date.UTC(y, m-1, d, hr, 0, 0));
+    var off = tzOffset(guess, tz);
+    var approx = new Date(guess.getTime() - off);
+    var off2 = tzOffset(approx, tz);
+    return new Date(guess.getTime() - off2);
+  }
+
+  function fmtTime(d, tz){
+    return new Intl.DateTimeFormat('en-GB',{timeZone:tz,hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace('24:','00:');
+  }
+
+  function getHour(d, tz){
+    return parseInt(fmtTime(d,tz),10);
+  }
+
+  function fmtDay(d, tz){
+    return new Intl.DateTimeFormat('en-CA',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
+  }
+
+  /* ===== 建立城市輸入 ===== */
+  function addCity(defaultName){
+    var wrap = document.createElement('div');
+    wrap.className = 'city-item';
+
+    var data = {tz:'', cn:''};
+
+    var inp = document.createElement('input');
+    inp.type = 'text';
+    inp.className = 'city-input';
+    inp.placeholder = '輸入城市名稱…';
+    inp.setAttribute('autocomplete','off');
+
+    var dd = document.createElement('div');
+    dd.className = 'city-dd';
+
+    var hlIdx = -1;
+    var matched = [];
+
+    function buildList(q){
+      dd.innerHTML = '';
+      hlIdx = -1;
+      matched = [];
+      var low = (q || '').toLowerCase();
+      for(var i = 0; i < CITIES.length; i++){
+        var c = CITIES[i];
+        if(!q || c.n.indexOf(q) !== -1 || c.e.toLowerCase().indexOf(low) !== -1){
+          matched.push(c);
+        }
+      }
+      for(var j = 0; j < matched.length; j++){
+        var item = document.createElement('div');
+        item.className = 'city-dd-item';
+        var s1 = document.createElement('span');
+        s1.textContent = matched[j].n;
+        var s2 = document.createElement('span');
+        s2.className = 'en';
+        s2.textContent = matched[j].e;
+        item.appendChild(s1);
+        item.appendChild(s2);
+        (function(city){
+          item.addEventListener('mousedown', function(ev){
+            ev.preventDefault();
+            selectCity(city);
+          });
+        })(matched[j]);
+        dd.appendChild(item);
+      }
+      if(matched.length > 0){
+        dd.classList.add('show');
+      } else {
+        dd.classList.remove('show');
+      }
+    }
+
+    function selectCity(c){
+      inp.value = c.n;
+      data.tz = c.t;
+      data.cn = c.n;
+      dd.classList.remove('show');
+      render();
+    }
+
+    function updateHL(){
+      var items = dd.querySelectorAll('.city-dd-item');
+      for(var k = 0; k < items.length; k++){
+        items[k].classList.remove('hl');
+      }
+      if(hlIdx >= 0 && hlIdx < items.length){
+        items[hlIdx].classList.add('hl');
+        items[hlIdx].scrollIntoView({block:'nearest'});
+      }
+    }
+
+    inp.addEventListener('focus', function(){
+      buildList(inp.value);
+    });
+
+    inp.addEventListener('input', function(){
+      data.tz = '';
+      data.cn = '';
+      buildList(inp.value);
+      render();
+    });
+
+    inp.addEventListener('blur', function(){
+      setTimeout(function(){ dd.classList.remove('show'); }, 180);
+    });
+
+    inp.addEventListener('keydown', function(ev){
+      if(ev.key === 'ArrowDown'){
+        ev.preventDefault();
+        if(hlIdx < matched.length - 1) hlIdx++;
+        updateHL();
+      } else if(ev.key === 'ArrowUp'){
+        ev.preventDefault();
+        if(hlIdx > 0) hlIdx--;
+        updateHL();
+      } else if(ev.key === 'Enter'){
+        ev.preventDefault();
+        if(hlIdx >= 0 && hlIdx < matched.length){
+          selectCity(matched[hlIdx]);
+        }
+      }
+    });
+
+    /* 預設城市 */
+    if(defaultName){
+      for(var m = 0; m < CITIES.length; m++){
+        if(CITIES[m].n === defaultName){
+          inp.value = CITIES[m].n;
+          data.tz = CITIES[m].t;
+          data.cn = CITIES[m].n;
+          break;
+        }
+      }
+    }
+
+    /* 刪除按鈕 */
+    var btnDel = document.createElement('button');
+    btnDel.type = 'button';
+    btnDel.className = 'btn-del';
+    btnDel.innerHTML = '&#10005;';
+    btnDel.addEventListener('click', function(){
+      var all = elCityRow.querySelectorAll('.city-item');
+      if(all.length <= 2){
+        showToast('至少需要兩個城市');
+        return;
+      }
+      wrap.remove();
+      render();
+    });
+
+    wrap._data = data;
+    wrap.appendChild(inp);
+    wrap.appendChild(dd);
+    wrap.appendChild(btnDel);
+    elCityRow.appendChild(wrap);
+    render();
+  }
+
+  /* ===== 新增按鈕 ===== */
+  elBtnAdd.addEventListener('click', function(){
+    addCity('');
+  });
+
+  /* ===== 繪製表格 ===== */
+  function render(){
+    var ds = elDate.value;
+    var sh = parseInt(elStart.value, 10);
+    var eh = parseInt(elEnd.value, 10);
+    if(!ds){ elTable.innerHTML = '<p class="empty-msg">請選擇日期</p>'; return; }
+
+    var items = elCityRow.querySelectorAll('.city-item');
+    var ci = [];
+    for(var i = 0; i < items.length; i++){
+      var d = items[i]._data;
+      if(d && d.tz && d.cn) ci.push({n:d.cn, t:d.tz});
+    }
+
+    if(ci.length < 2){
+      elTable.innerHTML = '<p class="empty-msg">請選擇至少兩個城市以顯示結果</p>';
+      return;
+    }
+
+    /* 小時列表 */
+    var hrs = [];
+    if(sh <= eh){
+      for(var a = sh; a <= eh; a++) hrs.push({h:a, dayOff:0});
+    } else {
+      for(var b = sh; b < 24; b++) hrs.push({h:b, dayOff:0});
+      for(var c = 0; c <= eh; c++) hrs.push({h:c, dayOff:1});
+    }
+
+    var parts = ds.split('-');
+    var yr = parseInt(parts[0],10);
+    var mo = parseInt(parts[1],10);
+    var da = parseInt(parts[2],10);
+    var refTZ = ci[0].t;
+
+    /* 建表 */
+    var html = '<table><thead><tr>';
+    for(var j = 0; j < ci.length; j++){
+      html += '<th>' + ci[j].n + '</th>';
+    }
+    html += '</tr></thead><tbody>';
+
+    for(var r = 0; r < hrs.length; r++){
+      var utc = toUTC(yr, mo, da + hrs[r].dayOff, hrs[r].h, refTZ);
+      var refDay = fmtDay(utc, refTZ);
+      html += '<tr>';
+      for(var col = 0; col < ci.length; col++){
+        var t = fmtTime(utc, ci[col].t);
+        var tDay = fmtDay(utc, ci[col].t);
+        var suffix = '';
+        if(tDay > refDay) suffix = ' <small>+1</small>';
+        else if(tDay < refDay) suffix = ' <small>\u22121</small>';
+
+        var hour = getHour(utc, ci[col].t);
+        var cls = '';
+        if(hour >= 9 && hour < 18) cls = ' class="work"';
+        else if(hour < 7 || hour >= 23) cls = ' class="sleep"';
+
+        html += '<td' + cls + '>' + t + suffix + '</td>';
+      }
+      html += '</tr>';
+    }
+    html += '</tbody></table>';
+    elTable.innerHTML = html;
+  }
+
+  /* ===== 監聽事件 ===== */
+  elDate.addEventListener('change', render);
+  elStart.addEventListener('change', render);
+  elEnd.addEventListener('change', render);
+
+  /* ===== 預設城市 ===== */
+  addCity('台北');
+  addCity('紐約');
+
+})();
+</script>
+
+
+</body></html>
