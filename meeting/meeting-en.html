@@ -1,7 +1,7 @@
-<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<!DOCTYPE html><html lang="en"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>會議時間查找器 – Roamwise</title>
+<title>Meeting Time Finder – Roamwise</title>
 <style>
 :root {
             --primary: #2563eb;
@@ -159,8 +159,8 @@ td small{color:#f87171;font-weight:600;margin-left:2px}
     <div class="rw-header-lang">
       <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
       <div class="rw-header-lang-menu">
-        <a href="meeting-zh.html" class="active">繁體中文</a>
-        <a href="meeting-en.html">English</a>
+        <a href="meeting-zh.html">繁體中文</a>
+        <a href="meeting-en.html" class="active">English</a>
         <a href="meeting-es.html">Español</a>
         <a href="meeting-pt.html">Português</a>
       </div>
@@ -169,38 +169,38 @@ td small{color:#f87171;font-weight:600;margin-left:2px}
 </header>
 
 <main>
-  <h1>🕐 會議時間查找器</h1>
+  <h1>🕐 Meeting Time Finder</h1>
 
   <div class="card">
     <div class="row">
       <div class="field">
-        <label for="mDate">日期</label>
+        <label for="mDate">Date</label>
         <input type="date" id="mDate">
       </div>
       <div class="field">
-        <label for="mStart">開始時間</label>
+        <label for="mStart">Start time</label>
         <select id="mStart"></select>
       </div>
       <div class="field">
-        <label for="mEnd">結束時間</label>
+        <label for="mEnd">End time</label>
         <select id="mEnd"></select>
       </div>
     </div>
 
-    <div class="stag">參與城市（第一個城市為基準時區）</div>
+    <div class="stag">Participating cities (the first city is the reference time zone)</div>
     <div class="cities-wrap" id="cityRow"></div>
-    <button type="button" class="btn-add" id="btnAdd">＋ 新增城市</button>
+    <button type="button" class="btn-add" id="btnAdd">＋ Add city</button>
   </div>
 
   <div class="card results">
-    <h2>各城市對應時間</h2>
+    <h2>Corresponding time in each city</h2>
     <div id="tableWrap">
-      <p class="empty-msg">請選擇至少兩個城市以顯示結果</p>
+      <p class="empty-msg">Please select at least two cities to display the results</p>
     </div>
     <div class="legend">
-      <span><i class="dot dot-w"></i> 上班時段 09–18</span>
-      <span><i class="dot dot-s"></i> 深夜時段 23–07</span>
-      <span>• <small style="color:#f87171;font-weight:600">+1</small> / <small style="color:#f87171;font-weight:600">−1</small> = 隔天 / 前一天</span>
+      <span><i class="dot dot-w"></i> Working hours 09–18</span>
+      <span><i class="dot dot-s"></i> Late-night hours 23–07</span>
+      <span>• <small style="color:#f87171;font-weight:600">+1</small> / <small style="color:#f87171;font-weight:600">−1</small> = next day / previous day</span>
     </div>
   </div>
 </main>
@@ -210,146 +210,146 @@ td small{color:#f87171;font-weight:600;margin-left:2px}
 <footer class="rw-footer">
   <div class="rw-footer-grid">
     <div class="rw-footer-col">
-      <h4>⏰ 時間與日照</h4>
+      <h4>⏰ Time & Daylight</h4>
       <ul>
-        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
-        <li><a href="meeting-zh.html" class="active">會議時間查找器</a></li>
-        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
-        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+        <li><a href="../time-zone/time-zone-en.html">World Time Zone Lookup</a></li>
+        <li><a href="../meeting/meeting-en.html">Meeting Time Finder</a></li>
+        <li><a href="../sunset/sunset-en.html">Sunrise & Sunset Times</a></li>
+        <li><a href="../timer/timer-en.html">Timer & Countdown</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🔧 換算與生活工具</h4>
+      <h4>🔧 Converters & Tools</h4>
       <ul>
-        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
-        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
-        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+        <li><a href="../currency/currency-en.html">Currency Converter</a></li>
+        <li><a href="../unit/unit-en.html">Unit Converter</a></li>
+        <li><a href="../plug/plug-en.html">Power Plug Standards</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🚗 交通與出行地圖</h4>
+      <h4>🚗 Travel & Driving Maps</h4>
       <ul>
-        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
-        <li><a href="../drivingdirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
-        <li><a href="../drivinglicense_map/drivinglicense_map-zh.html">全球國際駕照承認互動地圖</a></li>
+        <li><a href="../country_map/country_map-en.html">World Countries & Regions Map</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-en.html">Driving Direction Map</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-en.html">International Driving Permit Map</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🌍 全球資訊地圖</h4>
+      <h4>🌍 Global Info Maps</h4>
       <ul>
-        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
-        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
-        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
-        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+        <li><a href="../time-zone-map/time-zone-map-en.html">World Time Zone Map</a></li>
+        <li><a href="../plug_map/plug_map-en.html">World Power Plug Map</a></li>
+        <li><a href="../nationalday_map/nationalday_map-en.html">World Calendar Systems Map</a></li>
+        <li><a href="../Network_map/Network_map-en.html">Internet Freedom Map</a></li>
       </ul>
     </div>
   </div>
-  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></div>
 </footer>
 
 <script>
 (function(){
 
   /* ===== 城市資料庫 ===== */
-  var CITIES = [
-    {n:"丹佛",e:"Denver",t:"America/Denver"},
-    {n:"上海",e:"Shanghai",t:"Asia/Shanghai"},
-    {n:"伊斯坦堡",e:"Istanbul",t:"Europe/Istanbul"},
-    {n:"仰光",e:"Yangon",t:"Asia/Yangon"},
-    {n:"倫敦",e:"London",t:"Europe/London"},
-    {n:"加爾各答",e:"Kolkata",t:"Asia/Kolkata"},
-    {n:"北京",e:"Beijing",t:"Asia/Shanghai"},
-    {n:"卡拉奇",e:"Karachi",t:"Asia/Karachi"},
-    {n:"卡薩布蘭卡",e:"Casablanca",t:"Africa/Casablanca"},
-    {n:"台北",e:"Taipei",t:"Asia/Taipei"},
-    {n:"台中",e:"Taichung",t:"Asia/Taipei"},
-    {n:"吉隆坡",e:"Kuala Lumpur",t:"Asia/Kuala_Lumpur"},
-    {n:"多倫多",e:"Toronto",t:"America/Toronto"},
-    {n:"多哈",e:"Doha",t:"Asia/Qatar"},
-    {n:"大阪",e:"Osaka",t:"Asia/Tokyo"},
-    {n:"奈洛比",e:"Nairobi",t:"Africa/Nairobi"},
-    {n:"奧克蘭",e:"Auckland",t:"Pacific/Auckland"},
-    {n:"奧斯陸",e:"Oslo",t:"Europe/Oslo"},
-    {n:"威靈頓",e:"Wellington",t:"Pacific/Auckland"},
-    {n:"孟買",e:"Mumbai",t:"Asia/Kolkata"},
-    {n:"安克拉治",e:"Anchorage",t:"America/Anchorage"},
-    {n:"巴塞隆納",e:"Barcelona",t:"Europe/Madrid"},
-    {n:"巴黎",e:"Paris",t:"Europe/Paris"},
-    {n:"布宜諾斯艾利斯",e:"Buenos Aires",t:"America/Argentina/Buenos_Aires"},
-    {n:"布拉格",e:"Prague",t:"Europe/Prague"},
-    {n:"布達佩斯",e:"Budapest",t:"Europe/Budapest"},
-    {n:"布里斯本",e:"Brisbane",t:"Australia/Brisbane"},
-    {n:"布魯塞爾",e:"Brussels",t:"Europe/Brussels"},
-    {n:"廣州",e:"Guangzhou",t:"Asia/Shanghai"},
-    {n:"德黑蘭",e:"Tehran",t:"Asia/Tehran"},
-    {n:"成都",e:"Chengdu",t:"Asia/Shanghai"},
-    {n:"拉各斯",e:"Lagos",t:"Africa/Lagos"},
-    {n:"日內瓦",e:"Geneva",t:"Europe/Zurich"},
-    {n:"曼谷",e:"Bangkok",t:"Asia/Bangkok"},
-    {n:"柏林",e:"Berlin",t:"Europe/Berlin"},
-    {n:"法蘭克福",e:"Frankfurt",t:"Europe/Berlin"},
-    {n:"波哥大",e:"Bogota",t:"America/Bogota"},
-    {n:"波士頓",e:"Boston",t:"America/New_York"},
-    {n:"洛杉磯",e:"Los Angeles",t:"America/Los_Angeles"},
-    {n:"深圳",e:"Shenzhen",t:"Asia/Shanghai"},
-    {n:"溫哥華",e:"Vancouver",t:"America/Vancouver"},
-    {n:"澳門",e:"Macau",t:"Asia/Macau"},
-    {n:"珀斯",e:"Perth",t:"Australia/Perth"},
-    {n:"紐約",e:"New York",t:"America/New_York"},
-    {n:"維也納",e:"Vienna",t:"Europe/Vienna"},
-    {n:"羅馬",e:"Rome",t:"Europe/Rome"},
-    {n:"芝加哥",e:"Chicago",t:"America/Chicago"},
-    {n:"莫斯科",e:"Moscow",t:"Europe/Moscow"},
-    {n:"華沙",e:"Warsaw",t:"Europe/Warsaw"},
-    {n:"華盛頓",e:"Washington DC",t:"America/New_York"},
-    {n:"蒙特婁",e:"Montreal",t:"America/Toronto"},
-    {n:"蘇黎世",e:"Zurich",t:"Europe/Zurich"},
-    {n:"西雅圖",e:"Seattle",t:"America/Los_Angeles"},
-    {n:"達卡",e:"Dhaka",t:"Asia/Dhaka"},
-    {n:"達拉斯",e:"Dallas",t:"America/Chicago"},
-    {n:"邁阿密",e:"Miami",t:"America/New_York"},
-    {n:"里斯本",e:"Lisbon",t:"Europe/Lisbon"},
-    {n:"里約熱內盧",e:"Rio de Janeiro",t:"America/Sao_Paulo"},
-    {n:"金邊",e:"Phnom Penh",t:"Asia/Phnom_Penh"},
-    {n:"釜山",e:"Busan",t:"Asia/Seoul"},
-    {n:"開羅",e:"Cairo",t:"Africa/Cairo"},
-    {n:"阿克拉",e:"Accra",t:"Africa/Accra"},
-    {n:"阿姆斯特丹",e:"Amsterdam",t:"Europe/Amsterdam"},
-    {n:"阿布達比",e:"Abu Dhabi",t:"Asia/Dubai"},
-    {n:"雅典",e:"Athens",t:"Europe/Athens"},
-    {n:"雅加達",e:"Jakarta",t:"Asia/Jakarta"},
-    {n:"雪梨",e:"Sydney",t:"Australia/Sydney"},
-    {n:"首爾",e:"Seoul",t:"Asia/Seoul"},
-    {n:"香港",e:"Hong Kong",t:"Asia/Hong_Kong"},
-    {n:"高雄",e:"Kaohsiung",t:"Asia/Taipei"},
-    {n:"鳳凰城",e:"Phoenix",t:"America/Phoenix"},
-    {n:"墨爾本",e:"Melbourne",t:"Australia/Melbourne"},
-    {n:"墨西哥城",e:"Mexico City",t:"America/Mexico_City"},
-    {n:"新加坡",e:"Singapore",t:"Asia/Singapore"},
-    {n:"新德里",e:"New Delhi",t:"Asia/Kolkata"},
-    {n:"斯德哥爾摩",e:"Stockholm",t:"Europe/Stockholm"},
-    {n:"東京",e:"Tokyo",t:"Asia/Tokyo"},
-    {n:"杜拜",e:"Dubai",t:"Asia/Dubai"},
-    {n:"河內",e:"Hanoi",t:"Asia/Ho_Chi_Minh"},
-    {n:"利馬",e:"Lima",t:"America/Lima"},
-    {n:"利雅德",e:"Riyadh",t:"Asia/Riyadh"},
-    {n:"哥本哈根",e:"Copenhagen",t:"Europe/Copenhagen"},
-    {n:"科倫坡",e:"Colombo",t:"Asia/Colombo"},
-    {n:"聖地亞哥",e:"Santiago",t:"America/Santiago"},
-    {n:"聖保羅",e:"Sao Paulo",t:"America/Sao_Paulo"},
-    {n:"胡志明市",e:"Ho Chi Minh City",t:"Asia/Ho_Chi_Minh"},
-    {n:"舊金山",e:"San Francisco",t:"America/Los_Angeles"},
-    {n:"休士頓",e:"Houston",t:"America/Chicago"},
-    {n:"峇里島",e:"Bali",t:"Asia/Makassar"},
-    {n:"愛丁堡",e:"Edinburgh",t:"Europe/London"},
-    {n:"檀香山",e:"Honolulu",t:"Pacific/Honolulu"},
-    {n:"赫爾辛基",e:"Helsinki",t:"Europe/Helsinki"},
-    {n:"都柏林",e:"Dublin",t:"Europe/Dublin"},
-    {n:"馬尼拉",e:"Manila",t:"Asia/Manila"},
-    {n:"馬德里",e:"Madrid",t:"Europe/Madrid"},
-    {n:"米蘭",e:"Milan",t:"Europe/Rome"},
-    {n:"約翰尼斯堡",e:"Johannesburg",t:"Africa/Johannesburg"},
-    {n:"慕尼黑",e:"Munich",t:"Europe/Berlin"}
+ var CITIES = [
+    {n:"Denver",e:"Denver",t:"America/Denver"},
+    {n:"Shanghai",e:"Shanghai",t:"Asia/Shanghai"},
+    {n:"Istanbul",e:"Istanbul",t:"Europe/Istanbul"},
+    {n:"Yangon",e:"Yangon",t:"Asia/Yangon"},
+    {n:"London",e:"London",t:"Europe/London"},
+    {n:"Kolkata",e:"Kolkata",t:"Asia/Kolkata"},
+    {n:"Beijing",e:"Beijing",t:"Asia/Shanghai"},
+    {n:"Karachi",e:"Karachi",t:"Asia/Karachi"},
+    {n:"Casablanca",e:"Casablanca",t:"Africa/Casablanca"},
+    {n:"Taipei",e:"Taipei",t:"Asia/Taipei"},
+    {n:"Taichung",e:"Taichung",t:"Asia/Taipei"},
+    {n:"Kuala Lumpur",e:"Kuala Lumpur",t:"Asia/Kuala_Lumpur"},
+    {n:"Toronto",e:"Toronto",t:"America/Toronto"},
+    {n:"Doha",e:"Doha",t:"Asia/Qatar"},
+    {n:"Osaka",e:"Osaka",t:"Asia/Tokyo"},
+    {n:"Nairobi",e:"Nairobi",t:"Africa/Nairobi"},
+    {n:"Auckland",e:"Auckland",t:"Pacific/Auckland"},
+    {n:"Oslo",e:"Oslo",t:"Europe/Oslo"},
+    {n:"Wellington",e:"Wellington",t:"Pacific/Auckland"},
+    {n:"Mumbai",e:"Mumbai",t:"Asia/Kolkata"},
+    {n:"Anchorage",e:"Anchorage",t:"America/Anchorage"},
+    {n:"Barcelona",e:"Barcelona",t:"Europe/Madrid"},
+    {n:"Paris",e:"Paris",t:"Europe/Paris"},
+    {n:"Buenos Aires",e:"Buenos Aires",t:"America/Argentina/Buenos_Aires"},
+    {n:"Prague",e:"Prague",t:"Europe/Prague"},
+    {n:"Budapest",e:"Budapest",t:"Europe/Budapest"},
+    {n:"Brisbane",e:"Brisbane",t:"Australia/Brisbane"},
+    {n:"Brussels",e:"Brussels",t:"Europe/Brussels"},
+    {n:"Guangzhou",e:"Guangzhou",t:"Asia/Shanghai"},
+    {n:"Tehran",e:"Tehran",t:"Asia/Tehran"},
+    {n:"Chengdu",e:"Chengdu",t:"Asia/Shanghai"},
+    {n:"Lagos",e:"Lagos",t:"Africa/Lagos"},
+    {n:"Geneva",e:"Geneva",t:"Europe/Zurich"},
+    {n:"Bangkok",e:"Bangkok",t:"Asia/Bangkok"},
+    {n:"Berlin",e:"Berlin",t:"Europe/Berlin"},
+    {n:"Frankfurt",e:"Frankfurt",t:"Europe/Berlin"},
+    {n:"Bogota",e:"Bogota",t:"America/Bogota"},
+    {n:"Boston",e:"Boston",t:"America/New_York"},
+    {n:"Los Angeles",e:"Los Angeles",t:"America/Los_Angeles"},
+    {n:"Shenzhen",e:"Shenzhen",t:"Asia/Shanghai"},
+    {n:"Vancouver",e:"Vancouver",t:"America/Vancouver"},
+    {n:"Macau",e:"Macau",t:"Asia/Macau"},
+    {n:"Perth",e:"Perth",t:"Australia/Perth"},
+    {n:"New York",e:"New York",t:"America/New_York"},
+    {n:"Vienna",e:"Vienna",t:"Europe/Vienna"},
+    {n:"Rome",e:"Rome",t:"Europe/Rome"},
+    {n:"Chicago",e:"Chicago",t:"America/Chicago"},
+    {n:"Moscow",e:"Moscow",t:"Europe/Moscow"},
+    {n:"Warsaw",e:"Warsaw",t:"Europe/Warsaw"},
+    {n:"Washington DC",e:"Washington DC",t:"America/New_York"},
+    {n:"Montreal",e:"Montreal",t:"America/Toronto"},
+    {n:"Zurich",e:"Zurich",t:"Europe/Zurich"},
+    {n:"Seattle",e:"Seattle",t:"America/Los_Angeles"},
+    {n:"Dhaka",e:"Dhaka",t:"Asia/Dhaka"},
+    {n:"Dallas",e:"Dallas",t:"America/Chicago"},
+    {n:"Miami",e:"Miami",t:"America/New_York"},
+    {n:"Lisbon",e:"Lisbon",t:"Europe/Lisbon"},
+    {n:"Rio de Janeiro",e:"Rio de Janeiro",t:"America/Sao_Paulo"},
+    {n:"Phnom Penh",e:"Phnom Penh",t:"Asia/Phnom_Penh"},
+    {n:"Busan",e:"Busan",t:"Asia/Seoul"},
+    {n:"Cairo",e:"Cairo",t:"Africa/Cairo"},
+    {n:"Accra",e:"Accra",t:"Africa/Accra"},
+    {n:"Amsterdam",e:"Amsterdam",t:"Europe/Amsterdam"},
+    {n:"Abu Dhabi",e:"Abu Dhabi",t:"Asia/Dubai"},
+    {n:"Athens",e:"Athens",t:"Europe/Athens"},
+    {n:"Jakarta",e:"Jakarta",t:"Asia/Jakarta"},
+    {n:"Sydney",e:"Sydney",t:"Australia/Sydney"},
+    {n:"Seoul",e:"Seoul",t:"Asia/Seoul"},
+    {n:"Hong Kong",e:"Hong Kong",t:"Asia/Hong_Kong"},
+    {n:"Kaohsiung",e:"Kaohsiung",t:"Asia/Taipei"},
+    {n:"Phoenix",e:"Phoenix",t:"America/Phoenix"},
+    {n:"Melbourne",e:"Melbourne",t:"Australia/Melbourne"},
+    {n:"Mexico City",e:"Mexico City",t:"America/Mexico_City"},
+    {n:"Singapore",e:"Singapore",t:"Asia/Singapore"},
+    {n:"New Delhi",e:"New Delhi",t:"Asia/Kolkata"},
+    {n:"Stockholm",e:"Stockholm",t:"Europe/Stockholm"},
+    {n:"Tokyo",e:"Tokyo",t:"Asia/Tokyo"},
+    {n:"Dubai",e:"Dubai",t:"Asia/Dubai"},
+    {n:"Hanoi",e:"Hanoi",t:"Asia/Ho_Chi_Minh"},
+    {n:"Lima",e:"Lima",t:"America/Lima"},
+    {n:"Riyadh",e:"Riyadh",t:"Asia/Riyadh"},
+    {n:"Copenhagen",e:"Copenhagen",t:"Europe/Copenhagen"},
+    {n:"Colombo",e:"Colombo",t:"Asia/Colombo"},
+    {n:"Santiago",e:"Santiago",t:"America/Santiago"},
+    {n:"Sao Paulo",e:"Sao Paulo",t:"America/Sao_Paulo"},
+    {n:"Ho Chi Minh City",e:"Ho Chi Minh City",t:"Asia/Ho_Chi_Minh"},
+    {n:"San Francisco",e:"San Francisco",t:"America/Los_Angeles"},
+    {n:"Houston",e:"Houston",t:"America/Chicago"},
+    {n:"Bali",e:"Bali",t:"Asia/Makassar"},
+    {n:"Edinburgh",e:"Edinburgh",t:"Europe/London"},
+    {n:"Honolulu",e:"Honolulu",t:"Pacific/Honolulu"},
+    {n:"Helsinki",e:"Helsinki",t:"Europe/Helsinki"},
+    {n:"Dublin",e:"Dublin",t:"Europe/Dublin"},
+    {n:"Manila",e:"Manila",t:"Asia/Manila"},
+    {n:"Madrid",e:"Madrid",t:"Europe/Madrid"},
+    {n:"Milan",e:"Milan",t:"Europe/Rome"},
+    {n:"Johannesburg",e:"Johannesburg",t:"Africa/Johannesburg"},
+    {n:"Munich",e:"Munich",t:"Europe/Berlin"}
   ];
   CITIES.sort(function(a,b){ return a.n.localeCompare(b.n,'zh-Hant'); });
 
@@ -425,11 +425,11 @@ td small{color:#f87171;font-weight:600;margin-left:2px}
 
     var data = {tz:'', cn:''};
 
-    var inp = document.createElement('input');
-    inp.type = 'text';
-    inp.className = 'city-input';
-    inp.placeholder = '輸入城市名稱…';
-    inp.setAttribute('autocomplete','off');
+   var inp = document.createElement('input');
+inp.type = 'text';
+inp.className = 'city-input';
+inp.placeholder = 'Enter city name…';
+inp.setAttribute('autocomplete','off');
 
     var dd = document.createElement('div');
     dd.className = 'city-dd';
@@ -537,51 +537,51 @@ td small{color:#f87171;font-weight:600;margin-left:2px}
     }
 
     /* 刪除按鈕 */
-    var btnDel = document.createElement('button');
-    btnDel.type = 'button';
-    btnDel.className = 'btn-del';
-    btnDel.innerHTML = '&#10005;';
-    btnDel.addEventListener('click', function(){
-      var all = elCityRow.querySelectorAll('.city-item');
-      if(all.length <= 2){
-        showToast('至少需要兩個城市');
-        return;
-      }
-      wrap.remove();
-      render();
-    });
+var btnDel = document.createElement('button');
+btnDel.type = 'button';
+btnDel.className = 'btn-del';
+btnDel.innerHTML = '&#10005;';
+btnDel.addEventListener('click', function(){
+  var all = elCityRow.querySelectorAll('.city-item');
+  if(all.length <= 2){
+    showToast('At least two cities are required');
+    return;
+  }
+  wrap.remove();
+  render();
+});
 
-    wrap._data = data;
-    wrap.appendChild(inp);
-    wrap.appendChild(dd);
-    wrap.appendChild(btnDel);
-    elCityRow.appendChild(wrap);
-    render();
+wrap._data = data;
+wrap.appendChild(inp);
+wrap.appendChild(dd);
+wrap.appendChild(btnDel);
+elCityRow.appendChild(wrap);
+render();
+}
+
+/* ===== Add button ===== */
+elBtnAdd.addEventListener('click', function(){
+  addCity('');
+});
+
+/* ===== Render table ===== */
+function render(){
+  var ds = elDate.value;
+  var sh = parseInt(elStart.value, 10);
+  var eh = parseInt(elEnd.value, 10);
+  if(!ds){ elTable.innerHTML = '<p class="empty-msg">Please select a date</p>'; return; }
+
+  var items = elCityRow.querySelectorAll('.city-item');
+  var ci = [];
+  for(var i = 0; i < items.length; i++){
+    var d = items[i]._data;
+    if(d && d.tz && d.cn) ci.push({n:d.cn, t:d.tz});
   }
 
-  /* ===== 新增按鈕 ===== */
-  elBtnAdd.addEventListener('click', function(){
-    addCity('');
-  });
-
-  /* ===== 繪製表格 ===== */
-  function render(){
-    var ds = elDate.value;
-    var sh = parseInt(elStart.value, 10);
-    var eh = parseInt(elEnd.value, 10);
-    if(!ds){ elTable.innerHTML = '<p class="empty-msg">請選擇日期</p>'; return; }
-
-    var items = elCityRow.querySelectorAll('.city-item');
-    var ci = [];
-    for(var i = 0; i < items.length; i++){
-      var d = items[i]._data;
-      if(d && d.tz && d.cn) ci.push({n:d.cn, t:d.tz});
-    }
-
-    if(ci.length < 2){
-      elTable.innerHTML = '<p class="empty-msg">請選擇至少兩個城市以顯示結果</p>';
-      return;
-    }
+  if(ci.length < 2){
+    elTable.innerHTML = '<p class="empty-msg">Please select at least two cities to display the results</p>';
+    return;
+  }
 
     /* 小時列表 */
     var hrs = [];
@@ -635,8 +635,8 @@ td small{color:#f87171;font-weight:600;margin-left:2px}
   elEnd.addEventListener('change', render);
 
   /* ===== 預設城市 ===== */
-  addCity('台北');
-  addCity('紐約');
+  addCity('Taipei');
+  addCity('New York');
 
 })();
 </script>
