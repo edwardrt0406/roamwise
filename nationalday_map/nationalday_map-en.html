@@ -164,9 +164,9 @@ main{max-width:1360px;width:100%;margin:0 auto;padding:1.5rem}
 <header class="rw-header">
   <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
   <div class="rw-header-right">
-    <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
+    <a href="../1-contact/contact-zh.html" class="rw-header-contact">Contact us</a>
     <div class="rw-header-lang">
-      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">English ▾</button>
       <div class="rw-header-lang-menu">
         <a href="nationalday_map-zh.html" class="active">繁體中文</a>
         <a href="nationalday_map-en.html">English</a>
@@ -178,100 +178,103 @@ main{max-width:1360px;width:100%;margin:0 auto;padding:1.5rem}
 </header>
 
 <div class="hero">
-<h1>📆 全球曆法地圖 — 同一天，不同年</h1>
-<p>此刻全球有超過15種現行曆法同時運作。從令和8年到希伯來曆5786年，同一張收據上的日期可能讓你愣住。出發前了解目的地的紀年方式，是旅人與商務人士的必備功課。</p>
-<div class="hero-stats">
-<div class="hs"><div class="hs-num">17</div><div class="hs-label">現行曆法</div></div>
-<div class="hs"><div class="hs-num">5,778</div><div class="hs-label">最大年份差距</div></div>
-<div class="hs"><div class="hs-num">40+</div><div class="hs-label">非純公曆國家</div></div>
-<div class="hs"><div class="hs-num">13</div><div class="hs-label">衣索比亞的月份數</div></div>
-</div>
+  <h1>📆 Global calendar map — same day, different year</h1>
+  <p>
+    More than 15 calendar systems are in active use around the world today. From Reiwa 8 to Hebrew year 5786,
+    the date on the same receipt can look surprisingly different. Before you travel, understanding the local
+    way of counting years is essential for travellers and business people alike.
+  </p>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-num">17</div><div class="hs-label">Active calendars</div></div>
+    <div class="hs"><div class="hs-num">5,778</div><div class="hs-label">Largest year gap</div></div>
+    <div class="hs"><div class="hs-num">40+</div><div class="hs-label">Countries not using only Gregorian</div></div>
+    <div class="hs"><div class="hs-num">13</div><div class="hs-label">Months in Ethiopia</div></div>
+  </div>
 </div>
 
 <main>
 
 <div class="card">
-<div class="section-title">⏳ 同一個瞬間，全球的年份 —</div>
-<div class="tl-wrap"><div class="tl-strip" id="tlStrip"><div class="tl-line"></div></div></div>
-<div style="text-align:center;margin-top:4px">
-<span class="diff-badge">📏 最大年份差距：5786 − 8 = <b>5,778 年</b></span>
-</div>
+  <div class="section-title">⏳ At the same moment, years across the world —</div>
+  <div class="tl-wrap"><div class="tl-strip" id="tlStrip"><div class="tl-line"></div></div></div>
+  <div style="text-align:center;margin-top:4px">
+    <span class="diff-badge">📏 Maximum year gap: 5786 − 8 = <b>5,778 years</b></span>
+  </div>
 
-<div class="info-bar" id="infoBar">
-<div class="info-flag" id="infoFlag">🌍</div>
-<div style="flex:1;min-width:200px">
-<div class="info-name" id="infoName"><span class="info-placeholder">🖱️ 將滑鼠移至地圖上，探索各國活在「哪一年」</span></div>
-<div id="infoBadges"></div>
-<div class="year-hero" id="infoYear"></div>
-<div class="info-sub" id="infoSub"></div>
-<div class="receipt-box" id="receiptBox"><div class="rb-title">🧾 你的收據可能長這樣：</div><div id="receiptContent"></div></div>
-</div>
-</div>
+  <div class="info-bar" id="infoBar">
+    <div class="info-flag" id="infoFlag">🌍</div>
+    <div style="flex:1;min-width:200px">
+      <div class="info-name" id="infoName"><span class="info-placeholder">🖱️ Move your mouse over the map to explore what “year” each country is in</span></div>
+      <div id="infoBadges"></div>
+      <div class="year-hero" id="infoYear"></div>
+      <div class="info-sub" id="infoSub"></div>
+      <div class="receipt-box" id="receiptBox"><div class="rb-title">🧾 Your receipt might look like this:</div><div id="receiptContent"></div></div>
+    </div>
+  </div>
 
-<div class="map-wrap" id="mapWrap">
-<div class="loading-overlay" id="loadOv"><div class="spinner"></div><p style="color:#64748b">載入世界地圖中…</p></div>
-<div class="map-legend" id="mapLegend"></div>
-</div>
-<div class="tips"><span>🖱️ 滑入查看年份</span><span>👆 點擊鎖定</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span></div>
-<div class="bar-row">
-<div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchIn" type="text" placeholder="搜尋國家或地區（如：衣索比亞、臺灣、香港）…" autocomplete="off"><div class="search-dd" id="searchDD"></div></div>
-<button class="btn btn-primary" id="btnReset">🔄 重設地圖</button>
-</div>
+  <div class="map-wrap" id="mapWrap">
+    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p style="color:#64748b">Loading world map…</p></div>
+    <div class="map-legend" id="mapLegend"></div>
+  </div>
+  <div class="tips"><span>🖱️ Hover to view year</span><span>👆 Click to lock</span><span>🔍 Scroll to zoom</span><span>✋ Drag to pan</span></div>
+  <div class="bar-row">
+    <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchIn" type="text" placeholder="Search countries or territories (e.g. Ethiopia, Taiwan, Hong Kong)..." autocomplete="off"><div class="search-dd" id="searchDD"></div></div>
+    <button class="btn btn-primary" id="btnReset">🔄 Reset map</button>
+  </div>
 </div>
 
 <div class="two-panel">
-<div class="panel">
-<div class="panel-hdr">📊 全球現行曆法系統</div>
-<div class="panel-body" id="calPanel"></div>
-</div>
-<div class="panel">
-<div class="panel-hdr" id="cHdr">🌍 所有國家與地區 <span class="pc-count" id="cCnt">0</span></div>
-<div class="panel-body" id="cBody"><div class="cc-grid" id="cGrid"></div></div>
-</div>
+  <div class="panel">
+    <div class="panel-hdr">📊 Global calendar systems</div>
+    <div class="panel-body" id="calPanel"></div>
+  </div>
+  <div class="panel">
+    <div class="panel-hdr" id="cHdr">🌍 All countries and territories <span class="pc-count" id="cCnt">0</span></div>
+    <div class="panel-body" id="cBody"><div class="cc-grid" id="cGrid"></div></div>
+  </div>
 </div>
 </main>
 
 <div class="tooltip" id="tooltip"></div>
 
-<footer>
 <footer class="rw-footer">
   <div class="rw-footer-grid">
     <div class="rw-footer-col">
-      <h4>⏰ 時間與日照</h4>
+      <h4>⏰ Time & Daylight</h4>
       <ul>
-        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
-        <li><a href="../meeting/meeting-zh.html">會議時間查找器</a></li>
-        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
-        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+        <li><a href="../time-zone/time-zone-en.html">World Time Zone Lookup</a></li>
+        <li><a href="../meeting/meeting-en.html">Meeting Time Finder</a></li>
+        <li><a href="../sunset/sunset-en.html">Sunrise & Sunset Times</a></li>
+        <li><a href="../timer/timer-en.html">Timer & Countdown</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🔧 換算與生活工具</h4>
+      <h4>🔧 Converters & Tools</h4>
       <ul>
-        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
-        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
-        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+        <li><a href="../currency/currency-en.html">Currency Converter</a></li>
+        <li><a href="../unit/unit-en.html">Unit Converter</a></li>
+        <li><a href="../plug/plug-en.html">Power Plug Standards</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🚗 交通與出行地圖</h4>
+      <h4>🚗 Travel & Driving Maps</h4>
       <ul>
-        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
-        <li><a href="../drivingdirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
-        <li><a href="../drivinglicense_map/drivinglicense_map-zh.html">全球國際駕照承認互動地圖</a></li>
+        <li><a href="../country_map/country_map-en.html">World Countries & Regions Map</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-en.html">Driving Direction Map</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-en.html">International Driving Permit Map</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🌍 全球資訊地圖</h4>
+      <h4>🌍 Global Info Maps</h4>
       <ul>
-        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
-        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
-        <li><a href="nationalday_map-zh.html" class="active">全球曆法互動地圖</a></li>
-        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+        <li><a href="../time-zone-map/time-zone-map-en.html">World Time Zone Map</a></li>
+        <li><a href="../plug_map/plug_map-en.html">World Power Plug Map</a></li>
+        <li><a href="nationalday_map-en.html">World Calendar Systems Map</a></li>
+        <li><a href="../Network_map/Network_map-en.html">Internet Freedom Map</a></li>
       </ul>
     </div>
   </div>
-  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></div>
 </footer>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -280,71 +283,71 @@ main{max-width:1360px;width:100%;margin:0 auto;padding:1.5rem}
 (function(){
 
 var CALS={
-greg:{n:'公曆（格里曆）',y:'2026',yn:2026,col:'#94a3b8',fill:'#e2e8f0',hi:'#64748b',icon:'📅',ep:'公元1年',base:'太陽曆',mo:'12個月',ny:'1月1日',note:'全球通用標準曆法，1582年由教宗格列高利十三世改革儒略曆而來。',bg:'#f8fafc'},
-eth:{n:'衣索比亞曆（吉茲曆）',y:'2018',yn:2018,col:'#059669',fill:'#d1fae5',hi:'#047857',icon:'☀️',ep:'≈ 公元前8年',base:'太陽曆',mo:'13個月',ny:'9月11日（Enkutatash）',note:'全球唯一以13個月計算的現行曆法。旅遊局標語：「13 Months of Sunshine」。',bg:'#ecfdf5'},
-sh:{n:'太陽回曆（伊朗曆）',y:'1405',yn:1405,col:'#d97706',fill:'#fef3c7',hi:'#b45309',icon:'🌞',ep:'公元622年',base:'太陽曆',mo:'12個月',ny:'3月20-21日（諾魯茲）',note:'天文學上最精確的曆法之一。諾魯茲被聯合國列為人類非物質文化遺產。',bg:'#fffbeb'},
-heb:{n:'希伯來曆（猶太曆）',y:'5786',yn:5786,col:'#7c3aed',fill:'#ede9fe',hi:'#6d28d9',icon:'✡️',ep:'≈ 公元前3761年',base:'陰陽合曆',mo:'12-13個月',ny:'9-10月（Rosh Hashana）',note:'年份數字最大的現行曆法，從「世界創造之日」起算。',bg:'#f5f3ff'},
-hij:{n:'伊斯蘭曆（希吉拉曆）',y:'1447',yn:1447,col:'#0891b2',fill:'#cffafe',hi:'#0e7490',icon:'☪️',ep:'公元622年',base:'純陰曆',mo:'12個月',ny:'每年提前約11天',note:'全球唯一仍廣泛使用的純陰曆。齋月等節日每年在公曆中不斷前移。',bg:'#ecfeff'},
-bud:{n:'佛曆（佛教紀元）',y:'2569',yn:2569,col:'#ca8a04',fill:'#fef9c3',hi:'#a16207',icon:'☸️',ep:'≈ 公元前543年',base:'公曆+偏移',mo:'與公曆同',ny:'4月',note:'泰國+543=2569。7-Eleven收據上的年份讓遊客驚訝不已！',bg:'#fefce8'},
-rei:{n:'日本皇紀（令和）',y:'令和8年',yn:8,col:'#dc2626',fill:'#fee2e2',hi:'#b91c1c',icon:'🏯',ep:'2019年',base:'天皇年號制',mo:'與公曆同',ny:'年號隨天皇更替改變',note:'「令和」取自《萬葉集》。政府文件、駕照、保險單常用。',bg:'#fef2f2'},
-roc:{n:'民國紀年',y:'民國115年',yn:115,col:'#e11d48',fill:'#ffe4e6',hi:'#be123c',icon:'🏛️',ep:'1912年',base:'公曆−1911',mo:'與公曆同',ny:'1月1日',note:'臺灣官方曆法。統一發票、身分證、銀行文件上都寫「民國115年」。',bg:'#fff1f2'},
-juc:{n:'主體曆（北韓）',y:'主體115年',yn:115,col:'#475569',fill:'#e2e8f0',hi:'#334155',icon:'⭐',ep:'1912年',base:'公曆−1911',mo:'與公曆同',ny:'4月15日（太陽節）',note:'所有官方文件標示「主體」年，與民國紀年恰巧同為115年。',bg:'#f1f5f9'},
-sak:{n:'沙卡曆（印度國定曆）',y:'1948',yn:1948,col:'#ea580c',fill:'#ffedd5',hi:'#c2410c',icon:'🕉️',ep:'公元78年',base:'太陽曆',mo:'12個月',ny:'≈ 3月22日',note:'1957年成為印度官方曆法。3月22日附近恰逢沙卡曆新年！',bg:'#fff7ed'},
-bs:{n:'毗克拉姆曆（尼泊爾曆）',y:'2082',yn:2082,col:'#be123c',fill:'#ffe4e6',hi:'#9f1239',icon:'🏔️',ep:'公元前57年',base:'太陽曆',mo:'12個月',ny:'4月中旬',note:'尼泊爾唯一官方曆法。所有政府文件、報紙、銀行全部使用。',bg:'#fff1f2'},
-ben:{n:'孟加拉曆',y:'1432',yn:1432,col:'#16a34a',fill:'#dcfce7',hi:'#15803d',icon:'🌿',ep:'公元593年',base:'太陽曆',mo:'12個月',ny:'4月14日',note:'孟加拉國及印度西孟加拉邦使用。新年（Pohela Boishakh）是盛大文化節日。',bg:'#f0fdf4'},
-mya:{n:'緬甸曆',y:'1387',yn:1387,col:'#d97706',fill:'#fef3c7',hi:'#92400e',icon:'🪷',ep:'公元638年',base:'陰陽合曆',mo:'12個月',ny:'4月中旬（潑水節）',note:'1387是全球現行曆法中年份最小的之一。潑水節就是緬甸新年！',bg:'#fffbeb'},
-chn:{n:'農曆（黃帝紀年）',y:'4724',yn:4724,col:'#dc2626',fill:'#fee2e2',hi:'#991b1b',icon:'🐉',ep:'≈ 公元前2697年',base:'陰陽合曆',mo:'12-13個月',ny:'1-2月（春節）',note:'2026年為丙午馬年。農曆影響東亞數十億人的節日。',bg:'#fef2f2'},
-dan:{n:'檀紀（韓國）',y:'4359',yn:4359,col:'#7c3aed',fill:'#ede9fe',hi:'#5b21b6',icon:'🇰🇷',ep:'公元前2333年',base:'與公曆同',mo:'與公曆同',ny:'10月3日（開天節）',note:'以傳說中檀君建國起算。目前僅國慶偶爾提及。',bg:'#f5f3ff'},
-cop:{n:'科普特曆',y:'1742',yn:1742,col:'#b45309',fill:'#fef3c7',hi:'#92400e',icon:'☦️',ep:'公元284年',base:'源自古埃及曆',mo:'13個月',ny:'9月11-12日',note:'與衣索比亞曆結構相似。埃及科普特基督徒（約人口10%）使用。',bg:'#fffbeb'},
-amz:{n:'亞馬齊格曆（柏柏爾曆）',y:'2976',yn:2976,col:'#0284c7',fill:'#e0f2fe',hi:'#0369a1',icon:'ⵣ',ep:'≈ 公元前950年',base:'太陽曆',mo:'12個月',ny:'1月13日（Yennayer）',note:'北非原住民傳統曆法。摩洛哥和阿爾及利亞已將Yennayer定為國定假日。',bg:'#f0f9ff'}
+greg:{n:'Gregorian calendar',y:'2026',yn:2026,col:'#94a3b8',fill:'#e2e8f0',hi:'#64748b',icon:'📅',ep:'AD 1',base:'Solar calendar',mo:'12 months',ny:'January 1',note:'The global standard calendar, reforming the Julian calendar in 1582 under Pope Gregory XIII.',bg:'#f8fafc'},
+eth:{n:'Ethiopian calendar (Geʽez calendar)',y:'2018',yn:2018,col:'#059669',fill:'#d1fae5',hi:'#047857',icon:'☀️',ep:'≈ 8 BC',base:'Solar calendar',mo:'13 months',ny:'September 11 (Enkutatash)',note:'The only currently used calendar with 13 months. The tourism slogan is "13 Months of Sunshine".',bg:'#ecfdf5'},
+sh:{n:'Solar Hijri calendar (Iranian calendar)',y:'1405',yn:1405,col:'#d97706',fill:'#fef3c7',hi:'#b45309',icon:'🌞',ep:'AD 622',base:'Solar calendar',mo:'12 months',ny:'March 20-21 (Nowruz)',note:'One of the most astronomically accurate calendars. Nowruz is listed by UNESCO as an Intangible Cultural Heritage.',bg:'#fffbeb'},
+heb:{n:'Hebrew calendar',y:'5786',yn:5786,col:'#7c3aed',fill:'#ede9fe',hi:'#6d28d9',icon:'✡️',ep:'≈ 3761 BC',base:'Lunisolar calendar',mo:'12-13 months',ny:'September-October (Rosh Hashana)',note:'The active calendar with the largest year number, counted from the "day of creation of the world".',bg:'#f5f3ff'},
+hij:{n:'Islamic calendar (Hijri calendar)',y:'1447',yn:1447,col:'#0891b2',fill:'#cffafe',hi:'#0e7490',icon:'☪️',ep:'AD 622',base:'Pure lunar calendar',mo:'12 months',ny:'Advances about 11 days each year',note:'The only pure lunar calendar still widely used. Ramadan and other festivals move earlier each year in the Gregorian calendar.',bg:'#ecfeff'},
+bud:{n:'Buddhist calendar',y:'2569',yn:2569,col:'#ca8a04',fill:'#fef9c3',hi:'#a16207',icon:'☸️',ep:'≈ 543 BC',base:'Gregorian + offset',mo:'Same as Gregorian',ny:'April',note:'Thailand uses +543 = 2569. Dates on 7-Eleven receipts often surprise visitors!',bg:'#fefce8'},
+rei:{n:'Japanese imperial era (Reiwa)',y:'Reiwa 8',yn:8,col:'#dc2626',fill:'#fee2e2',hi:'#b91c1c',icon:'🏯',ep:'2019',base:'Era name system',mo:'Same as Gregorian',ny:'Era changes with each emperor',note:'"Reiwa" comes from the Man’yōshū. It is commonly used in government forms, driver’s licences, and insurance documents.',bg:'#fef2f2'},
+roc:{n:'Minguo calendar',y:'Minguo 115',yn:115,col:'#e11d48',fill:'#ffe4e6',hi:'#be123c',icon:'🏛️',ep:'1912',base:'Gregorian − 1911',mo:'Same as Gregorian',ny:'January 1',note:'The official calendar of Taiwan. You will see "Minguo 115" on invoices, ID cards, and bank documents.',bg:'#fff1f2'},
+juc:{n:'Juche calendar (North Korea)',y:'Juche 115',yn:115,col:'#475569',fill:'#e2e8f0',hi:'#334155',icon:'⭐',ep:'1912',base:'Gregorian − 1911',mo:'Same as Gregorian',ny:'April 15 (Day of the Sun)',note:'All official documents in North Korea use the Juche calendar, which happens to also be 115 this year.',bg:'#f1f5f9'},
+sak:{n:'Saka calendar (Indian national calendar)',y:'1948',yn:1948,col:'#ea580c',fill:'#ffedd5',hi:'#c2410c',icon:'🕉️',ep:'AD 78',base:'Solar calendar',mo:'12 months',ny:'Around March 22',note:'It became India’s official calendar in 1957. The new year begins around March 22.',bg:'#fff7ed'},
+bs:{n:'Vikram Samvat (Nepal calendar)',y:'2082',yn:2082,col:'#be123c',fill:'#ffe4e6',hi:'#9f1239',icon:'🏔️',ep:'57 BC',base:'Solar calendar',mo:'12 months',ny:'Mid-April',note:'Nepal’s only official calendar. Used on all government documents, newspapers, and bank materials.',bg:'#fff1f2'},
+ben:{n:'Bengali calendar',y:'1432',yn:1432,col:'#16a34a',fill:'#dcfce7',hi:'#15803d',icon:'🌿',ep:'AD 593',base:'Solar calendar',mo:'12 months',ny:'April 14',note:'Used in Bangladesh and India’s West Bengal. New Year (Pohela Boishakh) is a major cultural festival.',bg:'#f0fdf4'},
+mya:{n:'Myanmar calendar',y:'1387',yn:1387,col:'#d97706',fill:'#fef3c7',hi:'#92400e',icon:'🪷',ep:'AD 638',base:'Lunisolar calendar',mo:'12 months',ny:'Mid-April (Thingyan)',note:'1387 is one of the smallest year numbers among active calendars. Thingyan is Myanmar’s New Year festival.',bg:'#fffbeb'},
+chn:{n:'Lunar calendar (Yellow Emperor era)',y:'4724',yn:4724,col:'#dc2626',fill:'#fee2e2',hi:'#991b1b',icon:'🐉',ep:'≈ 2697 BC',base:'Lunisolar calendar',mo:'12-13 months',ny:'January-February (Spring Festival)',note:'2026 is the Year of the Fire Horse. The lunar calendar shapes festivals for billions across East Asia.',bg:'#fef2f2'},
+dan:{n:'Dangi calendar (Korea)',y:'4359',yn:4359,col:'#7c3aed',fill:'#ede9fe',hi:'#5b21b6',icon:'🇰🇷',ep:'2333 BC',base:'Same as Gregorian',mo:'Same as Gregorian',ny:'October 3 (National Foundation Day)',note:'Used only occasionally on National Foundation Day. Modern Korea otherwise uses the Gregorian calendar.',bg:'#f5f3ff'},
+cop:{n:'Coptic calendar',y:'1742',yn:1742,col:'#b45309',fill:'#fef3c7',hi:'#92400e',icon:'☦️',ep:'AD 284',base:'Derived from ancient Egyptian calendar',mo:'13 months',ny:'September 11-12',note:'Structurally similar to the Ethiopian calendar. Used by Egypt’s Coptic Christians, about 10% of the population.',bg:'#fffbeb'},
+amz:{n:'Amazigh calendar (Berber calendar)',y:'2976',yn:2976,col:'#0284c7',fill:'#e0f2fe',hi:'#0369a1',icon:'ⵣ',ep:'≈ 950 BC',base:'Solar calendar',mo:'12 months',ny:'January 13 (Yennayer)',note:'A traditional North African calendar. Morocco and Algeria have made Yennayer a national holiday.',bg:'#f0f9ff'}
 };
 
-var CD={};
-CD[231]=['eth','2018',2018,'A','所有收據、文件、報紙均使用衣索比亞曆。一年13個月。在衣索比亞你彷彿「回到過去」了8年！咖啡店帳單上的日期都讓你「穿越」。','日期：12/07/2018 ☕ 咖啡 45 Birr'];
-CD[364]=['sh','1405',1405,'A','伊朗所有收據、地鐵票、機票、銀行文件均使用太陽回曆。護照入境章上也會印太陽回曆日期。','تاریخ: ۱۴۰۵/۰۱/۰۲ — ☕ ۱۵۰,۰۰۰ ریال'];
-CD[4]=['sh','1405',1405,'A','阿富汗與伊朗共用太陽回曆，月份名稱使用達里語。','تاریخ: ۱۴۰۵/۰۱/۰۲'];
-CD[764]=['bud','2569',2569,'A','泰國所有收據、7-Eleven小票、駕照均標示佛曆2569。遊客最常驚訝的「未來感」年份！','วันที่: 22/03/2569 — กาแฟ ☕ 65 ฿'];
-CD[158]=['roc','民國115年',115,'A','臺灣統一發票、身分證、駕照全部使用民國紀年。超商收據印「115年3月22日」。','日期：115/03/22 超商咖啡 $55'];
-CD[524]=['bs','2082',2082,'A','尼泊爾唯一官方曆法。所有政府文件、報紙、銀行均使用毗克拉姆曆。','मिति: २०८२/१२/०८ — चिया ☕ रु. ३०'];
-CD[376]=['heb','5786',5786,'B','以色列日常主要用公曆，但猶太節日、宗教活動、部分政府文件使用希伯來曆。超市收據常同時印兩種日期。','22/03/2026 — ב׳ ניסן ה׳תשפ״ו'];
-CD[392]=['rei','令和8年',8,'B','日本政府文件（駕照、保險、稅單）常用令和年號。便利商店收據大多已改用西曆。','日付：令和8年3月22日 コーヒー ¥180'];
-CD[682]=['hij','1447',1447,'B','沙烏地阿拉伯2016年起財政改用公曆，但伊斯蘭曆仍廣泛用於宗教、法律及部分官方文件。','التاريخ: ١٤٤٧/٠٩/٢٢ — ☕ ١٥ ر.س'];
-CD[50]=['ben','1432',1432,'B','孟加拉曆廣泛用於報紙、文化活動及官方文告。新年是最盛大的文化慶典。','তারিখ: ০৮/১২/১৪৩২'];
-CD[408]=['juc','主體115年',115,'B','北韓所有官方文件、報紙、紀念碑均使用主體曆。與臺灣民國紀年恰巧同為115年。','날짜: 주체115.3.22'];
-CD[356]=['sak','1948',1948,'B','印度官方公報使用沙卡曆。3月22日附近恰逢沙卡曆新年！日常生活普遍使用公曆。','Date: 1 Chaitra 1948 (Saka)'];
-CD[104]=['mya','1387',1387,'B','緬甸曆用於傳統節日（潑水節即緬曆新年）及部分官方場合。1387是現行曆法中最「年輕」的。','ရက်စွဲ: ၁၃၈၇'];
-CD[116]=['bud','2570',2570,'B','柬埔寨使用佛曆（+544），出現在部分官方文件及寺廟節慶文告。','ថ្ងៃទី ២២ មីនា ព.ស. ២៥៧០'];
-CD[144]=['bud','2570',2570,'B','斯里蘭卡使用佛曆（+544），在佛教節日、國定假日公告中廣泛使用。','දිනය: 2570.03.22'];
-CD[418]=['bud','2569',2569,'B','寮國使用佛曆（+543），與泰國相同計算方式。','ວັນທີ: 22/03/2569'];
-CD[156]=['chn','農曆4724',4724,'C','中國日常使用公曆，但農曆深植文化。春節、中秋、端午等重要節日依農曆。2026年為丙午馬年。',''];
-CD[410]=['dan','檀紀4359',4359,'C','韓國日常完全使用公曆。檀紀僅在10月3日「開天節」偶爾被提及。',''];
-CD[704]=['chn','農曆4724',4724,'C','越南農曆與中國農曆幾乎相同。越南新年（Tết）是最重要的節日。',''];
-CD[818]=['cop','科普特1742',1742,'C','埃及日常使用公曆，但科普特基督徒使用科普特曆過宗教節日。',''];
-CD[504]=['amz','亞馬齊格2976',2976,'C','摩洛哥日常使用公曆和伊斯蘭曆。2018年起將Yennayer定為國定假日。同時使用三種曆法。',''];
-CD[12]=['amz','亞馬齊格2976',2976,'C','阿爾及利亞2018年起將Yennayer定為國定假日。同時三種曆法並行。',''];
-CD[784]=['hij','1447',1447,'C','阿聯酋回曆用於宗教節日。日常商業使用公曆。',''];
-CD[634]=['hij','1447',1447,'C','卡達回曆用於宗教場合和部分政府文件。',''];
-CD[414]=['hij','1447',1447,'C','科威特回曆用於宗教和部分官方場合。',''];
-CD[48]=['hij','1447',1447,'C','巴林回曆用於宗教節日和部分官方場合。',''];
-CD[512]=['hij','1447',1447,'C','阿曼回曆用於宗教場合和文化活動。',''];
-CD[400]=['hij','1447',1447,'C','約旦回曆用於宗教及部分官方文件。',''];
-CD[586]=['hij','1447',1447,'C','巴基斯坦回曆用於宗教場合。',''];
-CD[275]=['hij','1447',1447,'C','巴勒斯坦回曆用於宗教場合。',''];
-CD[368]=['hij','1447',1447,'C','伊拉克回曆用於宗教場合和部分政府文件。',''];
-CD[788]=['hij','1447',1447,'C','突尼西亞回曆主要用於宗教場合。',''];
-CD[434]=['hij','1447',1447,'C','利比亞回曆用於宗教場合。',''];
-CD[729]=['hij','1447',1447,'C','蘇丹回曆在宗教和部分官方場合使用。',''];
-CD[887]=['hij','1447',1447,'C','葉門回曆用於宗教場合。',''];
-CD[760]=['hij','1447',1447,'C','敘利亞回曆用於宗教場合。',''];
-CD[422]=['hij','1447',1447,'C','黎巴嫩穆斯林社群使用回曆。多元並存的典型。',''];
-CD[458]=['hij','1447',1447,'C','馬來西亞回曆用於伊斯蘭事務及部分官方場合。',''];
-CD[360]=['hij','1447',1447,'C','印尼回曆用於伊斯蘭節日。另有爪哇曆和峇里島沙卡曆。',''];
-CD[96]=['hij','1447',1447,'C','汶萊回曆用於宗教和官方場合。',''];
-CD[478]=['hij','1447',1447,'C','茅利塔尼亞回曆在宗教和官方場合廣泛使用。',''];
+var CD = {};
+CD[231] = ['eth', '2018', 2018, 'A', 'All receipts, documents, and newspapers use the Ethiopian calendar. There are 13 months in a year. In Ethiopia, it can feel like you have travelled 8 years into the past! Even the dates on café bills can feel like time travel.', 'Date: 12/07/2018 ☕ Coffee 45 Birr'];
+CD[364] = ['sh', '1405', 1405, 'A', 'All receipts, metro tickets, flight tickets, and bank documents in Iran use the Solar Hijri calendar. Border stamps in passports also show Solar Hijri dates.', 'تاریخ: ۱۴۰۵/۰۱/۰۲ — ☕ ۱۵۰,۰۰۰ ریال'];
+CD[4] = ['sh', '1405', 1405, 'A', 'Afghanistan and Iran share the Solar Hijri calendar, with month names in Dari/Persian.', 'تاریخ: ۱۴۰۵/۰۱/۰۲'];
+CD[764] = ['bud', '2569', 2569, 'A', 'All receipts, 7-Eleven slips, and driver’s licences in Thailand show the Buddhist calendar year 2569. This is one of the most surprising "future" years for visitors!', 'วันที่: 22/03/2569 — กาแฟ ☕ 65 ฿'];
+CD[158] = ['roc', 'Minguo 115', 115, 'A', 'Taiwan uses the Minguo calendar on official invoices, ID cards, and driver’s licences. Convenience store receipts often print "Minguo 115".', '日期：115/03/22 超商咖啡 $55'];
+CD[524] = ['bs', '2082', 2082, 'A', 'Nepal’s only official calendar. Government documents, newspapers, and banks all use Vikram Samvat.', 'मिति: २०८२/१२/०८ — चिया ☕ रु. ३०'];
+CD[376] = ['heb', '5786', 5786, 'B', 'Israel mainly uses the Gregorian calendar in daily life, but Jewish holidays, religious events, and some government documents use the Hebrew calendar. Supermarket receipts often print both dates.', '22/03/2026 — ב׳ ניסן ה׳תשפ״ו'];
+CD[392] = ['rei', 'Reiwa 8', 8, 'B', 'Japanese government documents such as driver’s licences, insurance papers, and tax forms often use the Reiwa era name. Convenience store receipts usually use the Gregorian calendar.', '日付：令和8年3月22日 コーヒー ¥180'];
+CD[682] = ['hij', '1447', 1447, 'B', 'Saudi Arabia switched fiscal accounting to the Gregorian calendar in 2016, but the Islamic calendar is still widely used for religion, law, and some official documents.', 'التاريخ: ١٤٤٧/٠٩/٢٢ — ☕ ١٥ ر.س'];
+CD[50] = ['ben', '1432', 1432, 'B', 'The Bengali calendar is widely used in newspapers, cultural events, and official notices in Bangladesh. New Year is the biggest cultural celebration.', 'তারিখ: ০৮/১২/১৪৩২'];
+CD[408] = ['juc', 'Juche 115', 115, 'B', 'North Korea uses the Juche calendar on all official documents, newspapers, and monuments. It happens to be 115 this year, just like Taiwan’s Minguo calendar.', '날짜: 주체115.3.22'];
+CD[356] = ['sak', '1948', 1948, 'B', 'India’s official gazette uses the Saka calendar. New Year falls around March 22.', 'Date: 1 Chaitra 1948 (Saka)'];
+CD[104] = ['mya', '1387', 1387, 'B', 'The Myanmar calendar is used for traditional festivals, including Thingyan, the New Year festival, and some official occasions. 1387 is one of the smallest active year numbers.', 'ရက်စွဲ: ၁၃၈၇'];
+CD[116] = ['bud', '2570', 2570, 'B', 'Cambodia uses the Buddhist calendar (+544) in some official documents and temple festival notices.', 'ថ្ងៃទី ២២ មីនា ព.ស. ២៥៧០'];
+CD[144] = ['bud', '2570', 2570, 'B', 'Sri Lanka uses the Buddhist calendar (+544), widely seen in Buddhist festivals and national holiday announcements.', 'දිනය: 2570.03.22'];
+CD[418] = ['bud', '2569', 2569, 'B', 'Laos uses the Buddhist calendar (+543), just like Thailand.', 'ວັນທີ: 22/03/2569'];
+CD[156] = ['chn', 'Lunar 4724', 4724, 'C', 'China uses the Gregorian calendar in daily life, but the lunar calendar remains deeply embedded in culture. Spring Festival, Mid-Autumn Festival, and Dragon Boat Festival all follow the lunar calendar. 2026 is the Year of the Fire Horse.', ''];
+CD[410] = ['dan', 'Dangi 4359', 4359, 'C', 'South Korea uses the Gregorian calendar in daily life. The Dangi calendar is only mentioned occasionally on National Foundation Day, October 3.', ''];
+CD[704] = ['chn', 'Lunar 4724', 4724, 'C', 'Vietnam’s lunar calendar is almost the same as China’s. Tết, the Vietnamese New Year, is the most important festival.', ''];
+CD[818] = ['cop', 'Coptic 1742', 1742, 'C', 'Egypt uses the Gregorian calendar in daily life, but Coptic Christians use the Coptic calendar for religious festivals.', ''];
+CD[504] = ['amz', 'Amazigh 2976', 2976, 'C', 'Morocco uses the Gregorian and Islamic calendars in daily life. Since 2018, Yennayer has been a national holiday. Three calendars coexist.', ''];
+CD[12] = ['amz', 'Amazigh 2976', 2976, 'C', 'Algeria made Yennayer a national holiday in 2018. Three calendars operate in parallel.', ''];
+CD[784] = ['hij', '1447', 1447, 'C', 'The Islamic calendar is used for religious occasions in the UAE. Daily business uses the Gregorian calendar.', ''];
+CD[634] = ['hij', '1447', 1447, 'C', 'Qatar uses the Islamic calendar for religious matters and some official documents.', ''];
+CD[414] = ['hij', '1447', 1447, 'C', 'Kuwait uses the Islamic calendar for religious and some official occasions.', ''];
+CD[48] = ['hij', '1447', 1447, 'C', 'Bahrain uses the Islamic calendar for religious festivals and some official occasions.', ''];
+CD[512] = ['hij', '1447', 1447, 'C', 'Oman uses the Islamic calendar for religious occasions and cultural events.', ''];
+CD[400] = ['hij', '1447', 1447, 'C', 'Jordan uses the Islamic calendar for religious and some official documents.', ''];
+CD[586] = ['hij', '1447', 1447, 'C', 'Pakistan uses the Islamic calendar for religious occasions.', ''];
+CD[275] = ['hij', '1447', 1447, 'C', 'Palestine uses the Islamic calendar for religious occasions.', ''];
+CD[368] = ['hij', '1447', 1447, 'C', 'Iraq uses the Islamic calendar for religious occasions and some government documents.', ''];
+CD[788] = ['hij', '1447', 1447, 'C', 'Tunisia uses the Islamic calendar mainly for religious occasions.', ''];
+CD[434] = ['hij', '1447', 1447, 'C', 'Libya uses the Islamic calendar for religious occasions.', ''];
+CD[729] = ['hij', '1447', 1447, 'C', 'Sudan uses the Islamic calendar in religious and some official settings.', ''];
+CD[887] = ['hij', '1447', 1447, 'C', 'Yemen uses the Islamic calendar for religious occasions.', ''];
+CD[760] = ['hij', '1447', 1447, 'C', 'Syria uses the Islamic calendar for religious occasions.', ''];
+CD[422] = ['hij', '1447', 1447, 'C', 'Lebanon’s Muslim communities use the Islamic calendar. A classic example of a multi-calendar society.', ''];
+CD[458] = ['hij', '1447', 1447, 'C', 'Malaysia uses the Islamic calendar for Islamic affairs and some official occasions.', ''];
+CD[360] = ['hij', '1447', 1447, 'C', 'Indonesia uses the Islamic calendar for Islamic festivals. It also has the Javanese calendar and Balinese Saka calendar.', ''];
+CD[96] = ['hij', '1447', 1447, 'C', 'Brunei uses the Islamic calendar for religious and official occasions.', ''];
+CD[478] = ['hij', '1447', 1447, 'C', 'Mauritania uses the Islamic calendar widely in religious and official contexts.', ''];
 
-var EXTRAS=[
-{id:'HK',name:'香港',flag:'🇭🇰',cal:'chn',year:'農曆4724',yearN:4724,tier:'C',note:'香港日常完全使用公曆。農曆主要用於傳統節日：春節、中秋節、端午節、清明節等。2026年為丙午馬年。',receipt:''},
-{id:'MO',name:'澳門',flag:'🇲🇴',cal:'chn',year:'農曆4724',yearN:4724,tier:'C',note:'澳門與香港相似，日常使用公曆。農曆用於傳統節日和文化活動。中葡文化交融。',receipt:''}
+var EXTRAS = [
+  {id:'HK', name:'Hong Kong', flag:'🇭🇰', cal:'chn', year:'Lunar 4724', yearN:4724, tier:'C', note:'Hong Kong uses the Gregorian calendar in daily life. The lunar calendar is mainly used for traditional festivals such as Lunar New Year, Mid-Autumn Festival, Dragon Boat Festival, and Qingming Festival. 2026 is the Year of the Fire Horse.', receipt:''},
+  {id:'MO', name:'Macao', flag:'🇲🇴', cal:'chn', year:'Lunar 4724', yearN:4724, tier:'C', note:'Macao is similar to Hong Kong, using the Gregorian calendar in daily life. The lunar calendar is used for traditional festivals and cultural events. It is a place of Chinese-Portuguese cultural blend.', receipt:''}
 ];
 
 var A2={4:'AF',8:'AL',12:'DZ',16:'AS',20:'AD',24:'AO',28:'AG',31:'AZ',32:'AR',36:'AU',40:'AT',44:'BS',48:'BH',50:'BD',51:'AM',52:'BB',56:'BE',64:'BT',68:'BO',70:'BA',72:'BW',76:'BR',84:'BZ',90:'SB',96:'BN',100:'BG',104:'MM',108:'BI',112:'BY',116:'KH',120:'CM',124:'CA',132:'CV',140:'CF',144:'LK',148:'TD',152:'CL',156:'CN',158:'TW',170:'CO',174:'KM',178:'CG',180:'CD',188:'CR',191:'HR',192:'CU',196:'CY',203:'CZ',204:'BJ',208:'DK',214:'DO',218:'EC',222:'SV',226:'GQ',231:'ET',232:'ER',233:'EE',242:'FJ',246:'FI',250:'FR',262:'DJ',266:'GA',268:'GE',270:'GM',275:'PS',276:'DE',288:'GH',296:'KI',300:'GR',304:'GL',320:'GT',324:'GN',328:'GY',332:'HT',336:'VA',340:'HN',348:'HU',352:'IS',356:'IN',360:'ID',364:'IR',368:'IQ',372:'IE',376:'IL',380:'IT',384:'CI',388:'JM',392:'JP',398:'KZ',400:'JO',404:'KE',408:'KP',410:'KR',414:'KW',417:'KG',418:'LA',422:'LB',426:'LS',428:'LV',430:'LR',434:'LY',440:'LT',442:'LU',450:'MG',454:'MW',458:'MY',462:'MV',466:'ML',470:'MT',478:'MR',480:'MU',484:'MX',492:'MC',496:'MN',498:'MD',499:'ME',504:'MA',508:'MZ',512:'OM',516:'NA',524:'NP',528:'NL',540:'NC',548:'VU',554:'NZ',558:'NI',562:'NE',566:'NG',578:'NO',586:'PK',591:'PA',598:'PG',600:'PY',604:'PE',608:'PH',616:'PL',620:'PT',624:'GW',626:'TL',630:'PR',634:'QA',642:'RO',643:'RU',646:'RW',674:'SM',682:'SA',686:'SN',688:'RS',694:'SL',702:'SG',703:'SK',705:'SI',706:'SO',710:'ZA',716:'ZW',724:'ES',728:'SS',729:'SD',732:'EH',740:'SR',748:'SZ',752:'SE',756:'CH',760:'SY',762:'TJ',764:'TH',768:'TG',776:'TO',780:'TT',784:'AE',788:'TN',792:'TR',795:'TM',800:'UG',804:'UA',807:'MK',818:'EG',826:'GB',834:'TZ',840:'US',854:'BF',858:'UY',860:'UZ',862:'VE',882:'WS',887:'YE',894:'ZM',704:'VN'};
@@ -355,45 +358,58 @@ function flagOf(id){var a=A2[id];if(!a)return'🏳️';return a.replace(/./g,fun
 
 var allC=[];
 (function(){
-var seen={};
-for(var id in A2){if(seen[id])continue;seen[id]=1;
-var d=CD[id],calId=d?d[0]:'greg',yr=d?d[1]:'2026',yrN=d?d[2]:2026,tier=d?d[3]:'D',note=d?d[4]:'此國家日常使用公曆（格里曆），紀年2026年。',rcpt=d?d[5]:'';
-allC.push({id:+id,a2:A2[id],name:nameOf(id),flag:flagOf(id),cal:calId,year:yr,yearN:yrN,tier:tier,note:note,receipt:rcpt,isExtra:false});
+var seen = {};
+for(var id in A2){
+  if(seen[id]) continue;
+  seen[id] = 1;
+  var d = CD[id], calId = d ? d[0] : 'greg', yr = d ? d[1] : '2026', yrN = d ? d[2] : 2026, tier = d ? d[3] : 'D', note = d ? d[4] : 'This country mainly uses the Gregorian calendar in daily life, with the year 2026.', rcpt = d ? d[5] : '';
+  allC.push({id:+id, a2:A2[id], name:nameOf(id), flag:flagOf(id), cal:calId, year:yr, yearN:yrN, tier:tier, note:note, receipt:rcpt, isExtra:false});
 }
-EXTRAS.forEach(function(e){allC.push({id:e.id,a2:e.id,name:e.name,flag:e.flag,cal:e.cal,year:e.year,yearN:e.yearN,tier:e.tier,note:e.note,receipt:e.receipt,isExtra:true});});
-allC.sort(function(a,b){return a.name.localeCompare(b.name,'zh-Hant');});
+EXTRAS.forEach(function(e){
+  allC.push({id:e.id, a2:e.id, name:e.name, flag:e.flag, cal:e.cal, year:e.year, yearN:e.yearN, tier:e.tier, note:e.note, receipt:e.receipt, isExtra:true});
+});
+allC.sort(function(a,b){ return a.name.localeCompare(b.name, 'zh-Hant'); });
 })();
 
-var calCounts={};allC.forEach(function(c){calCounts[c.cal]=(calCounts[c.cal]||0)+1;});
-var TIERS={A:['🔴','主要曆法','#dc2626'],B:['🟠','官方並用','#d97706'],C:['🟡','文化宗教','#ca8a04'],D:['🔵','純公曆','#3b82f6']};
+var calCounts = {};
+allC.forEach(function(c){ calCounts[c.cal] = (calCounts[c.cal] || 0) + 1; });
+var TIERS = {A:['🔴','Primary calendar','#dc2626'], B:['🟠','Officially used alongside','#d97706'], C:['🟡','Cultural / religious','#ca8a04'], D:['🔵','Gregorian only','#3b82f6']};
 
-var TL=[
-{y:'8',l:'令和',f:'🇯🇵',cal:'rei'},{y:'115',l:'民國 / 主體',f:'🇹🇼🇰🇵',cal:'roc'},
-{y:'1387',l:'緬甸曆',f:'🇲🇲',cal:'mya'},{y:'1405',l:'太陽回曆',f:'🇮🇷🇦🇫',cal:'sh'},
-{y:'1432',l:'孟加拉曆',f:'🇧🇩',cal:'ben'},{y:'1447',l:'伊斯蘭曆',f:'🇸🇦☪️',cal:'hij'},
-{y:'1742',l:'科普特曆',f:'🇪🇬',cal:'cop'},{y:'1948',l:'沙卡曆',f:'🇮🇳',cal:'sak'},
-{y:'2018',l:'衣索比亞曆',f:'🇪🇹',cal:'eth'},{y:'2026',l:'公曆',f:'🌍',cal:'greg'},
-{y:'2082',l:'毗克拉姆曆',f:'🇳🇵',cal:'bs'},{y:'2569',l:'佛曆',f:'🇹🇭🇱🇦',cal:'bud'},
-{y:'2976',l:'亞馬齊格曆',f:'🇲🇦🇩🇿',cal:'amz'},{y:'4359',l:'檀紀',f:'🇰🇷',cal:'dan'},
-{y:'4724',l:'農曆',f:'🇨🇳🐴',cal:'chn'},{y:'5786',l:'希伯來曆',f:'🇮🇱',cal:'heb'}
+var TL = [
+  {y:'8', l:'Reiwa', f:'🇯🇵', cal:'rei'},
+  {y:'115', l:'Minguo / Juche', f:'🇹🇼🇰🇵', cal:'roc'},
+  {y:'1387', l:'Myanmar calendar', f:'🇲🇲', cal:'mya'},
+  {y:'1405', l:'Solar Hijri', f:'🇮🇷🇦🇫', cal:'sh'},
+  {y:'1432', l:'Bengali calendar', f:'🇧🇩', cal:'ben'},
+  {y:'1447', l:'Islamic calendar', f:'🇸🇦☪️', cal:'hij'},
+  {y:'1742', l:'Coptic calendar', f:'🇪🇬', cal:'cop'},
+  {y:'1948', l:'Saka calendar', f:'🇮🇳', cal:'sak'},
+  {y:'2018', l:'Ethiopian calendar', f:'🇪🇹', cal:'eth'},
+  {y:'2026', l:'Gregorian calendar', f:'🌍', cal:'greg'},
+  {y:'2082', l:'Vikram Samvat', f:'🇳🇵', cal:'bs'},
+  {y:'2569', l:'Buddhist calendar', f:'🇹🇭🇱🇦', cal:'bud'},
+  {y:'2976', l:'Amazigh calendar', f:'🇲🇦🇩🇿', cal:'amz'},
+  {y:'4359', l:'Dangi calendar', f:'🇰🇷', cal:'dan'},
+  {y:'4724', l:'Lunar calendar', f:'🇨🇳🐴', cal:'chn'},
+  {y:'5786', l:'Hebrew calendar', f:'🇮🇱', cal:'heb'}
 ];
 
 var TODAY=[
-{icon:'📅',cal:'公曆',date:'2026年3月22日',note:''},
-{icon:'☀️',cal:'衣索比亞曆',date:'2018年 Megabit 12日',note:''},
-{icon:'🌞',cal:'太陽回曆',date:'1405年 Farvardin 2日',note:'🎉 新年剛過2天'},
-{icon:'✡️',cal:'希伯來曆',date:'5786年 Nisan 2日',note:''},
-{icon:'☪️',cal:'伊斯蘭曆',date:'≈ 1447年 Ramadan 22日',note:'🌙 齋月中'},
-{icon:'☸️',cal:'佛曆（泰國）',date:'2569年 3月22日',note:''},
-{icon:'🏯',cal:'日本令和',date:'令和8年3月22日',note:''},
-{icon:'🏛️',cal:'民國紀年',date:'民國115年3月22日',note:''},
-{icon:'🕉️',cal:'沙卡曆',date:'1948年 Chaitra 1日',note:'🎊 新年！'},
-{icon:'🏔️',cal:'毗克拉姆曆',date:'2082年 Chaitra 8日',note:''},
-{icon:'🌿',cal:'孟加拉曆',date:'1432年 Chaitra 8日',note:''},
-{icon:'🪷',cal:'緬甸曆',date:'1387年 Tabaung月',note:''},
-{icon:'🐉',cal:'農曆',date:'丙午年 二月初四',note:'🐴 馬年'},
-{icon:'ⵣ',cal:'亞馬齊格曆',date:'2976年',note:''},
-{icon:'☦️',cal:'科普特曆',date:'1742年 Baramhat 13日',note:''}
+{icon:'📅',cal:'Gregorian calendar',date:'22 March 2026',note:''},
+{icon:'☀️',cal:'Ethiopian calendar',date:'12 Megabit 2018',note:''},
+{icon:'🌞',cal:'Solar Hijri calendar',date:'2 Farvardin 1405',note:'🎉 New Year was just 2 days ago'},
+{icon:'✡️',cal:'Hebrew calendar',date:'2 Nisan 5786',note:''},
+{icon:'☪️',cal:'Islamic calendar',date:'22 Ramadan 1447',note:'🌙 During Ramadan'},
+{icon:'☸️',cal:'Buddhist calendar (Thailand)',date:'22 March 2569',note:''},
+{icon:'🏯',cal:'Japanese Reiwa era',date:'Reiwa 8, 22 March',note:''},
+{icon:'🏛️',cal:'Minguo calendar',date:'Minguo 115, 22 March',note:''},
+{icon:'🕉️',cal:'Saka calendar',date:'1 Chaitra 1948',note:'🎊 New Year!'},
+{icon:'🏔️',cal:'Vikram Samvat',date:'8 Chaitra 2082',note:''},
+{icon:'🌿',cal:'Bengali calendar',date:'8 Chaitra 1432',note:''},
+{icon:'🪷',cal:'Myanmar calendar',date:'Tabaung, 1387',note:''},
+{icon:'🐉',cal:'Lunar calendar',date:'Year of the Fire Horse, 4th day of the 2nd lunar month',note:'🐴 Horse year'},
+{icon:'ⵣ',cal:'Amazigh calendar',date:'2976',note:''},
+{icon:'☦️',cal:'Coptic calendar',date:'13 Baramhat 1742',note:''}
 ];
 
 var $flag=document.getElementById('infoFlag'),$name=document.getElementById('infoName'),$badges=document.getElementById('infoBadges'),$year=document.getElementById('infoYear'),$sub=document.getElementById('infoSub'),$rcpt=document.getElementById('receiptBox'),$rcptC=document.getElementById('receiptContent');
@@ -439,27 +455,39 @@ paintMap();renderCalPanel();renderCountries();updateTLActive();updateLegActive()
 });
 })();
 
-function calOf(id){var d=CD[id];return d?d[0]:'greg';}
-function resetInfo(){$flag.textContent='🌍';$name.innerHTML='<span class="info-placeholder">🖱️ 將滑鼠移至地圖上，探索各國活在「哪一年」</span>';$badges.innerHTML='';$year.textContent='';$sub.textContent='';$rcpt.classList.remove('show');}
-function showInfo(c,isLock){
-var cal=CALS[c.cal],ti=TIERS[c.tier];
-$flag.textContent=c.flag;
-$name.textContent=c.name+(isLock?' 🔒':'');
-$badges.innerHTML='<span class="cal-badge" style="background:'+cal.col+'">'+cal.icon+' '+cal.n.split('（')[0]+'</span><span class="tier-badge" style="border-color:'+ti[2]+';color:'+ti[2]+'">'+ti[0]+' '+ti[1]+'</span>';
-$year.innerHTML='<span style="color:'+cal.hi+'">'+c.year+'</span>';
-$sub.textContent=c.note;
-if(isLock&&c.receipt){$rcpt.classList.add('show');$rcptC.textContent=c.receipt;}else{$rcpt.classList.remove('show');}
+function calOf(id){ var d = CD[id]; return d ? d[0] : 'greg'; }
+function resetInfo(){
+  $flag.textContent = '🌍';
+  $name.innerHTML = '<span class="info-placeholder">🖱️ Move your mouse over the map to explore what “year” each country is in</span>';
+  $badges.innerHTML = '';
+  $year.textContent = '';
+  $sub.textContent = '';
+  $rcpt.classList.remove('show');
+}
+function showInfo(c, isLock){
+  var cal = CALS[c.cal], ti = TIERS[c.tier];
+  $flag.textContent = c.flag;
+  $name.textContent = c.name + (isLock ? ' 🔒' : '');
+  $badges.innerHTML = '<span class="cal-badge" style="background:'+cal.col+'">'+cal.icon+' '+cal.n.split('（')[0]+'</span><span class="tier-badge" style="border-color:'+ti[2]+';color:'+ti[2]+'">'+ti[0]+' '+ti[1]+'</span>';
+  $year.innerHTML = '<span style="color:'+cal.hi+'">'+c.year+'</span>';
+  $sub.textContent = c.note;
+  if(isLock && c.receipt){
+    $rcpt.classList.add('show');
+    $rcptC.textContent = c.receipt;
+  }else{
+    $rcpt.classList.remove('show');
+  }
 }
 
 /* MAP */
-var W=960,H=500;
-var svg=d3.select('#mapWrap').append('svg').attr('viewBox','0 0 '+W+' '+H).attr('preserveAspectRatio','xMidYMid meet');
-var proj=d3.geoNaturalEarth1().scale(158).translate([W/2,H/2]);
-var path=d3.geoPath().projection(proj);
-var g=svg.append('g');
-g.append('path').datum({type:'Sphere'}).attr('d',path).attr('fill','#f8fafc').attr('stroke','#e2e8f0').attr('stroke-width',.5);
-g.append('path').datum(d3.geoGraticule()()).attr('d',path).attr('fill','none').attr('stroke','#e2e8f0').attr('stroke-width',.3);
-var zoom=d3.zoom().scaleExtent([1,12]).on('zoom',function(ev){g.attr('transform',ev.transform);});
+var W = 960, H = 500;
+var svg = d3.select('#mapWrap').append('svg').attr('viewBox', '0 0 '+W+' '+H).attr('preserveAspectRatio', 'xMidYMid meet');
+var proj = d3.geoNaturalEarth1().scale(158).translate([W/2, H/2]);
+var path = d3.geoPath().projection(proj);
+var g = svg.append('g');
+g.append('path').datum({type:'Sphere'}).attr('d', path).attr('fill', '#f8fafc').attr('stroke', '#e2e8f0').attr('stroke-width', .5);
+g.append('path').datum(d3.geoGraticule()()).attr('d', path).attr('fill', 'none').attr('stroke', '#e2e8f0').attr('stroke-width', .3);
+var zoom = d3.zoom().scaleExtent([1, 12]).on('zoom', function(ev){ g.attr('transform', ev.transform); });
 svg.call(zoom);
 
 function fillFor(id){var c=calOf(id),cal=CALS[c];return cal.fill;}
@@ -501,26 +529,26 @@ h+='<span class="cal-cnt" style="background:'+c.col+'">'+cnt+'</span>';
 h+='</div>';
 });
 h+='<div class="divider"></div>';
-h+='<div class="today-section"><div class="today-title">📅 今天（2026/3/22）各曆法日期</div>';
+h += '<div class="today-section"><div class="today-title">📅 Today (2026/3/22) in different calendars</div>';
 TODAY.forEach(function(t){
-h+='<div class="today-row"><span class="today-icon">'+t.icon+'</span><span class="today-cal">'+t.cal+'</span><span class="today-date">'+t.date+'</span></div>';
-if(t.note)h+='<div style="text-align:right;margin-top:-2px;margin-bottom:2px"><span class="today-note">'+t.note+'</span></div>';
+  h += '<div class="today-row"><span class="today-icon">'+t.icon+'</span><span class="today-cal">'+t.cal+'</span><span class="today-date">'+t.date+'</span></div>';
+  if(t.note) h += '<div style="text-align:right;margin-top:-2px;margin-bottom:2px"><span class="today-note">'+t.note+'</span></div>';
 });
-h+='</div>';
-h+='<div class="divider"></div>';
-h+='<div class="today-section"><div class="today-title">💡 旅行冷知識</div>';
-h+='<div class="fact-box">';
+h += '</div>';
+h += '<div class="divider"></div>';
+h += '<div class="today-section"><div class="today-title">💡 Travel fun facts</div>';
+h += '<div class="fact-box">';
 [
-{i:'📆',t:'衣索比亞曆有13個月，每月30天，第13月只有5-6天。旅遊局標語：「13 Months of Sunshine」。'},
-{i:'🎊',t:'諾魯茲（Nowruz）被聯合國列為「人類非物質文化遺產」，全球超過3億人慶祝。'},
-{i:'⏳',t:'伊斯蘭曆是純陰曆，每年只有354天，齋月每年在公曆上「提前」約11天。'},
-{i:'🏪',t:'在泰國7-Eleven買咖啡，收據年份寫2569，不是印錯！這是佛曆。'},
-{i:'📝',t:'臺灣辦手機SIM卡被問「出生年」，記得說民國年（西元年−1911）！'},
-{i:'🤝',t:'北韓「主體115年」和臺灣「民國115年」數字恰好相同，因為起算年都是1912年。'},
-{i:'🔢',t:'希伯來曆5786是全球最大的「現行年份數字」，從聖經記載的世界創造之日起算。'},
-{i:'🪷',t:'緬甸曆1387年是全球最「年輕」的年份。比公曆少了639年。'}
-].forEach(function(f){h+='<div class="fact-item"><span style="flex-shrink:0">'+f.i+'</span><span>'+f.t+'</span></div>';});
-h+='</div></div>';
+  {i:'📆', t:'The Ethiopian calendar has 13 months: 12 months of 30 days, plus a 13th month with only 5–6 days. The tourism slogan is "13 Months of Sunshine".'},
+  {i:'🎊', t:'Nowruz is listed by UNESCO as an Intangible Cultural Heritage of Humanity, and is celebrated by more than 300 million people worldwide.'},
+  {i:'⏳', t:'The Islamic calendar is a pure lunar calendar with only 354 days, so Ramadan shifts earlier in the Gregorian calendar by about 11 days each year.'},
+  {i:'🏪', t:'If you buy coffee at a 7-Eleven in Thailand and the receipt shows the year 2569, it is not a printing error — that is the Buddhist calendar.'},
+  {i:'📝', t:'When applying for a mobile SIM card in Taiwan and asked for your "birth year", remember to give it in the Minguo calendar (Gregorian year minus 1911)!'},
+  {i:'🤝', t:'North Korea’s "Juche 115" and Taiwan’s "Minguo 115" happen to share the same number, because both count from 1912.'},
+  {i:'🔢', t:'Hebrew year 5786 is the largest current year number among active calendars, counted from the biblical creation era.'},
+  {i:'🪷', t:'Myanmar year 1387 is one of the youngest current years in use, about 639 years behind the Gregorian calendar.'}
+].forEach(function(f){ h += '<div class="fact-item"><span style="flex-shrink:0">'+f.i+'</span><span>'+f.t+'</span></div>'; });
+h += '</div></div>';
 $calPanel.innerHTML=h;
 $calPanel.querySelectorAll('.cal-card').forEach(function(el){
 el.addEventListener('click',function(){
@@ -539,31 +567,38 @@ list=allC.filter(function(c){return c.cal===selCal;});
 var cal=CALS[selCal];
 $cHdr.innerHTML=cal.icon+' '+cal.n+' <span class="pc-count">'+list.length+'</span>';
 }else{
-list=allC.filter(function(c){return c.cal!=='greg';}).concat(allC.filter(function(c){return c.cal==='greg';}));
-$cHdr.innerHTML='🌍 所有國家與地區 <span class="pc-count">'+allC.length+'</span>';
+list = allC.filter(function(c){ return c.cal !== 'greg'; }).concat(allC.filter(function(c){ return c.cal === 'greg'; }));
+$cHdr.innerHTML = '🌍 All countries and territories <span class="pc-count">'+allC.length+'</span>';
 }
-var h='';
+var h = '';
 list.forEach(function(c){
-var cal=CALS[c.cal],ti=TIERS[c.tier],ac=(locked!==null&&locked===c.id)?' active':'';
-h+='<div class="cc-item'+ac+'" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'">';
-h+='<span class="cc-flag">'+c.flag+'</span><div class="cc-info"><div class="cc-name">'+c.name+'</div>';
-h+='<div class="cc-cal"><span class="cc-yr" style="background:'+cal.col+'">'+c.year+'</span>';
-h+='<span style="font-size:.66rem;color:#94a3b8">'+cal.n.split('（')[0]+'</span>';
-if(c.tier!=='D')h+='<span class="cc-tier" style="background:'+cal.bg+';color:'+cal.hi+';border:1px solid '+cal.col+'">'+ti[0]+ti[1]+'</span>';
-h+='</div></div></div>';
+  var cal = CALS[c.cal], ti = TIERS[c.tier], ac = (locked !== null && locked === c.id) ? ' active' : '';
+  h += '<div class="cc-item'+ac+'" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'">';
+  h += '<span class="cc-flag">'+c.flag+'</span><div class="cc-info"><div class="cc-name">'+c.name+'</div>';
+  h += '<div class="cc-cal"><span class="cc-yr" style="background:'+cal.col+'">'+c.year+'</span>';
+  h += '<span style="font-size:.66rem;color:#94a3b8">'+cal.n.split('（')[0]+'</span>';
+  if(c.tier !== 'D') h += '<span class="cc-tier" style="background:'+cal.bg+';color:'+cal.hi+';border:1px solid '+cal.col+'">'+ti[0]+ti[1]+'</span>';
+  h += '</div></div></div>';
 });
-$cGrid.innerHTML=h;
+$cGrid.innerHTML = h;
 $cGrid.querySelectorAll('.cc-item').forEach(function(el){
-el.addEventListener('click',function(){
-var rawId=this.getAttribute('data-id'),isEx=this.getAttribute('data-extra')==='1';
-var cid=isEx?rawId:+rawId;
-if(locked===cid){locked=null;paintMap();resetInfo();renderCountries();return;}
-locked=cid;
-var c=allC.find(function(x){return x.id===cid;});
-if(c)showInfo(c,true);
-paintMap();renderCountries();
-if(!isEx&&typeof cid==='number')zoomTo(cid);
-});
+  el.addEventListener('click', function(){
+    var rawId = this.getAttribute('data-id'), isEx = this.getAttribute('data-extra') === '1';
+    var cid = isEx ? rawId : +rawId;
+    if(locked === cid){
+      locked = null;
+      paintMap();
+      resetInfo();
+      renderCountries();
+      return;
+    }
+    locked = cid;
+    var c = allC.find(function(x){ return x.id === cid; });
+    if(c) showInfo(c, true);
+    paintMap();
+    renderCountries();
+    if(!isEx && typeof cid === 'number') zoomTo(cid);
+  });
 });
 }
 
@@ -652,8 +687,9 @@ paintMap();renderCountries();
 });
 document.getElementById('loadOv').style.display='none';
 renderCalPanel();renderCountries();
-}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#dc2626">⚠️ 地圖載入失敗，請重新整理。</p>';});
-
+}).catch(function(){
+  document.getElementById('loadOv').innerHTML = '<p style="color:#dc2626">⚠️ Map loading failed. Please refresh.</p>';
+});
 })();
 </script>
 
