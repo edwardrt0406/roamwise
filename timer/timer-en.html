@@ -213,71 +213,81 @@ body.focus .cd-colon{font-size:clamp(2.5rem,10vw,7rem)}
 
 <main>
 <h1 class="pg-title hide-f">⏱️ Countdown and Timer</h1>
-<div class="info-box hide-f"><span class="ic">ℹ️</span><div>Supports <strong>live clock</strong> and <strong>countdown</strong> modes for exams, meetings, presentations, and more. Enter a topic name and switch modes to get started. Supports <strong>130+</strong> city time zones worldwide. Click 🔳 to enter focus mode for enlarged display.</div></div>
+<div class="info-box hide-f">
+  <span class="ic">ℹ️</span>
+  <div>
+    Supports <strong>live clock</strong> and <strong>countdown</strong> modes, ideal for exams, meetings, speeches, and more. Enter a topic name, then switch modes to use it. Supports 130+ city time zones worldwide. Click 🔳 to enter focus mode for a larger display.
+  </div>
+</div>
 
 <div class="timer-card" id="timerCard">
-    <input type="text" class="topic-input" id="topic" placeholder="Enter topic name (e.g., Midterm Exam, Afternoon Meeting)" maxlength="60">
-    <div class="toolbar">
-        <div class="mode-tog">
-            <button class="mode-btn active" id="modeClk" onclick="setMode('clock')">🕐 Clock Mode</button>
-            <button class="mode-btn" id="modeCd" onclick="setMode('countdown')">⏳ Countdown Mode</button>
-        </div>
-        <button class="focus-btn" id="focusBtn" onclick="toggleFocus()" title="Focus Mode">🔳</button>
+  <input type="text" class="topic-input" id="topic" placeholder="Enter a topic name (e.g., Midterm Exam, Afternoon Meeting)" maxlength="60">
+
+  <div class="toolbar">
+    <div class="mode-tog">
+      <button class="mode-btn active" id="modeClk" onclick="setMode('clock')">🕐 Clock Mode</button>
+      <button class="mode-btn" id="modeCd" onclick="setMode('countdown')">⏳ Countdown Mode</button>
+    </div>
+    <button class="focus-btn" id="focusBtn" onclick="toggleFocus()" title="Focus mode">🔳</button>
+  </div>
+
+  <div class="disp-area" id="dispArea">
+
+    <!-- ===== CLOCK BLOCK ===== -->
+    <div id="clockBlock" class="dblock main-v" style="order:1">
+      <div class="mini-hdr"><span>🕐</span> Current Time</div>
+      <div class="time-val" id="clockTime">--:--:--</div>
+      <div class="clock-date big-only" id="clockDate" style=""></div>
+      <div class="tz-row">
+        <select class="tz-sel" id="tzSel" onchange="onTzChange()"></select>
+        <span class="utc-tag" id="utcTag">UTC+8</span>
+      </div>
     </div>
 
-    <div class="disp-area" id="dispArea">
-
-        <!-- ===== CLOCK BLOCK ===== -->
-        <div id="clockBlock" class="dblock main-v" style="order:1">
-            <div class="mini-hdr"><span>🕐</span> Current time</div>
-            <div class="time-val" id="clockTime">--:--:--</div>
-            <div class="clock-date big-only" id="clockDate" style=""></div>
-            <div class="tz-row">
-                <select class="tz-sel" id="tzSel" onchange="onTzChange()"></select>
-                <span class="utc-tag" id="utcTag">UTC+8</span>
-            </div>
-        </div>
-
-        <!-- ===== SEPARATOR ===== -->
-        <div class="sec-sep" id="secSep">
-            <div class="sep-inner"><div class="sep-line"></div><span class="sep-label" id="sepLabel">⏳ countdown </span><div class="sep-line"></div></div>
-        </div>
-
-        <!-- ===== COUNTDOWN BLOCK ===== -->
-        <div id="cdBlock" class="dblock mini-v" style="order:3">
-            <div class="mini-hdr"><span>⏳</span> Countdown</div>
-
-            <!-- IDLE -->
-            <div id="cdIdle">
-                <div class="cd-inp-row big-only" id="cdInpRow">
-                    <div class="cd-num"><input id="cdH" type="text" inputmode="numeric" value="00" maxlength="2"><small>時</small></div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-num"><input id="cdM" type="text" inputmode="numeric" value="25" maxlength="2"><small>分</small></div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-num"><input id="cdS" type="text" inputmode="numeric" value="00" maxlength="2"><small>秒</small></div>
-                </div>
-                <div class="cd-presets" id="cdPresets"></div>
-                <button class="cd-start big-only" id="cdStartBtn" onclick="startCd()">▶ Start</button>
-            </div>
-
-            <!-- ACTIVE (running/paused) -->
-            <div id="cdActive" style="display:none">
-                <div class="time-val" id="cdTime">00:25:00</div>
-                <div class="cd-prog big-only" id="cdProgWrap"><div class="cd-prog-fill" id="cdProgFill"></div></div>
-                <div class="cd-ctrl">
-                    <button class="ctrl-btn primary" id="cdPauseBtn" onclick="togglePause()">⏸ Pause</button>
-                    <button class="ctrl-btn" onclick="resetCd()">🔄 Reset</button>
-                </div>
-            </div>
-
-            <!-- FINISHED -->
-            <div id="cdDone" style="display:none">
-                <div class="time-val cd-done-flash" id="cdDoneTime">00:00:00</div>
-                <div class="cd-done-text">⏰ Time up！</div>
-                <div class="cd-ctrl"><button class="ctrl-btn primary" onclick="resetCd()">🔄 重新設定</button></div>
-            </div>
-        </div>
+    <!-- ===== SEPARATOR ===== -->
+    <div class="sec-sep" id="secSep">
+      <div class="sep-inner">
+        <div class="sep-line"></div>
+        <span class="sep-label" id="sepLabel">⏳ Countdown</span>
+        <div class="sep-line"></div>
+      </div>
     </div>
+
+    <!-- ===== COUNTDOWN BLOCK ===== -->
+    <div id="cdBlock" class="dblock mini-v" style="order:3">
+      <div class="mini-hdr"><span>⏳</span> Countdown</div>
+
+      <!-- IDLE -->
+      <div id="cdIdle">
+        <div class="cd-inp-row big-only" id="cdInpRow">
+          <div class="cd-num"><input id="cdH" type="text" inputmode="numeric" value="00" maxlength="2"><small>hr</small></div>
+          <span class="cd-colon">:</span>
+          <div class="cd-num"><input id="cdM" type="text" inputmode="numeric" value="25" maxlength="2"><small>min</small></div>
+          <span class="cd-colon">:</span>
+          <div class="cd-num"><input id="cdS" type="text" inputmode="numeric" value="00" maxlength="2"><small>sec</small></div>
+        </div>
+        <div class="cd-presets" id="cdPresets"></div>
+        <button class="cd-start big-only" id="cdStartBtn" onclick="startCd()">▶ Start Countdown</button>
+      </div>
+
+      <!-- ACTIVE (running/paused) -->
+      <div id="cdActive" style="display:none">
+        <div class="time-val" id="cdTime">00:25:00</div>
+        <div class="cd-prog big-only" id="cdProgWrap"><div class="cd-prog-fill" id="cdProgFill"></div></div>
+        <div class="cd-ctrl">
+          <button class="ctrl-btn primary" id="cdPauseBtn" onclick="togglePause()">⏸ Pause</button>
+          <button class="ctrl-btn" onclick="resetCd()">🔄 Reset</button>
+        </div>
+      </div>
+
+      <!-- FINISHED -->
+      <div id="cdDone" style="display:none">
+        <div class="time-val cd-done-flash" id="cdDoneTime">00:00:00</div>
+        <div class="cd-done-text">⏰ Time's up!</div>
+        <div class="cd-ctrl"><button class="ctrl-btn primary" onclick="resetCd()">🔄 Set Again</button></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="tips-card hide-f">
