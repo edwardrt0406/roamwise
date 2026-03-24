@@ -1,7 +1,7 @@
-<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<!DOCTYPE html><html lang="en-EN"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>世界插頭類型互動地圖 – Roamwise</title>
+<title>World Power Plug Map – Roamwise</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
@@ -110,9 +110,9 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 <header class="rw-header">
   <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
   <div class="rw-header-right">
-    <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
+    <a href="../1-contact/contact-zh.html" class="rw-header-contact">Contact us</a>
     <div class="rw-header-lang">
-      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">English ▾</button>
       <div class="rw-header-lang-menu">
         <a href="drivinglicense_map-zh.html" class="active">繁體中文</a>
         <a href="drivinglicense_map-en.html">English</a>
@@ -124,7 +124,7 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 </header>
 
 <main>
-<h1>🔌 世界插頭類型互動地圖</h1>
+<h1>🔌 World Power Plug Map</h1>
 
 <div class="card">
   <div class="info-bar" id="infoBar">
@@ -140,31 +140,31 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
   </div>
 
   <div class="map-wrap" id="mapWrap">
-    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>載入地圖中…</p></div>
+    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>Loading map…</p></div>
     <div class="map-legend" id="mapLegend"></div>
   </div>
 
   <div class="tips">
-    <span>🖱️ 滑入查看國家插頭</span><span>👆 點擊鎖定國家</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span>
+    <span>🖱️ Hover to view a country’s plug type</span><span>👆 Click to lock a country</span><span>🔍 Scroll to zoom</span><span>✋ Drag to pan</span>
   </div>
 
   <div class="bar-row">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input class="search-input" id="searchIn" type="text" placeholder="搜尋國家或地區…" autocomplete="off">
+      <input class="search-input" id="searchIn" type="text" placeholder="Search countries or territories…" autocomplete="off">
       <div class="search-dd" id="searchDD"></div>
     </div>
-    <button class="btn btn-primary" id="btnReset">🔄 重設</button>
+    <button class="btn btn-primary" id="btnReset">🔄 Reset</button>
   </div>
 </div>
 
 <div class="two-panel">
   <div class="panel" id="panelLeft">
-    <div class="panel-hdr">🔌 插頭類型指南<span id="plugCount" class="pc-count">14 種</span></div>
+    <div class="panel-hdr">🔌 Plug type guide<span id="plugCount" class="pc-count">14 types</span></div>
     <div class="panel-body" id="plugList"></div>
   </div>
   <div class="panel" id="panelRight">
-    <div class="panel-hdr" id="cListHdr">🌍 所有國家與地區<span id="cListCount" class="pc-count">0</span></div>
+    <div class="panel-hdr" id="cListHdr">🌍 All countries and territories<span id="cListCount" class="pc-count">0</span></div>
     <div class="panel-body" id="cListBody"><div class="cc-grid" id="cGrid"></div></div>
   </div>
 </div>
@@ -172,45 +172,44 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 
 <div class="tooltip" id="tooltip"></div>
 
-<footer>
 <footer class="rw-footer">
   <div class="rw-footer-grid">
     <div class="rw-footer-col">
-      <h4>⏰ 時間與日照</h4>
+      <h4>⏰ Time & Daylight</h4>
       <ul>
-        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
-        <li><a href="../meeting/meeting-zh.html">會議時間查找器</a></li>
-        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
-        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+        <li><a href="../time-zone/time-zone-en.html">World Time Zone Lookup</a></li>
+        <li><a href="../meeting/meeting-en.html">Meeting Time Finder</a></li>
+        <li><a href="../sunset/sunset-en.html">Sunrise & Sunset Times</a></li>
+        <li><a href="../timer/timer-en.html">Timer & Countdown</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🔧 換算與生活工具</h4>
+      <h4>🔧 Converters & Tools</h4>
       <ul>
-        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
-        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
-        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+        <li><a href="../currency/currency-en.html">Currency Converter</a></li>
+        <li><a href="unit-en.html">Unit Converter</a></li>
+        <li><a href="../plug/plug-en.html">Power Plug Standards</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🚗 交通與出行地圖</h4>
+      <h4>🚗 Travel & Driving Maps</h4>
       <ul>
-        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
-        <li><a href="../drivingdirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
-        <li><a href="drivinglicense_map-zh.html" class="active">全球國際駕照承認互動地圖</a></li>
+        <li><a href="../country_map/country_map-en.html">World Countries & Regions Map</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-en.html">Driving Direction Map</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-en.html">International Driving Permit Map</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🌍 全球資訊地圖</h4>
+      <h4>🌍 Global Info Maps</h4>
       <ul>
-        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
-        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
-        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
-        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+        <li><a href="../time-zone-map/time-zone-map-en.html">World Time Zone Map</a></li>
+        <li><a href="../plug_map/plug_map-en.html">World Power Plug Map</a></li>
+        <li><a href="../nationalday_map/nationalday_map-en.html">World Calendar Systems Map</a></li>
+        <li><a href="../Network_map/Network_map-en.html">Internet Freedom Map</a></li>
       </ul>
     </div>
   </div>
-  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></div>
 </footer>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -220,20 +219,20 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 
 /* ========== PLUG TYPE DATA ========== */
 var PT={
-A:{name:'Type A',zh:'兩扁平行插腳',desc:'無接地，常見於北美和日本',v:'100–127V',f:'60Hz',col:'#e11d48',fill:'#fecdd3',hi:'#be123c'},
-B:{name:'Type B',zh:'兩扁平行＋接地腳',desc:'含接地腳，北美標準',v:'100–127V',f:'60Hz',col:'#f43f5e',fill:'#fda4af',hi:'#9f1239'},
-C:{name:'Type C',zh:'兩圓形插腳（歐標）',desc:'最廣泛使用的插頭類型',v:'220–240V',f:'50Hz',col:'#3b82f6',fill:'#bfdbfe',hi:'#1d4ed8'},
-D:{name:'Type D',zh:'三大圓形插腳',desc:'三角排列，常見於印度等',v:'220–240V',f:'50Hz',col:'#a855f7',fill:'#d8b4fe',hi:'#7e22ce'},
-E:{name:'Type E',zh:'兩圓腳＋接地突針',desc:'法國標準，含突出的接地針',v:'220–240V',f:'50Hz',col:'#06b6d4',fill:'#a5f3fc',hi:'#0e7490'},
-F:{name:'Type F',zh:'兩圓腳＋接地夾（Schuko）',desc:'德國標準，歐洲最常見',v:'220–240V',f:'50Hz',col:'#2563eb',fill:'#93c5fd',hi:'#1e40af'},
-G:{name:'Type G',zh:'三矩形插腳（英標）',desc:'英國及前殖民地標準',v:'220–240V',f:'50Hz',col:'#f59e0b',fill:'#fde68a',hi:'#b45309'},
-H:{name:'Type H',zh:'三腳 V 形排列',desc:'以色列獨有標準',v:'220–240V',f:'50Hz',col:'#84cc16',fill:'#d9f99d',hi:'#4d7c0f'},
-I:{name:'Type I',zh:'兩斜扁腳＋接地（澳標）',desc:'澳洲、紐西蘭、中國部分',v:'220–240V',f:'50Hz',col:'#10b981',fill:'#a7f3d0',hi:'#047857'},
-J:{name:'Type J',zh:'三圓形插腳（瑞士）',desc:'瑞士和列支敦士登',v:'220–240V',f:'50Hz',col:'#f97316',fill:'#fed7aa',hi:'#c2410c'},
-K:{name:'Type K',zh:'三圓形插腳（丹麥）',desc:'丹麥標準',v:'220–240V',f:'50Hz',col:'#ec4899',fill:'#fbcfe8',hi:'#be185d'},
-L:{name:'Type L',zh:'三圓腳直線排列（義大利）',desc:'義大利標準',v:'220–240V',f:'50Hz',col:'#14b8a6',fill:'#99f6e4',hi:'#0f766e'},
-M:{name:'Type M',zh:'三大圓腳（南非標準）',desc:'南非及周邊國家',v:'220–240V',f:'50Hz',col:'#7c3aed',fill:'#c4b5fd',hi:'#5b21b6'},
-N:{name:'Type N',zh:'三圓腳三角（巴西）',desc:'巴西標準',v:'127/220V',f:'60Hz',col:'#22c55e',fill:'#bbf7d0',hi:'#15803d'}
+A:{name:'Type A',zh:'Two flat parallel pins',desc:'Ungrounded; common in North America and Japan',v:'100–127V',f:'60Hz',col:'#e11d48',fill:'#fecdd3',hi:'#be123c'},
+B:{name:'Type B',zh:'Two flat parallel pins + ground',desc:'Includes grounding pin; North American standard',v:'100–127V',f:'60Hz',col:'#f43f5e',fill:'#fda4af',hi:'#9f1239'},
+C:{name:'Type C',zh:'Two round pins (Europlug)',desc:'The most widely used plug type',v:'220–240V',f:'50Hz',col:'#3b82f6',fill:'#bfdbfe',hi:'#1d4ed8'},
+D:{name:'Type D',zh:'Three round pins',desc:'Triangular layout; common in India and nearby regions',v:'220–240V',f:'50Hz',col:'#a855f7',fill:'#d8b4fe',hi:'#7e22ce'},
+E:{name:'Type E',zh:'Two round pins + protruding earth pin',desc:'French standard with an exposed grounding pin',v:'220–240V',f:'50Hz',col:'#06b6d4',fill:'#a5f3fc',hi:'#0e7490'},
+F:{name:'Type F',zh:'Two round pins + grounding clips (Schuko)',desc:'German standard; very common in Europe',v:'220–240V',f:'50Hz',col:'#2563eb',fill:'#93c5fd',hi:'#1e40af'},
+G:{name:'Type G',zh:'Three rectangular pins (UK standard)',desc:'Standard in the UK and many former colonies',v:'220–240V',f:'50Hz',col:'#f59e0b',fill:'#fde68a',hi:'#b45309'},
+H:{name:'Type H',zh:'Three-pin V arrangement',desc:'Unique to Israel',v:'220–240V',f:'50Hz',col:'#84cc16',fill:'#d9f99d',hi:'#4d7c0f'},
+I:{name:'Type I',zh:'Two slanted flat pins + ground (AU standard)',desc:'Australia, New Zealand, and parts of China',v:'220–240V',f:'50Hz',col:'#10b981',fill:'#a7f3d0',hi:'#047857'},
+J:{name:'Type J',zh:'Three round pins (Switzerland)',desc:'Used in Switzerland and Liechtenstein',v:'220–240V',f:'50Hz',col:'#f97316',fill:'#fed7aa',hi:'#c2410c'},
+K:{name:'Type K',zh:'Three round pins (Denmark)',desc:'Danish standard',v:'220–240V',f:'50Hz',col:'#ec4899',fill:'#fbcfe8',hi:'#be185d'},
+L:{name:'Type L',zh:'Three round pins in a line (Italy)',desc:'Italian standard',v:'220–240V',f:'50Hz',col:'#14b8a6',fill:'#99f6e4',hi:'#0f766e'},
+M:{name:'Type M',zh:'Large three round pins (South Africa)',desc:'Used in South Africa and nearby countries',v:'220–240V',f:'50Hz',col:'#7c3aed',fill:'#c4b5fd',hi:'#5b21b6'},
+N:{name:'Type N',zh:'Three round pins in triangular layout (Brazil)',desc:'Brazilian standard',v:'127/220V',f:'60Hz',col:'#22c55e',fill:'#bbf7d0',hi:'#15803d'}
 };
 
 /* ========== COUNTRY → PLUG DATA ========== */
@@ -329,7 +328,6 @@ var CP={
 174:{t:['C','E'],v:'220V',f:'50Hz'},480:{t:['C','G'],v:'230V',f:'50Hz'},
 132:{t:['C','F'],v:'220V',f:'50Hz'}
 };
-
 /* ========== PLUG SVG ICONS ========== */
 function plugSVG(t,w){
 w=w||44;
@@ -382,17 +380,26 @@ var locked=null,selType=null;
 
 /* ========== INFO BAR ========== */
 function resetInfo(){
-  $flag.textContent='🌐';
-  $name.innerHTML='<span class="info-placeholder">將滑鼠移至地圖上查看各國插頭類型</span>';
-  $sub.textContent='';$badges.innerHTML='';$infoR.innerHTML='';
+  $flag.textContent = '🌐';
+  $name.innerHTML = '<span class="info-placeholder">Move your mouse over the map to see each country’s plug types</span>';
+  $sub.textContent = '';
+  $badges.innerHTML = '';
+  $infoR.innerHTML = '';
 }
-function showInfo(c,isLock){
-  $flag.textContent=c.flag;
-  $name.textContent=c.name+(isLock?' 🔒':'');
-  $sub.textContent=(c.a2?'ISO: '+c.a2:'');
-  var bh='';c.types.forEach(function(t){var p=PT[t];if(p)bh+='<span class="pb" style="background:'+p.col+'">'+plugSVG(t,16)+' '+t+'</span>';});
-  $badges.innerHTML=bh;
-  $infoR.innerHTML='<div class="info-stat"><div class="info-stat-val">⚡ '+c.v+'</div><div class="info-stat-lbl">電壓</div></div><div class="info-stat"><div class="info-stat-val">〰️ '+c.f+'</div><div class="info-stat-lbl">頻率</div></div><div class="info-stat"><div class="info-stat-val">🔌 '+c.types.length+'</div><div class="info-stat-lbl">插頭類型</div></div>';
+function showInfo(c, isLock){
+  $flag.textContent = c.flag;
+  $name.textContent = c.name + (isLock ? ' 🔒' : '');
+  $sub.textContent = (c.a2 ? 'ISO: ' + c.a2 : '');
+  var bh = '';
+  c.types.forEach(function(t){
+    var p = PT[t];
+    if(p) bh += '<span class="pb" style="background:'+p.col+'">'+plugSVG(t,16)+' '+t+'</span>';
+  });
+  $badges.innerHTML = bh;
+  $infoR.innerHTML =
+    '<div class="info-stat"><div class="info-stat-val">⚡ '+c.v+'</div><div class="info-stat-lbl">Voltage</div></div>'+
+    '<div class="info-stat"><div class="info-stat-val">〰️ '+c.f+'</div><div class="info-stat-lbl">Frequency</div></div>'+
+    '<div class="info-stat"><div class="info-stat-val">🔌 '+c.types.length+'</div><div class="info-stat-lbl">Plug types</div></div>';
 }
 
 /* ========== MAP ========== */
@@ -446,23 +453,32 @@ function zoomTo(id){
 
 /* ========== LEFT PANEL: PLUG TYPES ========== */
 function renderPlugTypes(){
-  var h='';
-  for(var k in PT){var p=PT[k];
-    var ac=selType===k?' active':'';
-    h+='<div class="plug-card'+ac+'" data-type="'+k+'" style="border-left-color:'+p.col+'">';
-    h+='<div class="pc-icon">'+plugSVG(k,40)+'</div>';
-    h+='<div class="pc-info"><div class="pc-type"><span style="color:'+p.col+'">'+p.name+'</span></div>';
-    h+='<div class="pc-desc">'+p.zh+'</div>';
-    h+='<div class="pc-meta">'+p.v+' · '+p.f+'</div></div>';
-    h+='<span class="pc-count">'+ptCounts[k]+' 國</span>';
-    h+='</div>';
+  var h = '';
+  for(var k in PT){
+    var p = PT[k];
+    var ac = selType === k ? ' active' : '';
+    h += '<div class="plug-card'+ac+'" data-type="'+k+'" style="border-left-color:'+p.col+'">';
+    h += '<div class="pc-icon">'+plugSVG(k,40)+'</div>';
+    h += '<div class="pc-info"><div class="pc-type"><span style="color:'+p.col+'">'+p.name+'</span></div>';
+    h += '<div class="pc-desc">'+p.zh+'</div>';
+    h += '<div class="pc-meta">'+p.v+' · '+p.f+'</div></div>';
+    h += '<span class="pc-count">'+ptCounts[k]+' countries</span>';
+    h += '</div>';
   }
-  $plugList.innerHTML=h;
+  $plugList.innerHTML = h;
   $plugList.querySelectorAll('.plug-card').forEach(function(el){
-    el.addEventListener('click',function(){
-      var t=this.getAttribute('data-type');
-      if(selType===t){selType=null;}else{selType=t;locked=null;resetInfo();}
-      paintMap();renderPlugTypes();renderCountries();
+    el.addEventListener('click', function(){
+      var t = this.getAttribute('data-type');
+      if(selType === t){
+        selType = null;
+      }else{
+        selType = t;
+        locked = null;
+        resetInfo();
+      }
+      paintMap();
+      renderPlugTypes();
+      renderCountries();
     });
   });
 }
@@ -471,32 +487,44 @@ function renderPlugTypes(){
 function renderCountries(){
   var list;
   if(selType){
-    list=allC.filter(function(c){return c.types.indexOf(selType)>-1;});
-    var p=PT[selType];
-    $cHdr.innerHTML='🔌 使用 <span style="color:'+p.col+'">'+p.name+'</span> 的國家';
+    list = allC.filter(function(c){ return c.types.indexOf(selType) > -1; });
+    var p = PT[selType];
+    $cHdr.innerHTML = '🔌 Countries using <span style="color:'+p.col+'">'+p.name+'</span>';
   }else{
-    list=allC;
-    $cHdr.innerHTML='🌍 所有國家與地區';
+    list = allC;
+    $cHdr.innerHTML = '🌍 All countries and territories';
   }
-  $cCount.textContent=list.length;
-  var h='';
+  $cCount.textContent = list.length;
+  var h = '';
   list.forEach(function(c){
-    var ac=locked===c.id?' active':'';
-    var tb='';c.types.forEach(function(t){var p=PT[t];if(p)tb+='<span class="cc-tb" style="background:'+p.col+'">'+t+'</span>';});
-    h+='<div class="cc-item'+ac+'" data-id="'+c.id+'">';
-    h+='<span class="cc-flag">'+c.flag+'</span>';
-    h+='<div class="cc-info"><div class="cc-name">'+c.name+'</div><div class="cc-types">'+tb+'</div><div class="cc-vf">⚡'+c.v+' · 〰️'+c.f+'</div></div>';
-    h+='</div>';
+    var ac = locked === c.id ? ' active' : '';
+    var tb = '';
+    c.types.forEach(function(t){
+      var p = PT[t];
+      if(p) tb += '<span class="cc-tb" style="background:'+p.col+'">'+t+'</span>';
+    });
+    h += '<div class="cc-item'+ac+'" data-id="'+c.id+'">';
+    h += '<span class="cc-flag">'+c.flag+'</span>';
+    h += '<div class="cc-info"><div class="cc-name">'+c.name+'</div><div class="cc-types">'+tb+'</div><div class="cc-vf">⚡ '+c.v+' · 〰️ '+c.f+'</div></div>';
+    h += '</div>';
   });
-  $cGrid.innerHTML=h;
+  $cGrid.innerHTML = h;
   $cGrid.querySelectorAll('.cc-item').forEach(function(el){
-    el.addEventListener('click',function(){
-      var id=+this.getAttribute('data-id');
-      if(locked===id){locked=null;paintMap();resetInfo();renderCountries();return;}
-      locked=id;
-      var c=allC.find(function(x){return x.id===id;});
-      if(c)showInfo(c,true);
-      paintMap();renderCountries();zoomTo(id);
+    el.addEventListener('click', function(){
+      var id = +this.getAttribute('data-id');
+      if(locked === id){
+        locked = null;
+        paintMap();
+        resetInfo();
+        renderCountries();
+        return;
+      }
+      locked = id;
+      var c = allC.find(function(x){ return x.id === id; });
+      if(c) showInfo(c, true);
+      paintMap();
+      renderCountries();
+      zoomTo(id);
     });
   });
 }
@@ -558,42 +586,59 @@ d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(f
       if(selType&&!hasType(id,selType)){$tip.classList.remove('show');return;}
       var c=allC.find(function(x){return x.id===id;});
       if(c){
-        var tb='';c.types.forEach(function(t){var p=PT[t];if(p)tb+='<span class="tt-pb" style="background:'+p.col+'">'+plugSVG(t,14)+' '+t+'</span>';});
-        $tip.innerHTML='<span class="tt-flag">'+c.flag+'</span><span class="tt-name">'+c.name+'</span><br><span class="tt-sub">⚡ '+c.v+' · 〰️ '+c.f+'</span><div class="tt-plugs">'+tb+'</div>';
-      }else{
-        var nm=nameOf(id)||'未知';
-        $tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nm+'</span><br><span class="tt-sub">插頭資料不可用</span>';
-      }
-      var tx=ev.clientX+14,ty=ev.clientY-50;
-      if(tx+300>window.innerWidth)tx=ev.clientX-300;if(ty<10)ty=ev.clientY+20;
-      $tip.style.left=tx+'px';$tip.style.top=ty+'px';
-      $tip.classList.add('show');
-    })
-    .on('mouseleave',function(){
-      $tip.classList.remove('show');
-      if(locked!==null)return;
-      var el=d3.select(this),id=+el.attr('data-id');
-      if(selType){
-        if(hasType(id,selType))el.attr('fill',PT[selType].fill).attr('stroke','rgba(255,255,255,.8)').attr('stroke-width',.5);
-      }else{
-        el.attr('fill',fillFor(id)).attr('stroke','rgba(255,255,255,.8)').attr('stroke-width',.5);
-      }
-      resetInfo();
-    })
-    .on('click',function(){
-      var id=+d3.select(this).attr('data-id');
-      if(selType&&!hasType(id,selType))return;
-      if(locked===id){locked=null;paintMap();resetInfo();renderCountries();return;}
-      locked=id;
-      var c=allC.find(function(x){return x.id===id;});
-      if(c)showInfo(c,true);
-      paintMap();renderCountries();
-    });
-
+  var tb = '';
+c.types.forEach(function(t){
+  var p = PT[t];
+  if(p) tb += '<span class="tt-pb" style="background:'+p.col+'">'+plugSVG(t,14)+' '+t+'</span>';
+});
+$tip.innerHTML =
+  '<span class="tt-flag">'+c.flag+'</span><span class="tt-name">'+c.name+'</span><br>'+
+  '<span class="tt-sub">⚡ '+c.v+' · 〰️ '+c.f+'</span><div class="tt-plugs">'+tb+'</div>';
+}else{
+  var nm = nameOf(id) || 'Unknown';
+  $tip.innerHTML =
+    '<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nm+'</span><br>'+
+    '<span class="tt-sub">Plug data unavailable</span>';
+}
+var tx = ev.clientX + 14, ty = ev.clientY - 50;
+if(tx + 300 > window.innerWidth) tx = ev.clientX - 300;
+if(ty < 10) ty = ev.clientY + 20;
+$tip.style.left = tx + 'px';
+$tip.style.top = ty + 'px';
+$tip.classList.add('show');
+})
+.on('mouseleave', function(){
+  $tip.classList.remove('show');
+  if(locked !== null) return;
+  var el = d3.select(this), id = +el.attr('data-id');
+  if(selType){
+    if(hasType(id, selType)) el.attr('fill', PT[selType].fill).attr('stroke', 'rgba(255,255,255,.8)').attr('stroke-width', .5);
+  }else{
+    el.attr('fill', fillFor(id)).attr('stroke', 'rgba(255,255,255,.8)').attr('stroke-width', .5);
+  }
+  resetInfo();
+})
+.on('click', function(){
+  var id = +d3.select(this).attr('data-id');
+  if(selType && !hasType(id, selType)) return;
+  if(locked === id){
+    locked = null;
+    paintMap();
+    resetInfo();
+    renderCountries();
+    return;
+  }
+  locked = id;
+  var c = allC.find(function(x){ return x.id === id; });
+  if(c) showInfo(c, true);
+  paintMap();
+  renderCountries();
+});
   document.getElementById('loadOv').style.display='none';
   renderPlugTypes();renderCountries();
-}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗，請重新整理。</p>';});
-
+}).catch(function(){
+  document.getElementById('loadOv').innerHTML = '<p style="color:#ef4444">⚠️ Map loading failed. Please refresh.</p>';
+});
 })();
 </script>
 
