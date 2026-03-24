@@ -377,310 +377,335 @@ const PRESETS=[5,10,15,20,25,30,45,60,90,120];
 const PRESETS_MINI=[5,10,15,25,30,60];
 
 // ============ STATE ============
-let mode='clock'; // clock | countdown
-let tz='Asia/Taipei';
-let cdState='idle'; // idle | running | paused | finished
-let cdTotalMs=0,cdRemainMs=0,cdStartTs=0,cdElapsed=0;
-let tickId=null;
+let mode = 'clock'; // clock | countdown
+let tz = 'Asia/Taipei';
+let cdState = 'idle'; // idle | running | paused | finished
+let cdTotalMs = 0, cdRemainMs = 0, cdStartTs = 0, cdElapsed = 0;
+let tickId = null;
 
 // ============ DOM ============
-const $=id=>document.getElementById(id);
-const clockBlock=$('clockBlock'),cdBlock=$('cdBlock');
-const clockTime=$('clockTime'),clockDate=$('clockDate');
-const tzSel=$('tzSel'),utcTag=$('utcTag');
-const cdIdle=$('cdIdle'),cdActive=$('cdActive'),cdDone=$('cdDone');
-const cdTimeEl=$('cdTime'),cdDoneTime=$('cdDoneTime');
-const cdProgFill=$('cdProgFill'),cdProgWrap=$('cdProgWrap');
-const cdPauseBtn=$('cdPauseBtn'),cdStartBtn=$('cdStartBtn');
-const sepLabel=$('sepLabel');
-const finishOv=$('finishOv'),finishTopic=$('finishTopic');
-const toastEl=$('toast');
+const $ = id => document.getElementById(id);
+const clockBlock = $('clockBlock'), cdBlock = $('cdBlock');
+const clockTime = $('clockTime'), clockDate = $('clockDate');
+const tzSel = $('tzSel'), utcTag = $('utcTag');
+const cdIdle = $('cdIdle'), cdActive = $('cdActive'), cdDone = $('cdDone');
+const cdTimeEl = $('cdTime'), cdDoneTime = $('cdDoneTime');
+const cdProgFill = $('cdProgFill'), cdProgWrap = $('cdProgWrap');
+const cdPauseBtn = $('cdPauseBtn'), cdStartBtn = $('cdStartBtn');
+const sepLabel = $('sepLabel');
+const finishOv = $('finishOv'), finishTopic = $('finishTopic');
+const toastEl = $('toast');
 
 // ============ INIT TZ SELECT ============
 (function buildTzSel(){
-    let html='';
-    TZ.forEach(([group,cities])=>{
-        html+='<optgroup label="'+group+'">';
-        cities.forEach(([name,tzid])=>{
-            const sel=tzid===tz?' selected':'';
-            html+='<option value="'+tzid+'" data-city="'+name+'"'+sel+'>'+name+'</option>';
-        });
-        html+='</optgroup>';
+  let html = '';
+  TZ.forEach(([group, cities]) => {
+    html += '<optgroup label="' + group + '">';
+    cities.forEach(([name, tzid]) => {
+      const sel = tzid === tz ? ' selected' : '';
+      html += '<option value="' + tzid + '" data-city="' + name + '"' + sel + '>' + name + '</option>';
     });
-    tzSel.innerHTML=html;
+    html += '</optgroup>';
+  });
+  tzSel.innerHTML = html;
 })();
 
 // ============ INIT PRESETS ============
 (function buildPresets(){
-    const box=$('cdPresets');
-    let html='';
-    PRESETS.forEach(m=>{
-        const label=m>=60?(m/60)+'小時':m+'分';
-        html+='<button class="pre-btn" onclick="applyPreset('+m+',this)">'+label+'</button>';
-    });
-    // Mini custom button
-    html+='<button class="pre-btn pre-custom mini-only-btn" onclick="setMode(\'countdown\')" style="display:none">⚙ 自訂</button>';
-    box.innerHTML=html;
-    updatePresetVisibility();
+  const box = $('cdPresets');
+  let html = '';
+  PRESETS.forEach(m => {
+    const label = m >= 60 ? (m / 60) + '小時' : m + '分';
+    html += '<button class="pre-btn" onclick="applyPreset(' + m + ',this)">' + label + '</button>';
+  });
+  // Mini custom button
+  html += '<button class="pre-btn pre-custom mini-only-btn" onclick="setMode(\'countdown\')" style="display:none">⚙ 自訂</button>';
+  box.innerHTML = html;
+  updatePresetVisibility();
 })();
 
 function updatePresetVisibility(){
-    const isMini=cdBlock.classList.contains('mini-v');
-    const btns=$('cdPresets').querySelectorAll('.pre-btn');
-    btns.forEach(b=>{
-        if(b.classList.contains('mini-only-btn')){
-            b.style.display=isMini?'':'none';
-            return;
-        }
-        const m=parseInt(b.textContent);
-        if(isMini){
-            const label=b.textContent.replace('h','').replace('min','');
-            const min=b.textContent.includes('h')?parseInt(label)*60:parseInt(label);
-            b.style.display=PRESETS_MINI.includes(min)?'':'none';
-        }else{
-            b.style.display='';
-        }
-    });
+  const isMini = cdBlock.classList.contains('mini-v');
+  const btns = $('cdPresets').querySelectorAll('.pre-btn');
+  btns.forEach(b => {
+    if(b.classList.contains('mini-only-btn')){
+      b.style.display = isMini ? '' : 'none';
+      return;
+    }
+    if(isMini){
+      const label = b.textContent.replace('小時', '').replace('分', '');
+      const min = b.textContent.includes('小時') ? parseInt(label) * 60 : parseInt(label);
+      b.style.display = PRESETS_MINI.includes(min) ? '' : 'none';
+    }else{
+      b.style.display = '';
+    }
+  });
 }
 
 // ============ CD INPUT SETUP ============
-['cdH','cdM','cdS'].forEach(id=>{
-    const el=$(id);
-    el.addEventListener('input',()=>{el.value=el.value.replace(/\D/g,'').slice(0,2)});
-    el.addEventListener('blur',()=>{
-        let v=parseInt(el.value)||0;
-        const mx=id==='cdH'?99:59;
-        v=Math.min(Math.max(v,0),mx);
-        el.value=String(v).padStart(2,'0');
-    });
-    el.addEventListener('focus',()=>el.select());
+['cdH', 'cdM', 'cdS'].forEach(id => {
+  const el = $(id);
+  el.addEventListener('input', () => {
+    el.value = el.value.replace(/\D/g, '').slice(0, 2);
+  });
+  el.addEventListener('blur', () => {
+    let v = parseInt(el.value) || 0;
+    const mx = id === 'cdH' ? 99 : 59;
+    v = Math.min(Math.max(v, 0), mx);
+    el.value = String(v).padStart(2, '0');
+  });
+  el.addEventListener('focus', () => el.select());
 });
 
 // ============ MODE ============
 function setMode(m){
-    mode=m;
-    $('modeClk').classList.toggle('active',m==='clock');
-    $('modeCd').classList.toggle('active',m==='countdown');
-    updateLayout();
+  mode = m;
+  $('modeClk').classList.toggle('active', m === 'clock');
+  $('modeCd').classList.toggle('active', m === 'countdown');
+  updateLayout();
 }
 
 function updateLayout(){
-const cm=mode==='clock';
-    clockBlock.className='dblock '+(cm?'main-v':'mini-v');
-    cdBlock.className='dblock '+(cm?'mini-v':'main-v');
-    clockBlock.style.order=cm?1:3;
-    cdBlock.style.order=cm?3:1;
-    sepLabel.textContent=cm?'⏳ Countdown':'🕐 Current Time';
-    // big-only / mini-only via parent class
-    const bigOnlys=document.querySelectorAll('.big-only');
-    // We handle this purely via CSS parent class already in most cases
-    // But for the cd input row and start btn we need to show/hide
-    $('cdInpRow').style.display=(!cm&&cdState==='idle')?'flex':'none';
-    cdStartBtn.style.display=(!cm&&cdState==='idle')?'':'none';
-    clockDate.style.display=cm?'':'none';
-    cdProgWrap.style.display=(!cm&&cdState==='running'||!cm&&cdState==='paused')?'':'none';
-    updatePresetVisibility();
-    updateCdStateUI();
+  const cm = mode === 'clock';
+  clockBlock.className = 'dblock ' + (cm ? 'main-v' : 'mini-v');
+  cdBlock.className = 'dblock ' + (cm ? 'mini-v' : 'main-v');
+  clockBlock.style.order = cm ? 1 : 3;
+  cdBlock.style.order = cm ? 3 : 1;
+  sepLabel.textContent = cm ? '⏳ 倒計時' : '🕐 目前時間';
+  $('cdInpRow').style.display = (!cm && cdState === 'idle') ? 'flex' : 'none';
+  cdStartBtn.style.display = (!cm && cdState === 'idle') ? '' : 'none';
+  clockDate.style.display = cm ? '' : 'none';
+  cdProgWrap.style.display = ((!cm && cdState === 'running') || (!cm && cdState === 'paused')) ? '' : 'none';
+  updatePresetVisibility();
+  updateCdStateUI();
 }
 
 function toggleFocus(){
-    document.body.classList.toggle('focus');
+  document.body.classList.toggle('focus');
 }
 
 // ============ CLOCK ============
 function getClockTime(){
-    try{
-        return new Date().toLocaleTimeString('en-GB',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-    }catch(e){return '--:--:--'}
+  try{
+    return new Date().toLocaleTimeString('en-GB', {
+      timeZone: tz,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+  }catch(e){
+    return '--:--:--';
+  }
 }
 function getClockDate(){
-    try{
-        return new Date().toLocaleDateString('zh-TW',{timeZone:tz,year:'numeric',month:'long',day:'numeric',weekday:'long'});
-    }catch(e){return ''}
+  try{
+    return new Date().toLocaleDateString('zh-TW', {
+      timeZone: tz,
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long'
+    });
+  }catch(e){
+    return '';
+  }
 }
 function getUTC(){
-    try{
-        const now=new Date();
-        const u=new Date(now.toLocaleString('en-US',{timeZone:'UTC'}));
-        const t=new Date(now.toLocaleString('en-US',{timeZone:tz}));
-        const diff=(t-u)/3600000;
-        const h=Math.floor(Math.abs(diff));
-        const m=Math.round((Math.abs(diff)-h)*60);
-        const sign=diff>=0?'+':'-';
-        return 'UTC'+sign+String(h).padStart(2,'0')+(m?':'+String(m).padStart(2,'0'):'');
-    }catch(e){return 'UTC'}
+  try{
+    const now = new Date();
+    const u = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
+    const t = new Date(now.toLocaleString('en-US', { timeZone: tz }));
+    const diff = (t - u) / 3600000;
+    const h = Math.floor(Math.abs(diff));
+    const m = Math.round((Math.abs(diff) - h) * 60);
+    const sign = diff >= 0 ? '+' : '-';
+    return 'UTC' + sign + String(h).padStart(2, '0') + (m ? ':' + String(m).padStart(2, '0') : '');
+  }catch(e){
+    return 'UTC';
+  }
 }
 
 function onTzChange(){
-    tz=tzSel.value;
-    utcTag.textContent=getUTC();
+  tz = tzSel.value;
+  utcTag.textContent = getUTC();
 }
 
 // ============ COUNTDOWN ============
-function applyPreset(min,btnEl){
-    // Remove active from all
-    $('cdPresets').querySelectorAll('.pre-btn').forEach(b=>b.classList.remove('pa'));
-    if(btnEl)btnEl.classList.add('pa');
+function applyPreset(min, btnEl){
+  $('cdPresets').querySelectorAll('.pre-btn').forEach(b => b.classList.remove('pa'));
+  if(btnEl) btnEl.classList.add('pa');
 
-    const isMini=cdBlock.classList.contains('mini-v');
-    const h=Math.floor(min/60),m=min%60;
-    if(!isMini){
-        $('cdH').value=String(h).padStart(2,'0');
-        $('cdM').value=String(m).padStart(2,'0');
-        $('cdS').value='00';
-    }else{
-        startCd(h,m,0);
-    }
+  const isMini = cdBlock.classList.contains('mini-v');
+  const h = Math.floor(min / 60), m = min % 60;
+  if(!isMini){
+    $('cdH').value = String(h).padStart(2, '0');
+    $('cdM').value = String(m).padStart(2, '0');
+    $('cdS').value = '00';
+  }else{
+    startCd(h, m, 0);
+  }
 }
 
-function startCd(h,m,s){
-    if(h===undefined){
-        h=parseInt($('cdH').value)||0;
-        m=parseInt($('cdM').value)||0;
-        s=parseInt($('cdS').value)||0;
-    }
-    cdTotalMs=(h*3600+m*60+s)*1000;
-    if(cdTotalMs<=0)return;
-    cdRemainMs=cdTotalMs;
-    cdElapsed=0;
-    cdStartTs=Date.now();
-    cdState='running';
-    updateLayout();
+function startCd(h, m, s){
+  if(h === undefined){
+    h = parseInt($('cdH').value) || 0;
+    m = parseInt($('cdM').value) || 0;
+    s = parseInt($('cdS').value) || 0;
+  }
+  cdTotalMs = (h * 3600 + m * 60 + s) * 1000;
+  if(cdTotalMs <= 0) return;
+  cdRemainMs = cdTotalMs;
+  cdElapsed = 0;
+  cdStartTs = Date.now();
+  cdState = 'running';
+  updateLayout();
 }
 
 function togglePause(){
-    if(cdState==='running'){
-        cdElapsed+=Date.now()-cdStartTs;
-        cdState='paused';
-    }else if(cdState==='paused'){
-        cdStartTs=Date.now();
-        cdState='running';
-    }
-    updateCdStateUI();
+  if(cdState === 'running'){
+    cdElapsed += Date.now() - cdStartTs;
+    cdState = 'paused';
+  }else if(cdState === 'paused'){
+    cdStartTs = Date.now();
+    cdState = 'running';
+  }
+  updateCdStateUI();
 }
 
 function resetCd(){
-    cdState='idle';cdRemainMs=0;cdTotalMs=0;cdElapsed=0;
-    dismissFinish();
-    updateLayout();
+  cdState = 'idle';
+  cdRemainMs = 0;
+  cdTotalMs = 0;
+  cdElapsed = 0;
+  dismissFinish();
+  updateLayout();
 }
 
 function updateCdStateUI(){
-    const idle=cdState==='idle',active=cdState==='running'||cdState==='paused',done=cdState==='finished';
-    cdIdle.style.display=idle?'':'none';
-    cdActive.style.display=active?'':'none';
-    cdDone.style.display=done?'':'none';
+  const idle = cdState === 'idle',
+        active = cdState === 'running' || cdState === 'paused',
+        done = cdState === 'finished';
+  cdIdle.style.display = idle ? '' : 'none';
+  cdActive.style.display = active ? '' : 'none';
+  cdDone.style.display = done ? '' : 'none';
 
-    if(active){
-        const paused=cdState==='paused';
-        cdPauseBtn.textContent=paused?'▶ continue':'⏸ pause';
-        cdPauseBtn.classList.toggle('primary',true);
-    }
+  if(active){
+    const paused = cdState === 'paused';
+    cdPauseBtn.textContent = paused ? '▶ 繼續' : '⏸ 暫停';
+    cdPauseBtn.classList.toggle('primary', true);
+  }
 
-    const isMini=cdBlock.classList.contains('mini-v');
-    $('cdInpRow').style.display=(!isMini&&idle)?'flex':'none';
-    cdStartBtn.style.display=(!isMini&&idle)?'':'none';
-    cdProgWrap.style.display=(!isMini&&active)?'':'none';
+  const isMini = cdBlock.classList.contains('mini-v');
+  $('cdInpRow').style.display = (!isMini && idle) ? 'flex' : 'none';
+  cdStartBtn.style.display = (!isMini && idle) ? '' : 'none';
+  cdProgWrap.style.display = (!isMini && active) ? '' : 'none';
 }
 
 function fmtMs(ms){
-    const t=Math.ceil(ms/1000);
-    const h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;
-    return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  const t = Math.ceil(ms / 1000);
+  const h = Math.floor(t / 3600),
+        m = Math.floor((t % 3600) / 60),
+        s = t % 60;
+  return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
 }
 
 function onFinish(){
-    playBeep();
-    const topic=$('topic').value.trim();
-    finishTopic.textContent=topic||'';
-    finishOv.classList.add('show');
+  playBeep();
+  const topic = $('topic').value.trim();
+  finishTopic.textContent = topic || '';
+  finishOv.classList.add('show');
 }
 
 function dismissFinish(){
-    finishOv.classList.remove('show');
+  finishOv.classList.remove('show');
 }
 
 // ============ AUDIO ============
 function playBeep(){
-    try{
-        const ac=new(window.AudioContext||window.webkitAudioContext)();
-        function b(freq,start,dur){
-            const o=ac.createOscillator(),g=ac.createGain();
-            o.connect(g);g.connect(ac.destination);
-            o.frequency.value=freq;o.type='sine';
-            g.gain.setValueAtTime(0.35,ac.currentTime+start);
-            g.gain.exponentialRampToValueAtTime(0.01,ac.currentTime+start+dur);
-            o.start(ac.currentTime+start);o.stop(ac.currentTime+start+dur);
-        }
-        b(880,0,.25);b(880,.35,.25);b(1320,.7,.45);
-    }catch(e){}
+  try{
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    function b(freq, start, dur){
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.connect(g); g.connect(ac.destination);
+      o.frequency.value = freq;
+      o.type = 'sine';
+      g.gain.setValueAtTime(0.35, ac.currentTime + start);
+      g.gain.exponentialRampToValueAtTime(0.01, ac.currentTime + start + dur);
+      o.start(ac.currentTime + start);
+      o.stop(ac.currentTime + start + dur);
+    }
+    b(880, 0, .25);
+    b(880, .35, .25);
+    b(1320, .7, .45);
+  }catch(e){}
 }
 
 // ============ TICK ============
-let lastSec=-1;
+let lastSec = -1;
 function tick(){
-    // Clock
-    const tStr=getClockTime();
-    if(clockTime.textContent!==tStr){
-        clockTime.textContent=tStr;
-        const curSec=parseInt(tStr.split(':')[2]);
-        if(curSec!==lastSec){
-            clockDate.textContent=getClockDate();
-            utcTag.textContent=getUTC();
-            lastSec=curSec;
-        }
+  // Clock
+  const tStr = getClockTime();
+  if(clockTime.textContent !== tStr){
+    clockTime.textContent = tStr;
+    const curSec = parseInt(tStr.split(':')[2]);
+    if(curSec !== lastSec){
+      clockDate.textContent = getClockDate();
+      utcTag.textContent = getUTC();
+      lastSec = curSec;
+    }
+  }
+
+  // Countdown
+  if(cdState === 'running'){
+    const elapsed = cdElapsed + (Date.now() - cdStartTs);
+    cdRemainMs = Math.max(0, cdTotalMs - elapsed);
+    if(cdRemainMs <= 0){
+      cdState = 'finished';
+      cdRemainMs = 0;
+      onFinish();
+      updateCdStateUI();
+      return;
+    }
+    const str = fmtMs(cdRemainMs);
+    cdTimeEl.textContent = str;
+
+    cdTimeEl.classList.remove('cd-warn', 'cd-danger', 'cd-pulse');
+    cdProgFill.classList.remove('warn', 'danger');
+    if(cdRemainMs <= 10000){
+      cdTimeEl.classList.add('cd-danger', 'cd-pulse');
+      cdProgFill.classList.add('danger');
+    }else if(cdRemainMs <= 60000){
+      cdTimeEl.classList.add('cd-warn');
+      cdProgFill.classList.add('warn');
     }
 
-    // Countdown
-    if(cdState==='running'){
-        const elapsed=cdElapsed+(Date.now()-cdStartTs);
-        cdRemainMs=Math.max(0,cdTotalMs-elapsed);
-        if(cdRemainMs<=0){
-            cdState='finished';cdRemainMs=0;
-            onFinish();updateCdStateUI();
-            return;
-        }
-        const str=fmtMs(cdRemainMs);
-        cdTimeEl.textContent=str;
-
-        // Colors
-        cdTimeEl.classList.remove('cd-warn','cd-danger','cd-pulse');
-        cdProgFill.classList.remove('warn','danger');
-        if(cdRemainMs<=10000){
-            cdTimeEl.classList.add('cd-danger','cd-pulse');
-            cdProgFill.classList.add('danger');
-        }else if(cdRemainMs<=60000){
-            cdTimeEl.classList.add('cd-warn');
-            cdProgFill.classList.add('warn');
-        }
-
-        // Progress
-        const pct=((cdTotalMs-cdRemainMs)/cdTotalMs)*100;
-        cdProgFill.style.width=pct+'%';
-    }
+    const pct = ((cdTotalMs - cdRemainMs) / cdTotalMs) * 100;
+    cdProgFill.style.width = pct + '%';
+  }
 }
 
-tickId=setInterval(tick,150);
+tickId = setInterval(tick, 150);
 
 // ============ KEYBOARD ============
-document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'&&document.body.classList.contains('focus')){
-        document.body.classList.remove('focus');
-    }
-    // Don't handle space if typing in input
-    if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
-    if(e.key===' '&&(cdState==='running'||cdState==='paused')){
-        e.preventDefault();togglePause();
-    }
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && document.body.classList.contains('focus')){
+    document.body.classList.remove('focus');
+  }
+  if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if(e.key === ' ' && (cdState === 'running' || cdState === 'paused')){
+    e.preventDefault();
+    togglePause();
+  }
 });
 
 // ============ TOAST ============
 function showToast(msg){
-    toastEl.textContent=msg;toastEl.classList.add('show');
-    clearTimeout(showToast._t);
-    showToast._t=setTimeout(()=>toastEl.classList.remove('show'),2000);
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toastEl.classList.remove('show'), 2000);
 }
-
 // ============ INIT ============
 updateLayout();
 tick();
