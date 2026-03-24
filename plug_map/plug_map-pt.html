@@ -1,0 +1,601 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界插頭類型互動地圖 – Roamwise</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
+
+.rw-header *{margin:0;padding:0;box-sizing:border-box}
+.rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:#fff;border-bottom:1px solid #e5e7eb;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
+.rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
+.rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#2563eb}
+.rw-header-logo .brand-wise{font-size:1.55rem;font-weight:800;color:#0f172a}
+.rw-header-right{display:flex;align-items:center;gap:20px}
+.rw-header-contact{text-decoration:none;color:#374151;font-size:.95rem;font-weight:500;transition:color .2s}
+.rw-header-contact:hover{color:#2563eb}
+.rw-header-lang{position:relative;display:inline-block}
+.rw-header-lang-btn{background:#f3f4f6;border:1px solid #d1d5db;border-radius:8px;padding:7px 14px;font-size:.9rem;font-weight:500;color:#1f2937;cursor:pointer;transition:background .2s}
+.rw-header-lang-btn:hover{background:#e5e7eb}
+.rw-header-lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:160px;overflow:hidden;z-index:1001}
+.rw-header-lang:hover .rw-header-lang-menu,.rw-header-lang-menu.show{display:block}
+.rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
+.rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
+.rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+@media(max-width:600px){.rw-header{padding:12px 16px}.rw-header-logo .brand-roam,.rw-header-logo .brand-wise{font-size:1.25rem}.rw-header-right{gap:12px}.rw-header-contact{font-size:.85rem}.rw-header-lang-btn{padding:6px 10px;font-size:.82rem}}
+
+  main{flex:1;max-width:1260px;width:100%;margin:1.5rem auto;padding:0 1.5rem}
+h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
+.card{background:#fff;border-radius:14px;padding:1.5rem;box-shadow:0 2px 14px rgba(0,0,0,.06);margin-bottom:1.2rem}
+.info-bar{display:flex;align-items:flex-start;gap:1.2rem;flex-wrap:wrap;padding-bottom:1.2rem;border-bottom:1px solid #e2e8f0;min-height:70px}
+.info-left{display:flex;align-items:center;gap:1rem;flex:1;min-width:200px}
+.info-flag{font-size:2.6rem;line-height:1}
+.info-details{flex:1}
+.info-name{font-size:1.2rem;font-weight:700}
+.info-sub{font-size:.85rem;color:#64748b;margin-top:2px}
+.info-placeholder{color:#94a3b8;font-size:1rem;font-weight:400}
+.plug-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pb{display:inline-flex;align-items:center;gap:4px;padding:3px 10px 3px 6px;border-radius:20px;font-size:.78rem;font-weight:700;color:#fff;line-height:1.2}
+.pb svg{flex-shrink:0}
+.info-right{display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap}
+.info-stat{text-align:center;min-width:60px}.info-stat-val{font-size:1.2rem;font-weight:800;color:#1e3a8a}.info-stat-lbl{font-size:.72rem;color:#94a3b8;margin-top:1px}
+.map-wrap{position:relative;width:100%;background:linear-gradient(180deg,#dbeafe,#e0f2fe);border-radius:10px;overflow:hidden;cursor:grab;margin-top:1rem}.map-wrap:active{cursor:grabbing}
+.map-wrap svg{display:block;width:100%;height:auto}
+.loading-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#dbeafe;z-index:10}
+.spinner{width:40px;height:40px;border:4px solid #93c5fd;border-top-color:#1e3a8a;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:.8rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.map-legend{position:absolute;bottom:10px;right:10px;background:rgba(255,255,255,.92);border-radius:10px;padding:8px 12px;font-size:.72rem;display:flex;flex-wrap:wrap;gap:4px 10px;max-width:320px;box-shadow:0 2px 8px rgba(0,0,0,.1);backdrop-filter:blur(4px);z-index:5}
+.ml-item{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.ml-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.bar-row{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-top:1rem;padding-top:1rem;border-top:1px solid #e2e8f0}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:380px}
+.search-input{width:100%;padding:.5rem 1rem .5rem 2.2rem;border:2px solid #e2e8f0;border-radius:8px;font-size:.92rem;outline:none;transition:border .15s}.search-input:focus{border-color:#3b82f6}
+.search-icon{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
+.search-dd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto;z-index:100;display:none}
+.search-dd.show{display:block}
+.sd-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1rem;cursor:pointer;transition:background .1s;font-size:.9rem}.sd-item:hover{background:#eff6ff}
+.tips{display:flex;flex-wrap:wrap;gap:1rem;margin-top:.8rem;font-size:.8rem;color:#64748b}
+.tips span{display:inline-flex;align-items:center;gap:.2rem}
+.btn{padding:.5rem 1.2rem;border:none;border-radius:8px;font-size:.9rem;cursor:pointer;font-weight:600;transition:all .15s;white-space:nowrap}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+.btn-outline{background:transparent;border:2px solid #e2e8f0;color:#64748b}.btn-outline:hover{border-color:#3b82f6;color:#3b82f6}
+.btn-outline.active{background:#dbeafe;border-color:#3b82f6;color:#1e3a8a}
+.two-panel{display:grid;grid-template-columns:340px 1fr;gap:1.2rem;align-items:start}
+.panel{background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06);overflow:hidden}
+.panel-hdr{padding:1rem 1.2rem;font-weight:700;font-size:1rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:.5rem;position:sticky;top:0;background:#fff;z-index:2}
+.panel-body{padding:.6rem;max-height:560px;overflow-y:auto}
+.plug-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all .15s;border-left:4px solid transparent;margin-bottom:2px}
+.plug-card:hover{background:#f0f9ff}
+.plug-card.active{background:#dbeafe}
+.pc-icon{width:44px;height:44px;flex-shrink:0;background:#f8fafc;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.pc-info{flex:1;min-width:0}
+.pc-type{font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:6px}
+.pc-desc{font-size:.78rem;color:#64748b;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-meta{font-size:.72rem;color:#94a3b8;margin-top:2px}
+.pc-count{background:#f1f5f9;color:#475569;font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.cc-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .12s;border:1px solid transparent}
+.cc-item:hover{background:#f0f9ff;border-color:#bfdbfe}
+.cc-item.active{background:#dbeafe;border-color:#3b82f6}
+.cc-flag{font-size:1.3rem;flex-shrink:0}
+.cc-info{flex:1;min-width:0}
+.cc-name{font-weight:600;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-types{display:flex;gap:3px;margin-top:3px;flex-wrap:wrap}
+.cc-tb{display:inline-block;padding:1px 5px;border-radius:3px;font-size:.65rem;font-weight:700;color:#fff}
+.cc-vf{font-size:.72rem;color:#94a3b8;margin-top:2px}
+.tooltip{position:fixed;pointer-events:none;background:rgba(15,23,42,.93);color:#fff;padding:12px 18px;border-radius:12px;font-size:.9rem;z-index:1000;opacity:0;transition:opacity .12s;box-shadow:0 4px 20px rgba(0,0,0,.25);line-height:1.6;max-width:340px}.tooltip.show{opacity:1}
+.tt-flag{font-size:1.4rem;vertical-align:middle;margin-right:6px}.tt-name{font-weight:700;font-size:1rem}
+.tt-sub{color:#cbd5e1;font-size:.82rem}
+.tt-plugs{margin-top:6px;display:flex;gap:4px;flex-wrap:wrap}
+.tt-pb{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;color:#fff}
+
+.rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#fff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#fff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
+@media(max-width:768px){.rw-footer-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(max-width:480px){.rw-footer{padding:36px 16px 0}.rw-footer-grid{grid-template-columns:1fr;gap:24px}}
+</style>
+</head>
+<body>
+
+<header class="rw-header">
+  <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
+  <div class="rw-header-right">
+    <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
+    <div class="rw-header-lang">
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
+      <div class="rw-header-lang-menu">
+        <a href="drivinglicense_map-zh.html" class="active">繁體中文</a>
+        <a href="drivinglicense_map-en.html">English</a>
+        <a href="drivinglicense_map-es.html">Español</a>
+        <a href="drivinglicense_map-pt.html">Português</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<h1>🔌 世界插頭類型互動地圖</h1>
+
+<div class="card">
+  <div class="info-bar" id="infoBar">
+    <div class="info-left">
+      <div class="info-flag" id="infoFlag">🌐</div>
+      <div class="info-details">
+        <div class="info-name" id="infoName"><span class="info-placeholder">將滑鼠移至地圖上查看各國插頭類型</span></div>
+        <div class="info-sub" id="infoSub"></div>
+        <div class="plug-badges" id="infoBadges"></div>
+      </div>
+    </div>
+    <div class="info-right" id="infoRight"></div>
+  </div>
+
+  <div class="map-wrap" id="mapWrap">
+    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>載入地圖中…</p></div>
+    <div class="map-legend" id="mapLegend"></div>
+  </div>
+
+  <div class="tips">
+    <span>🖱️ 滑入查看國家插頭</span><span>👆 點擊鎖定國家</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span>
+  </div>
+
+  <div class="bar-row">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchIn" type="text" placeholder="搜尋國家或地區…" autocomplete="off">
+      <div class="search-dd" id="searchDD"></div>
+    </div>
+    <button class="btn btn-primary" id="btnReset">🔄 重設</button>
+  </div>
+</div>
+
+<div class="two-panel">
+  <div class="panel" id="panelLeft">
+    <div class="panel-hdr">🔌 插頭類型指南<span id="plugCount" class="pc-count">14 種</span></div>
+    <div class="panel-body" id="plugList"></div>
+  </div>
+  <div class="panel" id="panelRight">
+    <div class="panel-hdr" id="cListHdr">🌍 所有國家與地區<span id="cListCount" class="pc-count">0</span></div>
+    <div class="panel-body" id="cListBody"><div class="cc-grid" id="cGrid"></div></div>
+  </div>
+</div>
+</main>
+
+<div class="tooltip" id="tooltip"></div>
+
+<footer>
+<footer class="rw-footer">
+  <div class="rw-footer-grid">
+    <div class="rw-footer-col">
+      <h4>⏰ 時間與日照</h4>
+      <ul>
+        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
+        <li><a href="../meeting/meeting-zh.html">會議時間查找器</a></li>
+        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
+        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🔧 換算與生活工具</h4>
+      <ul>
+        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
+        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
+        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🚗 交通與出行地圖</h4>
+      <ul>
+        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
+        <li><a href="../drivingdirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
+        <li><a href="drivinglicense_map-zh.html" class="active">全球國際駕照承認互動地圖</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🌍 全球資訊地圖</h4>
+      <ul>
+        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
+        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
+        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
+        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+</footer>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(function(){
+
+/* ========== PLUG TYPE DATA ========== */
+var PT={
+A:{name:'Type A',zh:'兩扁平行插腳',desc:'無接地，常見於北美和日本',v:'100–127V',f:'60Hz',col:'#e11d48',fill:'#fecdd3',hi:'#be123c'},
+B:{name:'Type B',zh:'兩扁平行＋接地腳',desc:'含接地腳，北美標準',v:'100–127V',f:'60Hz',col:'#f43f5e',fill:'#fda4af',hi:'#9f1239'},
+C:{name:'Type C',zh:'兩圓形插腳（歐標）',desc:'最廣泛使用的插頭類型',v:'220–240V',f:'50Hz',col:'#3b82f6',fill:'#bfdbfe',hi:'#1d4ed8'},
+D:{name:'Type D',zh:'三大圓形插腳',desc:'三角排列，常見於印度等',v:'220–240V',f:'50Hz',col:'#a855f7',fill:'#d8b4fe',hi:'#7e22ce'},
+E:{name:'Type E',zh:'兩圓腳＋接地突針',desc:'法國標準，含突出的接地針',v:'220–240V',f:'50Hz',col:'#06b6d4',fill:'#a5f3fc',hi:'#0e7490'},
+F:{name:'Type F',zh:'兩圓腳＋接地夾（Schuko）',desc:'德國標準，歐洲最常見',v:'220–240V',f:'50Hz',col:'#2563eb',fill:'#93c5fd',hi:'#1e40af'},
+G:{name:'Type G',zh:'三矩形插腳（英標）',desc:'英國及前殖民地標準',v:'220–240V',f:'50Hz',col:'#f59e0b',fill:'#fde68a',hi:'#b45309'},
+H:{name:'Type H',zh:'三腳 V 形排列',desc:'以色列獨有標準',v:'220–240V',f:'50Hz',col:'#84cc16',fill:'#d9f99d',hi:'#4d7c0f'},
+I:{name:'Type I',zh:'兩斜扁腳＋接地（澳標）',desc:'澳洲、紐西蘭、中國部分',v:'220–240V',f:'50Hz',col:'#10b981',fill:'#a7f3d0',hi:'#047857'},
+J:{name:'Type J',zh:'三圓形插腳（瑞士）',desc:'瑞士和列支敦士登',v:'220–240V',f:'50Hz',col:'#f97316',fill:'#fed7aa',hi:'#c2410c'},
+K:{name:'Type K',zh:'三圓形插腳（丹麥）',desc:'丹麥標準',v:'220–240V',f:'50Hz',col:'#ec4899',fill:'#fbcfe8',hi:'#be185d'},
+L:{name:'Type L',zh:'三圓腳直線排列（義大利）',desc:'義大利標準',v:'220–240V',f:'50Hz',col:'#14b8a6',fill:'#99f6e4',hi:'#0f766e'},
+M:{name:'Type M',zh:'三大圓腳（南非標準）',desc:'南非及周邊國家',v:'220–240V',f:'50Hz',col:'#7c3aed',fill:'#c4b5fd',hi:'#5b21b6'},
+N:{name:'Type N',zh:'三圓腳三角（巴西）',desc:'巴西標準',v:'127/220V',f:'60Hz',col:'#22c55e',fill:'#bbf7d0',hi:'#15803d'}
+};
+
+/* ========== COUNTRY → PLUG DATA ========== */
+var CP={
+840:{t:['A','B'],v:'120V',f:'60Hz'},124:{t:['A','B'],v:'120V',f:'60Hz'},484:{t:['A','B'],v:'127V',f:'60Hz'},
+84:{t:['A','B'],v:'110/220V',f:'60Hz'},320:{t:['A','B'],v:'120V',f:'60Hz'},340:{t:['A','B'],v:'110V',f:'60Hz'},
+222:{t:['A','B'],v:'115V',f:'60Hz'},558:{t:['A','B'],v:'120V',f:'60Hz'},188:{t:['A','B'],v:'120V',f:'60Hz'},
+591:{t:['A','B'],v:'120V',f:'60Hz'},192:{t:['A','B'],v:'110V',f:'60Hz'},388:{t:['A','B'],v:'110V',f:'50Hz'},
+332:{t:['A','B'],v:'110V',f:'60Hz'},214:{t:['A','B'],v:'120V',f:'60Hz'},630:{t:['A','B'],v:'120V',f:'60Hz'},
+780:{t:['A','B'],v:'115V',f:'60Hz'},44:{t:['A','B'],v:'120V',f:'60Hz'},28:{t:['A','B'],v:'230V',f:'60Hz'},
+170:{t:['A','B'],v:'110V',f:'60Hz'},862:{t:['A','B'],v:'120V',f:'60Hz'},218:{t:['A','B'],v:'120V',f:'60Hz'},
+604:{t:['A','B','C'],v:'220V',f:'60Hz'},68:{t:['A','C'],v:'115/230V',f:'50Hz'},
+600:{t:['C'],v:'220V',f:'50Hz'},858:{t:['C','F','L'],v:'230V',f:'50Hz'},
+32:{t:['C','I'],v:'220V',f:'50Hz'},152:{t:['C','L'],v:'220V',f:'50Hz'},
+76:{t:['C','N'],v:'127/220V',f:'60Hz'},328:{t:['A','B'],v:'110V',f:'60Hz'},740:{t:['C','F'],v:'127V',f:'60Hz'},
+826:{t:['G'],v:'230V',f:'50Hz'},372:{t:['G'],v:'230V',f:'50Hz'},
+250:{t:['C','E'],v:'230V',f:'50Hz'},276:{t:['C','F'],v:'230V',f:'50Hz'},
+528:{t:['C','F'],v:'230V',f:'50Hz'},56:{t:['C','E'],v:'230V',f:'50Hz'},
+442:{t:['C','F'],v:'230V',f:'50Hz'},756:{t:['C','J'],v:'230V',f:'50Hz'},
+40:{t:['C','F'],v:'230V',f:'50Hz'},380:{t:['C','F','L'],v:'230V',f:'50Hz'},
+724:{t:['C','F'],v:'230V',f:'50Hz'},620:{t:['C','F'],v:'230V',f:'50Hz'},
+208:{t:['C','E','F','K'],v:'230V',f:'50Hz'},752:{t:['C','F'],v:'230V',f:'50Hz'},
+578:{t:['C','F'],v:'230V',f:'50Hz'},246:{t:['C','F'],v:'230V',f:'50Hz'},
+352:{t:['C','F'],v:'230V',f:'50Hz'},616:{t:['C','E'],v:'230V',f:'50Hz'},
+203:{t:['C','E'],v:'230V',f:'50Hz'},703:{t:['C','E'],v:'230V',f:'50Hz'},
+348:{t:['C','F'],v:'230V',f:'50Hz'},642:{t:['C','F'],v:'230V',f:'50Hz'},
+100:{t:['C','F'],v:'230V',f:'50Hz'},643:{t:['C','F'],v:'230V',f:'50Hz'},
+804:{t:['C','F'],v:'230V',f:'50Hz'},112:{t:['C','F'],v:'230V',f:'50Hz'},
+498:{t:['C','F'],v:'230V',f:'50Hz'},300:{t:['C','F'],v:'230V',f:'50Hz'},
+792:{t:['C','F'],v:'230V',f:'50Hz'},191:{t:['C','F'],v:'230V',f:'50Hz'},
+688:{t:['C','F'],v:'230V',f:'50Hz'},70:{t:['C','F'],v:'230V',f:'50Hz'},
+807:{t:['C','F'],v:'230V',f:'50Hz'},8:{t:['C','F'],v:'230V',f:'50Hz'},
+499:{t:['C','F'],v:'230V',f:'50Hz'},705:{t:['C','F'],v:'230V',f:'50Hz'},
+196:{t:['G'],v:'230V',f:'50Hz'},470:{t:['G'],v:'230V',f:'50Hz'},
+233:{t:['C','F'],v:'230V',f:'50Hz'},428:{t:['C','F'],v:'230V',f:'50Hz'},
+440:{t:['C','F'],v:'230V',f:'50Hz'},268:{t:['C','F'],v:'220V',f:'50Hz'},
+51:{t:['C','F'],v:'230V',f:'50Hz'},31:{t:['C','F'],v:'220V',f:'50Hz'},
+20:{t:['C','F'],v:'230V',f:'50Hz'},304:{t:['C','E','F','K'],v:'230V',f:'50Hz'},
+376:{t:['C','H','M'],v:'230V',f:'50Hz'},275:{t:['C','H'],v:'230V',f:'50Hz'},
+400:{t:['B','C','D','F','G','J'],v:'230V',f:'50Hz'},422:{t:['A','B','C','D','G'],v:'110/220V',f:'50Hz'},
+760:{t:['C','E','L'],v:'220V',f:'50Hz'},368:{t:['C','D','G'],v:'230V',f:'50Hz'},
+364:{t:['C','F'],v:'220V',f:'50Hz'},682:{t:['A','B','G'],v:'110/220V',f:'60Hz'},
+784:{t:['C','D','G'],v:'220V',f:'50Hz'},634:{t:['D','G'],v:'240V',f:'50Hz'},
+414:{t:['C','G'],v:'240V',f:'50Hz'},48:{t:['G'],v:'230V',f:'50Hz'},
+512:{t:['C','G'],v:'240V',f:'50Hz'},887:{t:['A','D','G'],v:'230V',f:'50Hz'},
+156:{t:['A','C','I'],v:'220V',f:'50Hz'},392:{t:['A','B'],v:'100V',f:'50/60Hz'},
+410:{t:['C','F'],v:'220V',f:'60Hz'},408:{t:['A','C'],v:'220V',f:'50Hz'},
+496:{t:['C','E'],v:'230V',f:'50Hz'},158:{t:['A','B'],v:'110V',f:'60Hz'},
+764:{t:['A','B','C'],v:'220V',f:'50Hz'},704:{t:['A','C','G'],v:'220V',f:'50Hz'},
+360:{t:['C','F'],v:'230V',f:'50Hz'},458:{t:['G'],v:'240V',f:'50Hz'},
+702:{t:['G'],v:'230V',f:'50Hz'},608:{t:['A','B','C'],v:'220V',f:'60Hz'},
+104:{t:['A','C','D','G'],v:'230V',f:'50Hz'},116:{t:['A','C','G'],v:'230V',f:'50Hz'},
+418:{t:['A','B','C','E','F'],v:'230V',f:'50Hz'},96:{t:['G'],v:'240V',f:'50Hz'},
+626:{t:['C','E','F','I'],v:'220V',f:'50Hz'},
+356:{t:['C','D','M'],v:'230V',f:'50Hz'},586:{t:['C','D'],v:'230V',f:'50Hz'},
+50:{t:['A','C','D','G','K'],v:'220V',f:'50Hz'},144:{t:['D','G','M'],v:'230V',f:'50Hz'},
+524:{t:['C','D','M'],v:'230V',f:'50Hz'},64:{t:['C','D','F','G'],v:'230V',f:'50Hz'},
+398:{t:['C','F'],v:'220V',f:'50Hz'},860:{t:['C','F'],v:'220V',f:'50Hz'},
+795:{t:['C','F'],v:'220V',f:'50Hz'},762:{t:['C','F'],v:'220V',f:'50Hz'},
+417:{t:['C','F'],v:'220V',f:'50Hz'},
+818:{t:['C','F'],v:'220V',f:'50Hz'},434:{t:['C','D','F','L'],v:'127/230V',f:'50Hz'},
+788:{t:['C','E'],v:'230V',f:'50Hz'},12:{t:['C','F'],v:'230V',f:'50Hz'},
+504:{t:['C','E'],v:'220V',f:'50Hz'},729:{t:['C','D'],v:'230V',f:'50Hz'},
+728:{t:['C','D'],v:'230V',f:'50Hz'},
+566:{t:['D','G'],v:'240V',f:'50Hz'},288:{t:['D','G'],v:'230V',f:'50Hz'},
+384:{t:['C','E'],v:'230V',f:'50Hz'},686:{t:['C','D','E','K'],v:'230V',f:'50Hz'},
+466:{t:['C','E'],v:'220V',f:'50Hz'},854:{t:['C','E'],v:'220V',f:'50Hz'},
+562:{t:['A','B','C','D','E','F'],v:'230V',f:'50Hz'},324:{t:['C','F','K'],v:'220V',f:'50Hz'},
+694:{t:['D','G'],v:'230V',f:'50Hz'},430:{t:['A','B','C','E','F'],v:'120/240V',f:'50Hz'},
+768:{t:['C'],v:'220V',f:'50Hz'},204:{t:['C','E'],v:'220V',f:'50Hz'},
+478:{t:['C'],v:'220V',f:'50Hz'},270:{t:['G'],v:'230V',f:'50Hz'},
+624:{t:['C'],v:'220V',f:'50Hz'},120:{t:['C','E'],v:'220V',f:'50Hz'},
+404:{t:['G'],v:'240V',f:'50Hz'},834:{t:['D','G'],v:'230V',f:'50Hz'},
+800:{t:['G'],v:'240V',f:'50Hz'},646:{t:['C','J'],v:'230V',f:'50Hz'},
+108:{t:['C','E'],v:'220V',f:'50Hz'},231:{t:['C','E','F','L'],v:'220V',f:'50Hz'},
+706:{t:['C'],v:'220V',f:'50Hz'},262:{t:['C','E'],v:'220V',f:'50Hz'},
+232:{t:['C','L'],v:'230V',f:'50Hz'},508:{t:['C','F','M'],v:'220V',f:'50Hz'},
+450:{t:['C','D','E','J','K'],v:'220V',f:'50Hz'},454:{t:['G'],v:'230V',f:'50Hz'},
+894:{t:['C','D','G'],v:'230V',f:'50Hz'},716:{t:['D','G'],v:'220V',f:'50Hz'},
+180:{t:['C','D','E'],v:'220V',f:'50Hz'},178:{t:['C','E'],v:'230V',f:'50Hz'},
+140:{t:['C','E'],v:'220V',f:'50Hz'},148:{t:['C','D','E','F'],v:'220V',f:'50Hz'},
+266:{t:['C'],v:'220V',f:'50Hz'},226:{t:['C','E'],v:'220V',f:'50Hz'},
+24:{t:['C'],v:'220V',f:'50Hz'},
+710:{t:['C','D','M','N'],v:'230V',f:'50Hz'},72:{t:['D','G','M'],v:'230V',f:'50Hz'},
+516:{t:['D','M'],v:'220V',f:'50Hz'},426:{t:['M'],v:'220V',f:'50Hz'},
+748:{t:['M'],v:'230V',f:'50Hz'},
+36:{t:['I'],v:'230V',f:'50Hz'},554:{t:['I'],v:'230V',f:'50Hz'},
+598:{t:['I'],v:'240V',f:'50Hz'},242:{t:['I'],v:'240V',f:'50Hz'},
+90:{t:['G','I'],v:'220V',f:'50Hz'},548:{t:['C','G','I'],v:'230V',f:'50Hz'},
+540:{t:['C','F'],v:'220V',f:'50Hz'},
+336:{t:['C','F','L'],v:'230V',f:'50Hz'},674:{t:['C','F','L'],v:'230V',f:'50Hz'},
+4:{t:['C','F'],v:'220V',f:'50Hz'},16:{t:['A','B','F','I'],v:'120V',f:'60Hz'},
+174:{t:['C','E'],v:'220V',f:'50Hz'},480:{t:['C','G'],v:'230V',f:'50Hz'},
+132:{t:['C','F'],v:'220V',f:'50Hz'}
+};
+
+/* ========== PLUG SVG ICONS ========== */
+function plugSVG(t,w){
+w=w||44;
+var s='<svg viewBox="0 0 60 60" width="'+w+'" height="'+w+'" style="display:block">';
+s+='<circle cx="30" cy="30" r="27" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>';
+switch(t){
+case 'A':s+='<rect x="21" y="16" width="4" height="14" rx="1" fill="#334155"/><rect x="35" y="16" width="4" height="14" rx="1" fill="#334155"/>';break;
+case 'B':s+='<rect x="21" y="13" width="4" height="12" rx="1" fill="#334155"/><rect x="35" y="13" width="4" height="12" rx="1" fill="#334155"/><circle cx="30" cy="40" r="3.5" fill="#334155"/>';break;
+case 'C':s+='<circle cx="21" cy="30" r="4" fill="#334155"/><circle cx="39" cy="30" r="4" fill="#334155"/>';break;
+case 'D':s+='<circle cx="30" cy="17" r="4.5" fill="#334155"/><circle cx="19" cy="38" r="4.5" fill="#334155"/><circle cx="41" cy="38" r="4.5" fill="#334155"/>';break;
+case 'E':s+='<circle cx="21" cy="35" r="3.5" fill="#334155"/><circle cx="39" cy="35" r="3.5" fill="#334155"/><circle cx="30" cy="20" r="3.5" fill="#94a3b8" stroke="#334155" stroke-width="1.5"/>';break;
+case 'F':s+='<circle cx="21" cy="30" r="3.5" fill="#334155"/><circle cx="39" cy="30" r="3.5" fill="#334155"/><rect x="7" y="22" width="3.5" height="16" rx="1.5" fill="#94a3b8"/><rect x="49.5" y="22" width="3.5" height="16" rx="1.5" fill="#94a3b8"/>';break;
+case 'G':s+='<rect x="24" y="13" width="12" height="4" rx="1" fill="#334155"/><rect x="14" y="33" width="12" height="4" rx="1" fill="#334155"/><rect x="34" y="33" width="12" height="4" rx="1" fill="#334155"/>';break;
+case 'H':s+='<circle cx="30" cy="40" r="3.5" fill="#334155"/><circle cx="17" cy="22" r="3.5" fill="#334155"/><circle cx="43" cy="22" r="3.5" fill="#334155"/>';break;
+case 'I':s+='<rect x="15" y="14" width="4" height="14" rx="1" fill="#334155" transform="rotate(30 17 21)"/><rect x="41" y="14" width="4" height="14" rx="1" fill="#334155" transform="rotate(-30 43 21)"/><rect x="28" y="34" width="4" height="12" rx="1" fill="#334155"/>';break;
+case 'J':s+='<circle cx="21" cy="34" r="3.5" fill="#334155"/><circle cx="39" cy="34" r="3.5" fill="#334155"/><circle cx="30" cy="20" r="3" fill="#334155"/>';break;
+case 'K':s+='<circle cx="21" cy="26" r="3.5" fill="#334155"/><circle cx="39" cy="26" r="3.5" fill="#334155"/><circle cx="30" cy="42" r="3.5" fill="#334155"/>';break;
+case 'L':s+='<circle cx="14" cy="30" r="3" fill="#334155"/><circle cx="30" cy="30" r="3" fill="#334155"/><circle cx="46" cy="30" r="3" fill="#334155"/>';break;
+case 'M':s+='<circle cx="30" cy="15" r="5" fill="#334155"/><circle cx="17" cy="39" r="5" fill="#334155"/><circle cx="43" cy="39" r="5" fill="#334155"/>';break;
+case 'N':s+='<circle cx="30" cy="18" r="3.5" fill="#334155"/><circle cx="20" cy="37" r="3.5" fill="#334155"/><circle cx="40" cy="37" r="3.5" fill="#334155"/>';break;
+}
+s+='</svg>';return s;
+}
+
+/* ========== COUNTRY HELPERS ========== */
+var zhN;try{zhN=new Intl.DisplayNames(['zh-Hant'],{type:'region'});}catch(e){}
+var A2={4:'AF',8:'AL',12:'DZ',16:'AS',20:'AD',24:'AO',28:'AG',31:'AZ',32:'AR',36:'AU',40:'AT',44:'BS',48:'BH',50:'BD',51:'AM',52:'BB',56:'BE',64:'BT',68:'BO',70:'BA',72:'BW',76:'BR',84:'BZ',90:'SB',96:'BN',100:'BG',104:'MM',108:'BI',112:'BY',116:'KH',120:'CM',124:'CA',132:'CV',140:'CF',144:'LK',148:'TD',152:'CL',156:'CN',158:'TW',170:'CO',174:'KM',178:'CG',180:'CD',188:'CR',191:'HR',192:'CU',196:'CY',203:'CZ',204:'BJ',208:'DK',214:'DO',218:'EC',222:'SV',226:'GQ',231:'ET',232:'ER',233:'EE',242:'FJ',246:'FI',250:'FR',262:'DJ',266:'GA',268:'GE',270:'GM',275:'PS',276:'DE',288:'GH',296:'KI',300:'GR',304:'GL',320:'GT',324:'GN',328:'GY',332:'HT',336:'VA',340:'HN',348:'HU',352:'IS',356:'IN',360:'ID',364:'IR',368:'IQ',372:'IE',376:'IL',380:'IT',384:'CI',388:'JM',392:'JP',398:'KZ',400:'JO',404:'KE',408:'KP',410:'KR',414:'KW',417:'KG',418:'LA',422:'LB',426:'LS',428:'LV',430:'LR',434:'LY',440:'LT',442:'LU',450:'MG',454:'MW',458:'MY',462:'MV',466:'ML',470:'MT',478:'MR',480:'MU',484:'MX',492:'MC',496:'MN',498:'MD',499:'ME',504:'MA',508:'MZ',512:'OM',516:'NA',524:'NP',528:'NL',540:'NC',548:'VU',554:'NZ',558:'NI',562:'NE',566:'NG',578:'NO',586:'PK',591:'PA',598:'PG',600:'PY',604:'PE',608:'PH',616:'PL',620:'PT',624:'GW',626:'TL',630:'PR',634:'QA',642:'RO',643:'RU',646:'RW',674:'SM',682:'SA',686:'SN',688:'RS',694:'SL',702:'SG',703:'SK',705:'SI',706:'SO',710:'ZA',716:'ZW',724:'ES',728:'SS',729:'SD',740:'SR',748:'SZ',752:'SE',756:'CH',760:'SY',762:'TJ',764:'TH',768:'TG',776:'TO',780:'TT',784:'AE',788:'TN',792:'TR',795:'TM',800:'UG',804:'UA',807:'MK',818:'EG',826:'GB',834:'TZ',840:'US',854:'BF',858:'UY',860:'UZ',862:'VE',882:'WS',887:'YE',894:'ZM',704:'VN'};
+function nameOf(id){var a=A2[id];if(a&&zhN)try{return zhN.of(a)}catch(e){}return a||'';}
+function flagOf(id){var a=A2[id];if(!a)return'🏳️';return a.replace(/./g,function(c){return String.fromCodePoint(0x1F1E6+c.charCodeAt(0)-65);});}
+
+/* ========== BUILD COUNTRY LIST ========== */
+var allC=[];
+(function(){var seen={};for(var id in CP){if(seen[id])continue;seen[id]=1;var c=CP[id];allC.push({id:+id,a2:A2[id]||'',name:nameOf(id),flag:flagOf(id),types:c.t,v:c.v,f:c.f});}
+allC.sort(function(a,b){return a.name.localeCompare(b.name,'zh-Hant');});
+})();
+
+/* Count countries per plug type */
+var ptCounts={};
+for(var k in PT)ptCounts[k]=0;
+allC.forEach(function(c){c.types.forEach(function(t){if(ptCounts[t]!==undefined)ptCounts[t]++;});});
+
+/* ========== DOM ========== */
+var $flag=document.getElementById('infoFlag'),$name=document.getElementById('infoName'),$sub=document.getElementById('infoSub'),$badges=document.getElementById('infoBadges'),$infoR=document.getElementById('infoRight');
+var $tip=document.getElementById('tooltip');
+var $sIn=document.getElementById('searchIn'),$sDD=document.getElementById('searchDD');
+var $plugList=document.getElementById('plugList'),$cGrid=document.getElementById('cGrid'),$cHdr=document.getElementById('cListHdr'),$cCount=document.getElementById('cListCount');
+
+/* ========== STATE ========== */
+var locked=null,selType=null;
+
+/* ========== INFO BAR ========== */
+function resetInfo(){
+  $flag.textContent='🌐';
+  $name.innerHTML='<span class="info-placeholder">將滑鼠移至地圖上查看各國插頭類型</span>';
+  $sub.textContent='';$badges.innerHTML='';$infoR.innerHTML='';
+}
+function showInfo(c,isLock){
+  $flag.textContent=c.flag;
+  $name.textContent=c.name+(isLock?' 🔒':'');
+  $sub.textContent=(c.a2?'ISO: '+c.a2:'');
+  var bh='';c.types.forEach(function(t){var p=PT[t];if(p)bh+='<span class="pb" style="background:'+p.col+'">'+plugSVG(t,16)+' '+t+'</span>';});
+  $badges.innerHTML=bh;
+  $infoR.innerHTML='<div class="info-stat"><div class="info-stat-val">⚡ '+c.v+'</div><div class="info-stat-lbl">電壓</div></div><div class="info-stat"><div class="info-stat-val">〰️ '+c.f+'</div><div class="info-stat-lbl">頻率</div></div><div class="info-stat"><div class="info-stat-val">🔌 '+c.types.length+'</div><div class="info-stat-lbl">插頭類型</div></div>';
+}
+
+/* ========== MAP ========== */
+var W=960,H=500;
+var svg=d3.select('#mapWrap').append('svg').attr('viewBox','0 0 '+W+' '+H).attr('preserveAspectRatio','xMidYMid meet');
+var proj=d3.geoNaturalEarth1().scale(158).translate([W/2,H/2]);
+var path=d3.geoPath().projection(proj);
+var g=svg.append('g');
+g.append('path').datum({type:'Sphere'}).attr('d',path).attr('fill','#dbeafe').attr('stroke','#93c5fd').attr('stroke-width',.5);
+g.append('path').datum(d3.geoGraticule()()).attr('d',path).attr('fill','none').attr('stroke','rgba(255,255,255,.55)').attr('stroke-width',.35);
+var zoom=d3.zoom().scaleExtent([1,12]).on('zoom',function(ev){g.attr('transform',ev.transform);});
+svg.call(zoom);
+
+function fillFor(id){var c=CP[id];if(!c)return'#e2e8f0';var t=c.t[0];return PT[t]?PT[t].fill:'#e2e8f0';}
+function hiFor(id){var c=CP[id];if(!c)return'#64748b';var t=c.t[0];return PT[t]?PT[t].hi:'#64748b';}
+function hasType(id,type){var c=CP[id];return c&&c.t.indexOf(type)>-1;}
+
+function paintMap(){
+  g.selectAll('.country').each(function(){
+    var el=d3.select(this),id=+el.attr('data-id');
+    if(selType){
+      if(hasType(id,selType)){
+        el.attr('fill',locked===id?hiFor(id):PT[selType].fill).attr('stroke',locked===id?'#0f172a':'rgba(255,255,255,.8)').attr('stroke-width',locked===id?1.5:.5).attr('opacity',1);
+      }else{
+        el.attr('fill','#f1f5f9').attr('stroke','#e2e8f0').attr('stroke-width',.3).attr('opacity',.35);
+      }
+    }else if(locked!==null){
+      if(id===locked){el.attr('fill',hiFor(id)).attr('stroke','#0f172a').attr('stroke-width',1.5).attr('opacity',1);}
+      else{el.attr('fill','#e2e8f0').attr('stroke','#cbd5e1').attr('stroke-width',.3).attr('opacity',.5);}
+    }else{
+      el.attr('fill',fillFor(id)).attr('stroke','rgba(255,255,255,.8)').attr('stroke-width',.5).attr('opacity',1);
+    }
+  });
+}
+
+function zoomTo(id){
+  var el=g.selectAll('.country').filter(function(){return +d3.select(this).attr('data-id')===id;});
+  if(el.empty())return;
+  var b=path.bounds(el.datum()),dx=b[1][0]-b[0][0],dy=b[1][1]-b[0][1],cx=(b[0][0]+b[1][0])/2,cy=(b[0][1]+b[1][1])/2;
+  var s=Math.max(1,Math.min(8,.85/Math.max(dx/W,dy/H)));
+  svg.transition().duration(600).call(zoom.transform,d3.zoomIdentity.translate(W/2-s*cx,H/2-s*cy).scale(s));
+}
+
+/* ========== MAP LEGEND ========== */
+(function(){
+  var lh='';var top6=['A','C','F','G','I','D','M'];
+  top6.forEach(function(t){var p=PT[t];lh+='<span class="ml-item"><span class="ml-dot" style="background:'+p.fill+';border:1px solid '+p.col+'"></span>'+t+'</span>';});
+  lh+='<span class="ml-item" style="color:#94a3b8">…</span>';
+  document.getElementById('mapLegend').innerHTML=lh;
+})();
+
+/* ========== LEFT PANEL: PLUG TYPES ========== */
+function renderPlugTypes(){
+  var h='';
+  for(var k in PT){var p=PT[k];
+    var ac=selType===k?' active':'';
+    h+='<div class="plug-card'+ac+'" data-type="'+k+'" style="border-left-color:'+p.col+'">';
+    h+='<div class="pc-icon">'+plugSVG(k,40)+'</div>';
+    h+='<div class="pc-info"><div class="pc-type"><span style="color:'+p.col+'">'+p.name+'</span></div>';
+    h+='<div class="pc-desc">'+p.zh+'</div>';
+    h+='<div class="pc-meta">'+p.v+' · '+p.f+'</div></div>';
+    h+='<span class="pc-count">'+ptCounts[k]+' 國</span>';
+    h+='</div>';
+  }
+  $plugList.innerHTML=h;
+  $plugList.querySelectorAll('.plug-card').forEach(function(el){
+    el.addEventListener('click',function(){
+      var t=this.getAttribute('data-type');
+      if(selType===t){selType=null;}else{selType=t;locked=null;resetInfo();}
+      paintMap();renderPlugTypes();renderCountries();
+    });
+  });
+}
+
+/* ========== RIGHT PANEL: COUNTRIES ========== */
+function renderCountries(){
+  var list;
+  if(selType){
+    list=allC.filter(function(c){return c.types.indexOf(selType)>-1;});
+    var p=PT[selType];
+    $cHdr.innerHTML='🔌 使用 <span style="color:'+p.col+'">'+p.name+'</span> 的國家';
+  }else{
+    list=allC;
+    $cHdr.innerHTML='🌍 所有國家與地區';
+  }
+  $cCount.textContent=list.length;
+  var h='';
+  list.forEach(function(c){
+    var ac=locked===c.id?' active':'';
+    var tb='';c.types.forEach(function(t){var p=PT[t];if(p)tb+='<span class="cc-tb" style="background:'+p.col+'">'+t+'</span>';});
+    h+='<div class="cc-item'+ac+'" data-id="'+c.id+'">';
+    h+='<span class="cc-flag">'+c.flag+'</span>';
+    h+='<div class="cc-info"><div class="cc-name">'+c.name+'</div><div class="cc-types">'+tb+'</div><div class="cc-vf">⚡'+c.v+' · 〰️'+c.f+'</div></div>';
+    h+='</div>';
+  });
+  $cGrid.innerHTML=h;
+  $cGrid.querySelectorAll('.cc-item').forEach(function(el){
+    el.addEventListener('click',function(){
+      var id=+this.getAttribute('data-id');
+      if(locked===id){locked=null;paintMap();resetInfo();renderCountries();return;}
+      locked=id;
+      var c=allC.find(function(x){return x.id===id;});
+      if(c)showInfo(c,true);
+      paintMap();renderCountries();zoomTo(id);
+    });
+  });
+}
+
+/* ========== SEARCH ========== */
+$sIn.addEventListener('input',function(){
+  var q=this.value.trim().toLowerCase();
+  if(!q){$sDD.classList.remove('show');return;}
+  var res=allC.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1||(c.a2&&c.a2.toLowerCase().indexOf(q)>-1);}).slice(0,10);
+  if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">找不到結果</div>';$sDD.classList.add('show');return;}
+  var h='';res.forEach(function(c){
+    var tb='';c.types.forEach(function(t){var p=PT[t];if(p)tb+='<span class="cc-tb" style="background:'+p.col+';margin-left:2px">'+t+'</span>';});
+    h+='<div class="sd-item" data-id="'+c.id+'"><span style="font-size:1.3rem">'+c.flag+'</span><span style="font-weight:600">'+c.name+'</span>'+tb+'</div>';
+  });
+  $sDD.innerHTML=h;$sDD.classList.add('show');
+  $sDD.querySelectorAll('.sd-item').forEach(function(el){
+    el.addEventListener('click',function(){
+      var id=+this.getAttribute('data-id');locked=id;selType=null;
+      var c=allC.find(function(x){return x.id===id;});
+      if(c){showInfo(c,true);$sIn.value=c.name;}
+      paintMap();renderPlugTypes();renderCountries();zoomTo(id);
+      $sDD.classList.remove('show');
+    });
+  });
+});
+$sIn.addEventListener('blur',function(){setTimeout(function(){$sDD.classList.remove('show');},200);});
+$sIn.addEventListener('focus',function(){if(this.value.trim())this.dispatchEvent(new Event('input'));});
+
+/* ========== RESET ========== */
+document.getElementById('btnReset').addEventListener('click',function(){
+  locked=null;selType=null;$sIn.value='';
+  resetInfo();paintMap();renderPlugTypes();renderCountries();
+  svg.transition().duration(500).call(zoom.transform,d3.zoomIdentity);
+});
+
+/* ========== LOAD MAP ========== */
+d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(world){
+  var countries=topojson.feature(world,world.objects.countries).features;
+  g.selectAll('.country').data(countries).enter().append('path')
+    .attr('class','country')
+    .attr('data-id',function(d){return d.id;})
+    .attr('d',path)
+    .attr('fill',function(d){return fillFor(+d.id);})
+    .attr('stroke','rgba(255,255,255,.8)')
+    .attr('stroke-width',.5);
+
+  g.selectAll('.country')
+    .on('mouseenter',function(){
+      if(locked!==null)return;
+      var el=d3.select(this),id=+el.attr('data-id');
+      if(selType&&!hasType(id,selType))return;
+      el.attr('fill',hiFor(id)).attr('stroke','#0f172a').attr('stroke-width',1.2);
+      var c=allC.find(function(x){return x.id===id;});
+      if(c)showInfo(c,false);
+      $tip.classList.add('show');
+    })
+    .on('mousemove',function(ev){
+      var id=+d3.select(this).attr('data-id');
+      if(selType&&!hasType(id,selType)){$tip.classList.remove('show');return;}
+      var c=allC.find(function(x){return x.id===id;});
+      if(c){
+        var tb='';c.types.forEach(function(t){var p=PT[t];if(p)tb+='<span class="tt-pb" style="background:'+p.col+'">'+plugSVG(t,14)+' '+t+'</span>';});
+        $tip.innerHTML='<span class="tt-flag">'+c.flag+'</span><span class="tt-name">'+c.name+'</span><br><span class="tt-sub">⚡ '+c.v+' · 〰️ '+c.f+'</span><div class="tt-plugs">'+tb+'</div>';
+      }else{
+        var nm=nameOf(id)||'未知';
+        $tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nm+'</span><br><span class="tt-sub">插頭資料不可用</span>';
+      }
+      var tx=ev.clientX+14,ty=ev.clientY-50;
+      if(tx+300>window.innerWidth)tx=ev.clientX-300;if(ty<10)ty=ev.clientY+20;
+      $tip.style.left=tx+'px';$tip.style.top=ty+'px';
+      $tip.classList.add('show');
+    })
+    .on('mouseleave',function(){
+      $tip.classList.remove('show');
+      if(locked!==null)return;
+      var el=d3.select(this),id=+el.attr('data-id');
+      if(selType){
+        if(hasType(id,selType))el.attr('fill',PT[selType].fill).attr('stroke','rgba(255,255,255,.8)').attr('stroke-width',.5);
+      }else{
+        el.attr('fill',fillFor(id)).attr('stroke','rgba(255,255,255,.8)').attr('stroke-width',.5);
+      }
+      resetInfo();
+    })
+    .on('click',function(){
+      var id=+d3.select(this).attr('data-id');
+      if(selType&&!hasType(id,selType))return;
+      if(locked===id){locked=null;paintMap();resetInfo();renderCountries();return;}
+      locked=id;
+      var c=allC.find(function(x){return x.id===id;});
+      if(c)showInfo(c,true);
+      paintMap();renderCountries();
+    });
+
+  document.getElementById('loadOv').style.display='none';
+  renderPlugTypes();renderCountries();
+}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗，請重新整理。</p>';});
+
+})();
+</script>
+
+
+</body></html>
