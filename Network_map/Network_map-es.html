@@ -125,13 +125,13 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 <header class="rw-header">
   <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
   <div class="rw-header-right">
-    <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
+    <a href="../1-contact/contact-es.html" class="rw-header-contact">Contáctenos</a>
     <div class="rw-header-lang">
-      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">Español ▾</button>
       <div class="rw-header-lang-menu">
-        <a href="Network_map-zh.html" class="active">繁體中文</a>
+        <a href="Network_map-zh.html" >繁體中文</a>
         <a href="Network_map-en.html">English</a>
-        <a href="Network_map-es.html">Español</a>
+        <a href="Network_map-es.html" class="active">Español</a>
         <a href="Network_map-pt.html">Português</a>
       </div>
     </div>
@@ -146,7 +146,7 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
     <div class="info-left">
       <div class="info-flag" id="infoFlag">🌐</div>
       <div class="info-details">
-        <div class="info-name" id="infoName"><span class="info-placeholder">將滑鼠移至地圖上查看各國網路自由度</span></div>
+        <div class="info-name" id="infoName"><span class="info-placeholder">Pasa el ratón sobre el mapa para ver la libertad de internet por país</span></div>
         <div id="infoBadges"></div>
         <div class="info-sub" id="infoSub"></div>
       </div>
@@ -155,37 +155,37 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
   <div class="svc-row hidden" id="svcRow"></div>
 
   <div class="map-wrap" id="mapWrap">
-    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>載入地圖中…</p></div>
+    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>Cargando el mapa...</p></div>
     <div class="map-legend">
-      <span class="ml-item"><span class="ml-dot" style="background:#bbf7d0;border:1px solid #22c55e"></span>自由開放</span>
-      <span class="ml-item"><span class="ml-dot" style="background:#fef08a;border:1px solid #eab308"></span>輕度限制</span>
-      <span class="ml-item"><span class="ml-dot" style="background:#fed7aa;border:1px solid #f97316"></span>中度限制</span>
-      <span class="ml-item"><span class="ml-dot" style="background:#fecaca;border:1px solid #ef4444"></span>嚴重限制</span>
-      <span class="ml-item"><span class="ml-dot" style="background:#cbd5e1;border:1px solid #64748b"></span>極度限制</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#bbf7d0;border:1px solid #22c55e"></span>Libre y abierto</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#fef08a;border:1px solid #eab308"></span>Restricción leve</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#fed7aa;border:1px solid #f97316"></span>Restricción moderada</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#fecaca;border:1px solid #ef4444"></span>Restricción grave</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#cbd5e1;border:1px solid #64748b"></span>Restricción extrema</span>
     </div>
   </div>
 
-  <div class="tips">
-    <span>🖱️ 滑入查看網路狀況</span><span>👆 點擊鎖定國家</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span>
+<div class="tips">
+    <span>🖱️ Pasa el cursor para ver el estado de internet</span><span>👆 Haz clic para fijar un país</span><span>🔍 Rueda para zoom</span><span>✋ Arrastra para desplazar</span>
   </div>
 
   <div class="bar-row">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input class="search-input" id="searchIn" type="text" placeholder="搜尋國家或地區（如：中國、香港、日本）…" autocomplete="off">
+      <input class="search-input" id="searchIn" type="text" placeholder="Buscar país o región (ej.: China, Hong Kong, Japón)…" autocomplete="off">
       <div class="search-dd" id="searchDD"></div>
     </div>
-    <button class="btn btn-primary" id="btnReset">🔄 重設</button>
+    <button class="btn btn-primary" id="btnReset">🔄 Restablecer</button>
   </div>
 </div>
 
 <div class="two-panel">
   <div class="panel" id="panelLeft">
-    <div class="panel-hdr">📊 網路自由度指南</div>
+    <div class="panel-hdr">📊 Guía de libertad de internet</div>
     <div class="panel-body" id="catPanel"></div>
   </div>
   <div class="panel" id="panelRight">
-    <div class="panel-hdr" id="cListHdr">🌍 所有國家與地區<span id="cListCount" class="pc-count">0</span></div>
+    <div class="panel-hdr" id="cListHdr">🌍 Todos los países y regiones<span id="cListCount" class="pc-count">0</span></div>
     <div class="panel-body" id="cListBody"><div class="cc-grid" id="cGrid"></div></div>
   </div>
 </div>
@@ -196,41 +196,41 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 <footer class="rw-footer">
   <div class="rw-footer-grid">
     <div class="rw-footer-col">
-      <h4>⏰ 時間與日照</h4>
+      <h4>⏰ Hora y luz solar</h4>
       <ul>
-        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
-        <li><a href="../meeting/meeting-zh.html">會議時間查找器</a></li>
-        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
-        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+        <li><a href="../time-zone/time-zone-es.html">Consulta de zonas horarias</a></li>
+        <li><a href="../meeting/meeting-es.html">Buscador de horarios de reunión</a></li>
+        <li><a href="../sunset/sunset-es.html">Hora de amanecer y atardecer</a></li>
+        <li><a href="../timer/timer-es.html">Temporizador y cuenta atrás</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🔧 換算與生活工具</h4>
+      <h4>🔧 Conversores y herramientas</h4>
       <ul>
-        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
-        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
-        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+        <li><a href="../currency/currency-es.html">Conversor de divisas</a></li>
+        <li><a href="../unit/unit-es.html">Conversor de unidades</a></li>
+        <li><a href="../plug/plug-es.html">Estándares de enchufes</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🚗 交通與出行地圖</h4>
+      <h4>🚗 Mapas de transporte y viaje</h4>
       <ul>
-        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
-        <li><a href="../drivedirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
-        <li><a href="../drivinglicense_map/drivinglicense_map-zh.html">全球國際駕照承認互動地圖</a></li>
+        <li><a href="../country_map/country_map-es.html">Mapa de países y regiones</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-es.html">Mapa de sentido de circulación</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-es.html">Mapa de permisos de conducir internacionales</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🌍 全球資訊地圖</h4>
+      <h4>🌍 Mapas de información global</h4>
       <ul>
-        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
-        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
-        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
-        <li><a href="Network_map-zh.html" class="active">全球網路自由度互動地圖</a></li>
+        <li><a href="../time-zone-map/time-zone-map-es.html">Mapa de zonas horarias</a></li>
+        <li><a href="../plug_map/plug_map-es.html">Mapa de tipos de enchufe</a></li>
+        <li><a href="../nationalday_map/nationalday_map-es.html">Mapa de sistemas de calendario</a></li>
+        <li><a href="../Network_map/Network_map-es.html">Mapa de libertad en internet</a></li>
       </ul>
     </div>
   </div>
-  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. Todos los derechos reservados. | <a href="/privacy">Política de privacidad</a> | <a href="/terms">Términos de uso</a></div>
 </footer>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -240,77 +240,78 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 
 /* ===== SERVICES DEF ===== */
 var SVCS=[
-{k:'google',n:'Google',d:'搜尋/Gmail/地圖',c:'#4285F4',i:'G'},
-{k:'youtube',n:'YouTube',d:'影片平台',c:'#FF0000',i:'▶'},
-{k:'whatsapp',n:'WhatsApp',d:'通訊/通話',c:'#25D366',i:'W'},
-{k:'facebook',n:'Facebook',d:'社群平台',c:'#1877F2',i:'f'},
-{k:'instagram',n:'Instagram',d:'圖片社群',c:'#E4405F',i:'IG'},
-{k:'twitter',n:'X (Twitter)',d:'社群/新聞',c:'#1e293b',i:'𝕏'},
-{k:'telegram',n:'Telegram',d:'加密通訊',c:'#0088cc',i:'TG'},
-{k:'signal',n:'Signal',d:'加密通訊',c:'#3A76F0',i:'Si'},
-{k:'wikipedia',n:'維基百科',d:'線上百科',c:'#636466',i:'Wi'},
-{k:'tiktok',n:'TikTok',d:'短影音',c:'#010101',i:'♪'}
+{k:'google',n:'Google',d:'Búsqueda/Gmail/Maps',c:'#4285F4',i:'G'},
+{k:'youtube',n:'YouTube',d:'Plataforma de vídeo',c:'#FF0000',i:'▶'},
+{k:'whatsapp',n:'WhatsApp',d:'Mensajería/Llamadas',c:'#25D366',i:'W'},
+{k:'facebook',n:'Facebook',d:'Red social',c:'#1877F2',i:'f'},
+{k:'instagram',n:'Instagram',d:'Red social de fotos',c:'#E4405F',i:'IG'},
+{k:'twitter',n:'X (Twitter)',d:'Social/Noticias',c:'#1e293b',i:'𝕏'},
+{k:'telegram',n:'Telegram',d:'Mensajería cifrada',c:'#0088cc',i:'TG'},
+{k:'signal',n:'Signal',d:'Mensajería cifrada',c:'#3A76F0',i:'Si'},
+{k:'wikipedia',n:'Wikipedia',d:'Enciclopedia en línea',c:'#636466',i:'Wi'},
+{k:'tiktok',n:'TikTok',d:'Vídeos cortos',c:'#010101',i:'♪'}
 ];
 var ST_ICON=['✅','⚠️','❌'];
-var ST_LABEL=['可用','不穩','封鎖'];
+var ST_LABEL=['Disponible','Inestable','Bloqueado'];
 var ST_CLS=['#22c55e','#eab308','#ef4444'];
 
 /* ===== LEVELS ===== */
 var LVLS=[
-{id:0,name:'自由開放',icon:'🟢',desc:'所有服務正常使用，無需VPN',col:'#22c55e',fill:'#bbf7d0',hi:'#15803d',light:'#f0fdf4'},
-{id:1,name:'輕度限制',icon:'🟡',desc:'大部分服務可用，偶有限制',col:'#eab308',fill:'#fef08a',hi:'#a16207',light:'#fefce8'},
-{id:2,name:'中度限制',icon:'🟠',desc:'部分重要服務被封鎖或不穩定',col:'#f97316',fill:'#fed7aa',hi:'#c2410c',light:'#fff7ed'},
-{id:3,name:'嚴重限制',icon:'🔴',desc:'多數主流服務被封鎖，需VPN',col:'#ef4444',fill:'#fecaca',hi:'#b91c1c',light:'#fef2f2'},
-{id:4,name:'極度限制',icon:'⬛',desc:'幾乎所有服務封鎖或無網路',col:'#64748b',fill:'#cbd5e1',hi:'#334155',light:'#f8fafc'}
+{id:0,name:'Libre y abierto',icon:'🟢',desc:'Todos los servicios disponibles, sin necesidad de VPN',col:'#22c55e',fill:'#bbf7d0',hi:'#15803d',light:'#f0fdf4'},
+{id:1,name:'Restricción leve',icon:'🟡',desc:'La mayoría de servicios disponibles, con restricciones ocasionales',col:'#eab308',fill:'#fef08a',hi:'#a16207',light:'#fefce8'},
+{id:2,name:'Restricción moderada',icon:'🟠',desc:'Algunos servicios importantes bloqueados o inestables',col:'#f97316',fill:'#fed7aa',hi:'#c2410c',light:'#fff7ed'},
+{id:3,name:'Restricción grave',icon:'🔴',desc:'La mayoría de servicios bloqueados, se necesita VPN',col:'#ef4444',fill:'#fecaca',hi:'#b91c1c',light:'#fef2f2'},
+{id:4,name:'Restricción extrema',icon:'⬛',desc:'Casi todos los servicios bloqueados o sin acceso a internet',col:'#64748b',fill:'#cbd5e1',hi:'#334155',light:'#f8fafc'}
 ];
-var VPN_LABELS={N:['🟢','無需VPN','#22c55e'],U:['🟡','VPN有幫助','#eab308'],R:['🟠','建議備VPN','#f97316'],E:['🔴','務必備VPN','#ef4444'],X:['⬛','基本無網路','#64748b']};
+var VPN_LABELS={N:['🟢','Sin necesidad de VPN','#22c55e'],U:['🟡','VPN puede ayudar','#eab308'],R:['🟠','Se recomienda VPN','#f97316'],E:['🔴','VPN imprescindible','#ef4444'],X:['⬛','Sin acceso a internet','#64748b']};
 
 /* ===== RESTRICTION DATA: [level, vpn, svcString(10), note] ===== */
+  
 var RDATA={
-156:[4,'E','2222222222','中國大陸實行「防火長城」（GFW），幾乎所有西方主流服務被封鎖。務必在入境前下載並測試VPN（入境後可能無法下載），建議備2-3個。國內替代：微信（通訊）、百度（搜尋）、高德地圖（導航）、微博（社群）、嗶哩嗶哩（影片）。'],
-408:[4,'X','2222222222','全球網路管控最嚴格的國家。外國旅客基本無法使用國際網路，僅有國內封閉網路「光明網」。入境時電子設備可能被檢查。請事先告知親友將暫時失聯。'],
-795:[4,'E','2222222222','全球網路自由度最低國家之一。社群媒體幾乎全部封鎖，網速極慢且昂貴。VPN使用有法律風險，但外國旅客普遍使用。'],
-364:[3,'E','0212222202','2022年頭巾運動後封鎖大幅加劇。Google搜尋與Gmail可用，但YouTube、Instagram、Telegram等均被封鎖。多數伊朗人日常使用VPN。國內替代：Rubika（通訊）、Snapp（叫車）、Balad（地圖）。'],
-643:[3,'R','0100222000','2022年俄烏戰爭後大幅封鎖。Facebook與Instagram被列為「極端組織」而封鎖。YouTube嚴重限速近乎不可用。Telegram和WhatsApp為主要通訊工具。國內替代：VK（社群）、Yandex（搜尋/地圖）。'],
-104:[3,'E','0012221101','2021年軍事政變後Facebook被全面封鎖。頻繁全國性斷網，網路極不穩定。建議備妥離線地圖和通訊方案。'],
-232:[3,'E','1111111111','全球網路普及率最低國家之一（約2%）。非主動封鎖而是基建極度匱乏。幾乎無公共WiFi，手機網路覆蓋極低。請做好無網路準備。'],
-784:[2,'U','0010000200','WhatsApp文字訊息可用，但語音/視訊通話被封鎖。FaceTime、Skype同樣不可用。需使用當地授權App（如Botim，需付費）進行網路通話。Signal被封鎖。其他社群媒體正常。'],
-586:[2,'R','0000020001','2024年起全面封鎖X（Twitter）。TikTok多次被禁又恢復。政治敏感時期經常全國性限速或斷網。VPN使用普遍且合法。'],
-818:[2,'U','0000000200','Signal被封鎖。部分VoIP功能受限。新聞及VPN網站偶爾被封鎖。一般社群媒體可正常使用。2024年起加強網路監控法規。'],
-112:[2,'R','0000001000','2020年大規模抗議後加強管控。數百個獨立媒體及新聞網站被封鎖。Telegram部分頻道被封鎖。政治敏感時期可能限速或斷網。'],
-862:[2,'R','0000020200','2024年大選後封鎖X（Twitter）和Signal。政治抗議期間經常限制社群媒體。WhatsApp為主要通訊工具，可正常使用。網路基建老化，速度不穩。'],
-231:[2,'U','0000001000','頻繁實施區域性或全國性網路關閉，尤其在衝突地區和考試期間。服務本身大部分可用，但「能否上網」不確定。'],
-729:[2,'U','1111111111','2023年內戰爆發後網路基建嚴重受損。大部分地區斷網或極不穩定。非服務封鎖而是實體基建被摧毀。請做好完全無網路準備。'],
-704:[1,'U','0001000000','Facebook偶爾被限速。政府要求科技公司配合內容審查。一般旅客使用通常不受影響，但存取速度可能波動。'],
-192:[1,'U','0000000000','網路基建落後，速度慢且昂貴。WiFi需在指定熱點購買上網卡。社群媒體大部分可用但速度不理想。政治敏感時期可能斷網。建議備妥離線資料。'],
-860:[1,'U','0000000100','近年大幅改革開放。Signal偶爾不穩定。部分內容過濾仍存在。整體環境比過去改善許多。'],
-682:[1,'N','0000000000','過去曾限制VoIP通話，近年已大幅放寬。WhatsApp通話、FaceTime基本可用。部分內容（賭博、色情）被過濾。旅客使用不受影響。'],
-792:[1,'U','0000000000','大部分服務正常。政治敏感事件時社群媒體可能被限速。Wikipedia曾被封鎖三年（2017-2020）。部分新聞網站被封鎖。'],
-356:[1,'N','0000000002','TikTok自2020年起被永久封鎖。查謨-克什米爾地區經常區域性斷網。其餘地區大部分服務正常使用。'],
-360:[1,'U','0000000000','Reddit、Vimeo被封鎖。部分內容過濾（賭博、色情）。2022年曾因法規問題短暫封鎖PayPal等。一般社群媒體可用。'],
-764:[1,'N','0000000000','所有主流服務可用。冒犯王室（不敬罪）相關內容被嚴格封鎖。旅客正常使用不受影響。'],
-50:[1,'U','0001000000','2024年學生抗議期間Facebook被封鎖並全國斷網數日。過渡政府上台後恢復。一般時期服務正常。'],
-398:[1,'U','0000001100','Telegram和Signal偶爾不穩定。2022年1月抗議期間曾全國斷網。一般時期大部分服務正常。'],
-12:[1,'N','0000000000','每年6月考試季會限制社群媒體以防作弊。其餘時間服務正常。網速較慢但穩定。'],
-368:[1,'U','0000001000','考試期間經常全國斷網。Telegram部分功能受限。庫德斯坦自治區網路環境較佳。'],
-434:[1,'U','0000000000','政治局勢不穩導致網路時常中斷。非主動封鎖而是基建脆弱。'],
-504:[1,'N','0000000000','VoIP通話過去受限但已恢復。所有主流社群媒體正常使用。'],
-512:[1,'U','0010000100','WhatsApp語音通話偶爾不穩定。Signal存取不一致。其他服務正常。'],
-634:[1,'U','0000000100','部分VoIP曾受限，近年放寬。Signal存取不穩定。內容過濾存在。'],
-48:[1,'N','0000000000','部分反對派新聞被封鎖。一般旅客使用不受影響。'],
-116:[1,'N','0000000000','2024年實施國家網路閘道（NIG），增加監控能力。社群媒體可正常使用。'],
-418:[1,'N','0000000000','主要服務可用。政府對批評性內容進行監控。網速較慢。'],
-800:[1,'N','0000000000','實施社群媒體稅。曾在2021年大選前短暫封鎖社群媒體。一般時期正常。'],
-760:[1,'U','0000000000','2024年底政權更迭後限制大幅放寬。但長年衝突致基建受損，許多地區網路不穩。'],
-762:[1,'U','0101010100','YouTube和Facebook偶爾被限制。政治敏感時期可能暫時封鎖。網速緩慢。']
+156:[4,'E','2222222222','China continental aplica el "Gran Cortafuegos" (GFW), que bloquea casi todos los servicios occidentales principales. Es imprescindible descargar y probar la VPN antes de entrar al país (puede ser imposible descargarla una vez dentro); se recomienda tener 2-3 opciones. Alternativas locales: WeChat (mensajería), Baidu (búsqueda), Amap/Gaode (navegación), Weibo (red social), Bilibili (vídeo).'],
+408:[4,'X','2222222222','El país con el control de internet más estricto del mundo. Los turistas extranjeros prácticamente no pueden acceder a internet internacional; solo existe la red interna cerrada «Kwangmyong». Los dispositivos electrónicos pueden ser inspeccionados al entrar al país. Avisa con antelación a familiares y amigos que estarás temporalmente incomunicado.'],
+795:[4,'E','2222222222','Uno de los países con menor libertad de internet del mundo. Las redes sociales están casi todas bloqueadas, la velocidad es extremadamente lenta y cara. El uso de VPN conlleva riesgos legales, aunque los turistas extranjeros lo utilizan con frecuencia.'],
+364:[3,'E','0212222202','Los bloqueos se intensificaron considerablemente tras el movimiento del hiyab de 2022. Google Search y Gmail están disponibles, pero YouTube, Instagram, Telegram y otros están bloqueados. La mayoría de los iraníes utilizan VPN a diario. Alternativas locales: Rubika (mensajería), Snapp (transporte), Balad (mapas).'],
+643:[3,'R','0100222000','Los bloqueos aumentaron drásticamente tras la guerra ruso-ucraniana de 2022. Facebook e Instagram fueron bloqueados por ser clasificados como «organizaciones extremistas». YouTube está tan limitado en velocidad que resulta prácticamente inutilizable. Telegram y WhatsApp son las principales herramientas de comunicación. Alternativas locales: VK (red social), Yandex (búsqueda/mapas).'],
+104:[3,'E','0012221101','Facebook fue bloqueado por completo tras el golpe de estado militar de 2021. Se producen frecuentes cortes de internet a nivel nacional y la red es extremadamente inestable. Se recomienda tener mapas y planes de comunicación sin conexión.'],
+232:[3,'E','1111111111','Uno de los países con menor tasa de penetración de internet del mundo (aprox. 2%). No se trata de bloqueos activos, sino de una infraestructura extremadamente deficiente. Casi no hay WiFi público y la cobertura de red móvil es mínima. Prepárate para estar sin conexión.'],
+784:[2,'U','0010000200','Los mensajes de texto de WhatsApp están disponibles, pero las llamadas de voz/vídeo están bloqueadas. FaceTime y Skype tampoco están disponibles. Es necesario usar una aplicación autorizada localmente (como Botim, de pago) para realizar llamadas por internet. Signal está bloqueado. El resto de redes sociales funciona con normalidad.'],
+586:[2,'R','0000020001','X (Twitter) está bloqueado por completo desde 2024. TikTok ha sido prohibido y restaurado en varias ocasiones. Durante períodos políticamente sensibles, se producen con frecuencia limitaciones de velocidad o cortes de internet a nivel nacional. El uso de VPN es habitual y legal.'],
+818:[2,'U','0000000200','Signal está bloqueado. Algunas funciones de VoIP están restringidas. Los sitios de noticias y VPN son bloqueados ocasionalmente. Las redes sociales generales funcionan con normalidad. Desde 2024 se han reforzado las normativas de vigilancia en internet.'],
+112:[2,'R','0000001000','El control se intensificó tras las protestas masivas de 2020. Cientos de medios de comunicación independientes y sitios de noticias están bloqueados. Algunos canales de Telegram están bloqueados. Durante períodos políticamente sensibles puede haber limitaciones de velocidad o cortes de internet.'],
+862:[2,'R','0000020200','X (Twitter) y Signal fueron bloqueados tras las elecciones de 2024. Durante las protestas políticas las redes sociales son restringidas con frecuencia. WhatsApp es la principal herramienta de comunicación y funciona con normalidad. La infraestructura de internet es anticuada y la velocidad es inestable.'],
+231:[2,'U','0000001000','Se producen con frecuencia cortes de internet regionales o nacionales, especialmente en zonas de conflicto y durante los exámenes. La mayoría de los servicios en sí están disponibles, pero la posibilidad de acceder a internet es incierta.'],
+729:[2,'U','1111111111','La infraestructura de internet ha quedado gravemente dañada desde el estallido de la guerra civil en 2023. La mayoría de las zonas están sin conexión o con una red extremadamente inestable. No se trata de bloqueos de servicios, sino de destrucción de infraestructura física. Prepárate para estar completamente sin internet.'],
+704:[1,'U','0001000000','Facebook está ocasionalmente limitado en velocidad. El gobierno exige a las empresas tecnológicas que colaboren con la censura de contenidos. Los turistas habituales generalmente no se ven afectados, aunque la velocidad de acceso puede ser variable.'],
+192:[1,'U','0000000000','La infraestructura de internet está atrasada, con velocidad lenta y cara. Para el WiFi es necesario comprar tarjetas de acceso en puntos de acceso designados. La mayoría de las redes sociales están disponibles, pero con velocidad deficiente. Durante períodos políticamente sensibles puede haber cortes. Se recomienda tener información disponible sin conexión.'],
+860:[1,'U','0000000100','Se han producido importantes reformas de apertura en los últimos años. Signal es ocasionalmente inestable. Aún existe cierto filtrado de contenidos. El entorno general ha mejorado considerablemente respecto al pasado.'],
+682:[1,'N','0000000000','Las llamadas VoIP estuvieron restringidas en el pasado, pero en los últimos años se han liberalizado considerablemente. Las llamadas de WhatsApp y FaceTime están disponibles en general. Algunos contenidos (juegos de azar, pornografía) están filtrados. Los turistas no se ven afectados.'],
+792:[1,'U','0000000000','La mayoría de los servicios funcionan con normalidad. Las redes sociales pueden ser limitadas en velocidad durante eventos políticamente sensibles. Wikipedia estuvo bloqueada durante tres años (2017-2020). Algunos sitios de noticias están bloqueados.'],
+356:[1,'N','0000000002','TikTok está bloqueado de forma permanente desde 2020. La región de Jammu y Cachemira sufre frecuentes cortes de internet regionales. En el resto del país la mayoría de los servicios funcionan con normalidad.'],
+360:[1,'U','0000000000','Reddit y Vimeo están bloqueados. Existe filtrado de algunos contenidos (juegos de azar, pornografía). En 2022 PayPal y otros servicios fueron bloqueados brevemente por problemas regulatorios. Las redes sociales habituales están disponibles.'],
+764:[1,'N','0000000000','Todos los servicios principales están disponibles. Los contenidos considerados ofensivos a la monarquía (delito de lesa majestad) están estrictamente bloqueados. Los turistas no se ven afectados en su uso habitual.'],
+50:[1,'U','0001000000','Durante las protestas estudiantiles de 2024, Facebook fue bloqueado y se produjo un corte de internet a nivel nacional durante varios días. Los servicios se restablecieron tras la llegada del gobierno de transición. En períodos normales los servicios funcionan con normalidad.'],
+398:[1,'U','0000001100','Telegram y Signal son ocasionalmente inestables. Durante las protestas de enero de 2022 se produjo un corte de internet a nivel nacional. En períodos normales la mayoría de los servicios funcionan con normalidad.'],
+12:[1,'N','0000000000','En junio de cada año, durante la temporada de exámenes, se restringen las redes sociales para evitar trampas. El resto del tiempo los servicios funcionan con normalidad. La velocidad de internet es lenta pero estable.'],
+368:[1,'U','0000001000','Durante los períodos de exámenes se producen con frecuencia cortes de internet a nivel nacional. Algunas funciones de Telegram están restringidas. La región autónoma del Kurdistán tiene un entorno de internet mejor.'],
+434:[1,'U','0000000000','La inestabilidad política provoca interrupciones frecuentes de internet. No se trata de bloqueos activos, sino de una infraestructura frágil.'],
+504:[1,'N','0000000000','Las llamadas VoIP estuvieron restringidas en el pasado, pero ya han sido restablecidas. Todas las principales redes sociales funcionan con normalidad.'],
+512:[1,'U','0010000100','Las llamadas de voz de WhatsApp son ocasionalmente inestables. El acceso a Signal es inconsistente. El resto de servicios funciona con normalidad.'],
+634:[1,'U','0000000100','Algunas llamadas VoIP estuvieron restringidas, pero se han liberalizado en los últimos años. El acceso a Signal es inestable. Existe filtrado de contenidos.'],
+48:[1,'N','0000000000','Algunos medios de comunicación de la oposición están bloqueados. Los turistas habituales no se ven afectados.'],
+116:[1,'N','0000000000','En 2024 se implementó la Puerta de Enlace Nacional de Internet (NIG), aumentando la capacidad de vigilancia. Las redes sociales funcionan con normalidad.'],
+418:[1,'N','0000000000','Los principales servicios están disponibles. El gobierno vigila los contenidos críticos. La velocidad de internet es lenta.'],
+800:[1,'N','0000000000','Se aplica un impuesto a las redes sociales. Las redes sociales fueron bloqueadas brevemente antes de las elecciones de 2021. En períodos normales funcionan con normalidad.'],
+760:[1,'U','0000000000','Las restricciones se han reducido considerablemente tras el cambio de gobierno a finales de 2024. Sin embargo, los años de conflicto han dañado la infraestructura y muchas zonas tienen conexión inestable.'],
+762:[1,'U','0101010100','YouTube y Facebook son restringidos ocasionalmente. Durante períodos políticamente sensibles pueden ser bloqueados temporalmente. La velocidad de internet es lenta.']
 };
 
 /* ===== EXTRA TERRITORIES ===== */
 var EXTRA=[
-{id:'HK',name:'香港',flag:'🇭🇰',level:1,vpn:'N',svc:'0000000000',note:'所有主流服務均可正常使用。2020年《國安法》實施後部分本地新聞及政治網站受限，但Google、WhatsApp、Instagram、Facebook等國際服務不受影響。無需VPN。'},
-{id:'MO',name:'澳門',flag:'🇲🇴',level:0,vpn:'N',svc:'0000000000',note:'網路完全自由，所有國際服務正常使用。無任何封鎖或限制。'}
+{id:'HK',name:'Hong Kong',flag:'🇭🇰',level:1,vpn:'N',svc:'0000000000',note:'Todos los servicios principales están disponibles con normalidad. Tras la implementación de la Ley de Seguridad Nacional en 2020, algunos sitios de noticias locales y páginas políticas están restringidos, pero los servicios internacionales como Google, WhatsApp, Instagram y Facebook no se ven afectados. No se necesita VPN.'},
+{id:'MO',name:'Macao',flag:'🇲🇴',level:0,vpn:'N',svc:'0000000000',note:'Internet es completamente libre y todos los servicios internacionales funcionan con normalidad. No existe ningún bloqueo ni restricción.'}
 ];
-
+  
 /* ===== A2 MAP & NAME ===== */
 var A2={4:'AF',8:'AL',12:'DZ',16:'AS',20:'AD',24:'AO',28:'AG',31:'AZ',32:'AR',36:'AU',40:'AT',44:'BS',48:'BH',50:'BD',51:'AM',52:'BB',56:'BE',64:'BT',68:'BO',70:'BA',72:'BW',76:'BR',84:'BZ',90:'SB',96:'BN',100:'BG',104:'MM',108:'BI',112:'BY',116:'KH',120:'CM',124:'CA',132:'CV',140:'CF',144:'LK',148:'TD',152:'CL',156:'CN',158:'TW',170:'CO',174:'KM',178:'CG',180:'CD',188:'CR',191:'HR',192:'CU',196:'CY',203:'CZ',204:'BJ',208:'DK',214:'DO',218:'EC',222:'SV',226:'GQ',231:'ET',232:'ER',233:'EE',242:'FJ',246:'FI',250:'FR',262:'DJ',266:'GA',268:'GE',270:'GM',275:'PS',276:'DE',288:'GH',296:'KI',300:'GR',304:'GL',320:'GT',324:'GN',328:'GY',332:'HT',336:'VA',340:'HN',348:'HU',352:'IS',356:'IN',360:'ID',364:'IR',368:'IQ',372:'IE',376:'IL',380:'IT',384:'CI',388:'JM',392:'JP',398:'KZ',400:'JO',404:'KE',408:'KP',410:'KR',414:'KW',417:'KG',418:'LA',422:'LB',426:'LS',428:'LV',430:'LR',434:'LY',440:'LT',442:'LU',450:'MG',454:'MW',458:'MY',462:'MV',466:'ML',470:'MT',478:'MR',480:'MU',484:'MX',492:'MC',496:'MN',498:'MD',499:'ME',504:'MA',508:'MZ',512:'OM',516:'NA',524:'NP',528:'NL',540:'NC',548:'VU',554:'NZ',558:'NI',562:'NE',566:'NG',578:'NO',586:'PK',591:'PA',598:'PG',600:'PY',604:'PE',608:'PH',616:'PL',620:'PT',624:'GW',626:'TL',630:'PR',634:'QA',642:'RO',643:'RU',646:'RW',674:'SM',682:'SA',686:'SN',688:'RS',694:'SL',702:'SG',703:'SK',705:'SI',706:'SO',710:'ZA',716:'ZW',724:'ES',728:'SS',729:'SD',732:'EH',740:'SR',748:'SZ',752:'SE',756:'CH',760:'SY',762:'TJ',764:'TH',768:'TG',776:'TO',780:'TT',784:'AE',788:'TN',792:'TR',795:'TM',800:'UG',804:'UA',807:'MK',818:'EG',826:'GB',834:'TZ',840:'US',854:'BF',858:'UY',860:'UZ',862:'VE',882:'WS',887:'YE',894:'ZM',704:'VN'};
 var zhN;try{zhN=new Intl.DisplayNames(['zh-Hant'],{type:'region'});}catch(e){}
@@ -354,11 +355,11 @@ var v=+svc[i]||0,s=SVCS[i];
 if(compact&&v===0)continue;
 h+='<span class="svc-chip"><span class="si" style="background:'+s.c+'">'+s.i+'</span><span style="font-size:.72rem">'+s.n+'</span><span class="ss" style="color:'+ST_CLS[v]+'">'+ST_ICON[v]+'</span></span>';
 }
-return h||'<span style="font-size:.78rem;color:#94a3b8">所有服務正常使用 ✅</span>';
+return h||'<span style="font-size:.78rem;color:#94a3b8">Todos los servicios disponibles ✅</span>';
 }
 
 function resetInfo(){
-$flag.textContent='🌐';$name.innerHTML='<span class="info-placeholder">將滑鼠移至地圖上查看各國網路自由度</span>';
+$flag.textContent='🌐';$name.innerHTML='<span class="info-placeholder">Pasa el ratón sobre el mapa para ver la libertad de internet por país</span>';
 $badges.innerHTML='';$sub.textContent='';$svcRow.classList.add('hidden');$svcRow.innerHTML='';
 }
 function showInfo(c,isLock){
@@ -373,7 +374,7 @@ var h='';for(var i=0;i<10;i++){
 var v=+c.svc[i]||0,s=SVCS[i];
 h+='<span class="svc-chip"><span class="si" style="background:'+s.c+'">'+s.i+'</span><span style="font-size:.74rem">'+s.n+'</span><span class="ss" style="color:'+ST_CLS[v]+'">'+ST_ICON[v]+' '+ST_LABEL[v]+'</span></span>';
 }
-$svcRow.innerHTML=h||'<span style="font-size:.82rem;color:#22c55e">🟢 所有服務正常使用</span>';
+$svcRow.innerHTML=h||'<span style="font-size:.82rem;color:#22c55e">🟢 Todos los servicios disponibles</span>';
 }else{$svcRow.classList.add('hidden');}
 }
 
@@ -426,7 +427,7 @@ h+='</div>';
 });
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">🚫 最常被封鎖的服務 TOP 10</div>';
+h+='<div class="stat-section"><div class="stat-title">🚫 Los 10 servicios más bloqueados</div>';
 var ranked=SVCS.map(function(s,i){return{s:s,b:svcBlocked[i],p:svcPartial[i],idx:i};}).sort(function(a,b){return(b.b+b.p)-(a.b+a.p);});
 var maxB=Math.max.apply(null,ranked.map(function(r){return r.b+r.p;}));
 ranked.forEach(function(r){
@@ -439,24 +440,24 @@ h+='<span class="svc-stat-num">'+r.b+'❌ '+r.p+'⚠️</span></div>';
 h+='</div>';
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">🛡️ VPN 旅行須知</div>';
-h+='<div class="tip-box"><div class="tip-title">出發前準備</div>';
-h+='<div class="tip-item"><span>📥</span><span>在出發國下載並測試VPN App，部分國家入境後無法下載。</span></div>';
-h+='<div class="tip-item"><span>🔑</span><span>建議準備2-3款VPN備用（如ExpressVPN、NordVPN、Surfshark等），單一VPN可能在某些國家被封鎖。</span></div>';
-h+='<div class="tip-item"><span>📱</span><span>下載離線地圖（Google Maps / Maps.me），以防無法上網時仍能導航。</span></div>';
-h+='<div class="tip-item"><span>💬</span><span>與親友約定替代聯絡方式，例如簡訊或電子郵件，以防通訊App被封。</span></div>';
-h+='<div class="tip-item"><span>⚖️</span><span>部分國家（中國、伊朗、俄羅斯、土庫曼）VPN使用可能有法律灰色地帶，但一般不會對外國旅客執法。</span></div>';
+h+='<div class="stat-section"><div class="stat-title">🛡️ Consejos de viaje sobre VPN</div>';
+h+='<div class="tip-box"><div class="tip-title">Preparativos antes de salir</div>';
+h+='<div class="tip-item"><span>📥</span><span>Descarga y prueba la app de VPN en tu país de origen; en algunos países no es posible descargarla una vez dentro.</span></div>';
+h+='<div class="tip-item"><span>🔑</span><span>Se recomienda tener 2-3 VPN de reserva (como ExpressVPN, NordVPN, Surfshark, etc.), ya que una sola VPN puede estar bloqueada en ciertos países.</span></div>';
+h+='<div class="tip-item"><span>📱</span><span>Descarga mapas sin conexión (Google Maps / Maps.me) para poder navegar aunque no tengas acceso a internet.</span></div>';
+h+='<div class="tip-item"><span>💬</span><span>Acuerda con familiares y amigos métodos de contacto alternativos, como SMS o correo electrónico, por si las apps de mensajería están bloqueadas.</span></div>';
+h+='<div class="tip-item"><span>⚖️</span><span>En algunos países (China, Irán, Rusia, Turkmenistán) el uso de VPN puede estar en una zona legal gris, aunque en general no se aplica la ley a turistas extranjeros.</span></div>';
 h+='</div></div>';
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">💡 趣味知識</div>';
+h+='<div class="stat-section"><div class="stat-title">💡 Curiosidades</div>';
 var facts=[
-{i:'🇨🇳',t:'中國的「防火長城」（GFW）是全球最大規模的網路審查系統，影響超過10億用戶。儘管如此，約30%的中國網民日常使用VPN。'},
-{i:'🇼🇸',t:'世界上最多國家封鎖的服務是 X（Twitter），被至少8個國家完全封鎖。'},
-{i:'🇷🇺',t:'俄羅斯自2022年起將 Meta（Facebook/Instagram母公司）列為「極端組織」，但WhatsApp因通訊必要性而未被封鎖。'},
-{i:'🇦🇪',t:'阿聯酋封鎖VoIP通話（如WhatsApp通話），但允許文字訊息。官方理由是保護電信營收。'},
-{i:'🇰🇵',t:'朝鮮的「光明網」是全球唯一完全隔離的國家級網路，僅有約30個網站。'},
-{i:'🇮🇳',t:'印度的查謨-克什米爾地區是全球實施最長期網路封鎖的區域之一，曾連續斷網超過550天。'}
+{i:'🇨🇳',t:'El "Gran Cortafuegos" (GFW) de China es el sistema de censura de internet más grande del mundo, y afecta a más de 1.000 millones de usuarios. Aun así, aproximadamente el 30% de los internautas chinos utilizan VPN a diario.'},
+{i:'🇼🇸',t:'El servicio bloqueado por más países del mundo es X (Twitter), completamente bloqueado en al menos 8 países.'},
+{i:'🇷🇺',t:'Desde 2022, Rusia clasifica a Meta (empresa matriz de Facebook e Instagram) como «organización extremista», aunque WhatsApp no ha sido bloqueado por su carácter imprescindible para la comunicación.'},
+{i:'🇦🇪',t:'Los Emiratos Árabes Unidos bloquean las llamadas VoIP (como las de WhatsApp), pero permiten los mensajes de texto. La razón oficial es proteger los ingresos de las operadoras de telecomunicaciones.'},
+{i:'🇰🇵',t:'«Kwangmyong», la red de Corea del Norte, es la única red nacional completamente aislada del mundo, con apenas unos 30 sitios web.'},
+{i:'🇮🇳',t:'La región india de Jammu y Cachemira es una de las zonas del mundo donde se ha aplicado el corte de internet más prolongado, llegando a estar sin conexión durante más de 550 días consecutivos.'}
 ];
 facts.forEach(function(f){
 h+='<div class="fact-item"><span class="fact-icon">'+f.i+'</span><span>'+f.t+'</span></div>';
@@ -479,10 +480,10 @@ var list;
 if(selLvl!==null){
 list=allC.filter(function(c){return c.level===selLvl;});
 var lv=LVLS[selLvl];
-$cHdr.innerHTML=lv.icon+' '+lv.name+' 的國家與地區';
+$cHdr.innerHTML='Países y regiones: '+lv.icon+' '+lv.name;
 }else{
 list=allC;
-$cHdr.innerHTML='🌍 所有國家與地區';
+$cHdr.innerHTML='🌍 Todos los países y regiones';
 }
 $cCount.textContent=list.length;
 var h='';
@@ -494,7 +495,7 @@ h+='<div class="cc-item'+ac+'" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'
 h+='<span class="cc-flag">'+c.flag+'</span>';
 h+='<div class="cc-info"><div class="cc-name">'+c.name+'</div>';
 h+='<div class="cc-badges"><span class="cc-lb" style="background:'+lv.col+'">'+lv.icon+' '+lv.name+'</span></div>';
-if(blocked.length)h+='<div class="cc-blocked">🚫 '+blocked.join('、')+'</div>';
+if(blocked.length)h+='<div class="cc-blocked">🚫 '+blocked.join(', ')+'</div>';
 h+='</div></div>';
 });
 $cGrid.innerHTML=h;
@@ -518,7 +519,7 @@ $sIn.addEventListener('input',function(){
 var q=this.value.trim().toLowerCase();
 if(!q){$sDD.classList.remove('show');return;}
 var res=allC.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1||(c.a2&&c.a2.toLowerCase().indexOf(q)>-1);}).slice(0,12);
-if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">找不到結果</div>';$sDD.classList.add('show');return;}
+if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">No se han encontrado resultados</div>';$sDD.classList.add('show');return;}
 var h='';res.forEach(function(c){
 var lv=LVLS[c.level];
 h+='<div class="sd-item" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'"><span style="font-size:1.2rem">'+c.flag+'</span><span style="font-weight:600;flex:1">'+c.name+'</span><span class="cc-lb" style="background:'+lv.col+';font-size:.68rem">'+lv.icon+' '+lv.name+'</span></div>';
@@ -578,7 +579,7 @@ var lvd=LVLS[c.level],vp=VPN_LABELS[c.vpn];
 var blocked=[];for(var i=0;i<10;i++){var v=+c.svc[i]||0;if(v>0)blocked.push('<span class="tt-sc"><span style="font-size:.7rem;color:'+ST_CLS[v]+'">'+ST_ICON[v]+'</span>'+SVCS[i].n+'</span>');}
 $tip.innerHTML='<span class="tt-flag">'+c.flag+'</span><span class="tt-name">'+c.name+'</span>'+(c.a2?'<span class="tt-sub">ISO: '+c.a2+'</span>':'')+'<div class="tt-lvl" style="background:'+lvd.col+'">'+lvd.icon+' '+lvd.name+'</div> <span class="tt-lvl" style="background:'+vp[2]+'">🛡️ '+vp[1]+'</span>'+(blocked.length?'<div class="tt-svcs">'+blocked.join('')+'</div>':'<div style="margin-top:6px;font-size:.78rem;color:#86efac">✅ 所有服務正常使用</div>');
 }else{
-$tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nameOf(id)+'</span><br><span class="tt-sub">資料不可用</span>';
+$tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nameOf(id)+'</span><br><span class="tt-sub">Datos no disponibles</span>';
 }
 var tx=ev.clientX+14,ty=ev.clientY-80;
 if(tx+320>window.innerWidth)tx=ev.clientX-320;if(ty<10)ty=ev.clientY+20;
@@ -606,8 +607,7 @@ paintMap();renderCountries();
 
 document.getElementById('loadOv').style.display='none';
 renderCatPanel();renderCountries();
-}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗，請重新整理頁面。</p>';});
-
+}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ Error al cargar el mapa, por favor recarga la página.</p>';});
 })();
 </script>
 
