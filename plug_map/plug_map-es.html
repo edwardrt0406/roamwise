@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>世界插頭類型互動地圖 – Roamwise</title>
+<title>Mapa de tipos de enchufe – Roamwise</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
@@ -110,28 +110,28 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 <header class="rw-header">
   <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
   <div class="rw-header-right">
-    <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
+    <a href="../1-contact/contact-es.html" class="rw-header-contact">Contáctenos</a>
     <div class="rw-header-lang">
-      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">Español ▾</button>
       <div class="rw-header-lang-menu">
-        <a href="drivinglicense_map-zh.html" class="active">繁體中文</a>
-        <a href="drivinglicense_map-en.html">English</a>
-        <a href="drivinglicense_map-es.html">Español</a>
-        <a href="drivinglicense_map-pt.html">Português</a>
+        <a href="plug_map-zh.html">繁體中文</a>
+        <a href="plug_map-en.html">English</a>
+        <a href="plug_map-es.html" class="active">Español</a>
+        <a href="plug_map-pt.html">Português</a>
       </div>
     </div>
   </div>
 </header>
 
 <main>
-<h1>🔌 世界插頭類型互動地圖</h1>
+<h1>🔌 Mapa de tipos de enchufe</h1>
 
 <div class="card">
-  <div class="info-bar" id="infoBar">
+<div class="info-bar" id="infoBar">
     <div class="info-left">
       <div class="info-flag" id="infoFlag">🌐</div>
       <div class="info-details">
-        <div class="info-name" id="infoName"><span class="info-placeholder">將滑鼠移至地圖上查看各國插頭類型</span></div>
+        <div class="info-name" id="infoName"><span class="info-placeholder">Pasa el cursor por el mapa para ver los tipos de enchufe de cada país</span></div>
         <div class="info-sub" id="infoSub"></div>
         <div class="plug-badges" id="infoBadges"></div>
       </div>
@@ -140,31 +140,31 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
   </div>
 
   <div class="map-wrap" id="mapWrap">
-    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>載入地圖中…</p></div>
+    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>Cargando mapa…</p></div>
     <div class="map-legend" id="mapLegend"></div>
   </div>
 
   <div class="tips">
-    <span>🖱️ 滑入查看國家插頭</span><span>👆 點擊鎖定國家</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span>
+    <span>🖱️ Pasa el cursor para ver el enchufe</span><span>👆 Clic para fijar el país</span><span>🔍 Rueda para hacer zoom</span><span>✋ Arrastra para desplazar</span>
   </div>
 
   <div class="bar-row">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input class="search-input" id="searchIn" type="text" placeholder="搜尋國家或地區…" autocomplete="off">
+      <input class="search-input" id="searchIn" type="text" placeholder="Buscar país o región…" autocomplete="off">
       <div class="search-dd" id="searchDD"></div>
     </div>
-    <button class="btn btn-primary" id="btnReset">🔄 重設</button>
+    <button class="btn btn-primary" id="btnReset">🔄 Restablecer</button>
   </div>
 </div>
 
 <div class="two-panel">
   <div class="panel" id="panelLeft">
-    <div class="panel-hdr">🔌 插頭類型指南<span id="plugCount" class="pc-count">14 種</span></div>
+    <div class="panel-hdr">🔌 Guía de tipos de enchufe<span id="plugCount" class="pc-count">14 tipos</span></div>
     <div class="panel-body" id="plugList"></div>
   </div>
   <div class="panel" id="panelRight">
-    <div class="panel-hdr" id="cListHdr">🌍 所有國家與地區<span id="cListCount" class="pc-count">0</span></div>
+    <div class="panel-hdr" id="cListHdr">🌍 Todos los países y regiones<span id="cListCount" class="pc-count">0</span></div>
     <div class="panel-body" id="cListBody"><div class="cc-grid" id="cGrid"></div></div>
   </div>
 </div>
@@ -172,46 +172,46 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 
 <div class="tooltip" id="tooltip"></div>
 
-<footer>
 <footer class="rw-footer">
   <div class="rw-footer-grid">
     <div class="rw-footer-col">
-      <h4>⏰ 時間與日照</h4>
+      <h4>⏰ Hora y luz solar</h4>
       <ul>
-        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
-        <li><a href="../meeting/meeting-zh.html">會議時間查找器</a></li>
-        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
-        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+        <li><a href="../time-zone/time-zone-es.html">Consulta de zonas horarias</a></li>
+        <li><a href="../meeting/meeting-es.html">Buscador de horarios de reunión</a></li>
+        <li><a href="../sunset/sunset-es.html">Hora de amanecer y atardecer</a></li>
+        <li><a href="../timer/timer-es.html">Temporizador y cuenta atrás</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🔧 換算與生活工具</h4>
+      <h4>🔧 Conversores y herramientas</h4>
       <ul>
-        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
-        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
-        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+        <li><a href="../currency/currency-es.html">Conversor de divisas</a></li>
+        <li><a href="../unit/unit-es.html">Conversor de unidades</a></li>
+        <li><a href="../plug/plug-es.html">Estándares de enchufes</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🚗 交通與出行地圖</h4>
+      <h4>🚗 Mapas de transporte y viaje</h4>
       <ul>
-        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
-        <li><a href="../drivingdirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
-        <li><a href="drivinglicense_map-zh.html" class="active">全球國際駕照承認互動地圖</a></li>
+        <li><a href="../country_map/country_map-es.html">Mapa de países y regiones</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-es.html">Mapa de sentido de circulación</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-es.html">Mapa de permisos de conducir internacionales</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🌍 全球資訊地圖</h4>
+      <h4>🌍 Mapas de información global</h4>
       <ul>
-        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
-        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
-        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
-        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+        <li><a href="../time-zone-map/time-zone-map-es.html">Mapa de zonas horarias</a></li>
+        <li><a href="plug_map-es.html">Mapa de tipos de enchufe</a></li>
+        <li><a href="../nationalday_map/nationalday_map-es.html">Mapa de sistemas de calendario</a></li>
+        <li><a href="../Network_map/Network_map-es.html">Mapa de libertad en internet</a></li>
       </ul>
     </div>
   </div>
-  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. Todos los derechos reservados. | <a href="/privacy">Política de privacidad</a> | <a href="/terms">Términos de uso</a></div>
 </footer>
+
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
@@ -220,20 +220,20 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 
 /* ========== PLUG TYPE DATA ========== */
 var PT={
-A:{name:'Type A',zh:'兩扁平行插腳',desc:'無接地，常見於北美和日本',v:'100–127V',f:'60Hz',col:'#e11d48',fill:'#fecdd3',hi:'#be123c'},
-B:{name:'Type B',zh:'兩扁平行＋接地腳',desc:'含接地腳，北美標準',v:'100–127V',f:'60Hz',col:'#f43f5e',fill:'#fda4af',hi:'#9f1239'},
-C:{name:'Type C',zh:'兩圓形插腳（歐標）',desc:'最廣泛使用的插頭類型',v:'220–240V',f:'50Hz',col:'#3b82f6',fill:'#bfdbfe',hi:'#1d4ed8'},
-D:{name:'Type D',zh:'三大圓形插腳',desc:'三角排列，常見於印度等',v:'220–240V',f:'50Hz',col:'#a855f7',fill:'#d8b4fe',hi:'#7e22ce'},
-E:{name:'Type E',zh:'兩圓腳＋接地突針',desc:'法國標準，含突出的接地針',v:'220–240V',f:'50Hz',col:'#06b6d4',fill:'#a5f3fc',hi:'#0e7490'},
-F:{name:'Type F',zh:'兩圓腳＋接地夾（Schuko）',desc:'德國標準，歐洲最常見',v:'220–240V',f:'50Hz',col:'#2563eb',fill:'#93c5fd',hi:'#1e40af'},
-G:{name:'Type G',zh:'三矩形插腳（英標）',desc:'英國及前殖民地標準',v:'220–240V',f:'50Hz',col:'#f59e0b',fill:'#fde68a',hi:'#b45309'},
-H:{name:'Type H',zh:'三腳 V 形排列',desc:'以色列獨有標準',v:'220–240V',f:'50Hz',col:'#84cc16',fill:'#d9f99d',hi:'#4d7c0f'},
-I:{name:'Type I',zh:'兩斜扁腳＋接地（澳標）',desc:'澳洲、紐西蘭、中國部分',v:'220–240V',f:'50Hz',col:'#10b981',fill:'#a7f3d0',hi:'#047857'},
-J:{name:'Type J',zh:'三圓形插腳（瑞士）',desc:'瑞士和列支敦士登',v:'220–240V',f:'50Hz',col:'#f97316',fill:'#fed7aa',hi:'#c2410c'},
-K:{name:'Type K',zh:'三圓形插腳（丹麥）',desc:'丹麥標準',v:'220–240V',f:'50Hz',col:'#ec4899',fill:'#fbcfe8',hi:'#be185d'},
-L:{name:'Type L',zh:'三圓腳直線排列（義大利）',desc:'義大利標準',v:'220–240V',f:'50Hz',col:'#14b8a6',fill:'#99f6e4',hi:'#0f766e'},
-M:{name:'Type M',zh:'三大圓腳（南非標準）',desc:'南非及周邊國家',v:'220–240V',f:'50Hz',col:'#7c3aed',fill:'#c4b5fd',hi:'#5b21b6'},
-N:{name:'Type N',zh:'三圓腳三角（巴西）',desc:'巴西標準',v:'127/220V',f:'60Hz',col:'#22c55e',fill:'#bbf7d0',hi:'#15803d'}
+A:{name:'Type A',zh:'Dos clavijas planas paralelas',desc:'Sin toma de tierra, común en Norteamérica y Japón',v:'100–127V',f:'60Hz',col:'#e11d48',fill:'#fecdd3',hi:'#be123c'},
+B:{name:'Type B',zh:'Dos clavijas planas + clavija de tierra',desc:'Con toma de tierra, estándar norteamericano',v:'100–127V',f:'60Hz',col:'#f43f5e',fill:'#fda4af',hi:'#9f1239'},
+C:{name:'Type C',zh:'Dos clavijas redondas (estándar europeo)',desc:'El tipo de enchufe más utilizado en el mundo',v:'220–240V',f:'50Hz',col:'#3b82f6',fill:'#bfdbfe',hi:'#1d4ed8'},
+D:{name:'Type D',zh:'Tres clavijas redondas grandes',desc:'Disposición triangular, común en India y otros países',v:'220–240V',f:'50Hz',col:'#a855f7',fill:'#d8b4fe',hi:'#7e22ce'},
+E:{name:'Type E',zh:'Dos clavijas redondas + pin de tierra saliente',desc:'Estándar francés, con pin de tierra saliente',v:'220–240V',f:'50Hz',col:'#06b6d4',fill:'#a5f3fc',hi:'#0e7490'},
+F:{name:'Type F',zh:'Dos clavijas redondas + contactos de tierra (Schuko)',desc:'Estándar alemán, el más común en Europa',v:'220–240V',f:'50Hz',col:'#2563eb',fill:'#93c5fd',hi:'#1e40af'},
+G:{name:'Type G',zh:'Tres clavijas rectangulares (estándar británico)',desc:'Estándar del Reino Unido y sus antiguas colonias',v:'220–240V',f:'50Hz',col:'#f59e0b',fill:'#fde68a',hi:'#b45309'},
+H:{name:'Type H',zh:'Tres clavijas en disposición en V',desc:'Estándar exclusivo de Israel',v:'220–240V',f:'50Hz',col:'#84cc16',fill:'#d9f99d',hi:'#4d7c0f'},
+I:{name:'Type I',zh:'Dos clavijas planas inclinadas + tierra (estándar australiano)',desc:'Australia, Nueva Zelanda y partes de China',v:'220–240V',f:'50Hz',col:'#10b981',fill:'#a7f3d0',hi:'#047857'},
+J:{name:'Type J',zh:'Tres clavijas redondas (Suiza)',desc:'Suiza y Liechtenstein',v:'220–240V',f:'50Hz',col:'#f97316',fill:'#fed7aa',hi:'#c2410c'},
+K:{name:'Type K',zh:'Tres clavijas redondas (Dinamarca)',desc:'Estándar danés',v:'220–240V',f:'50Hz',col:'#ec4899',fill:'#fbcfe8',hi:'#be185d'},
+L:{name:'Type L',zh:'Tres clavijas redondas en línea (Italia)',desc:'Estándar italiano',v:'220–240V',f:'50Hz',col:'#14b8a6',fill:'#99f6e4',hi:'#0f766e'},
+M:{name:'Type M',zh:'Tres clavijas redondas grandes (estándar sudafricano)',desc:'Sudáfrica y países vecinos',v:'220–240V',f:'50Hz',col:'#7c3aed',fill:'#c4b5fd',hi:'#5b21b6'},
+N:{name:'Type N',zh:'Tres clavijas redondas en triángulo (Brasil)',desc:'Estándar brasileño',v:'127/220V',f:'60Hz',col:'#22c55e',fill:'#bbf7d0',hi:'#15803d'}
 };
 
 /* ========== COUNTRY → PLUG DATA ========== */
@@ -383,7 +383,7 @@ var locked=null,selType=null;
 /* ========== INFO BAR ========== */
 function resetInfo(){
   $flag.textContent='🌐';
-  $name.innerHTML='<span class="info-placeholder">將滑鼠移至地圖上查看各國插頭類型</span>';
+  $name.innerHTML='<span class="info-placeholder">Pasa el cursor por el mapa para ver los tipos de enchufe de cada país</span>';
   $sub.textContent='';$badges.innerHTML='';$infoR.innerHTML='';
 }
 function showInfo(c,isLock){
@@ -392,7 +392,7 @@ function showInfo(c,isLock){
   $sub.textContent=(c.a2?'ISO: '+c.a2:'');
   var bh='';c.types.forEach(function(t){var p=PT[t];if(p)bh+='<span class="pb" style="background:'+p.col+'">'+plugSVG(t,16)+' '+t+'</span>';});
   $badges.innerHTML=bh;
-  $infoR.innerHTML='<div class="info-stat"><div class="info-stat-val">⚡ '+c.v+'</div><div class="info-stat-lbl">電壓</div></div><div class="info-stat"><div class="info-stat-val">〰️ '+c.f+'</div><div class="info-stat-lbl">頻率</div></div><div class="info-stat"><div class="info-stat-val">🔌 '+c.types.length+'</div><div class="info-stat-lbl">插頭類型</div></div>';
+ $infoR.innerHTML='<div class="info-stat"><div class="info-stat-val">⚡ '+c.v+'</div><div class="info-stat-lbl">Voltaje</div></div><div class="info-stat"><div class="info-stat-val">〰️ '+c.f+'</div><div class="info-stat-lbl">Frecuencia</div></div><div class="info-stat"><div class="info-stat-val">🔌 '+c.types.length+'</div><div class="info-stat-lbl">Tipos de enchufe</div></div>';
 }
 
 /* ========== MAP ========== */
@@ -448,13 +448,13 @@ function zoomTo(id){
 function renderPlugTypes(){
   var h='';
   for(var k in PT){var p=PT[k];
-    var ac=selType===k?' active':'';
+   var ac=selType===k?' active':'';
     h+='<div class="plug-card'+ac+'" data-type="'+k+'" style="border-left-color:'+p.col+'">';
     h+='<div class="pc-icon">'+plugSVG(k,40)+'</div>';
     h+='<div class="pc-info"><div class="pc-type"><span style="color:'+p.col+'">'+p.name+'</span></div>';
     h+='<div class="pc-desc">'+p.zh+'</div>';
     h+='<div class="pc-meta">'+p.v+' · '+p.f+'</div></div>';
-    h+='<span class="pc-count">'+ptCounts[k]+' 國</span>';
+    h+='<span class="pc-count">'+ptCounts[k]+' países</span>';
     h+='</div>';
   }
   $plugList.innerHTML=h;
@@ -473,10 +473,10 @@ function renderCountries(){
   if(selType){
     list=allC.filter(function(c){return c.types.indexOf(selType)>-1;});
     var p=PT[selType];
-    $cHdr.innerHTML='🔌 使用 <span style="color:'+p.col+'">'+p.name+'</span> 的國家';
+    $cHdr.innerHTML='🔌 Países que usan <span style="color:'+p.col+'">'+p.name+'</span>';
   }else{
     list=allC;
-    $cHdr.innerHTML='🌍 所有國家與地區';
+    $cHdr.innerHTML='🌍 Todos los países y regiones';
   }
   $cCount.textContent=list.length;
   var h='';
@@ -506,7 +506,7 @@ $sIn.addEventListener('input',function(){
   var q=this.value.trim().toLowerCase();
   if(!q){$sDD.classList.remove('show');return;}
   var res=allC.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1||(c.a2&&c.a2.toLowerCase().indexOf(q)>-1);}).slice(0,10);
-  if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">找不到結果</div>';$sDD.classList.add('show');return;}
+  if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">Sin resultados</div>';$sDD.classList.add('show');return;}
   var h='';res.forEach(function(c){
     var tb='';c.types.forEach(function(t){var p=PT[t];if(p)tb+='<span class="cc-tb" style="background:'+p.col+';margin-left:2px">'+t+'</span>';});
     h+='<div class="sd-item" data-id="'+c.id+'"><span style="font-size:1.3rem">'+c.flag+'</span><span style="font-weight:600">'+c.name+'</span>'+tb+'</div>';
@@ -553,7 +553,7 @@ d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(f
       if(c)showInfo(c,false);
       $tip.classList.add('show');
     })
-    .on('mousemove',function(ev){
+.on('mousemove',function(ev){
       var id=+d3.select(this).attr('data-id');
       if(selType&&!hasType(id,selType)){$tip.classList.remove('show');return;}
       var c=allC.find(function(x){return x.id===id;});
@@ -561,8 +561,8 @@ d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(f
         var tb='';c.types.forEach(function(t){var p=PT[t];if(p)tb+='<span class="tt-pb" style="background:'+p.col+'">'+plugSVG(t,14)+' '+t+'</span>';});
         $tip.innerHTML='<span class="tt-flag">'+c.flag+'</span><span class="tt-name">'+c.name+'</span><br><span class="tt-sub">⚡ '+c.v+' · 〰️ '+c.f+'</span><div class="tt-plugs">'+tb+'</div>';
       }else{
-        var nm=nameOf(id)||'未知';
-        $tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nm+'</span><br><span class="tt-sub">插頭資料不可用</span>';
+        var nm=nameOf(id)||'Desconocido';
+        $tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nm+'</span><br><span class="tt-sub">Datos de enchufe no disponibles</span>';
       }
       var tx=ev.clientX+14,ty=ev.clientY-50;
       if(tx+300>window.innerWidth)tx=ev.clientX-300;if(ty<10)ty=ev.clientY+20;
@@ -592,8 +592,7 @@ d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(f
 
   document.getElementById('loadOv').style.display='none';
   renderPlugTypes();renderCountries();
-}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗，請重新整理。</p>';});
-
+}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ Error al cargar el mapa. Por favor, recarga la página.</p>';});
 })();
 </script>
 
