@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>全球國際駕照（IDP）承認地圖 – Roamwise</title>
+<title>Mapa de permisos de conducir internacionales – Roamwise</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
@@ -121,13 +121,13 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 <header class="rw-header">
   <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
   <div class="rw-header-right">
-    <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
+    <a href="../1-contact/contact-es.html" class="rw-header-contact">Contáctenos</a>
     <div class="rw-header-lang">
-      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">Español ▾</button>
       <div class="rw-header-lang-menu">
-        <a href="drivinglicense_map-zh.html" class="active">繁體中文</a>
+        <a href="drivinglicense_map-zh.html">繁體中文</a>
         <a href="drivinglicense_map-en.html">English</a>
-        <a href="drivinglicense_map-es.html">Español</a>
+        <a href="drivinglicense_map-es.html" class="active">Español</a>
         <a href="drivinglicense_map-pt.html">Português</a>
       </div>
     </div>
@@ -135,14 +135,14 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 </header>
 
 <main>
-<h1>🚗 全球國際駕照（IDP）承認互動地圖</h1>
+<h1>🚗 Mapa de permisos de conducir internacionales</h1>
 
 <div class="card">
   <div class="info-bar" id="infoBar">
     <div class="info-left">
       <div class="info-flag" id="infoFlag">🌐</div>
       <div class="info-details">
-        <div class="info-name" id="infoName"><span class="info-placeholder">將滑鼠移至地圖上查看各國 IDP 承認狀態</span></div>
+        <div class="info-name" id="infoName"><span class="info-placeholder">Pasa el cursor sobre el mapa para ver el estado de reconocimiento del PCI de cada país</span></div>
         <div id="infoBadges"></div>
         <div class="info-sub" id="infoSub"></div>
       </div>
@@ -151,35 +151,35 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
   <div class="chip-row hidden" id="chipRow"></div>
 
   <div class="map-wrap" id="mapWrap">
-    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>載入地圖中…</p></div>
+    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>Cargando mapa…</p></div>
     <div class="map-legend">
-      <span class="ml-item"><span class="ml-dot" style="background:#bbf7d0;border:1px solid #22c55e"></span>完全承認</span>
-      <span class="ml-item"><span class="ml-dot" style="background:#bfdbfe;border:1px solid #3b82f6"></span>大致通用</span>
-      <span class="ml-item"><span class="ml-dot" style="background:#fef08a;border:1px solid #eab308"></span>有條件限制</span>
-      <span class="ml-item"><span class="ml-dot" style="background:#fed7aa;border:1px solid #f97316"></span>需當地駕照</span>
-      <span class="ml-item"><span class="ml-dot" style="background:#fecaca;border:1px solid #ef4444"></span>禁止/極難</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#bbf7d0;border:1px solid #22c55e"></span>Reconocimiento total</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#bfdbfe;border:1px solid #3b82f6"></span>Válido en general</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#fef08a;border:1px solid #eab308"></span>Con restricciones</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#fed7aa;border:1px solid #f97316"></span>Requiere licencia local</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#fecaca;border:1px solid #ef4444"></span>Prohibido / Muy difícil</span>
     </div>
   </div>
 
-  <div class="tips"><span>🖱️ 滑入查看IDP狀態</span><span>👆 點擊鎖定國家</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span></div>
+  <div class="tips"><span>🖱️ Pasar el cursor para ver el estado del PCI</span><span>👆 Clic para fijar país</span><span>🔍 Rueda para zoom</span><span>✋ Arrastrar para mover</span></div>
 
   <div class="bar-row">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input class="search-input" id="searchIn" type="text" placeholder="搜尋國家或地區（如：日本、中國、香港）…" autocomplete="off">
+      <input class="search-input" id="searchIn" type="text" placeholder="Buscar país o región (ej: Japón, China, Hong Kong)…" autocomplete="off">
       <div class="search-dd" id="searchDD"></div>
     </div>
-    <button class="btn btn-primary" id="btnReset">🔄 重設</button>
+    <button class="btn btn-primary" id="btnReset">🔄 Restablecer</button>
   </div>
 </div>
 
 <div class="two-panel">
   <div class="panel" id="panelLeft">
-    <div class="panel-hdr">📊 IDP 承認指南</div>
+    <div class="panel-hdr">📊 Guía de reconocimiento del PCI</div>
     <div class="panel-body" id="catPanel"></div>
   </div>
   <div class="panel" id="panelRight">
-    <div class="panel-hdr" id="cListHdr">🌍 所有國家與地區<span id="cListCount" class="pc-count">0</span></div>
+    <div class="panel-hdr" id="cListHdr">🌍 Todos los países y regiones<span id="cListCount" class="pc-count">0</span></div>
     <div class="panel-body" id="cListBody"><div class="cc-grid" id="cGrid"></div></div>
   </div>
 </div>
@@ -187,45 +187,44 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 
 <div class="tooltip" id="tooltip"></div>
 
-<footer>
 <footer class="rw-footer">
   <div class="rw-footer-grid">
     <div class="rw-footer-col">
-      <h4>⏰ 時間與日照</h4>
+      <h4>⏰ Hora y luz solar</h4>
       <ul>
-        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
-        <li><a href="../meeting/meeting-zh.html">會議時間查找器</a></li>
-        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
-        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+        <li><a href="../time-zone/time-zone-es.html">Consulta de zonas horarias</a></li>
+        <li><a href="../meeting/meeting-es.html">Buscador de horarios de reunión</a></li>
+        <li><a href="../sunset/sunset-es.html">Hora de amanecer y atardecer</a></li>
+        <li><a href="../timer/timer-es.html">Temporizador y cuenta atrás</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🔧 換算與生活工具</h4>
+      <h4>🔧 Conversores y herramientas</h4>
       <ul>
-        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
-        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
-        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+        <li><a href="../currency/currency-es.html">Conversor de divisas</a></li>
+        <li><a href="../unit/unit-es.html">Conversor de unidades</a></li>
+        <li><a href="../plug/plug-es.html">Estándares de enchufes</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🚗 交通與出行地圖</h4>
+      <h4>🚗 Mapas de transporte y viaje</h4>
       <ul>
-        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
-        <li><a href="../drivedirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
-        <li><a href="../drivinglicense_map/drivinglicense_map-zh.html" class="active">全球國際駕照承認互動地圖</a></li>
+        <li><a href="../country_map/country_map-es.html">Mapa de países y regiones</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-es.html">Mapa de sentido de circulación</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-es.html">Mapa de permisos de conducir internacionales</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🌍 全球資訊地圖</h4>
+      <h4>🌍 Mapas de información global</h4>
       <ul>
-        <li><a href="../time-zone-map/time-zone-map-zh.html">世界時區互動地圖</a></li>
-        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
-        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
-        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+        <li><a href="../time-zone-map/time-zone-map-es.html">Mapa de zonas horarias</a></li>
+        <li><a href="../plug_map/plug_map-es.html">Mapa de tipos de enchufe</a></li>
+        <li><a href="../nationalday_map/nationalday_map-es.html">Mapa de sistemas de calendario</a></li>
+        <li><a href="Network_map-es.html">Mapa de libertad en internet</a></li>
       </ul>
     </div>
   </div>
-  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. Todos los derechos reservados. | <a href="/privacy">Política de privacidad</a> | <a href="/terms">Términos de uso</a></div>
 </footer>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -234,165 +233,165 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 (function(){
 
 var LVLS=[
-{id:0,name:'完全承認',icon:'🟢',desc:'IDP被正式承認，租車自駕暢通無阻',col:'#22c55e',fill:'#bbf7d0',hi:'#15803d',light:'#f0fdf4'},
-{id:1,name:'大致通用',icon:'🔵',desc:'IDP基本可用，可能有小限制或條件',col:'#3b82f6',fill:'#bfdbfe',hi:'#1e40af',light:'#eff6ff'},
-{id:2,name:'有條件限制',icon:'🟡',desc:'IDP接受度不一致，需額外準備',col:'#eab308',fill:'#fef08a',hi:'#a16207',light:'#fefce8'},
-{id:3,name:'需當地駕照',icon:'🟠',desc:'IDP不被承認，須申辦當地駕照',col:'#f97316',fill:'#fed7aa',hi:'#c2410c',light:'#fff7ed'},
-{id:4,name:'禁止/極難',icon:'🔴',desc:'外國人無法或極難自駕',col:'#ef4444',fill:'#fecaca',hi:'#b91c1c',light:'#fef2f2'}
+{id:0,name:'Reconocimiento total',icon:'🟢',desc:'El PCI está reconocido oficialmente; alquiler de vehículos y conducción sin restricciones',col:'#22c55e',fill:'#bbf7d0',hi:'#15803d',light:'#f0fdf4'},
+{id:1,name:'Válido en general',icon:'🔵',desc:'El PCI es utilizable en general, aunque puede haber pequeñas restricciones o condiciones',col:'#3b82f6',fill:'#bfdbfe',hi:'#1e40af',light:'#eff6ff'},
+{id:2,name:'Con restricciones',icon:'🟡',desc:'La aceptación del PCI es inconsistente; se requiere preparación adicional',col:'#eab308',fill:'#fef08a',hi:'#a16207',light:'#fefce8'},
+{id:3,name:'Requiere licencia local',icon:'🟠',desc:'El PCI no es reconocido; se debe tramitar una licencia de conducir local',col:'#f97316',fill:'#fed7aa',hi:'#c2410c',light:'#fff7ed'},
+{id:4,name:'Prohibido / Muy difícil',icon:'🔴',desc:'Los extranjeros no pueden conducir o resulta extremadamente difícil hacerlo',col:'#ef4444',fill:'#fecaca',hi:'#b91c1c',light:'#fef2f2'}
 ];
 
 var CONVS={
-G:{name:'日內瓦公約 (1949)',short:'日內瓦1949',icon:'📜',col:'#7c3aed',bg:'#ede9fe'},
-V:{name:'維也納公約 (1968)',short:'維也納1968',icon:'📋',col:'#0891b2',bg:'#ecfeff'},
-B:{name:'雙公約簽署',short:'雙公約',icon:'✅',col:'#059669',bg:'#ecfdf5'},
-N:{name:'未簽署公約',short:'未簽署',icon:'⛔',col:'#dc2626',bg:'#fef2f2'}
+G:{name:'Convención de Ginebra (1949)',short:'Ginebra 1949',icon:'📜',col:'#7c3aed',bg:'#ede9fe'},
+V:{name:'Convenio de Viena (1968)',short:'Viena 1968',icon:'📋',col:'#0891b2',bg:'#ecfeff'},
+B:{name:'Firmante de ambos convenios',short:'Ambos convenios',icon:'✅',col:'#059669',bg:'#ecfdf5'},
+N:{name:'No firmante de ningún convenio',short:'No firmante',icon:'⛔',col:'#dc2626',bg:'#fef2f2'}
 };
-var SIDES={R:{name:'靠右行駛',icon:'➡️',col:'#3b82f6'},L:{name:'靠左行駛',icon:'⬅️',col:'#f59e0b'}};
+var SIDES={R:{name:'Conducción por la derecha',icon:'➡️',col:'#3b82f6'},L:{name:'Conducción por la izquierda',icon:'⬅️',col:'#f59e0b'}};
 
 /* ===== DATA [level, conv, side, note] ===== */
 var RDATA={
-156:[3,'N','R','中國不承認任何國際駕照（IDP）。外國人必須申請中國臨時駕照（有效3個月），需通過科目一筆試（中/英文可選）及體檢。國際租車公司不在中國營運。建議使用滴滴出行或包車含司機。'],
-392:[0,'G','L','⚠️ 日本僅承認1949年日內瓦公約IDP！維也納公約IDP在日本無效。持台灣駕照需至JAF辦理日文翻譯本。靠左行駛。高速公路收費（ETC卡），道路品質極優。'],
-410:[0,'G','R','承認日內瓦公約IDP，有效1年。與台灣有互惠協議。外國人居留超過1年需考取韓國駕照。道路品質優良。'],
-158:[2,'N','R','台灣非聯合國會員國，未簽署任何公約。已與日本、韓國、德國等30+國家簽訂互惠協議，持互惠國駕照可憑翻譯本在台使用。反之，台灣旅客的IDP是翻譯文件而非公約認證。'],
-764:[1,'G','L','承認日內瓦公約IDP，有效90天。靠左行駛。觀光區機車租借普遍但事故率高，建議確認IDP含機車類別。曼谷交通極度擁堵，建議搭BTS/MRT。'],
-458:[1,'G','L','承認日內瓦公約IDP，有效1年。靠左行駛。高速公路品質佳，Touch\'n Go電子收費卡必備。'],
-702:[0,'G','L','持有效外國駕照即可在新加坡駕駛最多12個月，不強制需要IDP。靠左行駛。擁車成本全球最高，租車昂貴。公共交通極發達，多數旅客無需自駕。'],
-360:[2,'V','L','2022年加入維也納公約。靠左行駛。峇里島租機車普遍但警方路檢頻繁，無IDP常被罰款。保險理賠需有效IDP。國際租車公司在雅加達和峇里島有據點。'],
-704:[2,'V','R','2014年加入維也納公約，但地方執法不一致。部分城市仍不熟悉IDP。外國人騎機車需越南機車駕照。建議使用Grab叫車服務。'],
-116:[2,'G','R','日內瓦公約簽署國但執法寬鬆。暹粒和金邊租機車普遍但交通規則形同虛設，事故時外國人常被要求負責。建議購買完善旅遊保險。'],
-418:[2,'G','R','日內瓦公約簽署國。道路條件差，雨季多處不通。IDP理論有效但地方不熟悉。建議聘請當地司機。'],
-608:[1,'B','R','承認兩項公約IDP，有效90天。馬尼拉交通極度擁堵。巴拉望等島嶼自駕可行。'],
-104:[2,'G','R','日內瓦公約簽署國。2021年政變後局勢不穩，部分地區不宜旅行。建議包車含司機而非自駕。'],
-524:[2,'N','L','未簽署任何公約。靠左行駛。山區道路極度危險，強烈建議聘請當地司機。加德滿都交通混亂。'],
-586:[1,'V','L','維也納公約簽署國。靠左行駛。道路條件和駕駛文化對外國人極具挑戰。北部山區僅限4WD。建議包車含司機。'],
-50:[1,'G','L','日內瓦公約簽署國。靠左行駛。達卡交通全球最擁堵城市之一，強烈不建議自駕。'],
-144:[1,'G','L','日內瓦公約簽署國。靠左行駛。道路品質良好。初次訪客建議包車含司機。'],
-496:[1,'V','R','維也納公約簽署國。地廣人稀，大量無鋪裝道路，需4WD。加油站間距可達數百公里，務必提前加油。'],
-96:[1,'G','L','日內瓦公約簽署國。靠左行駛。道路品質佳，汽油價格極低。'],
-64:[3,'N','L','未簽署任何公約。靠左行駛。外國觀光客不得自駕，必須透過旅行社安排含司機行程。'],
-784:[1,'B','R','承認兩項公約IDP。杜拜租車便利且便宜。⚠️ 超速罰款極重，閃光燈攝影機密集，闖紅燈罰約AED 1000。沙迦酋長國執法更嚴格。'],
-682:[1,'V','R','維也納公約簽署國。旅客可持IDP租車最多3個月。女性自2018年起可合法駕駛。道路品質優良但駕駛風格激進。'],
-512:[1,'G','R','日內瓦公約簽署國。IDP有效1個月，之後需當地駕照。山區公路蜿蜒但風景壯麗。'],
-634:[1,'V','R','維也納公約簽署國。道路品質優良。租車便宜。'],
-414:[1,'V','R','維也納公約簽署國。IDP有效3個月。'],
-48:[1,'V','R','維也納公約簽署國。IDP有效3個月。小國道路品質良好。'],
-376:[0,'B','R','承認兩項公約IDP。租車便利，國際租車公司齊全。GPS建議使用Waze（以色列最流行導航App）。安息日部分地區交通管制。'],
-400:[1,'G','R','日內瓦公約簽署國。自駕探索佩特拉和瓦迪拉姆方便。沙漠地區加油站稀少，務必加滿油。'],
-422:[1,'G','R','日內瓦公約簽署國。貝魯特駕駛風格激進，交通混亂。建議包車或搭計程車。'],
-364:[2,'V','R','維也納公約簽署國。IDP理論上有效但國際租車公司不營運。可透過當地租車行。制裁影響車輛普遍老舊。'],
-368:[2,'V','R','維也納公約簽署國。安全狀況不穩定。庫德斯坦自治區相對安全可自駕，其他地區不建議。'],
-760:[3,'G','R','長年內戰致基建嚴重受損。2024年底政權更迭後局勢不明。不建議自駕。'],
-887:[3,'N','R','持續衝突中。無有效IDP執行機制。不建議旅行。'],
-276:[0,'B','R','承認兩項公約IDP。部分Autobahn無速限。⚠️ 注意：德國IDP分兩種格式，前往日本需特別申請日內瓦公約版本。冬季部分地區強制冬胎。城市停車多需App付費。'],
-250:[0,'B','R','承認兩項公約IDP。高速公路收費。巴黎不建議自駕。需攜帶高可見度背心和警示三角。環島規則需注意：已在環島內的車輛優先。酒駕零容忍。'],
-380:[0,'B','R','承認兩項公約IDP。⚠️ ZTL限行區是最大陷阱：義大利市中心普遍設限行區，外國車輛誤入罰款€80-200，常在回國數月後收到罰單。務必提前研究ZTL地圖。'],
-724:[0,'B','R','承認兩項公約IDP。高速公路品質優良，租車便宜。南部海岸和安達盧西亞自駕熱門路線。'],
-826:[0,'B','L','承認兩項公約IDP，有效12個月。靠左行駛！倫敦擁擠費（Congestion Charge）每日£15。環島讓右方來車。蘇格蘭高地自駕風景絕美。'],
-372:[0,'G','L','日內瓦公約簽署國。靠左行駛！Wild Atlantic Way是全球著名自駕路線。鄉間道路狹窄，會車需技巧。'],
-756:[0,'B','R','承認兩項公約IDP。需購買高速公路年票（Vignette, CHF 40）。山口冬季可能關閉，雪鏈必備。阿爾卑斯山口公路壯觀但多彎道。'],
-40:[0,'B','R','承認兩項公約IDP。需購買高速公路Vignette。維也納停車困難且昂貴。冬季強制冬胎。'],
-528:[0,'B','R','承認兩項公約IDP。注意自行車優先權（荷蘭自行車比汽車多）。阿姆斯特丹停車全歐最貴，不建議市區自駕。'],
-56:[0,'B','R','承認兩項公約IDP。高速公路免費但常塞車。布魯塞爾低排放區（LEZ）需事先上網登記。'],
-620:[0,'B','R','承認兩項公約IDP。高速公路收費。租車歐洲最便宜的國家之一。阿爾加維海岸自駕極受歡迎。'],
-300:[0,'B','R','承認兩項公約IDP。島嶼自駕熱門（克里特島、羅德島等）。當地駕駛風格較激進，山路多彎。'],
-792:[1,'B','R','承認兩項公約IDP。道路品質良好。伊斯坦堡交通混亂不建議自駕。卡帕多奇亞和地中海沿岸自駕便利。'],
-643:[1,'V','R','維也納公約簽署國。自2011年起要求外國駕駛持IDP或附俄文認證翻譯的駕照。GPS建議使用Yandex Navigator。冬季駕駛具挑戰性。'],
-804:[1,'V','R','維也納公約簽署國。IDP有效。部分地區因衝突不宜旅行，道路可能因戰爭受損。'],
-616:[0,'B','R','承認兩項公約IDP。高速公路收費，道路品質近年大幅改善。'],
-203:[0,'B','R','承認兩項公約IDP。需購買電子高速公路Vignette。布拉格不建議自駕，郊區便利。'],
-348:[0,'B','R','承認兩項公約IDP。需購買高速公路年票。布達佩斯有低排放區限制。'],
-642:[0,'B','R','承認兩項公約IDP。Transfăgărășan公路被Top Gear譽為「世界最美公路」。'],
-100:[0,'B','R','承認兩項公約IDP。需購買高速公路Vignette。黑海沿岸自駕熱門。'],
-191:[0,'V','R','維也納公約簽署國。亞得里亞海岸自駕極美。夏季旅遊旺季道路擁擠。'],
-70:[1,'V','R','維也納公約簽署國。道路品質參差，山區道路狹窄但風景優美。'],
-688:[1,'V','R','維也納公約簽署國。道路品質尚可。'],
-807:[1,'V','R','維也納公約簽署國。歐赫里德湖周邊自駕風景優美。'],
-8:[1,'B','R','承認兩項公約IDP。道路品質較差，當地駕駛風格激進。'],
-499:[1,'V','R','維也納公約簽署國。科托爾灣海岸公路美麗但狹窄多彎，夏季擁擠。'],
-703:[0,'B','R','承認兩項公約IDP。電子Vignette必備。'],
-705:[0,'B','R','承認兩項公約IDP。需Vignette。布萊德湖自駕便利。'],
-233:[0,'V','R','維也納公約簽署國。道路品質優良。波羅的海沿岸自駕風景優美。'],
-428:[0,'V','R','維也納公約簽署國。道路品質良好。'],
-440:[0,'V','R','維也納公約簽署國。道路品質良好。'],
-246:[0,'B','R','承認兩項公約IDP。拉普蘭冬季幾乎全需冬胎。道路品質優良。注意馴鹿出沒。'],
-578:[0,'B','R','承認兩項公約IDP。峽灣公路舉世聞名但多隧道和渡輪。過路費昂貴，建議辦理AutoPASS。冬季高山公路可能關閉。'],
-752:[0,'B','R','承認兩項公約IDP。冬季強制冬胎。注意麋鹿出沒路段。道路品質優良。'],
-208:[0,'B','R','承認兩項公約IDP。跨Øresund大橋可達瑞典（收費）。'],
-352:[0,'G','R','日內瓦公約簽署國。環島公路（Ring Road）自駕極受歡迎。⚠️ 冬季F路線僅限4WD。天氣多變，強風可能吹翻車門。必備保險含碎石險（Gravel Protection）。'],
-112:[1,'V','R','維也納公約簽署國。IDP有效，但可能被警方額外盤查。'],
-268:[1,'V','R','維也納公約簽署國。高加索山區道路景色壯觀但具挑戰性，格魯吉亞軍事公路是經典路線。'],
-51:[1,'V','R','維也納公約簽署國。山區道路狹窄。'],
-31:[1,'V','R','維也納公約簽署國。巴庫市區交通擁擠。'],
-196:[0,'B','L','承認兩項公約IDP。靠左行駛（英殖遺留）。北塞浦路斯有限制區域，跨境租車需確認保險。'],
-470:[0,'B','L','承認兩項公約IDP。靠左行駛。島嶼很小但自駕方便，道路狹窄。'],
-840:[1,'G','R','日內瓦公約簽署國。IDP接受度因州而異，加州、佛州等旅遊大州普遍接受。租車需年滿21歲（部分公司25歲）。各州交通法不同，無全國統一規則。注意校車停車時禁止超車。'],
-124:[0,'G','R','日內瓦公約簽署國。IDP有效最多1年，各省規定略異。冬季多數省份需冬胎。注意使用公制（km/h）。洛磯山脈和海洋省份自駕熱門。'],
-484:[1,'G','R','日內瓦公約簽署國。有效外國駕照通常即可，IDP非必需。道路有tope（減速帶）需特別注意。避免夜間在偏遠地區駕駛。'],
-76:[1,'V','R','維也納公約簽署國。IDP有效，或持附公證翻譯的外國駕照。大城市交通混亂。高速公路收費。'],
-32:[0,'G','R','日內瓦公約簽署國。巴塔哥尼亞和40號國道自駕熱門，但南部加油站稀少、風力強勁。務必提前加滿油箱。'],
-152:[0,'B','R','承認兩項公約IDP。道路品質南美最佳。泛美公路和阿塔卡馬沙漠自駕熱門。'],
-170:[1,'N','R','未簽署公約但接受IDP作為參考文件。主要城市租車可行。山區道路危險。'],
-604:[1,'B','R','承認兩項公約IDP。安地斯山區高海拔注意高山症對駕駛判斷力的影響。利馬交通混亂。'],
-218:[1,'G','R','日內瓦公約簽署國。IDP有效。道路品質參差不齊。'],
-858:[0,'B','R','承認兩項公約IDP。道路品質良好，小國自駕方便。'],
-862:[2,'N','R','未簽署公約。經濟危機嚴重影響燃油供應。安全考量不建議自駕。'],
-188:[1,'V','R','維也納公約簽署國。IDP有效3個月。道路品質良好。雨季注意河流暴漲淹沒路面。'],
-192:[2,'G','R','日內瓦公約簽署國。可租車但選擇有限且昂貴。道路品質差，零件匱乏。多為美國老爺車，體驗獨特。'],
-214:[1,'G','R','日內瓦公約簽署國。IDP有效90天。'],
-388:[1,'G','L','日內瓦公約簽署國。靠左行駛。道路品質參差。'],
-780:[1,'G','L','日內瓦公約簽署國。靠左行駛。'],
-332:[2,'G','R','日內瓦公約簽署國。道路品質極差。安全考量不建議自駕。'],
-68:[1,'N','R','未簽署主要公約但接受IDP。高海拔自駕注意高山症。「永加斯死亡公路」為全球最危險道路之一。'],
-710:[0,'B','L','承認兩項公約IDP。靠左行駛。花園大道（Garden Route）自駕極受歡迎。⚠️ 注意劫車風險：車門隨時上鎖、不要在偏僻處停車、不展示貴重物品。城市間距離長。'],
-818:[1,'G','R','日內瓦公約簽署國。開羅交通混亂不建議自駕。西奈半島和紅海沿岸自駕可行。'],
-504:[1,'B','R','承認兩項公約IDP。道路品質良好。山區和撒哈拉邊緣需4WD。'],
-788:[1,'B','R','承認兩項公約IDP。道路品質良好。'],
-404:[1,'B','L','承認兩項公約IDP。靠左行駛。馬賽馬拉等國家公園需4WD且建議跟團。內羅畢交通混亂。'],
-566:[1,'B','R','承認兩項公約IDP。拉哥斯交通全球最擁堵之一。安全考量不建議夜間駕駛。'],
-288:[1,'G','R','日內瓦公約簽署國。IDP有效。道路在改善中。'],
-834:[1,'G','L','日內瓦公約簽署國。靠左行駛。國家公園需4WD，雨季部分道路不通。'],
-800:[1,'G','L','日內瓦公約簽署國。靠左行駛。'],
-716:[1,'B','L','承認兩項公約IDP。靠左行駛。維多利亞瀑布附近自駕便利，但燃油供應時有不穩。'],
-72:[1,'G','L','日內瓦公約簽署國。靠左行駛。國家公園（奧卡萬戈、喬貝）需4WD。'],
-516:[1,'G','L','日內瓦公約簽署國。靠左行駛。道路品質良好但城市間距離長。'],
-36:[0,'G','L','日內瓦公約簽署國。靠左行駛。大洋路和烏魯魯自駕極受歡迎。⚠️ 內陸長途駕駛務必準備足夠水和燃料。黎明和黃昏注意袋鼠出沒。各州交通法略有差異。'],
-554:[0,'G','L','日內瓦公約簽署國。靠左行駛。IDP有效12個月。南島自駕舉世聞名，米爾福德峽灣公路絕美。露營車（Campervan）文化盛行。注意綿羊過路。'],
-242:[1,'G','L','日內瓦公約簽署國。靠左行駛。島嶼自駕便利。'],
-598:[2,'G','L','日內瓦公約簽署國。靠左行駛。道路品質差。安全考量建議包車含司機。'],
-398:[1,'V','R','維也納公約簽署國。城鄉道路品質差異大，城市間距離極長。'],
-417:[1,'V','R','維也納公約簽署國。帕米爾公路（M41）全球最知名冒險自駕路線之一。需4WD、高海拔注意。'],
-762:[1,'V','R','維也納公約簽署國。帕米爾公路東段。道路品質差。'],
-795:[2,'V','R','維也納公約簽署國。外國人旅行需預先獲簽證和通行許可，自駕手續繁瑣。建議跟團。'],
-860:[1,'V','R','維也納公約簽署國。近年大幅開放旅遊。絲路自駕日漸熱門。道路品質在改善中。'],
-408:[4,'N','R','外國旅客不得自駕。所有行程必須由國家指定導遊陪同安排交通。不存在自由旅行。'],
-674:[0,'B','R','承認兩項公約IDP。微型國家，自駕需求極低。'],
-492:[0,'B','R','承認兩項公約IDP。F1大獎賽期間交通管制。微型城市國家。'],
-498:[1,'V','R','維也納公約簽署國。道路品質差。酒莊地區自駕可行。'],
-591:[1,'G','R','日內瓦公約簽署國。巴拿馬城交通擁堵，運河區自駕方便。'],
-320:[1,'G','R','日內瓦公約簽署國。道路品質參差。'],
-600:[1,'G','R','日內瓦公約簽署國。'],
-384:[1,'G','R','日內瓦公約簽署國。'],
-178:[1,'G','R','日內瓦公約簽署國。道路品質差。'],
-180:[2,'N','R','道路品質極差。安全考量不建議自駕。'],
-728:[3,'N','R','持續衝突。不建議旅行。'],
-729:[3,'N','R','內戰中。不建議旅行。'],
-706:[3,'N','R','安全狀況極度不穩定。不建議旅行。'],
-434:[2,'N','R','政局不穩。道路品質差。不建議自駕。'],
-12:[1,'G','R','日內瓦公約簽署國。道路品質良好。撒哈拉沙漠自駕需4WD和充分準備。'],
-232:[3,'N','R','未簽署公約。基礎建設匱乏，不建議自駕。'],
-426:[1,'G','L','日內瓦公約簽署國。靠左行駛。山區道路具挑戰性。'],
-454:[1,'G','L','日內瓦公約簽署國。靠左行駛。'],
-508:[1,'N','L','靠左行駛。道路品質在改善中。'],
-894:[1,'N','L','靠左行駛。道路品質參差。'],
-24:[1,'N','R','道路品質差。自駕需4WD。'],
-120:[1,'N','R','英語區和法語區道路差異大。'],
-646:[1,'G','R','日內瓦公約簽署國。道路品質良好（東非最佳之一）。']
+156:[3,'N','R','China no reconoce ningún Permiso de Conducir Internacional (PCI). Los extranjeros deben solicitar una licencia temporal china (válida 3 meses), que requiere superar un examen escrito de Asignatura 1 (en chino o inglés) y un reconocimiento médico. Las empresas internacionales de alquiler no operan en China. Se recomienda usar DiDi o contratar vehículo con conductor.'],
+392:[0,'G','L','⚠️ ¡Japón solo reconoce el PCI de la Convención de Ginebra de 1949! El PCI del Convenio de Viena no es válido en Japón. Los titulares de licencias de Taiwán deben obtener una traducción al japonés a través de la JAF. Conducción por la izquierda. Autopistas de peaje (tarjeta ETC); excelente calidad de carreteras.'],
+410:[0,'G','R','Reconoce el PCI de la Convención de Ginebra, válido 1 año. Existe acuerdo de reciprocidad con Taiwán. Los extranjeros que residan más de 1 año deben obtener una licencia coreana. Excelente calidad de carreteras.'],
+158:[2,'N','R','Taiwán no es miembro de la ONU y no ha firmado ningún convenio. Ha suscrito acuerdos de reciprocidad con más de 30 países como Japón, Corea del Sur y Alemania; los titulares de esas licencias pueden conducir en Taiwán con una traducción. A su vez, el PCI de los viajeros taiwaneses es un documento de traducción, no una certificación de convenio.'],
+764:[1,'G','L','Reconoce el PCI de la Convención de Ginebra, válido 90 días. Conducción por la izquierda. El alquiler de motocicletas en zonas turísticas es habitual pero la tasa de accidentes es alta; se recomienda verificar que el PCI incluya la categoría de motocicleta. Bangkok tiene un tráfico extremadamente congestionado; se recomienda usar el BTS/MRT.'],
+458:[1,'G','L','Reconoce el PCI de la Convención de Ginebra, válido 1 año. Conducción por la izquierda. Las autopistas son de buena calidad; la tarjeta de peaje electrónico Touch\'n Go es imprescindible.'],
+702:[0,'G','L','Con una licencia de conducir extranjera válida se puede conducir en Singapur hasta 12 meses; el PCI no es obligatorio. Conducción por la izquierda. Poseer un vehículo tiene el coste más alto del mundo y el alquiler resulta caro. El transporte público es excelente; la mayoría de los visitantes no necesitan conducir.'],
+360:[2,'V','L','Se adhirió al Convenio de Viena en 2022. Conducción por la izquierda. El alquiler de motocicletas en Bali es habitual, pero los controles policiales son frecuentes y circular sin PCI suele acarrear multas. Las reclamaciones de seguro requieren un PCI válido. Las empresas internacionales de alquiler tienen presencia en Yakarta y Bali.'],
+704:[2,'V','R','Se adhirió al Convenio de Viena en 2014, pero la aplicación local es inconsistente. Algunas ciudades aún no están familiarizadas con el PCI. Los extranjeros que conduzcan motocicletas necesitan una licencia vietnamita. Se recomienda usar el servicio de transporte compartido Grab.'],
+116:[2,'G','R','Firmante de la Convención de Ginebra, pero con aplicación laxa. El alquiler de motocicletas en Siem Reap y Nom Pen es habitual, pero las normas de tráfico apenas se respetan; en caso de accidente suele exigirse responsabilidad al extranjero. Se recomienda contratar un seguro de viaje completo.'],
+418:[2,'G','R','Firmante de la Convención de Ginebra. Las condiciones de las carreteras son deficientes y en época de lluvias muchas quedan cortadas. El PCI es teóricamente válido, pero las autoridades locales no están familiarizadas con él. Se recomienda contratar un conductor local.'],
+608:[1,'B','R','Reconoce el PCI de ambos convenios, válido 90 días. Manila tiene un tráfico extremadamente congestionado. La conducción autónoma es viable en islas como Palawan.'],
+104:[2,'G','R','Firmante de la Convención de Ginebra. Tras el golpe de Estado de 2021, la situación es inestable y algunas zonas no son recomendables. Se recomienda contratar vehículo con conductor en lugar de conducir de forma autónoma.'],
+524:[2,'N','L','No ha firmado ningún convenio. Conducción por la izquierda. Las carreteras de montaña son extremadamente peligrosas; se recomienda encarecidamente contratar un conductor local. El tráfico en Katmandú es caótico.'],
+586:[1,'V','L','Firmante del Convenio de Viena. Conducción por la izquierda. Las condiciones de las carreteras y la cultura de conducción suponen un gran reto para los extranjeros. Las zonas montañosas del norte requieren 4WD. Se recomienda contratar vehículo con conductor.'],
+50:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. Daca tiene uno de los tráficos más congestionados del mundo; se desaconseja encarecidamente conducir de forma autónoma.'],
+144:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. La calidad de las carreteras es buena. Se recomienda contratar vehículo con conductor para los que visitan por primera vez.'],
+496:[1,'V','R','Firmante del Convenio de Viena. Territorio vasto y escasamente poblado, con gran cantidad de carreteras sin asfaltar que requieren 4WD. La distancia entre gasolineras puede superar cientos de kilómetros; es imprescindible repostar con antelación.'],
+96:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. Buena calidad de carreteras y precio de la gasolina extremadamente bajo.'],
+64:[3,'N','L','No ha firmado ningún convenio. Conducción por la izquierda. Los turistas extranjeros no pueden conducir de forma autónoma; deben contratar un itinerario con conductor a través de una agencia de viajes.'],
+784:[1,'B','R','Reconoce el PCI de ambos convenios. El alquiler en Dubái es cómodo y económico. ⚠️ Las multas por exceso de velocidad son muy elevadas, las cámaras son abundantes y saltarse un semáforo en rojo acarrea una multa de aproximadamente AED 1.000. El emirato de Sharjah aplica normas aún más estrictas.'],
+682:[1,'V','R','Firmante del Convenio de Viena. Los turistas pueden alquilar un vehículo con el PCI hasta 3 meses. Las mujeres pueden conducir legalmente desde 2018. La calidad de las carreteras es excelente, aunque el estilo de conducción es agresivo.'],
+512:[1,'G','R','Firmante de la Convención de Ginebra. El PCI es válido 1 mes; después se requiere una licencia local. Las carreteras de montaña son sinuosas pero con paisajes espectaculares.'],
+634:[1,'V','R','Firmante del Convenio de Viena. Excelente calidad de carreteras. Alquiler de vehículos económico.'],
+414:[1,'V','R','Firmante del Convenio de Viena. El PCI es válido 3 meses.'],
+48:[1,'V','R','Firmante del Convenio de Viena. El PCI es válido 3 meses. Buena calidad de carreteras en este pequeño país.'],
+376:[0,'B','R','Reconoce el PCI de ambos convenios. El alquiler es cómodo y hay disponibilidad de todas las empresas internacionales. Para navegación GPS se recomienda Waze (la app más popular en Israel). Algunos lugares aplican restricciones de tráfico durante el Sabbat.'],
+400:[1,'G','R','Firmante de la Convención de Ginebra. Conducir de forma autónoma es conveniente para explorar Petra y Wadi Rum. Las gasolineras son escasas en zonas desérticas; es imprescindible llenar el depósito.'],
+422:[1,'G','R','Firmante de la Convención de Ginebra. El estilo de conducción en Beirut es agresivo y el tráfico, caótico. Se recomienda contratar vehículo con conductor o usar taxi.'],
+364:[2,'V','R','Firmante del Convenio de Viena. El PCI es teóricamente válido, pero las empresas internacionales de alquiler no operan en el país. Se puede alquilar a través de agencias locales. Las sanciones han llevado a que el parque automovilístico sea generalmente antiguo.'],
+368:[2,'V','R','Firmante del Convenio de Viena. La situación de seguridad es inestable. La Región Autónoma del Kurdistán es relativamente segura para conducir de forma autónoma; el resto del país no se recomienda.'],
+760:[3,'G','R','Años de guerra civil han causado graves daños en la infraestructura. Tras el cambio de poder a finales de 2024, la situación es incierta. No se recomienda conducir de forma autónoma.'],
+887:[3,'N','R','Conflicto activo en curso. No existe un mecanismo de aplicación eficaz del PCI. No se recomienda viajar.'],
+276:[0,'B','R','Reconoce el PCI de ambos convenios. Algunos tramos de la Autobahn no tienen límite de velocidad. ⚠️ Atención: el PCI alemán existe en dos formatos; para viajar a Japón es necesario solicitar específicamente la versión de la Convención de Ginebra. En invierno los neumáticos de invierno son obligatorios en algunas zonas. El estacionamiento en las ciudades suele requerir el pago a través de una app.'],
+250:[0,'B','R','Reconoce el PCI de ambos convenios. Las autopistas son de peaje. No se recomienda conducir en París. Es obligatorio llevar chaleco de alta visibilidad y triángulo de señalización. Hay que prestar atención a las rotondas: el vehículo que ya está dentro tiene prioridad. Tolerancia cero con el alcohol al volante.'],
+380:[0,'B','R','Reconoce el PCI de ambos convenios. ⚠️ Las ZTL (zonas de tráfico limitado) son la principal trampa: los centros históricos de las ciudades italianas suelen tener estas zonas restringidas, y los vehículos extranjeros que las invaden pueden recibir multas de €80-200, a menudo meses después de regresar a casa. Es imprescindible estudiar el mapa de las ZTL con antelación.'],
+724:[0,'B','R','Reconoce el PCI de ambos convenios. Excelente calidad de autopistas y alquiler económico. Las rutas más populares para conducir de forma autónoma son la costa sur y Andalucía.'],
+826:[0,'B','L','Reconoce el PCI de ambos convenios, válido 12 meses. ¡Conducción por la izquierda! La Congestion Charge de Londres cuesta £15 al día. En las rotondas, el vehículo que viene por la derecha tiene prioridad. Las Tierras Altas de Escocia ofrecen paisajes espectaculares.'],
+372:[0,'G','L','Firmante de la Convención de Ginebra. ¡Conducción por la izquierda! El Wild Atlantic Way es una de las rutas de conducción más famosas del mundo. Las carreteras rurales son estrechas y cruzarse con otro vehículo requiere habilidad.'],
+756:[0,'B','R','Reconoce el PCI de ambos convenios. Es necesario adquirir la vignette anual de autopista (CHF 40). Los puertos de montaña pueden cerrarse en invierno; las cadenas de nieve son imprescindibles. Los puertos de los Alpes son espectaculares pero con muchas curvas.'],
+40:[0,'B','R','Reconoce el PCI de ambos convenios. Es necesario adquirir la vignette de autopista. Aparcar en Viena es difícil y caro. El uso de neumáticos de invierno es obligatorio en los meses fríos.'],
+528:[0,'B','R','Reconoce el PCI de ambos convenios. Hay que respetar la prioridad de los ciclistas (en los Países Bajos hay más bicicletas que coches). El estacionamiento en Ámsterdam es el más caro de Europa; no se recomienda conducir en el centro de la ciudad.'],
+56:[0,'B','R','Reconoce el PCI de ambos convenios. Las autopistas son gratuitas, pero a menudo congestionadas. La Zona de Bajas Emisiones (LEZ) de Bruselas requiere registro previo en línea.'],
+620:[0,'B','R','Reconoce el PCI de ambos convenios. Las autopistas son de peaje. Es uno de los países con el alquiler más económico de Europa. La costa del Algarve es uno de los destinos de conducción autónoma más populares.'],
+300:[0,'B','R','Reconoce el PCI de ambos convenios. La conducción autónoma en las islas es muy popular (Creta, Rodas, etc.). El estilo de conducción local es bastante agresivo y las carreteras de montaña tienen muchas curvas.'],
+792:[1,'B','R','Reconoce el PCI de ambos convenios. Buena calidad de carreteras. No se recomienda conducir en Estambul por el caótico tráfico. La conducción autónoma es conveniente en Capadocia y la costa mediterránea.'],
+643:[1,'V','R','Firmante del Convenio de Viena. Desde 2011 se exige a los conductores extranjeros disponer de un PCI o de una licencia con traducción certificada al ruso. Para navegación GPS se recomienda Yandex Navigator. Conducir en invierno supone un desafío.'],
+804:[1,'V','R','Firmante del Convenio de Viena. El PCI es válido. Algunas zonas no son recomendables por el conflicto, y las carreteras pueden estar dañadas por la guerra.'],
+616:[0,'B','R','Reconoce el PCI de ambos convenios. Las autopistas son de peaje y la calidad de las carreteras ha mejorado notablemente en los últimos años.'],
+203:[0,'B','R','Reconoce el PCI de ambos convenios. Es necesario adquirir la vignette electrónica de autopista. No se recomienda conducir en Praga; las afueras son más accesibles.'],
+348:[0,'B','R','Reconoce el PCI de ambos convenios. Es necesario adquirir la vignette anual de autopista. Budapest cuenta con restricciones de zona de bajas emisiones.'],
+642:[0,'B','R','Reconoce el PCI de ambos convenios. La carretera Transfăgărășan fue elogiada por Top Gear como «la carretera más hermosa del mundo».'],
+100:[0,'B','R','Reconoce el PCI de ambos convenios. Es necesario adquirir la vignette de autopista. La conducción autónoma por la costa del Mar Negro es muy popular.'],
+191:[0,'V','R','Firmante del Convenio de Viena. La conducción autónoma por la costa adriática es espectacular. Las carreteras se congestionan en temporada alta de verano.'],
+70:[1,'V','R','Firmante del Convenio de Viena. La calidad de las carreteras es irregular; las de montaña son estrechas pero con paisajes hermosos.'],
+688:[1,'V','R','Firmante del Convenio de Viena. La calidad de las carreteras es aceptable.'],
+807:[1,'V','R','Firmante del Convenio de Viena. Los alrededores del lago Ohrid ofrecen paisajes hermosos para conducir de forma autónoma.'],
+8:[1,'B','R','Reconoce el PCI de ambos convenios. La calidad de las carreteras es bastante deficiente y el estilo de conducción local es agresivo.'],
+499:[1,'V','R','Firmante del Convenio de Viena. La carretera costera de la bahía de Kotor es hermosa, pero estrecha y con muchas curvas; en verano hay mucho tráfico.'],
+703:[0,'B','R','Reconoce el PCI de ambos convenios. La vignette electrónica es imprescindible.'],
+705:[0,'B','R','Reconoce el PCI de ambos convenios. Es necesaria la vignette. Conducir hasta el lago Bled es sencillo.'],
+233:[0,'V','R','Firmante del Convenio de Viena. Excelente calidad de carreteras. Los paisajes para conducir de forma autónoma por la costa báltica son hermosos.'],
+428:[0,'V','R','Firmante del Convenio de Viena. Buena calidad de carreteras.'],
+440:[0,'V','R','Firmante del Convenio de Viena. Buena calidad de carreteras.'],
+246:[0,'B','R','Reconoce el PCI de ambos convenios. En Laponia el uso de neumáticos de invierno es prácticamente obligatorio durante los meses fríos. Excelente calidad de carreteras. Hay que prestar atención a los renos en la calzada.'],
+578:[0,'B','R','Reconoce el PCI de ambos convenios. Las carreteras de los fiordos son mundialmente famosas, con muchos túneles y transbordadores. Los peajes son caros; se recomienda registrarse en AutoPASS. Algunas carreteras de montaña pueden cerrarse en invierno.'],
+752:[0,'B','R','Reconoce el PCI de ambos convenios. El uso de neumáticos de invierno es obligatorio en los meses fríos. Hay que prestar atención a los alces en la calzada. Excelente calidad de carreteras.'],
+208:[0,'B','R','Reconoce el PCI de ambos convenios. Se puede cruzar a Suecia a través del puente de Øresund (de peaje).'],
+352:[0,'G','R','Firmante de la Convención de Ginebra. La conducción autónoma por la Ring Road es extremadamente popular. ⚠️ En invierno, las carreteras F solo están permitidas para vehículos 4WD. El tiempo es muy cambiante y el viento fuerte puede abrir violentamente las puertas del vehículo. Es imprescindible contratar un seguro que incluya protección contra gravilla (Gravel Protection).'],
+112:[1,'V','R','Firmante del Convenio de Viena. El PCI es válido, pero puede haber controles policiales adicionales.'],
+268:[1,'V','R','Firmante del Convenio de Viena. Las carreteras de las montañas del Cáucaso ofrecen paisajes espectaculares, aunque suponen un reto; la Carretera Militar Georgiana es una ruta clásica.'],
+51:[1,'V','R','Firmante del Convenio de Viena. Las carreteras de montaña son estrechas.'],
+31:[1,'V','R','Firmante del Convenio de Viena. El tráfico en el centro de Bakú es congestionado.'],
+196:[0,'B','L','Reconoce el PCI de ambos convenios. Conducción por la izquierda (herencia del período colonial británico). Chipre del Norte tiene zonas restringidas; al alquilar un vehículo para cruzar la frontera hay que confirmar la cobertura del seguro.'],
+470:[0,'B','L','Reconoce el PCI de ambos convenios. Conducción por la izquierda. La isla es pequeña pero conducir de forma autónoma es cómodo; las carreteras son estrechas.'],
+840:[1,'G','R','Firmante de la Convención de Ginebra. La aceptación del PCI varía según el estado; los grandes estados turísticos como California y Florida lo aceptan en general. Se requiere al menos 21 años para alquilar un vehículo (25 en algunas empresas). Las normas de tráfico varían por estado y no existe una regulación nacional uniforme. Está prohibido adelantar a un autobús escolar cuando está parado.'],
+124:[0,'G','R','Firmante de la Convención de Ginebra. El PCI es válido hasta 1 año, con ligeras variaciones según la provincia. En invierno la mayoría de las provincias exigen neumáticos de invierno. Hay que tener en cuenta que se utiliza el sistema métrico (km/h). Las Montañas Rocosas y las provincias marítimas son destinos populares para conducir de forma autónoma.'],
+484:[1,'G','R','Firmante de la Convención de Ginebra. Por lo general basta con una licencia extranjera válida; el PCI no es imprescindible. Hay que prestar especial atención a los «topes» (reductores de velocidad). Se recomienda evitar conducir de noche en zonas remotas.'],
+76:[1,'V','R','Firmante del Convenio de Viena. El PCI es válido, o se puede presentar una licencia extranjera con traducción notariada. El tráfico en las grandes ciudades es caótico. Las autopistas son de peaje.'],
+32:[0,'G','R','Firmante de la Convención de Ginebra. La Patagonia y la Ruta Nacional 40 son destinos populares, pero en el sur las gasolineras son escasas y el viento muy fuerte. Es imprescindible llenar el depósito con antelación.'],
+152:[0,'B','R','Reconoce el PCI de ambos convenios. La calidad de las carreteras es la mejor de América del Sur. La Carretera Panamericana y el desierto de Atacama son destinos populares para conducir de forma autónoma.'],
+170:[1,'N','R','No ha firmado los convenios principales, pero acepta el PCI como documento de referencia. El alquiler en las principales ciudades es viable. Las carreteras de montaña son peligrosas.'],
+604:[1,'B','R','Reconoce el PCI de ambos convenios. En las zonas andinas de gran altitud hay que tener en cuenta el efecto del mal de altura sobre la capacidad de juicio al conducir. El tráfico en Lima es caótico.'],
+218:[1,'G','R','Firmante de la Convención de Ginebra. El PCI es válido. La calidad de las carreteras es irregular.'],
+858:[0,'B','R','Reconoce el PCI de ambos convenios. La calidad de las carreteras es buena y conducir de forma autónoma en este pequeño país es cómodo.'],
+862:[2,'N','R','No ha firmado los convenios. La crisis económica afecta gravemente el suministro de combustible. Por razones de seguridad, no se recomienda conducir de forma autónoma.'],
+188:[1,'V','R','Firmante del Convenio de Viena. El PCI es válido 3 meses. La calidad de las carreteras es buena. En época de lluvias hay que prestar atención a las carreteras inundadas por el desbordamiento de los ríos.'],
+192:[2,'G','R','Firmante de la Convención de Ginebra. Se puede alquilar un vehículo, pero las opciones son limitadas y el precio es elevado. La calidad de las carreteras es deficiente y los repuestos escasean. La mayoría son coches americanos antiguos, lo que hace de la experiencia algo único.'],
+214:[1,'G','R','Firmante de la Convención de Ginebra. El PCI es válido 90 días.'],
+388:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. La calidad de las carreteras es irregular.'],
+780:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda.'],
+332:[2,'G','R','Firmante de la Convención de Ginebra. La calidad de las carreteras es muy deficiente. Por razones de seguridad, no se recomienda conducir de forma autónoma.'],
+68:[1,'N','R','No ha firmado los convenios principales, pero acepta el PCI. Al conducir en altitudes elevadas hay que prestar atención al mal de altura. La «Carretera de la Muerte» de los Yungas es una de las carreteras más peligrosas del mundo.'],
+710:[0,'B','L','Reconoce el PCI de ambos convenios. Conducción por la izquierda. La Garden Route es uno de los destinos de conducción autónoma más populares. ⚠️ Hay que tener en cuenta el riesgo de carjacking: mantener las puertas cerradas en todo momento, no aparcar en lugares solitarios y no mostrar objetos de valor. Las distancias entre ciudades son largas.'],
+818:[1,'G','R','Firmante de la Convención de Ginebra. No se recomienda conducir en El Cairo por el caótico tráfico. La conducción autónoma es viable en la península del Sinaí y la costa del mar Rojo.'],
+504:[1,'B','R','Reconoce el PCI de ambos convenios. Buena calidad de carreteras. Las zonas de montaña y los bordes del Sáhara requieren 4WD.'],
+788:[1,'B','R','Reconoce el PCI de ambos convenios. Buena calidad de carreteras.'],
+404:[1,'B','L','Reconoce el PCI de ambos convenios. Conducción por la izquierda. Los parques nacionales como el Masái Mara requieren 4WD y se recomienda ir en grupo organizado. El tráfico en Nairobi es caótico.'],
+566:[1,'B','R','Reconoce el PCI de ambos convenios. Lagos tiene uno de los tráficos más congestionados del mundo. Por razones de seguridad, no se recomienda conducir de noche.'],
+288:[1,'G','R','Firmante de la Convención de Ginebra. El PCI es válido. La red de carreteras está mejorando.'],
+834:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. Los parques nacionales requieren 4WD y en época de lluvias algunas carreteras quedan intransitables.'],
+800:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda.'],
+716:[1,'B','L','Reconoce el PCI de ambos convenios. Conducción por la izquierda. Conducir cerca de las cataratas Victoria es conveniente, pero el suministro de combustible puede ser irregular.'],
+72:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. Los parques nacionales (Okavango, Chobe) requieren 4WD.'],
+516:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. La calidad de las carreteras es buena, pero las distancias entre ciudades son largas.'],
+36:[0,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. La Great Ocean Road y Uluru son destinos extremadamente populares. ⚠️ En los largos trayectos por el interior es imprescindible llevar suficiente agua y combustible. Al amanecer y al anochecer hay que prestar atención a los canguros en la calzada. Las normas de tráfico varían ligeramente según el estado.'],
+554:[0,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. El PCI es válido 12 meses. La conducción por la Isla Sur es mundialmente famosa; la carretera de Milford Sound es espectacular. La cultura de la autocaravana (campervan) es muy popular. Hay que prestar atención a las ovejas que cruzan la calzada.'],
+242:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. Conducir de forma autónoma en las islas es cómodo.'],
+598:[2,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. La calidad de las carreteras es deficiente. Por razones de seguridad, se recomienda contratar vehículo con conductor.'],
+398:[1,'V','R','Firmante del Convenio de Viena. La calidad de las carreteras varía enormemente entre zonas urbanas y rurales; las distancias entre ciudades son muy largas.'],
+417:[1,'V','R','Firmante del Convenio de Viena. La carretera del Pamir (M41) es una de las rutas de aventura más conocidas del mundo. Requiere 4WD y hay que tener en cuenta la gran altitud.'],
+762:[1,'V','R','Firmante del Convenio de Viena. Tramo oriental de la carretera del Pamir. La calidad de las carreteras es deficiente.'],
+795:[2,'V','R','Firmante del Convenio de Viena. Los extranjeros necesitan visado y permiso de circulación previos; los trámites para conducir de forma autónoma son complejos. Se recomienda viajar en grupo organizado.'],
+860:[1,'V','R','Firmante del Convenio de Viena. En los últimos años el turismo se ha abierto considerablemente. La conducción autónoma por la Ruta de la Seda está ganando popularidad. La calidad de las carreteras está mejorando.'],
+408:[4,'N','R','Los turistas extranjeros no pueden conducir de forma autónoma. Todos los itinerarios deben ser gestionados por guías designados por el Estado, que también organizan el transporte. El turismo independiente no existe.'],
+674:[0,'B','R','Reconoce el PCI de ambos convenios. País miniatura; la necesidad de conducir de forma autónoma es mínima.'],
+492:[0,'B','R','Reconoce el PCI de ambos convenios. Durante el Gran Premio de F1 hay restricciones de tráfico. País miniatura.'],
+498:[1,'V','R','Firmante del Convenio de Viena. La calidad de las carreteras es deficiente. La conducción autónoma en la zona de bodegas es viable.'],
+591:[1,'G','R','Firmante de la Convención de Ginebra. El tráfico en Ciudad de Panamá es congestionado; la conducción en la zona del canal es conveniente.'],
+320:[1,'G','R','Firmante de la Convención de Ginebra. La calidad de las carreteras es irregular.'],
+600:[1,'G','R','Firmante de la Convención de Ginebra.'],
+384:[1,'G','R','Firmante de la Convención de Ginebra.'],
+178:[1,'G','R','Firmante de la Convención de Ginebra. La calidad de las carreteras es deficiente.'],
+180:[2,'N','R','La calidad de las carreteras es muy deficiente. Por razones de seguridad, no se recomienda conducir de forma autónoma.'],
+728:[3,'N','R','Conflicto activo en curso. No se recomienda viajar.'],
+729:[3,'N','R','En guerra civil. No se recomienda viajar.'],
+706:[3,'N','R','La situación de seguridad es extremadamente inestable. No se recomienda viajar.'],
+434:[2,'N','R','Situación política inestable. La calidad de las carreteras es deficiente. No se recomienda conducir de forma autónoma.'],
+12:[1,'G','R','Firmante de la Convención de Ginebra. Buena calidad de carreteras. Conducir de forma autónoma en el Sáhara requiere 4WD y una preparación exhaustiva.'],
+232:[3,'N','R','No ha firmado ningún convenio. La infraestructura es muy deficiente; no se recomienda conducir de forma autónoma.'],
+426:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda. Las carreteras de montaña son un reto.'],
+454:[1,'G','L','Firmante de la Convención de Ginebra. Conducción por la izquierda.'],
+508:[1,'N','L','Conducción por la izquierda. La calidad de las carreteras está mejorando.'],
+894:[1,'N','L','Conducción por la izquierda. La calidad de las carreteras es irregular.'],
+24:[1,'N','R','La calidad de las carreteras es deficiente. Se necesita 4WD para conducir de forma autónoma.'],
+120:[1,'N','R','La calidad de las carreteras varía considerablemente entre las zonas anglófonas y francófonas.'],
+646:[1,'G','R','Firmante de la Convención de Ginebra. La calidad de las carreteras es buena (una de las mejores de África oriental).']
 };
-
+  
 var EXTRA=[
-{id:'HK',name:'香港',flag:'🇭🇰',level:0,conv:'G',side:'L',note:'承認1949年日內瓦公約IDP，有效12個月。靠左行駛。道路品質優良但空間狹小、停車昂貴。港鐵系統極度發達，絕大多數旅客無需自駕。需注意隧道收費，建議辦Autotoll。'},
-{id:'MO',name:'澳門',flag:'🇲🇴',level:1,conv:'G',side:'L',note:'承認IDP。靠左行駛。領土面積極小（約33km²），巴士和步行即可抵達大部分景點，自駕意義不大。跨境往返中國需另辦中國臨時駕照。'}
+{id:'HK',name:'Hong Kong',flag:'🇭🇰',level:0,conv:'G',side:'L',note:'Reconoce el PCI de la Convención de Ginebra de 1949, válido 12 meses. Conducción por la izquierda. La calidad de las carreteras es excelente, pero el espacio es reducido y el estacionamiento muy caro. El sistema de metro (MTR) está muy desarrollado; la gran mayoría de los visitantes no necesitan conducir de forma autónoma. Hay que tener en cuenta los peajes de los túneles; se recomienda registrarse en Autotoll.'},
+{id:'MO',name:'Macao',flag:'🇲🇴',level:1,conv:'G',side:'L',note:'Reconoce el PCI. Conducción por la izquierda. El territorio es muy pequeño (aproximadamente 33 km²); la mayoría de los puntos de interés son accesibles en autobús o a pie, por lo que conducir de forma autónoma tiene poco sentido práctico. Para cruzar la frontera con China es necesario tramitar aparte una licencia temporal china.'}
 ];
 
 var A2={4:'AF',8:'AL',12:'DZ',16:'AS',20:'AD',24:'AO',28:'AG',31:'AZ',32:'AR',36:'AU',40:'AT',44:'BS',48:'BH',50:'BD',51:'AM',52:'BB',56:'BE',64:'BT',68:'BO',70:'BA',72:'BW',76:'BR',84:'BZ',90:'SB',96:'BN',100:'BG',104:'MM',108:'BI',112:'BY',116:'KH',120:'CM',124:'CA',132:'CV',140:'CF',144:'LK',148:'TD',152:'CL',156:'CN',158:'TW',170:'CO',174:'KM',178:'CG',180:'CD',188:'CR',191:'HR',192:'CU',196:'CY',203:'CZ',204:'BJ',208:'DK',214:'DO',218:'EC',222:'SV',226:'GQ',231:'ET',232:'ER',233:'EE',242:'FJ',246:'FI',250:'FR',262:'DJ',266:'GA',268:'GE',270:'GM',275:'PS',276:'DE',288:'GH',296:'KI',300:'GR',304:'GL',320:'GT',324:'GN',328:'GY',332:'HT',336:'VA',340:'HN',348:'HU',352:'IS',356:'IN',360:'ID',364:'IR',368:'IQ',372:'IE',376:'IL',380:'IT',384:'CI',388:'JM',392:'JP',398:'KZ',400:'JO',404:'KE',408:'KP',410:'KR',414:'KW',417:'KG',418:'LA',422:'LB',426:'LS',428:'LV',430:'LR',434:'LY',440:'LT',442:'LU',450:'MG',454:'MW',458:'MY',462:'MV',466:'ML',470:'MT',478:'MR',480:'MU',484:'MX',492:'MC',496:'MN',498:'MD',499:'ME',504:'MA',508:'MZ',512:'OM',516:'NA',524:'NP',528:'NL',540:'NC',548:'VU',554:'NZ',558:'NI',562:'NE',566:'NG',578:'NO',586:'PK',591:'PA',598:'PG',600:'PY',604:'PE',608:'PH',616:'PL',620:'PT',624:'GW',626:'TL',630:'PR',634:'QA',642:'RO',643:'RU',646:'RW',674:'SM',682:'SA',686:'SN',688:'RS',694:'SL',702:'SG',703:'SK',705:'SI',706:'SO',710:'ZA',716:'ZW',724:'ES',728:'SS',729:'SD',732:'EH',740:'SR',748:'SZ',752:'SE',756:'CH',760:'SY',762:'TJ',764:'TH',768:'TG',776:'TO',780:'TT',784:'AE',788:'TN',792:'TR',795:'TM',800:'UG',804:'UA',807:'MK',818:'EG',826:'GB',834:'TZ',840:'US',854:'BF',858:'UY',860:'UZ',862:'VE',882:'WS',887:'YE',894:'ZM',704:'VN'};
@@ -432,7 +431,7 @@ var locked=null,selLvl=null;
 function lvlOf(id){var r=getR(id);return r[0];}
 
 function resetInfo(){
-$flag.textContent='🌐';$name.innerHTML='<span class="info-placeholder">將滑鼠移至地圖上查看各國 IDP 承認狀態</span>';
+$flag.textContent='🌐';$name.innerHTML='<span class="info-placeholder">Pasa el cursor sobre el mapa para ver el estado de reconocimiento del PCI por país</span>';
 $badges.innerHTML='';$sub.textContent='';$chipRow.classList.add('hidden');$chipRow.innerHTML='';
 }
 
@@ -446,9 +445,9 @@ if(isLock){
 $chipRow.classList.remove('hidden');
 var h='<span class="info-chip" style="border-color:'+cv.col+';background:'+cv.bg+'"><strong style="color:'+cv.col+'">'+cv.icon+' '+cv.name+'</strong></span>';
 h+='<span class="info-chip" style="border-color:'+sd.col+'">🚗 '+sd.icon+' '+sd.name+'</span>';
-if(c.level===0)h+='<span class="info-chip" style="border-color:#22c55e;color:#16a34a">✅ IDP暢行無阻</span>';
-else if(c.level===3)h+='<span class="info-chip" style="border-color:#f97316;color:#ea580c">📋 需申辦當地駕照</span>';
-else if(c.level===4)h+='<span class="info-chip" style="border-color:#ef4444;color:#dc2626">🚫 外國人不可自駕</span>';
+if(c.level===0)h+='<span class="info-chip" style="border-color:#22c55e;color:#16a34a">✅ PCI válido sin restricciones</span>';
+else if(c.level===3)h+='<span class="info-chip" style="border-color:#f97316;color:#ea580c">📋 Se requiere licencia local</span>';
+else if(c.level===4)h+='<span class="info-chip" style="border-color:#ef4444;color:#dc2626">🚫 Extranjeros no pueden conducir</span>';
 $chipRow.innerHTML=h;
 }else{$chipRow.classList.add('hidden');}
 }
@@ -498,7 +497,7 @@ h+='<span class="cat-count" style="background:'+lv.col+'">'+counts[lv.id]+'</spa
 });
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">📜 公約簽署分布</div>';
+h+='<div class="stat-section"><div class="stat-title">📜 Distribución por convenio</div>';
 var convArr=[{k:'B',c:CONVS.B},{k:'G',c:CONVS.G},{k:'V',c:CONVS.V},{k:'N',c:CONVS.N}];
 var maxConv=Math.max(convCounts.G,convCounts.V,convCounts.B,convCounts.N);
 convArr.forEach(function(cv){
@@ -506,61 +505,61 @@ var pct=maxConv?convCounts[cv.k]/maxConv*100:0;
 h+='<div class="svc-stat-item"><span class="svc-stat-icon" style="background:'+cv.c.col+'">'+cv.c.icon+'</span>';
 h+='<span class="svc-stat-name">'+cv.c.short+'</span>';
 h+='<div class="svc-stat-bar"><div class="svc-stat-fill" style="width:'+pct+'%;background:'+cv.c.col+'"></div></div>';
-h+='<span class="svc-stat-num">'+convCounts[cv.k]+'國</span></div>';
+h+='<span class="svc-stat-num">'+convCounts[cv.k]+' países</span></div>';
 });
 h+='</div>';
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">🚗 行駛方向分布</div>';
+h+='<div class="stat-section"><div class="stat-title">🚗 Distribución por lado de conducción</div>';
 var totalSide=sideCounts.R+sideCounts.L;
-h+='<div class="svc-stat-item"><span class="svc-stat-icon" style="background:#3b82f6">➡️</span><span class="svc-stat-name">靠右行駛</span>';
+h+='<div class="svc-stat-item"><span class="svc-stat-icon" style="background:#3b82f6">➡️</span><span class="svc-stat-name">Conducción por la derecha</span>';
 h+='<div class="svc-stat-bar"><div class="svc-stat-fill" style="width:'+((sideCounts.R/totalSide)*100)+'%;background:#3b82f6"></div></div>';
-h+='<span class="svc-stat-num">'+sideCounts.R+'國</span></div>';
-h+='<div class="svc-stat-item"><span class="svc-stat-icon" style="background:#f59e0b">⬅️</span><span class="svc-stat-name">靠左行駛</span>';
+h+='<span class="svc-stat-num">'+sideCounts.R+' países</span></div>';
+h+='<div class="svc-stat-item"><span class="svc-stat-icon" style="background:#f59e0b">⬅️</span><span class="svc-stat-name">Conducción por la izquierda</span>';
 h+='<div class="svc-stat-bar"><div class="svc-stat-fill" style="width:'+((sideCounts.L/totalSide)*100)+'%;background:#f59e0b"></div></div>';
-h+='<span class="svc-stat-num">'+sideCounts.L+'國</span></div>';
+h+='<span class="svc-stat-num">'+sideCounts.L+' países</span></div>';
 h+='</div>';
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">🚫 常見迷思破解</div>';
+h+='<div class="stat-section"><div class="stat-title">🚫 Desmontando mitos frecuentes</div>';
 h+='<div class="myth-box">';
 var myths=[
-['國際駕照（IDP）全球通用','部分國家完全不承認IDP，如中國、不丹。每個國家承認的公約不同。'],
-['有IDP就不需要帶原照','IDP只是原照的官方翻譯文件，必須搭配原始駕照同時使用，缺一不可。'],
-['所有IDP都是一樣的','IDP分「日內瓦公約版」和「維也納公約版」兩種格式，日本只接受日內瓦公約版。'],
-['日本接受所有國家的IDP','日本僅承認1949年日內瓦公約IDP。許多東歐國家僅簽署維也納公約，其IDP在日本無效。'],
-['IDP可以當身份證使用','IDP不是有效身份證明文件，出入境和身份驗證仍需護照。'],
-['IDP永久有效','IDP通常有效期僅1年，且不得超過原始駕照的有效期限。']
+['El PCI (Permiso de Conducir Internacional) es válido en todo el mundo','Algunos países no reconocen el PCI en absoluto, como China o Bután. Además, cada país reconoce convenios distintos.'],
+['Con el PCI no hace falta llevar la licencia original','El PCI es únicamente la traducción oficial de la licencia original. Ambos documentos deben llevarse siempre juntos; ninguno es válido sin el otro.'],
+['Todos los PCI son iguales','El PCI existe en dos formatos: el de la Convención de Ginebra y el del Convenio de Viena. Japón solo acepta la versión de la Convención de Ginebra.'],
+['Japón acepta el PCI de cualquier país','Japón solo reconoce el PCI de la Convención de Ginebra de 1949. Muchos países de Europa del Este únicamente han firmado el Convenio de Viena, por lo que su PCI no es válido en Japón.'],
+['El PCI puede usarse como documento de identidad','El PCI no es un documento de identidad válido. Para cruzar fronteras y verificar la identidad sigue siendo necesario el pasaporte.'],
+['El PCI tiene validez indefinida','La validez del PCI es generalmente de un año y nunca puede superar la fecha de caducidad de la licencia de conducir original.']
 ];
 myths.forEach(function(m){
-h+='<div class="myth-item"><span class="myth-x">❌ 「'+m[0]+'」</span><br><span class="myth-o">✅ '+m[1]+'</span></div>';
+h+='<div class="myth-item"><span class="myth-x">❌ «'+m[0]+'»</span><br><span class="myth-o">✅ '+m[1]+'</span></div>';
 });
 h+='</div></div>';
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">🛡️ 自駕旅行必備清單</div>';
-h+='<div class="tip-box"><div class="tip-title">出發前準備</div>';
+h+='<div class="stat-section"><div class="stat-title">🛡️ Lista de preparativos para conducir en el extranjero</div>';
+h+='<div class="tip-box"><div class="tip-title">Preparación antes de salir</div>';
 var tips=[
-['📋','確認目的地承認哪個公約的IDP，並向當地汽車協會申請正確版本（如台灣至監理站、美國至AAA）。'],
-['🪪','隨身攜帶：原始駕照 + IDP + 護照。三者缺一不可，租車和路檢都需出示。'],
-['📱','下載離線地圖（Google Maps / Maps.me），偏遠地區可能無網路訊號。'],
-['🛡️','購買含自駕的旅遊保險，確認保單覆蓋目的地國家。租車保險建議加購CDW/LDW（碰撞/損失免責）。'],
-['⚠️','了解當地交通規則：行駛方向（左/右駕）、速限單位（km/h或mph）、特殊規則（如義大利ZTL、英國擁擠費）。'],
-['❄️','冬季自駕歐洲需備冬胎/雪鏈，許多國家有強制規定（奧地利、德國南部、北歐等）。'],
-['⛽','偏遠地區（澳洲內陸、巴塔哥尼亞、冰島高地等）加油站極稀少，務必提前加滿油箱。']
+['📋','Comprueba qué convenio reconoce el país de destino y solicita el PCI en la versión correcta a la asociación de automovilistas de tu país (p. ej., en España, la DGT o la RACE).'],
+['🪪','Lleva siempre encima: licencia de conducir original + PCI + pasaporte. Los tres son imprescindibles; tanto al alquilar un vehículo como en los controles de tráfico te los pueden solicitar.'],
+['📱','Descarga mapas sin conexión (Google Maps / Maps.me), ya que en zonas remotas puede no haber cobertura.'],
+['🛡️','Contrata un seguro de viaje que cubra la conducción y verifica que incluye el país de destino. Al alquilar un vehículo, considera añadir el CDW/LDW (exención por colisión/daños).'],
+['⚠️','Infórmate sobre las normas de tráfico locales: lado de conducción (derecha/izquierda), unidades de velocidad (km/h o mph) y normativas especiales (como las ZTL en Italia o el Congestion Charge en Londres).'],
+['❄️','Si vas a conducir en invierno por Europa, necesitarás neumáticos de invierno o cadenas; varios países lo exigen por ley (Austria, sur de Alemania, países nórdicos, etc.).'],
+['⛽','En zonas remotas (interior de Australia, Patagonia, tierras altas de Islandia, etc.) las gasolineras son muy escasas; llena siempre el depósito antes de adentrarte en ellas.']
 ];
 tips.forEach(function(t){h+='<div class="tip-item"><span>'+t[0]+'</span><span>'+t[1]+'</span></div>';});
 h+='</div></div>';
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">💡 趣味知識</div>';
+h+='<div class="stat-section"><div class="stat-title">💡 Curiosidades</div>';
 var facts=[
-{i:'🇯🇵',t:'日本是最常讓旅客「踩雷」的國家：僅接受日內瓦公約IDP，導致許多持維也納公約IDP的歐洲旅客在日本租不到車。'},
-{i:'🇮🇹',t:'義大利的ZTL（限行區）每年讓數十萬外國駕駛收到罰單。罰單可能在您回國後數月才寄達，但仍具法律效力。'},
-{i:'🇮🇸',t:'冰島的強風可以把車門直接吹斷。租車保險中的「風沙險（SAAP）」和「碎石險（GP）」幾乎是必備選項。'},
-{i:'🇿🇦',t:'南非花園大道被評為全球十大最美自駕路線之一，但約翰尼斯堡的劫車率也是全球最高之一——記得車門永遠上鎖。'},
-{i:'🇨🇳',t:'中國是全球最大的不承認IDP的國家。超過14億人口的市場使用完全獨立的駕照系統，外國人必須通過科目一筆試才能上路。'},
-{i:'🌍',t:'全球約35%的國家靠左行駛，主要源自英國殖民歷史。靠左行駛的國家多集中在英聯邦、東南亞和非洲東部。'}
+{i:'🇯🇵',t:'Japón es el país donde más viajeros se llevan una sorpresa desagradable: solo acepta el PCI de la Convención de Ginebra, lo que impide a muchos europeos con el PCI del Convenio de Viena alquilar un coche.'},
+{i:'🇮🇹',t:'Las ZTL (zonas de tráfico limitado) italianas generan cientos de miles de multas a conductores extranjeros cada año. La notificación puede llegar meses después de regresar a casa, pero sigue teniendo plena validez legal.'},
+{i:'🇮🇸',t:'En Islandia, el viento puede arrancar literalmente la puerta de un coche. Los seguros contra viento y arena (SAAP) y contra gravilla (GP) son casi imprescindibles al alquilar un vehículo.'},
+{i:'🇿🇦',t:'La Garden Route de Sudáfrica figura entre las diez rutas de conducción más bellas del mundo, pero Johannesburgo tiene una de las tasas de robo de vehículos más altas del planeta. Mantén siempre las puertas cerradas con llave.'},
+{i:'🇨🇳',t:'China es el país más grande del mundo que no reconoce el PCI. Un mercado de más de 1.400 millones de personas utiliza un sistema de licencias completamente independiente; los extranjeros deben superar un examen escrito para poder circular.'},
+{i:'🌍',t:'Aproximadamente el 35% de los países del mundo conducen por la izquierda, herencia principalmente del período colonial británico. Los países con conducción por la izquierda se concentran sobre todo en la Commonwealth, el sudeste asiático y el este de África.'}
 ];
 facts.forEach(function(f){h+='<div class="fact-item"><span class="fact-icon">'+f.i+'</span><span>'+f.t+'</span></div>';});
 h+='</div>';
@@ -577,8 +576,8 @@ paintMap();renderCatPanel();renderCountries();
 
 function renderCountries(){
 var list=selLvl!==null?allC.filter(function(c){return c.level===selLvl;}):allC;
-if(selLvl!==null){var lv=LVLS[selLvl];$cHdr.innerHTML=lv.icon+' '+lv.name+' 的國家與地區';}
-else{$cHdr.innerHTML='🌍 所有國家與地區';}
+if(selLvl!==null){var lv=LVLS[selLvl];$cHdr.innerHTML=lv.icon+' '+lv.name+' — países y territorios';}
+else{$cHdr.innerHTML='🌍 Todos los países y territorios';}
 $cCount.textContent=list.length;
 var h='';
 list.forEach(function(c){
@@ -612,7 +611,7 @@ $sIn.addEventListener('input',function(){
 var q=this.value.trim().toLowerCase();
 if(!q){$sDD.classList.remove('show');return;}
 var res=allC.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1||(c.a2&&c.a2.toLowerCase().indexOf(q)>-1);}).slice(0,12);
-if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">找不到結果</div>';$sDD.classList.add('show');return;}
+if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">Sin resultados</div>';$sDD.classList.add('show');return;}
 var h='';res.forEach(function(c){
 var lv=LVLS[c.level],cv=CONVS[c.conv],sd=SIDES[c.side];
 h+='<div class="sd-item" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'"><span style="font-size:1.2rem">'+c.flag+'</span><span style="font-weight:600;flex:1">'+c.name+'</span><span class="cc-lb" style="background:'+lv.col+';font-size:.68rem">'+lv.icon+' '+lv.name+'</span><span class="cc-lb" style="background:'+sd.col+';font-size:.68rem">'+sd.icon+'</span></div>';
@@ -675,7 +674,7 @@ $tip.innerHTML='<span class="tt-flag">'+c.flag+'</span><span class="tt-name">'+c
 +'</div>'
 +(noteShort?'<div style="margin-top:6px;font-size:.76rem;color:#cbd5e1;line-height:1.4">'+noteShort+'</div>':'');
 }else{
-$tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nameOf(id)+'</span><br><span style="color:#cbd5e1;font-size:.78rem">點擊查看詳情</span>';
+$tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nameOf(id)+'</span><br><span style="color:#cbd5e1;font-size:.78rem">Haz clic para ver detalles</span>';
 }
 var tx=ev.clientX+14,ty=ev.clientY-80;
 if(tx+340>window.innerWidth)tx=ev.clientX-340;if(ty<10)ty=ev.clientY+20;
@@ -702,7 +701,7 @@ paintMap();renderCountries();
 
 document.getElementById('loadOv').style.display='none';
 renderCatPanel();renderCountries();
-}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗，請重新整理頁面。</p>';});
+}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ Error al cargar el mapa. Por favor, recarga la página.</p>';});
 
 })();
 </script>
