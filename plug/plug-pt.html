@@ -33,58 +33,24 @@
             flex-direction: column;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: #fff;
-            padding: 0 24px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 12px rgba(37,99,235,0.3);
-        }
+  .rw-header *{margin:0;padding:0;box-sizing:border-box}
+.rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:linear-gradient(135deg,#1e40af,#3b82f6);border-bottom:none;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
+.rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
+.rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#ffffff}
+.rw-header-logo .brand-wise{font-size:1.55rem;font-weight:800;color:#bfdbfe}
+.rw-header-right{display:flex;align-items:center;gap:20px}
+.rw-header-contact{text-decoration:none;color:#e0e7ff;font-size:.95rem;font-weight:500;transition:color .2s}
+.rw-header-contact:hover{color:#ffffff}
+.rw-header-lang{position:relative;display:inline-block}
+.rw-header-lang-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:.9rem;font-weight:500;color:#ffffff;cursor:pointer;transition:background .2s}
+.rw-header-lang-btn:hover{background:rgba(255,255,255,.25)}
+.rw-header-lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:160px;overflow:hidden;z-index:1001}
+.rw-header-lang:hover .rw-header-lang-menu,.rw-header-lang-menu.show{display:block}
+.rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
+.rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
+.rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+@media(max-width:600px){.rw-header{padding:12px 16px}.rw-header-logo .brand-roam,.rw-header-logo .brand-wise{font-size:1.25rem}.rw-header-right{gap:12px}.rw-header-contact{font-size:.85rem}.rw-header-lang-btn{padding:6px 10px;font-size:.82rem}}
 
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo span { color: var(--accent); }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .header-right a {
-            color: rgba(255,255,255,0.85);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-
-        .header-right a:hover { color: #fff; }
-
-        .lang-select {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .lang-select option { color: #333; background: #fff; }
 
         main {
             flex: 1;
@@ -375,60 +341,18 @@
             left: 0;
         }
 
-        footer {
-            background: #1e293b;
-            color: rgba(255,255,255,0.7);
-            padding: 36px 24px 20px;
-            margin-top: auto;
-        }
-
-        .footer-grid {
-            max-width: 900px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 28px;
-            margin-bottom: 28px;
-        }
-
-        .footer-col h4 {
-            color: #fff;
-            font-size: 0.95rem;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .footer-col a {
-            display: block;
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            font-size: 0.88rem;
-            padding: 4px 0;
-            transition: color 0.2s;
-        }
-
-        .footer-col a:hover { color: #fff; }
-
-        .footer-col a.active-link {
-            color: var(--accent);
-            font-weight: 500;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 16px;
-            font-size: 0.82rem;
-        }
-
-        .footer-bottom a {
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-        }
-
-        .footer-bottom a:hover { color: #fff; }
+      .rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#ffffff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#ffffff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
 
         @media (max-width: 640px) {
             .page-title { font-size: 1.3rem; }
@@ -444,20 +368,20 @@
 <body>
 
     <!-- HEADER -->
-<header>
-    <div class="logo">
-        <img src="logo.png" alt="Roamwise Logo" class="logo-img">
-        Roam<span>wise</span>
+<header class="rw-header">
+  <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
+  <div class="rw-header-right">
+    <a href="../1-contact/contact-pt.html" class="rw-header-contact">Contacte-nos</a>
+    <div class="rw-header-lang">
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">Português ▾</button>
+      <div class="rw-header-lang-menu">
+        <a href="plug-zh.html">繁體中文</a>
+        <a href="plug-en.html">English</a>
+        <a href="plug-es.html">Español</a>
+        <a href="plug-pt.html" class="active">Português</a>
+      </div>
     </div>
-    <div class="header-right">
-        <a href="#" class="contact-link">聯絡我們</a>
-        <select class="lang-select" onchange="changeLanguage(this.value)">
-            <option value="plug-zh.html">繁體中文</option>
-            <option value="plug-en.html">English</option>
-            <option value="plug-es.html">Español</option>
-            <option value="plug-pt.html" selected="">Português</option>
-        </select>
-    </div>
+  </div>
 </header>
 
 <script>
@@ -559,32 +483,44 @@
     </main>
 
     <!-- FOOTER -->
-<footer class="hide-f">
-<div class="footer-grid">
-    <div class="footer-col">
-        <h4>🔌 Energia e Hora</h4>
-        <a href="../plug/plug-pt.html" class="active-link">Padrões de Fichas</a>
-        <a href="../time-zone/time-zone-pt.html">Consulta de Fusos Horários</a>
-        <a href="../sunset/sunset-pt.html">Hora do Nascer e Pôr do Sol</a>
-        <a href="../timer/timer-pt.html">Temporizador</a>
+<footer class="rw-footer">
+  <div class="rw-footer-grid">
+    <div class="rw-footer-col">
+      <h4>⏰ Hora e luz solar</h4>
+      <ul>
+        <li><a href="../time-zone/time-zone-pt.html">Consulta de fusos horários</a></li>
+        <li><a href="../meeting/meeting-pt.html">Pesquisa de horários de reunião</a></li>
+        <li><a href="../sunset/sunset-pt.html">Hora do nascer e pôr do sol</a></li>
+        <li><a href="../timer/timer-pt.html">Temporizador e contagem decrescente</a></li>
+      </ul>
     </div>
-    <div class="footer-col">
-        <h4>🎉 Férias e Eventos</h4>
-        <a href="#">Consulta de Férias Locais</a>
-        <a href="#">Festividades e Eventos</a>
+    <div class="rw-footer-col">
+      <h4>🔧 Conversores e ferramentas</h4>
+      <ul>
+        <li><a href="../currency/currency-pt.html">Conversor de moedas</a></li>
+        <li><a href="../unit/unit-pt.html">Conversor de unidades</a></li>
+        <li><a href="plug-pt.html">Normas de tomadas elétricas</a></li>
+      </ul>
     </div>
-    <div class="footer-col">
-        <h4>💱 Finanças e Unidades</h4>
-        <a href="../currency/currency-pt.html">Conversor de Taxas de Câmbio</a>
-        <a href="../unit/unit-pt.html">Conversor de Unidades</a>
+    <div class="rw-footer-col">
+      <h4>🚗 Mapas de transporte e viagem</h4>
+      <ul>
+        <li><a href="../country_map/country_map-pt.html">Mapa de países e regiões</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-pt.html">Mapa de sentido de condução</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-pt.html">Mapa de cartas de condução internacionais</a></li>
+      </ul>
     </div>
-    <div class="footer-col">
-        <h4>🌍 Informações de Viagem</h4>
-        <a href="#">Informações Básicas de Países</a>
-        <a href="#">Guias Detalhados de Regiões</a>
+    <div class="rw-footer-col">
+      <h4>🌍 Mapas de informação global</h4>
+      <ul>
+        <li><a href="../time-zone-map/time-zone-map-pt.html">Mapa de fusos horários</a></li>
+        <li><a href="../plug_map/plug_map-pt.html">Mapa de tipos de tomadas</a></li>
+        <li><a href="../nationalday_map/nationalday_map-pt.html">Mapa de sistemas de calendário</a></li>
+        <li><a href="../Network_map/Network_map-pt.html">Mapa de liberdade na internet</a></li>
+      </ul>
     </div>
-</div>
-    <div class="ft-bot">© 2026 Roamwise. Todos os direitos reservados. | <a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></div>
+  </div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. Todos os direitos reservados. | <a href="/privacy">Política de privacidade</a> | <a href="/terms">Termos de utilização</a></div>
 </footer>
 
     <script>
