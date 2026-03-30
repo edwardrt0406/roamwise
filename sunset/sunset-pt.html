@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<!DOCTYPE html><html lang="pt-PT"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roamwise - Consulta de Hora do Nascer e Pôr do Sol</title>
@@ -77,12 +77,19 @@
         .trend-table .change{font-size:.78rem;border-radius:20px;padding:2px 8px;display:inline-block}
         .change.up{background:#dcfce7;color:#15803d}.change.down{background:#fee2e2;color:#b91c1c}.change.same{background:#f1f5f9;color:#64748b}
         .calc-note{font-size:.82rem;color:var(--text-light);line-height:1.6;padding:12px 16px;background:#f8fafc;border-radius:8px;margin-top:20px}
-        footer{background:#1e293b;color:rgba(255,255,255,.7);padding:36px 24px 20px;margin-top:auto}
-        .footer-grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;margin-bottom:28px}
-        .footer-col h4{color:#fff;font-size:.95rem;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-        .footer-col a{display:block;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;padding:4px 0;transition:color .2s}.footer-col a:hover{color:#fff}
-        .footer-col a.active-link{color:var(--accent);font-weight:500}
-        .footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,.1);padding-top:16px;font-size:.82rem}.footer-bottom a{color:rgba(255,255,255,.5);text-decoration:none}.footer-bottom a:hover{color:#fff}
+ 
+        .rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#ffffff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#ffffff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
         @media(max-width:640px){
             .page-title{font-size:1.3rem}
             .selector-row{flex-direction:column}.selector-group{min-width:100%}
@@ -185,32 +192,44 @@
     </div>
 </main>
     
-<footer class="hide-f">
-<div class="footer-grid">
-    <div class="footer-col">
-        <h4>🔌 Energia e Hora</h4>
-        <a href="../plug/plug-pt.html" >Padrões de Fichas</a>
-        <a href="../time-zone/time-zone-pt.html">Consulta de Fusos Horários</a>
-        <a href="../sunset/sunset-pt.html" class="active-link">Hora do Nascer e Pôr do Sol</a>
-        <a href="../timer/timer-pt.html">Temporizador</a>
+<footer class="rw-footer">
+  <div class="rw-footer-grid">
+    <div class="rw-footer-col">
+      <h4>⏰ Hora e luz solar</h4>
+      <ul>
+        <li><a href="../time-zone/time-zone-pt.html">Consulta de fusos horários</a></li>
+        <li><a href="../meeting/meeting-pt.html">Pesquisa de horários de reunião</a></li>
+        <li><a href="../sunset/sunset-pt.html">Hora do nascer e pôr do sol</a></li>
+        <li><a href="../timer/timer-pt.html">Temporizador e contagem decrescente</a></li>
+      </ul>
     </div>
-    <div class="footer-col">
-        <h4>🎉 Férias e Eventos</h4>
-        <a href="#">Consulta de Férias Locais</a>
-        <a href="#">Festividades e Eventos</a>
+    <div class="rw-footer-col">
+      <h4>🔧 Conversores e ferramentas</h4>
+      <ul>
+        <li><a href="../currency/currency-pt.html">Conversor de moedas</a></li>
+        <li><a href="../unit/unit-pt.html">Conversor de unidades</a></li>
+        <li><a href="../plug/plug-pt.html">Normas de tomadas elétricas</a></li>
+      </ul>
     </div>
-    <div class="footer-col">
-        <h4>💱 Finanças e Unidades</h4>
-        <a href="../currency/currency-pt.html">Conversor de Taxas de Câmbio</a>
-        <a href="../unit/unit-pt.html">Conversor de Unidades</a>
+    <div class="rw-footer-col">
+      <h4>🚗 Mapas de transporte e viagem</h4>
+      <ul>
+        <li><a href="../country_map/country_map-pt.html">Mapa de países e regiões</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-pt.html">Mapa de sentido de condução</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-pt.html">Mapa de cartas de condução internacionais</a></li>
+      </ul>
     </div>
-    <div class="footer-col">
-        <h4>🌍 Informações de Viagem</h4>
-        <a href="#">Informações Básicas de Países</a>
-        <a href="#">Guias Detalhados de Regiões</a>
+    <div class="rw-footer-col">
+      <h4>🌍 Mapas de informação global</h4>
+      <ul>
+        <li><a href="../time-zone-map/time-zone-map-pt.html">Mapa de fusos horários</a></li>
+        <li><a href="../plug_map/plug_map-pt.html">Mapa de tipos de tomadas</a></li>
+        <li><a href="../nationalday_map/nationalday_map-pt.html">Mapa de sistemas de calendário</a></li>
+        <li><a href="Network_map-pt.html">Mapa de liberdade na internet</a></li>
+      </ul>
     </div>
-</div>
-    <div class="ft-bot">© 2026 Roamwise. Todos os direitos reservados. | <a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></div>
+  </div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. Todos os direitos reservados. | <a href="/privacy">Política de privacidade</a> | <a href="/terms">Termos de utilização</a></div>
 </footer>
 <script>
 // ============ CITY DATA ============
