@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>世界時區互動地圖 – Roamwise</title>
+<title>Mapa de zonas horarias – Roamwise</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
@@ -88,9 +88,9 @@ h1{font-size:1.7rem;margin-bottom:1.5rem}
 <header class="rw-header">
   <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
   <div class="rw-header-right">
-    <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
+    <a href="../1-contact/contact-zh.html" class="rw-header-contact">Contáctenos</a>
     <div class="rw-header-lang">
-      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">Español ▾</button>
       <div class="rw-header-lang-menu">
         <a href="time-zone-map-zh.html" class="active">繁體中文</a>
         <a href="time-zone-map-en.html">English</a>
@@ -101,13 +101,13 @@ h1{font-size:1.7rem;margin-bottom:1.5rem}
   </div>
 </header>
 <main>
-  <h1>🌍 世界時區互動地圖</h1>
+  <h1>🌍 Mapa de zonas horarias</h1>
   <div class="card">
     <div class="info-bar">
       <div class="tz-display">
         <div class="tz-flag" id="tzFlag">🌐</div>
         <div>
-          <div class="tz-name" id="tzName">滑鼠移入地圖探索時區</div>
+  <div class="tz-name" id="tzName">Pasa el cursor sobre el mapa para explorar las zonas horarias</div>
           <div class="tz-offset" id="tzOffset"></div>
           <div class="tz-lock" id="tzLock"></div>
         </div>
@@ -116,16 +116,16 @@ h1{font-size:1.7rem;margin-bottom:1.5rem}
           <div class="tz-date" id="tzDate"></div>
         </div>
       </div>
-      <button class="btn-reset" id="btnReset">🔄 重設顯示</button>
+      <button class="btn-reset" id="btnReset">🔄 Restablecer vista</button>
     </div>
     <div class="map-wrap" id="mapWrap">
-      <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p>載入地圖中…</p></div>
+      <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p>Cargando mapa…</p></div>
     </div>
     <div class="legend-bar" id="legendBar"></div>
     <div class="tips">
-      <span>🖱️ 滑入高亮同時區</span><span>👆 點擊鎖定時區</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span>
+      <span>🖱️ Pasa el cursor para resaltar la zona horaria</span><span>👆 Clic para fijar la zona horaria</span><span>🔍 Rueda para hacer zoom</span><span>✋ Arrastra para desplazar</span>
     </div>
-    <div class="dst-note">✅ 已自動包含日光節約時間（DST）。跨多時區國家（如美、加、俄、澳等）已依經度區分各時區。</div>
+    <div class="dst-note">✅ El horario de verano (DST) se incluye automáticamente. Los países con múltiples zonas horarias (como EE. UU., Canadá, Rusia, Australia, etc.) están divididos por longitud.</div>
   </div>
   <div class="card" id="tzPanelCard">
     <div class="tz-panel-header">
@@ -133,49 +133,50 @@ h1{font-size:1.7rem;margin-bottom:1.5rem}
       <span class="tz-panel-count" id="panelCount"></span>
     </div>
     <div id="panelBody">
-      <div class="tz-panel-empty">🌐 移動滑鼠至地圖上的國家，或點擊下方時區色條，即可查看該時區的所有國家與地區。</div>
+      <div class="tz-panel-empty">🌐 Mueve el cursor sobre un país en el mapa, o haz clic en una franja de color de zona horaria abajo, para ver todos los países y regiones de esa zona.</div>
     </div>
   </div>
 </main>
 <div class="tooltip" id="tooltip"></div>
+
 <footer class="rw-footer">
   <div class="rw-footer-grid">
     <div class="rw-footer-col">
-      <h4>⏰ 時間與日照</h4>
+      <h4>⏰ Hora y luz solar</h4>
       <ul>
-        <li><a href="../time-zone/time-zone-zh.html">世界時區查詢</a></li>
-        <li><a href="../meeting/meeting-zh.html">會議時間查找器</a></li>
-        <li><a href="../sunset/sunset-zh.html">日出日落時間查詢</a></li>
-        <li><a href="../timer/timer-zh.html">計時器與倒計時</a></li>
+        <li><a href="../time-zone/time-zone-es.html">Consulta de zonas horarias</a></li>
+        <li><a href="../meeting/meeting-es.html">Buscador de horarios de reunión</a></li>
+        <li><a href="../sunset/sunset-es.html">Hora de amanecer y atardecer</a></li>
+        <li><a href="../timer/timer-es.html">Temporizador y cuenta atrás</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🔧 換算與生活工具</h4>
+      <h4>🔧 Conversores y herramientas</h4>
       <ul>
-        <li><a href="../currency/currency-zh.html">匯率換算</a></li>
-        <li><a href="../unit/unit-zh.html">單位轉換</a></li>
-        <li><a href="../plug/plug-zh.html">插頭標準查詢</a></li>
+        <li><a href="../currency/currency-es.html">Conversor de divisas</a></li>
+        <li><a href="../unit/unit-es.html">Conversor de unidades</a></li>
+        <li><a href="../plug/plug-es.html">Estándares de enchufes</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🚗 交通與出行地圖</h4>
+      <h4>🚗 Mapas de transporte y viaje</h4>
       <ul>
-        <li><a href="../country_map/country_map-zh.html">世界國家與地區互動地圖</a></li>
-        <li><a href="../drivingdirection_map/drivingdirection_map-zh.html">世界行車方向互動地圖</a></li>
-        <li><a href="../drivinglicense_map/drivinglicense_map-zh.html">全球國際駕照承認互動地圖</a></li>
+        <li><a href="../country_map/country_map-es.html">Mapa de países y regiones</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-es.html">Mapa de sentido de circulación</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-es.html">Mapa de permisos de conducir internacionales</a></li>
       </ul>
     </div>
     <div class="rw-footer-col">
-      <h4>🌍 全球資訊地圖</h4>
+      <h4>🌍 Mapas de información global</h4>
       <ul>
-        <li><a href="time-zone-map.zh.html" class="active">世界時區互動地圖</a></li>
-        <li><a href="../plug_map/plug_map-zh.html">世界插頭類型互動地圖</a></li>
-        <li><a href="../nationalday_map/nationalday_map-zh.html">全球曆法互動地圖</a></li>
-        <li><a href="../Network_map/Network_map-zh.html">全球網路自由度互動地圖</a></li>
+        <li><a href="time-zone-map-es.html">Mapa de zonas horarias</a></li>
+        <li><a href="../plug_map/plug_map-es.html">Mapa de tipos de enchufe</a></li>
+        <li><a href="../nationalday_map/nationalday_map-es.html">Mapa de sistemas de calendario</a></li>
+        <li><a href="../Network_map/Network_map-es.html">Mapa de libertad en internet</a></li>
       </ul>
     </div>
   </div>
-  <div class="rw-footer-bottom">© 2026 Roamwise. 所有權利保留。 | <a href="/privacy">隱私政策</a> | <a href="/terms">使用條款</a></div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. Todos los derechos reservados. | <a href="/privacy">Política de privacidad</a> | <a href="/terms">Términos de uso</a></div>
 </footer>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -185,64 +186,64 @@ h1{font-size:1.7rem;margin-bottom:1.5rem}
 /* ===== MULTI-TIMEZONE COUNTRIES ===== */
 var MULTI_TZ={
   840:{zones:[
-    {iana:'Pacific/Honolulu',label:'夏威夷',lon:[-180,-130],lat:[-90,45]},
-    {iana:'America/Anchorage',label:'阿拉斯加',lon:[-180,-130],lat:[45,90]},
-    {iana:'America/Los_Angeles',label:'太平洋',lon:[-130,-115]},
-    {iana:'America/Denver',label:'山區',lon:[-115,-102]},
-    {iana:'America/Chicago',label:'中部',lon:[-102,-87]},
-    {iana:'America/New_York',label:'東部',lon:[-87,-60]}
+    {iana:'Pacific/Honolulu',label:'Hawái',lon:[-180,-130],lat:[-90,45]},
+    {iana:'America/Anchorage',label:'Alaska',lon:[-180,-130],lat:[45,90]},
+    {iana:'America/Los_Angeles',label:'Pacífico',lon:[-130,-115]},
+    {iana:'America/Denver',label:'Montaña',lon:[-115,-102]},
+    {iana:'America/Chicago',label:'Central',lon:[-102,-87]},
+    {iana:'America/New_York',label:'Este',lon:[-87,-60]}
   ]},
   124:{zones:[
-    {iana:'America/Vancouver',label:'太平洋',lon:[-180,-115]},
-    {iana:'America/Edmonton',label:'山區',lon:[-115,-102]},
-    {iana:'America/Winnipeg',label:'中部',lon:[-102,-89]},
-    {iana:'America/Toronto',label:'東部',lon:[-89,-66]},
-    {iana:'America/Halifax',label:'大西洋',lon:[-66,-59]},
-    {iana:'America/St_Johns',label:'紐芬蘭',lon:[-59,-45]}
+    {iana:'America/Vancouver',label:'Pacífico',lon:[-180,-115]},
+    {iana:'America/Edmonton',label:'Montaña',lon:[-115,-102]},
+    {iana:'America/Winnipeg',label:'Central',lon:[-102,-89]},
+    {iana:'America/Toronto',label:'Este',lon:[-89,-66]},
+    {iana:'America/Halifax',label:'Atlántico',lon:[-66,-59]},
+    {iana:'America/St_Johns',label:'Terranova',lon:[-59,-45]}
   ]},
   643:{zones:[
-    {iana:'Europe/Kaliningrad',label:'加里寧格勒',lon:[18,23]},
-    {iana:'Europe/Moscow',label:'莫斯科',lon:[23,45]},
-    {iana:'Europe/Samara',label:'薩馬拉',lon:[45,56]},
-    {iana:'Asia/Yekaterinburg',label:'葉卡捷琳堡',lon:[56,68]},
-    {iana:'Asia/Omsk',label:'鄂木斯克',lon:[68,80]},
-    {iana:'Asia/Krasnoyarsk',label:'克拉斯諾亞爾斯克',lon:[80,96]},
-    {iana:'Asia/Irkutsk',label:'伊爾庫茨克',lon:[96,110]},
-    {iana:'Asia/Yakutsk',label:'雅庫茨克',lon:[110,130]},
-    {iana:'Asia/Vladivostok',label:'海參崴',lon:[130,143]},
-    {iana:'Asia/Magadan',label:'馬加丹',lon:[143,160]},
-    {iana:'Asia/Kamchatka',label:'堪察加',lon:[160,180]}
+    {iana:'Europe/Kaliningrad',label:'Kaliningrado',lon:[18,23]},
+    {iana:'Europe/Moscow',label:'Moscú',lon:[23,45]},
+    {iana:'Europe/Samara',label:'Samara',lon:[45,56]},
+    {iana:'Asia/Yekaterinburg',label:'Ekaterimburgo',lon:[56,68]},
+    {iana:'Asia/Omsk',label:'Omsk',lon:[68,80]},
+    {iana:'Asia/Krasnoyarsk',label:'Krasnoyarsk',lon:[80,96]},
+    {iana:'Asia/Irkutsk',label:'Irkutsk',lon:[96,110]},
+    {iana:'Asia/Yakutsk',label:'Yakutsk',lon:[110,130]},
+    {iana:'Asia/Vladivostok',label:'Vladivostok',lon:[130,143]},
+    {iana:'Asia/Magadan',label:'Magadán',lon:[143,160]},
+    {iana:'Asia/Kamchatka',label:'Kamchatka',lon:[160,180]}
   ]},
   36:{zones:[
-    {iana:'Australia/Perth',label:'西部',lon:[100,129]},
-    {iana:'Australia/Adelaide',label:'中部',lon:[129,141]},
-    {iana:'Australia/Sydney',label:'東部',lon:[141,160]}
+    {iana:'Australia/Perth',label:'Occidental',lon:[100,129]},
+    {iana:'Australia/Adelaide',label:'Central',lon:[129,141]},
+    {iana:'Australia/Sydney',label:'Oriental',lon:[141,160]}
   ]},
   76:{zones:[
-    {iana:'America/Rio_Branco',label:'阿克里',lon:[-75,-66]},
-    {iana:'America/Manaus',label:'亞馬遜',lon:[-66,-50]},
-    {iana:'America/Sao_Paulo',label:'巴西利亞',lon:[-50,-28]}
+    {iana:'America/Rio_Branco',label:'Acre',lon:[-75,-66]},
+    {iana:'America/Manaus',label:'Amazonas',lon:[-66,-50]},
+    {iana:'America/Sao_Paulo',label:'Brasilia',lon:[-50,-28]}
   ]},
   360:{zones:[
-    {iana:'Asia/Jakarta',label:'西部 WIB',lon:[90,110]},
-    {iana:'Asia/Makassar',label:'中部 WITA',lon:[110,126]},
-    {iana:'Asia/Jayapura',label:'東部 WIT',lon:[126,145]}
+    {iana:'Asia/Jakarta',label:'Occidental WIB',lon:[90,110]},
+    {iana:'Asia/Makassar',label:'Central WITA',lon:[110,126]},
+    {iana:'Asia/Jayapura',label:'Oriental WIT',lon:[126,145]}
   ]},
   484:{zones:[
-    {iana:'America/Tijuana',label:'西北部',lon:[-120,-112]},
-    {iana:'America/Mazatlan',label:'太平洋',lon:[-112,-104]},
-    {iana:'America/Mexico_City',label:'中部',lon:[-104,-86]}
+    {iana:'America/Tijuana',label:'Noroeste',lon:[-120,-112]},
+    {iana:'America/Mazatlan',label:'Pacífico',lon:[-112,-104]},
+    {iana:'America/Mexico_City',label:'Central',lon:[-104,-86]}
   ]},
   180:{zones:[
-    {iana:'Africa/Kinshasa',label:'西部',lon:[10,25]},
-    {iana:'Africa/Lubumbashi',label:'東部',lon:[25,35]}
+    {iana:'Africa/Kinshasa',label:'Occidental',lon:[10,25]},
+    {iana:'Africa/Lubumbashi',label:'Oriental',lon:[25,35]}
   ]},
   496:{zones:[
-    {iana:'Asia/Hovd',label:'西部',lon:[85,100]},
-    {iana:'Asia/Ulaanbaatar',label:'東部',lon:[100,120]}
+    {iana:'Asia/Hovd',label:'Occidental',lon:[85,100]},
+    {iana:'Asia/Ulaanbaatar',label:'Oriental',lon:[100,120]}
   ]}
 };
-
+  
 /* ===== SINGLE-TZ FALLBACK OFFSETS ===== */
 var OFF={8:1,12:1,16:-11,20:1,24:1,28:-4,31:4,32:-3,40:1,44:-5,48:3,50:6,51:4,52:-4,56:1,64:6,68:-4,70:1,72:2,84:-6,90:12,96:8,100:2,104:6.5,108:2,112:3,116:7,120:1,132:0,140:1,144:5.5,148:1,152:-4,156:8,158:8,170:-5,174:3,175:12,178:1,184:-10,188:-6,191:1,192:-5,196:2,203:1,204:1,208:1,212:-4,214:-4,218:-5,222:-6,226:1,231:3,232:3,233:2,234:0,242:12,246:2,250:1,258:-10,262:3,266:1,268:4,270:0,275:2,276:1,288:0,296:12,300:2,304:-3,308:-4,320:-6,324:0,328:-4,332:-5,336:0,340:-6,348:1,352:0,356:5.5,364:3.5,368:3,372:0,376:2,380:1,384:0,388:-5,392:9,398:6,400:2,404:3,408:9,410:9,414:3,417:6,418:7,422:2,426:2,428:2,430:0,434:2,440:2,442:1,450:3,454:2,458:8,462:5,466:0,470:1,478:0,480:4,492:1,498:2,499:1,504:1,508:2,512:4,516:2,520:0,524:5.75,528:1,540:11,548:11,554:12,558:-6,562:1,566:1,570:-11,578:1,580:10,583:11,584:12,585:9,586:5,591:-5,598:10,600:-4,604:-5,608:8,616:1,620:0,624:0,626:9,630:-4,634:3,642:2,646:2,659:-4,660:-4,662:-4,670:1,674:1,678:0,682:3,686:0,688:1,694:0,702:8,703:1,705:1,706:3,710:2,716:2,720:3,724:1,728:2,729:2,732:1,740:-3,748:2,752:1,756:1,760:2,762:5,764:7,768:0,776:13,780:-4,784:4,788:1,792:3,795:5,798:12,800:3,804:2,807:1,818:2,826:0,834:3,854:0,858:-3,860:5,862:-4,876:-11,882:13,887:3,894:2,704:7};
 
@@ -289,15 +290,14 @@ var offGroups={};
 })();
 
 /* ===== FORMAT HELPERS ===== */
-function fmtOff(o){if(o===null)return'未知';var s=o>=0?'+':'-',ab=Math.abs(o),h=Math.floor(ab),m=Math.round((ab%1)*60);return m===0?'UTC'+s+h:'UTC'+s+h+':'+(m<10?'0':'')+m;}
+function fmtOff(o){if(o===null)return'Desconocido';var s=o>=0?'+':'-',ab=Math.abs(o),h=Math.floor(ab),m=Math.round((ab%1)*60);return m===0?'UTC'+s+h:'UTC'+s+h+':'+(m<10?'0':'')+m;}
 function normC(o){if(o===null)return'#cbd5e1';return'hsl('+Math.round(((o+12)/27)*320)+',48%,62%)';}
 function hiC(o){if(o===null)return'#cbd5e1';return'hsl('+Math.round(((o+12)/27)*320)+',72%,48%)';}
 function timeByOff(o){var n=new Date(),u=n.getTime()+n.getTimezoneOffset()*6e4,l=new Date(u+o*36e5);return String(l.getHours()).padStart(2,'0')+':'+String(l.getMinutes()).padStart(2,'0')+':'+String(l.getSeconds()).padStart(2,'0');}
 function timeIana(ia){try{return new Date().toLocaleTimeString('en-GB',{timeZone:ia,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});}catch(e){return null;}}
-function dateIana(ia){try{return new Date().toLocaleDateString('zh-TW',{timeZone:ia,weekday:'short',month:'numeric',day:'numeric'});}catch(e){return null;}}
-function dateByOff(o){var n=new Date(),l=new Date(n.getTime()+n.getTimezoneOffset()*6e4+o*36e5);var wd=['日','一','二','三','四','五','六'][l.getDay()];return(l.getMonth()+1)+'月'+l.getDate()+'日 週'+wd;}
+function dateIana(ia){try{return new Date().toLocaleDateString('es-ES',{timeZone:ia,weekday:'short',month:'numeric',day:'numeric'});}catch(e){return null;}}
+function dateByOff(o){var n=new Date(),l=new Date(n.getTime()+n.getTimezoneOffset()*6e4+o*36e5);var wd=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][l.getDay()];return l.getDate()+'/'+(l.getMonth()+1)+' '+wd;}
 function getSingleOff(id,feat){var c=cInfo[id];if(c)return c.realOff;if(OFF[id]!=null)return OFF[id];if(feat){try{return Math.round(d3.geoCentroid(feat)[0]/15);}catch(e){}}return null;}
-
 /* ===== ZONE DETECTION ===== */
 function findZone(cid,lon,lat){
   var mtz=MULTI_TZ[cid];if(!mtz)return null;
@@ -345,19 +345,19 @@ for(var cid in MULTI_TZ){MULTI_TZ[cid].zones.forEach(function(z,i){
 var locked=null,lockedId=null,lockedZone=null,hovOff=null,hovId=null,hovZone=null;
 var clockInt=null,clockIana=null,clockOff=null,panelTimerId=null;
 
-function resetDisp(){$f.textContent='🌐';$n.textContent='滑鼠移入地圖探索時區';$o.textContent='';$l.textContent='';$c.textContent='--:--:--';$d.textContent='';if(clockInt){clearInterval(clockInt);clockInt=null;}}
+function resetDisp(){$f.textContent='🌐';$n.textContent='Pasa el cursor sobre el mapa para explorar las zonas horarias';$o.textContent='';$l.textContent='';$c.textContent='--:--:--';$d.textContent='';if(clockInt){clearInterval(clockInt);clockInt=null;}}
 function startClock(ia,off){if(clockInt)clearInterval(clockInt);clockIana=ia;clockOff=off;tickC();clockInt=setInterval(tickC,1000);}
 function tickC(){var t=null,dt=null;if(clockIana){t=timeIana(clockIana);dt=dateIana(clockIana);}if(!t&&clockOff!==null){t=timeByOff(clockOff);dt=dateByOff(clockOff);}$c.textContent=t||'--:--:--';$d.textContent=dt||'';}
 
 function showSingleInfo(ci,isL){
-  $f.textContent=ci.flag;$n.textContent=ci.name||'未知';
-  var s=fmtOff(ci.realOff);if(ci.isDST)s+=' <span class="tz-dst-badge">☀️ 夏令時間</span> <span style="font-size:.8rem;color:#64748b">標準 '+fmtOff(ci.stdOff)+'</span>';
-  $o.innerHTML=s;$l.textContent=isL?'🔒 已鎖定':'';startClock(ci.iana,ci.realOff);
+  $f.textContent=ci.flag;$n.textContent=ci.name||'Desconocido';
+  var s=fmtOff(ci.realOff);if(ci.isDST)s+=' <span class="tz-dst-badge">☀️ Horario de verano</span> <span style="font-size:.8rem;color:#64748b">Estándar '+fmtOff(ci.stdOff)+'</span>';
+  $o.innerHTML=s;$l.textContent=isL?'🔒 Bloqueado':'';startClock(ci.iana,ci.realOff);
 }
 function showMultiInfo(cid,zone,isL){
-  var a2=A2[cid];$f.textContent=flagA2(a2);$n.textContent=nameA2(a2)+'（'+zone.label+'時間）';
-  var s=fmtOff(zone.realOff);if(zone.isDST)s+=' <span class="tz-dst-badge">☀️ 夏令時間</span> <span style="font-size:.8rem;color:#64748b">標準 '+fmtOff(zone.stdOff)+'</span>';
-  $o.innerHTML=s;$l.textContent=isL?'🔒 已鎖定':'';startClock(zone.iana,zone.realOff);
+  var a2=A2[cid];$f.textContent=flagA2(a2);$n.textContent=nameA2(a2)+' (hora '+zone.label+')';
+  var s=fmtOff(zone.realOff);if(zone.isDST)s+=' <span class="tz-dst-badge">☀️ Horario de verano</span> <span style="font-size:.8rem;color:#64748b">Estándar '+fmtOff(zone.stdOff)+'</span>';
+  $o.innerHTML=s;$l.textContent=isL?'🔒 Bloqueado':'';startClock(zone.iana,zone.realOff);
 }
 
 /* ===== GEO COORDS FROM EVENT ===== */
@@ -376,22 +376,22 @@ function paintMap(aOff){
 }
 
 /* ===== PANEL ===== */
-function panelReset(){$pT.textContent='';$pC.textContent='';$pB.innerHTML='<div class="tz-panel-empty">🌐 移動滑鼠至地圖上的國家，或點擊下方時區色條，即可查看該時區的所有國家與地區。</div>';stopPanelTimer();}
+function panelReset(){$pT.textContent='';$pC.textContent='';$pB.innerHTML='<div class="tz-panel-empty">🌐 Mueve el cursor sobre un país en el mapa, o haz clic en una franja de color de zona horaria abajo, para ver todos los países y regiones de esa zona.</div>';stopPanelTimer();}
 function stopPanelTimer(){if(panelTimerId){clearInterval(panelTimerId);panelTimerId=null;}}
 
 function showOffPanel(offset,activeId){
   stopPanelTimer();
   var ok=String(offset),list=offGroups[ok]||[];
-  $pT.innerHTML='🕐 <span class="off-color" style="background:'+hiC(offset)+'">'+fmtOff(offset)+'</span> 時區';
+  $pT.innerHTML='🕐 <span class="off-color" style="background:'+hiC(offset)+'">'+fmtOff(offset)+'</span> Zona horaria';
   var dc=list.filter(function(c){return c.isDST;}).length;
-  var txt='共 '+list.length+' 個國家與地區';if(dc>0)txt+='（其中 '+dc+' 個正處於夏令時間）';
+  var txt=list.length+' países y regiones en total';if(dc>0)txt+=' ('+dc+' en horario de verano)';
   $pC.textContent=txt;
   var h='<div class="tz-panel-list">';
   list.forEach(function(c){
     var ac=String(c.srcId)===String(activeId)?' active':'';
     h+='<span class="tz-tag'+ac+'"><span class="tag-flag">'+c.flag+'</span><span>'+c.name;
-    if(c.zoneLabel)h+='<span class="tag-zone">（'+c.zoneLabel+'）</span>';
-    h+='</span>';if(c.isDST)h+=' <span class="tag-dst">夏令</span>';h+='</span>';
+    if(c.zoneLabel)h+='<span class="tag-zone"> ('+c.zoneLabel+')</span>';
+    h+='</span>';if(c.isDST)h+=' <span class="tag-dst">Verano</span>';h+='</span>';
   });
   h+='</div>';$pB.innerHTML=h;
 }
@@ -399,15 +399,15 @@ function showOffPanel(offset,activeId){
 function showMultiPanel(cid,activeZone){
   stopPanelTimer();
   var mtz=MULTI_TZ[cid],a2=A2[cid],nm=nameA2(a2),fl=flagA2(a2);
-  $pT.innerHTML=fl+' <strong>'+nm+'</strong> — 涵蓋 '+mtz.zones.length+' 個時區';
-  $pC.textContent='大型國家跨越多個時區，以下顯示各區域的當前時間';
+  $pT.innerHTML=fl+' <strong>'+nm+'</strong> — abarca '+mtz.zones.length+' zonas horarias';
+  $pC.textContent='Este gran país atraviesa múltiples zonas horarias. A continuación se muestra la hora actual de cada región.';
   var h='<div class="zone-cards">';
   mtz.zones.forEach(function(z,i){
     var act=z===activeZone?' active':'';
     var t=timeIana(z.iana)||timeByOff(z.realOff);
     h+='<div class="zone-card'+act+'">';
     h+='<div class="zone-off" style="color:'+hiC(z.realOff)+'">'+fmtOff(z.realOff);
-    if(z.isDST)h+=' <span class="tag-dst">夏令</span>';
+    if(z.isDST)h+=' <span class="tag-dst">Verano</span>';
     h+='</div><div class="zone-label">'+z.label+'</div>';
     h+='<div class="zone-time" id="zt-'+i+'">'+t+'</div></div>';
   });
@@ -415,12 +415,12 @@ function showMultiPanel(cid,activeZone){
   if(activeZone){
     var ro=activeZone.realOff,ok=String(ro),list=(offGroups[ok]||[]).filter(function(c){return String(c.srcId)!==String(cid);});
     if(list.length>0){
-      h+='<div class="panel-divider">同為 <strong>'+fmtOff(ro)+'</strong> 的其他國家與地區（'+list.length+' 個）</div>';
+      h+='<div class="panel-divider">Otros países y regiones en <strong>'+fmtOff(ro)+'</strong> ('+list.length+')</div>';
       h+='<div class="tz-panel-list">';
       list.forEach(function(c){
         h+='<span class="tz-tag"><span class="tag-flag">'+c.flag+'</span><span>'+c.name;
-        if(c.zoneLabel)h+='<span class="tag-zone">（'+c.zoneLabel+'）</span>';
-        h+='</span>';if(c.isDST)h+=' <span class="tag-dst">夏令</span>';h+='</span>';
+        if(c.zoneLabel)h+='<span class="tag-zone"> ('+c.zoneLabel+')</span>';
+        h+='</span>';if(c.isDST)h+=' <span class="tag-dst">Verano</span>';h+='</span>';
       });
       h+='</div>';
     }
@@ -428,7 +428,7 @@ function showMultiPanel(cid,activeZone){
   $pB.innerHTML=h;
   panelTimerId=setInterval(function(){mtz.zones.forEach(function(z,i){var el=document.getElementById('zt-'+i);if(el)el.textContent=timeIana(z.iana)||timeByOff(z.realOff);});},1000);
 }
-
+  
 /* ===== LOAD MAP ===== */
 d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(world){
   var countries=topojson.feature(world,world.objects.countries).features;
@@ -477,10 +477,10 @@ d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(f
     var fl,nm,offT,tm,dH;
     if(MULTI_TZ[id]){
       var gc=geoCoords(ev),z=gc?findZone(id,gc[0],gc[1]):null;if(!z)z=MULTI_TZ[id].zones[0];
-      fl=flagA2(A2[id]);nm=nameA2(A2[id])+' — '+z.label;offT=fmtOff(z.realOff);tm=timeIana(z.iana)||timeByOff(z.realOff);dH=z.isDST?' <span class="tt-dst">☀️ 夏令時間</span>':'';
+      fl=flagA2(A2[id]);nm=nameA2(A2[id])+' — '+z.label;offT=fmtOff(z.realOff);tm=timeIana(z.iana)||timeByOff(z.realOff);dH=z.isDST?' <span class="tt-dst">☀️ Horario de verano</span>':'';
     }else{
       var c=cInfo[id]||{flag:flagA2(A2[id]),name:nameA2(A2[id]),realOff:getSingleOff(id,el.__data__),isDST:false,iana:IANA_SINGLE[id]};
-      fl=c.flag;nm=c.name;offT=fmtOff(c.realOff);tm=c.iana?timeIana(c.iana):timeByOff(c.realOff);dH=c.isDST?' <span class="tt-dst">☀️ 夏令時間</span>':'';
+      fl=c.flag;nm=c.name;offT=fmtOff(c.realOff);tm=c.iana?timeIana(c.iana):timeByOff(c.realOff);dH=c.isDST?' <span class="tt-dst">☀️ Horario de verano</span>':'';
     }
     $tip.innerHTML='<span class="tt-flag">'+fl+'</span> <span class="tt-name">'+nm+'</span>'+dH+'<br><span class="tt-offset">'+offT+'</span>&nbsp;&nbsp;<span class="tt-time">'+(tm||'--')+'</span>';
     var tx=ev.clientX+14,ty=ev.clientY-40;if(tx+280>window.innerWidth)tx=ev.clientX-280;if(ty<10)ty=ev.clientY+20;
@@ -501,7 +501,7 @@ d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(f
   }
 
   elLoading.style.display='none';
-}).catch(function(){elLoading.innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗，請重新整理頁面。</p>';});
+}).catch(function(){elLoading.innerHTML='<p style="color:#ef4444">⚠️ Error al cargar el mapa. Por favor, recarga la página.</p>';});
 
 /* ===== RESET ===== */
 document.getElementById('btnReset').addEventListener('click',function(){
@@ -509,12 +509,11 @@ document.getElementById('btnReset').addEventListener('click',function(){
   paintMap(null);resetDisp();panelReset();
   svg.transition().duration(500).call(zoom.transform,d3.zoomIdentity);
 });
-
+  
 /* ===== LEGEND EVENTS ===== */
-$leg.addEventListener('mouseover',function(ev){if(!ev.target.classList.contains('legend-seg')||locked!==null)return;var o=Number(ev.target.getAttribute('data-off'));hovOff=o;hovId=null;hovZone=null;paintMap(o);var fi={flag:'🌐',name:fmtOff(o)+' 時區',realOff:o,isDST:false,stdOff:o,iana:null};showSingleInfo(fi,false);showOffPanel(o,null);});
+$leg.addEventListener('mouseover',function(ev){if(!ev.target.classList.contains('legend-seg')||locked!==null)return;var o=Number(ev.target.getAttribute('data-off'));hovOff=o;hovId=null;hovZone=null;paintMap(o);var fi={flag:'🌐',name:fmtOff(o)+' Zona horaria',realOff:o,isDST:false,stdOff:o,iana:null};showSingleInfo(fi,false);showOffPanel(o,null);});
 $leg.addEventListener('mouseout',function(ev){if(!ev.target.classList.contains('legend-seg')||locked!==null)return;hovOff=null;hovId=null;hovZone=null;paintMap(null);resetDisp();panelReset();});
-$leg.addEventListener('click',function(ev){if(!ev.target.classList.contains('legend-seg'))return;var o=Number(ev.target.getAttribute('data-off'));if(locked===o&&!lockedId){locked=null;lockedId=null;lockedZone=null;paintMap(null);resetDisp();panelReset();return;}locked=o;lockedId=null;lockedZone=null;paintMap(o);var fi={flag:'🌐',name:fmtOff(o)+' 時區',realOff:o,isDST:false,stdOff:o,iana:null};showSingleInfo(fi,true);showOffPanel(o,null);});
-
+$leg.addEventListener('click',function(ev){if(!ev.target.classList.contains('legend-seg'))return;var o=Number(ev.target.getAttribute('data-off'));if(locked===o&&!lockedId){locked=null;lockedId=null;lockedZone=null;paintMap(null);resetDisp();panelReset();return;}locked=o;lockedId=null;lockedZone=null;paintMap(o);var fi={flag:'🌐',name:fmtOff(o)+' Zona horaria',realOff:o,isDST:false,stdOff:o,iana:null};showSingleInfo(fi,true);showOffPanel(o,null);});
 })();
 </script>
 
