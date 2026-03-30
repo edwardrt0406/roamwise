@@ -226,12 +226,12 @@ var CONT_COLORS = { asia:'#ef4444', europe:'#3b82f6', africa:'#f59e0b', namerica
 var CONT_FILL = { asia:'#fca5a5', europe:'#93c5fd', africa:'#fcd34d', namerica:'#6ee7b7', samerica:'#c4b5fd', oceania:'#67e8f9' };
 var CONT_HI = { asia:'#dc2626', europe:'#2563eb', africa:'#d97706', namerica:'#059669', samerica:'#7c3aed', oceania:'#0891b2' };
 
-var zhN;
-try { zhN = new Intl.DisplayNames(['en-GB'], { type:'region' }); } catch(e) { zhN = null; }
+var enN;
+try { enN = new Intl.DisplayNames(['en-GB'], { type:'region' }); } catch(e) { enN = null; }
 
 function nameA2(a2){
-  if(a2 && zhN){
-    try { return zhN.of(a2); } catch(e) {}
+  if(a2 && enN){
+    try { return enN.of(a2); } catch(e) {}
   }
   return a2 || 'Unknown';
 }
