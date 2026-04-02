@@ -467,7 +467,7 @@ function showInfo(c, isLock){
 }
 
 var W = 960, H = 500;
-var svg = d3.select('#mapWrap').append('svg').attr('viewBox', '0 0 ' + W + ' ' + H).attr('preserveAspectRatio', 'xMidYMid meet');
+var svg = d3.select('#mapWrap').append('svg').attr('viewBox', '0 0 ' + W + ' ' + H).attr('width',W).attr('height',H).attr('preserveAspectRatio', 'xMidYMid meet');
 var proj = d3.geoNaturalEarth1().scale(158).translate([W/2, H/2]);
 var path = d3.geoPath().projection(proj);
 var g = svg.append('g');
