@@ -327,7 +327,7 @@ var r=RDATA[id],lv=r?r[0]:0,vpn=r?r[1]:'N',svc=r?r[2]:'0000000000',note=r?r[3]:'
 allC.push({id:+id,a2:A2[id],name:nameOf(id),flag:flagOf(id),level:lv,vpn:vpn,svc:svc,note:note,isExtra:false});
 }
 EXTRA.forEach(function(e){allC.push({id:e.id,a2:e.id,name:e.name,flag:e.flag,level:e.level,vpn:e.vpn,svc:e.svc,note:e.note,isExtra:true});});
-allC.sort(function(a,b){return a.name.localeCompare(b.name,'zh-Hant');});
+allC.sort(function(a,b){return a.name.localeCompare(b.name,'es-ES');});
 })();
 
 var counts=[0,0,0,0,0];
@@ -577,7 +577,7 @@ var c=allC.find(function(x){return x.id===id&&!x.isExtra;});
 if(c){
 var lvd=LVLS[c.level],vp=VPN_LABELS[c.vpn];
 var blocked=[];for(var i=0;i<10;i++){var v=+c.svc[i]||0;if(v>0)blocked.push('<span class="tt-sc"><span style="font-size:.7rem;color:'+ST_CLS[v]+'">'+ST_ICON[v]+'</span>'+SVCS[i].n+'</span>');}
-$tip.innerHTML='<span class="tt-flag">'+c.flag+'</span><span class="tt-name">'+c.name+'</span>'+(c.a2?'<span class="tt-sub">ISO: '+c.a2+'</span>':'')+'<div class="tt-lvl" style="background:'+lvd.col+'">'+lvd.icon+' '+lvd.name+'</div> <span class="tt-lvl" style="background:'+vp[2]+'">🛡️ '+vp[1]+'</span>'+(blocked.length?'<div class="tt-svcs">'+blocked.join('')+'</div>':'<div style="margin-top:6px;font-size:.78rem;color:#86efac">✅ 所有服務正常使用</div>');
+$tip.innerHTML='<span class="tt-flag">'+c.flag+'</span><span class="tt-name">'+c.name+'</span>'+(c.a2?'<span class="tt-sub">ISO: '+c.a2+'</span>':'')+'<div class="tt-lvl" style="background:'+lvd.col+'">'+lvd.icon+' '+lvd.name+'</div> <span class="tt-lvl" style="background:'+vp[2]+'">🛡️ '+vp[1]+'</span>'+(blocked.length?'<div class="tt-svcs">'+blocked.join('')+'</div>':'<div style="margin-top:6px;font-size:.78rem;color:#86efac">✅ Todos los servicios funcionan con normalidad.</div>');
 }else{
 $tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nameOf(id)+'</span><br><span class="tt-sub">Datos no disponibles</span>';
 }
