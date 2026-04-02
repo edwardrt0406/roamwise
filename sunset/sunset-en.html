@@ -472,20 +472,19 @@ function doSearch(){
     document.getElementById('rSubheader').textContent='📅 '+fmtDate(y,m,d)+'　📍 '+c.lat.toFixed(2)+'°N, '+c.lng.toFixed(2)+'°E';
 
     // Main times
- if(sun.official.state){
-    const isPolar=sun.official.state==='never_rises';
-    document.getElementById('rSunrise').textContent=isPolar?'Never rises':'Never sets';
-    document.getElementById('rSunset').textContent=isPolar?'Never rises':'Never sets';
-    document.getElementById('rDayLen').textContent=isPolar?'0 h 0 m':'24 h 0 m';
-    document.getElementById('rNightLen').textContent=isPolar?'24 h 0 m':'0 h 0 m';
+if (sun.official.state) {
+    const isPolar = sun.official.state === 'never_rises';
+    document.getElementById('rSunrise').textContent = isPolar ? 'Never rises' : 'Never sets';
+    document.getElementById('rSunset').textContent = isPolar ? 'Never rises' : 'Never sets';
+    document.getElementById('rDayLen').textContent = isPolar ? '0 h 0 m' : '24 h 0 m';
+    document.getElementById('rNightLen').textContent = isPolar ? '24 h 0 m' : '0 h 0 m';
+} else {
+    document.getElementById('rSunrise').textContent = mt(sun.official.rise);
+    document.getElementById('rSunset').textContent = mt(sun.official.set);
+    const dayMins = sun.official.set - sun.official.rise;
+    document.getElementById('rDayLen').textContent = dur(dayMins);
+    document.getElementById('rNightLen').textContent = dur(1440 - dayMins);
 }
-    }else{
-        document.getElementById('rSunrise').textContent=mt(sun.official.rise);
-        document.getElementById('rSunset').textContent=mt(sun.official.set);
-        const dayMins=sun.official.set-sun.official.rise;
-        document.getElementById('rDayLen').textContent=dur(dayMins);
-        document.getElementById('rNightLen').textContent=dur(1440-dayMins);
-    }
 
     // Visual bar
     renderBar(sun);
@@ -549,7 +548,7 @@ function renderBar(sun){
     }
     addMarker(sun.official.rise,mt(sun.official.rise),'white');
     addMarker(sun.official.set,mt(sun.official.set),'white');
-    addMarker(sun.snoon,'正午','white');
+    addMarker(sun.snoon,'noon','white');
 
     // Current time marker if today
     const today=new Date();const ds=document.getElementById('dateInput').value;
@@ -558,7 +557,7 @@ function renderBar(sun){
         try{
             const nowStr=today.toLocaleTimeString('en-US',{timeZone:cities.find(x=>x.label===document.getElementById('cityInput').value.trim())?.iana||'UTC',hour12:false,hour:'2-digit',minute:'2-digit'});
             const[nh,nm]=nowStr.split(':').map(Number);
-            addMarker(nh*60+nm,'現在','red');
+            addMarker(nh*60+nm,'now','red');
         }catch(e){}
     }
 }
