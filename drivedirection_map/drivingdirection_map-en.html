@@ -124,10 +124,10 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
     <div class="rw-header-lang">
       <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">English ▾</button>
       <div class="rw-header-lang-menu">
-        <a href="drivedirection_map-zh.html">繁體中文</a>
-        <a href="drivedirection_map-en.html" class="active">English</a>
-        <a href="drivedirection_map-es.html">Español</a>
-        <a href="drivedirection_map-pt.html">Português</a>
+        <a href="drivingdirection_map-zh.html">繁體中文</a>
+        <a href="drivingdirection_map-en.html" class="active">English</a>
+        <a href="drivingdirection_map-es.html">Español</a>
+        <a href="drivingdirection_map-pt.html">Português</a>
       </div>
     </div>
   </div>
@@ -476,7 +476,6 @@ var facts = [
   {i:'🇲🇲', t:'Myanmar switched to right-hand traffic in 1970, but about 80% of vehicles are still right-hand drive today (the steering wheel is on the right).'},
   {i:'🇼🇸', t:'Samoa switched from right-hand to left-hand traffic in 2009, the most recent traffic-side change in the world.'}
 ];
-];
 facts.forEach(function(f){
 h+='<div class="fact-item"><span class="fact-icon">'+f.i+'</span><span>'+f.t+'</span></div>';
 });
@@ -494,48 +493,55 @@ paintMap();renderCatPanel();renderCountries();
 
 /* ===== RIGHT PANEL ===== */
 function renderCountries(){
-var list;
-if(selCat){
-  list = allC.filter(function(c){ return c.side === selCat; });
-  var cat = CATS[selCat];
-  $cHdr.innerHTML = cat.icon + ' ' + cat.name + ' Countries and Territories';
-}else{
-  list = allC;
-  $cHdr.innerHTML = '🌍 All Countries and Territories';
-}
-$cCount.textContent = list.length;
-var h = '';
-list.forEach(function(c){
-  var cat = CATS[c.side];
-  var ac = (locked !== null && ((typeof locked === 'number' && locked === c.id) || (typeof locked === 'string' && locked === c.id))) ? ' active' : '';
-  h += '<div class="cc-item'+ac+'" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'">';
-  h += '<span class="cc-flag">'+c.flag+'</span>';
-  h += '<div class="cc-info"><div class="cc-name">'+c.name+'</div>';
-  h += '<div class="cc-side"><span class="cc-sb" style="background:'+cat.col+'">'+cat.icon+' '+cat.name+'</span></div>';
-  if(c.note) h += '<div class="cc-note">'+c.note+'</div>';
-  h += '</div></div>';
-});
-$cGrid.innerHTML = h;
-$cGrid.querySelectorAll('.cc-item').forEach(function(el){
-  el.addEventListener('click', function(){
-    var rawId = this.getAttribute('data-id');
-    var isEx = this.getAttribute('data-extra') === '1';
-    var cid = isEx ? rawId : +rawId;
-    if(locked === cid){
-      locked = null;
-      paintMap();
-      resetInfo();
-      renderCountries();
-      return;
-    }
-    locked = cid;
-    var c = allC.find(function(x){ return x.id === cid; });
-    if(c) showInfo(c, true);
-    paintMap();
-    renderCountries();
-    if(!isEx && typeof cid === 'number') zoomTo(cid);
+  var list, title;
+  if(selCat){
+    list = allC.filter(function(c){ return c.side === selCat; });
+    var cat = CATS[selCat];
+    title = cat.icon + ' ' + cat.name + ' Countries and Territories';
+  }else{
+    list = allC;
+    title = '🌍 All Countries and Territories';
+  }
+
+  // 保留 count span，不要讓它消失
+  $cHdr.innerHTML = title + '<span id="cListCount" class="pc-count">' + list.length + '</span>';
+
+  var h = '';
+  list.forEach(function(c){
+    var cat = CATS[c.side];
+    var ac = (locked !== null && ((typeof locked === 'number' && locked === c.id) || (typeof locked === 'string' && locked === c.id))) ? ' active' : '';
+    h += '<div class="cc-item'+ac+'" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'">';
+    h += '<span class="cc-flag">'+c.flag+'</span>';
+    h += '<div class="cc-info"><div class="cc-name">'+c.name+'</div>';
+    h += '<div class="cc-side"><span class="cc-sb" style="background:'+cat.col+'">'+cat.icon+' '+cat.name+'</span></div>';
+    if(c.note) h += '<div class="cc-note">'+c.note+'</div>';
+    h += '</div></div>';
   });
-});
+
+  $cGrid.innerHTML = h;
+
+  $cGrid.querySelectorAll('.cc-item').forEach(function(el){
+    el.addEventListener('click', function(){
+      var rawId = this.getAttribute('data-id');
+      var isEx = this.getAttribute('data-extra') === '1';
+      var cid = isEx ? rawId : +rawId;
+
+      if(locked === cid){
+        locked = null;
+        paintMap();
+        resetInfo();
+        renderCountries();
+        return;
+      }
+
+      locked = cid;
+      var c = allC.find(function(x){ return x.id === cid; });
+      if(c) showInfo(c, true);
+      paintMap();
+      renderCountries();
+      if(!isEx && typeof cid === 'number') zoomTo(cid);
+    });
+  });
 }
 /* ===== SEARCH ===== */
 $sIn.addEventListener('input',function(){
