@@ -280,18 +280,25 @@
                 </div>
 
                 <div class="selector-group">
-                    <label><span class="icon">✈️</span> Destination</label>
+                    <label>✈️Destination</label>
                     <div class="custom-select-wrapper">
+                        <span class="input-icon-left">🔍</span>
                         <input type="text" id="destInput" placeholder="Type or select a country…" autocomplete="off">
-                        <div class="dropdown-list" id="destDropdown"></div>
-                    </div>
-                </div>
-
-                <div class="search-btn-wrapper">
-                    <button class="search-btn" id="searchBtn">🔍 Look Up</button>
+                    <span class="input-icon-right">▾</span>
+                    <div class="dropdown-list" id="destDropdown"></div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="results-area">
+        <div id="noResult" class="no-result">
+            <div class="big-icon">🔌</div>
+            <p>Select origin and destination</p>
+            <p class="sub" style="font-size:0.85rem;color:#94a3b8;margin-top:4px;">Show</p>
+        </div>
+        <div id="resultContainer"></div>
+    </div>
 
         <!-- Results Area -->
         <div class="results-area">
