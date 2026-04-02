@@ -332,7 +332,7 @@ var r=RDATA[id],lv=r?r[0]:0,vpn=r?r[1]:'N',svc=r?r[2]:'0000000000',note=r?r[3]:'
 allC.push({id:+id,a2:A2[id],name:nameOf(id),flag:flagOf(id),level:lv,vpn:vpn,svc:svc,note:note,isExtra:false});
 }
 EXTRA.forEach(function(e){allC.push({id:e.id,a2:e.id,name:e.name,flag:e.flag,level:e.level,vpn:e.vpn,svc:e.svc,note:e.note,isExtra:true});});
-allC.sort(function(a,b){return a.name.localeCompare(b.name,'zh-Hant');});
+allC.sort(function(a,b){return a.name.localeCompare(b.name,'en-GB');});
 })();
 
 var counts=[0,0,0,0,0];
