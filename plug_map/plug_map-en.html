@@ -361,7 +361,7 @@ function flagOf(id){var a=A2[id];if(!a)return'🏳️';return a.replace(/./g,fun
 /* ========== BUILD COUNTRY LIST ========== */
 var allC=[];
 (function(){var seen={};for(var id in CP){if(seen[id])continue;seen[id]=1;var c=CP[id];allC.push({id:+id,a2:A2[id]||'',name:nameOf(id),flag:flagOf(id),types:c.t,v:c.v,f:c.f});}
-allC.sort(function(a,b){return a.name.localeCompare(b.name,'zh-Hant');});
+allC.sort(function(a,b){return a.name.localeCompare(b.name,'en-GB');});
 })();
 
 /* Count countries per plug type */
