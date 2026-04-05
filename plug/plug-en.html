@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<!DOCTYPE html><html lang="en-GB"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roamwise - Power Plug Standards Lookup</title>
@@ -33,58 +33,23 @@
             flex-direction: column;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: #fff;
-            padding: 0 24px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 12px rgba(37,99,235,0.3);
-        }
+.rw-header *{margin:0;padding:0;box-sizing:border-box}
+.rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:linear-gradient(135deg,#1e40af,#3b82f6);border-bottom:none;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
+.rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
+.rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#ffffff}
+.rw-header-logo .brand-wise{font-size:1.55rem;font-weight:800;color:#bfdbfe}
+.rw-header-right{display:flex;align-items:center;gap:20px}
+.rw-header-contact{text-decoration:none;color:#e0e7ff;font-size:.95rem;font-weight:500;transition:color .2s}
+.rw-header-contact:hover{color:#ffffff}
+.rw-header-lang{position:relative;display:inline-block}
+.rw-header-lang-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:.9rem;font-weight:500;color:#ffffff;cursor:pointer;transition:background .2s}
+.rw-header-lang-btn:hover{background:rgba(255,255,255,.25)}
+.rw-header-lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:160px;overflow:hidden;z-index:1001}
+.rw-header-lang:hover .rw-header-lang-menu,.rw-header-lang-menu.show{display:block}
+.rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
+.rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
+.rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
 
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo span { color: var(--accent); }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .header-right a {
-            color: rgba(255,255,255,0.85);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-
-        .header-right a:hover { color: #fff; }
-
-        .lang-select {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .lang-select option { color: #333; background: #fff; }
 
         main {
             flex: 1;
@@ -375,60 +340,21 @@
             left: 0;
         }
 
-        footer {
-            background: #1e293b;
-            color: rgba(255,255,255,0.7);
-            padding: 36px 24px 20px;
-            margin-top: auto;
-        }
+.rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#ffffff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#ffffff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
+@media(max-width:768px){.rw-footer-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(max-width:480px){.rw-footer{padding:36px 16px 0}.rw-footer-grid{grid-template-columns:1fr;gap:24px}}
 
-        .footer-grid {
-            max-width: 900px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 28px;
-            margin-bottom: 28px;
-        }
-
-        .footer-col h4 {
-            color: #fff;
-            font-size: 0.95rem;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .footer-col a {
-            display: block;
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            font-size: 0.88rem;
-            padding: 4px 0;
-            transition: color 0.2s;
-        }
-
-        .footer-col a:hover { color: #fff; }
-
-        .footer-col a.active-link {
-            color: var(--accent);
-            font-weight: 500;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 16px;
-            font-size: 0.82rem;
-        }
-
-        .footer-bottom a {
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-        }
-
-        .footer-bottom a:hover { color: #fff; }
 
         @media (max-width: 640px) {
             .page-title { font-size: 1.3rem; }
@@ -444,19 +370,21 @@
 <body>
 
     <!-- HEADER -->
-    <header>
-        <div class="logo">Roam<span>wise</span></div>
-        <div class="header-right">
-            <a href="#" class="contact-link">Contact</a>
-            <select class="lang-select" id="langSelect">
-                <option value="zh-Hant">繁體中文</option>
-                <option value="en" selected="">English</option>
-                <option value="es">Español</option>
-                <option value="pt">Português</option>
-                <option value="hi">हिन्दी</option>
-            </select>
-        </div>
-    </header>
+<header class="rw-header">
+  <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
+  <div class="rw-header-right">
+    <a href="../1-contact/contact-zh.html" class="rw-header-contact">contact us</a>
+    <div class="rw-header-lang">
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">English ▾</button>
+      <div class="rw-header-lang-menu">
+        <a href="plug-zh.html">繁體中文</a>
+        <a href="plug-en.html" class="active">English</a>
+        <a href="plug-es.html">Español</a>
+        <a href="plug-pt.html">Português</a>
+      </div>
+    </div>
+  </div>
+</header>
 
     <!-- MAIN CONTENT -->
     <main>
@@ -551,36 +479,45 @@
     </main>
 
     <!-- FOOTER -->
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>🔌 Electricity &amp; Time</h4>
-                <a href="#" class="active-link">Power Plug Standards</a>
-                <a href="#">Time Zone Lookup</a>
-                <a href="#">Sunrise &amp; Sunset</a>
-            </div>
-            <div class="footer-col">
-                <h4>🎉 Holidays &amp; Festivals</h4>
-                <a href="#">Public Holidays by Country</a>
-                <a href="#">Festivals &amp; Events</a>
-            </div>
-            <div class="footer-col">
-                <h4>💱 Finance &amp; Units</h4>
-                <a href="#">Currency Exchange</a>
-                <a href="#">Unit Converter</a>
-            </div>
-            <div class="footer-col">
-                <h4>🌍 Travel Info</h4>
-                <a href="#">Country Overview</a>
-                <a href="#">Detailed Regional Guides</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            © 2026 Roamwise. All rights reserved. |
-            <a href="#">Privacy Policy</a> |
-            <a href="#">Terms of Use</a>
-        </div>
-    </footer>
+<footer class="rw-footer">
+  <div class="rw-footer-grid">
+    <div class="rw-footer-col">
+      <h4>⏰ Time & Daylight</h4>
+      <ul>
+        <li><a href="../time-zone/time-zone-en.html">World Time Zone Lookup</a></li>
+        <li><a href="../meeting/meeting-en.html">Meeting Time Finder</a></li>
+        <li><a href="../sunset/sunset-en.html">Sunrise & Sunset Times</a></li>
+        <li><a href="../timer/timer-en.html">Timer & Countdown</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🔧 Converters & Tools</h4>
+      <ul>
+        <li><a href="../currency/currency-en.html">Currency Converter</a></li>
+        <li><a href=".unit-en.html">Unit Converter</a></li>
+        <li><a href="../plug/plug-en.html">Power Plug Standards</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🚗 Travel & Driving Maps</h4>
+      <ul>
+        <li><a href="../country_map/country_map-en.html">World Countries & Regions Map</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-en.html">Driving Direction Map</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-en.html">International Driving Permit Map</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🌍 Global Info Maps</h4>
+      <ul>
+        <li><a href="../time-zone-map/time-zone-map-en.html">World Time Zone Map</a></li>
+        <li><a href="../plug_map/plug_map-en.html">World Power Plug Map</a></li>
+        <li><a href="../nationalday_map/nationalday_map-en.html">World Calendar Systems Map</a></li>
+        <li><a href="../Network_map/Network_map-en.html">Internet Freedom Map</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></div>
+</footer>
 
     <script>
     // ===== PLUG DATA BY COUNTRY =====
