@@ -5,11 +5,25 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
-nav{background:linear-gradient(135deg,#1e3a8a,#1e40af);display:flex;align-items:center;justify-content:space-between;padding:.75rem 2rem;flex-wrap:wrap}
-.logo{font-size:1.5rem;font-weight:700;color:#fff;text-decoration:none}.logo span{color:#facc15}
-.nav-r{display:flex;align-items:center;gap:1.2rem}
-nav a{color:#e0e7ff;text-decoration:none;font-size:.95rem;padding-bottom:2px;border-bottom:2px solid transparent}nav a:hover{color:#fff}nav a.act{color:#fff;border-bottom-color:#facc15}
-main{flex:1;max-width:1260px;width:100%;margin:1.5rem auto;padding:0 1.5rem}
+.rw-header *{margin:0;padding:0;box-sizing:border-box}
+.rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:linear-gradient(135deg,#1e40af,#3b82f6);border-bottom:none;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
+.rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
+.rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#ffffff}
+.rw-header-logo .brand-wise{font-size:1.55rem;font-weight:800;color:#bfdbfe}
+.rw-header-right{display:flex;align-items:center;gap:20px}
+.rw-header-contact{text-decoration:none;color:#e0e7ff;font-size:.95rem;font-weight:500;transition:color .2s}
+.rw-header-contact:hover{color:#ffffff}
+.rw-header-lang{position:relative;display:inline-block}
+.rw-header-lang-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:.9rem;font-weight:500;color:#ffffff;cursor:pointer;transition:background .2s}
+.rw-header-lang-btn:hover{background:rgba(255,255,255,.25)}
+.rw-header-lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:160px;overflow:hidden;z-index:1001}
+.rw-header-lang:hover .rw-header-lang-menu,.rw-header-lang-menu.show{display:block}
+.rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
+.rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
+.rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+@media(max-width:600px){.rw-header{padding:12px 16px}.rw-header-logo .brand-roam,.rw-header-logo .brand-wise{font-size:1.25rem}.rw-header-right{gap:12px}.rw-header-contact{font-size:.85rem}.rw-header-lang-btn{padding:6px 10px;font-size:.82rem}}
+
+  main{flex:1;max-width:1260px;width:100%;margin:1.5rem auto;padding:0 1.5rem}
 h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
 .card{background:#fff;border-radius:14px;padding:1.5rem;box-shadow:0 2px 14px rgba(0,0,0,.06);margin-bottom:1.2rem}
 .info-bar{display:flex;align-items:flex-start;gap:1.2rem;flex-wrap:wrap;padding-bottom:1.2rem;border-bottom:1px solid #e2e8f0;min-height:70px}
@@ -82,29 +96,49 @@ h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5r
 .tt-sub{color:#cbd5e1;font-size:.82rem}
 .tt-side{margin-top:6px;display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:.78rem;font-weight:700;color:#fff}
 .tt-note{display:block;margin-top:4px;font-size:.75rem;color:#94a3b8;font-style:italic}
-footer{background:#1e293b;color:#94a3b8;margin-top:auto}
-.footer-inner{max-width:1260px;margin:0 auto;padding:2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.85rem}
-.footer-inner a{color:#94a3b8;text-decoration:none}.footer-inner a:hover{color:#60a5fa}
-@media(max-width:900px){.two-panel{grid-template-columns:1fr}}
-@media(max-width:600px){nav{padding:.6rem 1rem}.nav-r{gap:.7rem}nav a{font-size:.82rem}main{padding:0 .8rem}.card{padding:1rem}.info-bar{flex-direction:column}.info-right{width:100%;justify-content:flex-start}.cc-grid{grid-template-columns:1fr}}
+.rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#ffffff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#ffffff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
+@media(max-width:768px){.rw-footer-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(max-width:480px){.rw-footer{padding:36px 16px 0}.rw-footer-grid{grid-template-columns:1fr;gap:24px}}
 </style>
 </head>
 <body>
 
-<nav>
-  <a class="logo" href="#">Roam<span>wise</span></a>
-  <div class="nav-r"><a href="#">🔌 插頭查詢</a><a href="#" class="act">🚗 駕駛方向</a><a href="#">🕐 時區</a><a href="#">💱 匯率</a></div>
-</nav>
+<header class="rw-header">
+  <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
+  <div class="rw-header-right">
+    <a href="../1-contact/contact-zh.html" class="rw-header-contact">contact us</a>
+    <div class="rw-header-lang">
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">English ▾</button>
+      <div class="rw-header-lang-menu">
+        <a href="drivedirection_map-zh.html">繁體中文</a>
+        <a href="drivedirection_map-en.html" class="active">English</a>
+        <a href="drivedirection_map-es.html">Español</a>
+        <a href="drivedirection_map-pt.html">Português</a>
+      </div>
+    </div>
+  </div>
+</header>
 
 <main>
-<h1>🚗 世界行車方向互動地圖</h1>
+<h1>🚗 Driving Direction Map</h1>
 
 <div class="card">
   <div class="info-bar" id="infoBar">
     <div class="info-left">
       <div class="info-flag" id="infoFlag">🌐</div>
       <div class="info-details">
-        <div class="info-name" id="infoName"><span class="info-placeholder">將滑鼠移至地圖上查看各國行車方向</span></div>
+        <div class="info-name" id="infoName"><span class="info-placeholder">Move your mouse over the map to see each country’s driving direction</span></div>
         <div class="info-sub" id="infoSub"></div>
         <div id="infoBadge"></div>
       </div>
@@ -113,35 +147,35 @@ footer{background:#1e293b;color:#94a3b8;margin-top:auto}
   </div>
 
   <div class="map-wrap" id="mapWrap">
-    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>載入地圖中…</p></div>
+    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>Loading map…</p></div>
     <div class="map-legend" id="mapLegend">
-      <span class="ml-item"><span class="ml-dot" style="background:#bfdbfe;border:1px solid #3b82f6"></span>靠右行駛</span>
-      <span class="ml-item"><span class="ml-dot" style="background:#fde68a;border:1px solid #f59e0b"></span>靠左行駛</span>
-      <span class="ml-item"><span class="ml-dot" style="background:#e2e8f0;border:1px solid #cbd5e1"></span>無資料</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#bfdbfe;border:1px solid #3b82f6"></span>Right-hand traffic</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#fde68a;border:1px solid #f59e0b"></span>Left-hand traffic</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#e2e8f0;border:1px solid #cbd5e1"></span>No data</span>
     </div>
   </div>
 
   <div class="tips">
-    <span>🖱️ 滑入查看行車方向</span><span>👆 點擊鎖定國家</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span>
+    <span>🖱️ Hover to view driving direction</span><span>👆 Click to lock a country</span><span>🔍 Scroll to zoom</span><span>✋ Drag to pan</span>
   </div>
 
   <div class="bar-row">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input class="search-input" id="searchIn" type="text" placeholder="搜尋國家或地區（如：香港、日本）…" autocomplete="off">
+      <input class="search-input" id="searchIn" type="text" placeholder="Search for a country or territory (e.g. Hong Kong, Japan)..." autocomplete="off">
       <div class="search-dd" id="searchDD"></div>
     </div>
-    <button class="btn btn-primary" id="btnReset">🔄 重設</button>
+    <button class="btn btn-primary" id="btnReset">🔄 Reset</button>
   </div>
 </div>
 
 <div class="two-panel">
   <div class="panel" id="panelLeft">
-    <div class="panel-hdr">🛣️ 行車方向指南</div>
+    <div class="panel-hdr">🛣️ Driving direction guide</div>
     <div class="panel-body" id="catPanel"></div>
   </div>
   <div class="panel" id="panelRight">
-    <div class="panel-hdr" id="cListHdr">🌍 所有國家與地區<span id="cListCount" class="pc-count">0</span></div>
+    <div class="panel-hdr" id="cListHdr">🌍 All countries and territories<span id="cListCount" class="pc-count">0</span></div>
     <div class="panel-body" id="cListBody"><div class="cc-grid" id="cGrid"></div></div>
   </div>
 </div>
@@ -149,11 +183,44 @@ footer{background:#1e293b;color:#94a3b8;margin-top:auto}
 
 <div class="tooltip" id="tooltip"></div>
 
-<footer>
-  <div class="footer-inner">
-    <span>© 2026 Roamwise — 旅行者的實用工具箱</span>
-    <div><a href="#">隱私權政策</a> · <a href="#">使用條款</a> · <a href="#">聯絡我們</a></div>
+<footer class="rw-footer">
+  <div class="rw-footer-grid">
+    <div class="rw-footer-col">
+      <h4>⏰ Time & Daylight</h4>
+      <ul>
+        <li><a href="../time-zone/time-zone-en.html">World Time Zone Lookup</a></li>
+        <li><a href="../meeting/meeting-en.html">Meeting Time Finder</a></li>
+        <li><a href="../sunset/sunset-en.html">Sunrise & Sunset Times</a></li>
+        <li><a href="../timer/timer-en.html">Timer & Countdown</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🔧 Converters & Tools</h4>
+      <ul>
+        <li><a href="../currency/currency-en.html">Currency Converter</a></li>
+        <li><a href="../unit/unit-en.html">Unit Converter</a></li>
+        <li><a href="../plug/plug-en.html">Power Plug Standards</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🚗 Travel & Driving Maps</h4>
+      <ul>
+        <li><a href="../country_map/country_map-en.html">World Countries & Regions Map</a></li>
+        <li><a href="drivingdirection_map-en.html">Driving Direction Map</a></li>
+        <li><a href="../drivinglicense_map/drivinglicense_map-en.html">International Driving Permit Map</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🌍 Global Info Maps</h4>
+      <ul>
+        <li><a href="../time-zone-map/time-zone-map-en.html">World Time Zone Map</a></li>
+        <li><a href="../plug_map/plug_map-en.html">World Power Plug Map</a></li>
+        <li><a href="../nationalday_map/nationalday_map-en.html">World Calendar Systems Map</a></li>
+        <li><a href="../Network_map/Network_map-en.html">Internet Freedom Map</a></li>
+      </ul>
+    </div>
   </div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></div>
 </footer>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -187,48 +254,75 @@ var SIDE={
 };
 
 /* ===== CATEGORIES ===== */
-var CATS={
-R:{name:'靠右行駛',en:'RHT (Right-Hand Traffic)',desc:'車輛靠道路右側行駛，駕駛座在左側',col:'#3b82f6',fill:'#bfdbfe',hi:'#1d4ed8',light:'#eff6ff',icon:'➡️'},
-L:{name:'靠左行駛',en:'LHT (Left-Hand Traffic)',desc:'車輛靠道路左側行駛，駕駛座在右側',col:'#f59e0b',fill:'#fde68a',hi:'#b45309',light:'#fffbeb',icon:'⬅️'},
-M:{name:'混合行駛',en:'Mixed',desc:'目前全球無正式混合行駛的國家',col:'#8b5cf6',fill:'#ddd6fe',hi:'#6d28d9',light:'#f5f3ff',icon:'↔️'}
+var CATS = {
+  R: {
+    name: 'Right-hand traffic',
+    en: 'RHT (Right-Hand Traffic)',
+    desc: 'Vehicles drive on the right side of the road; the driver\'s seat is on the left',
+    col: '#3b82f6',
+    fill: '#bfdbfe',
+    hi: '#1d4ed8',
+    light: '#eff6ff',
+    icon: '➡️'
+  },
+  L: {
+    name: 'Left-hand traffic',
+    en: 'LHT (Left-Hand Traffic)',
+    desc: 'Vehicles drive on the left side of the road; the driver\'s seat is on the right',
+    col: '#f59e0b',
+    fill: '#fde68a',
+    hi: '#b45309',
+    light: '#fffbeb',
+    icon: '⬅️'
+  },
+  M: {
+    name: 'Mixed traffic',
+    en: 'Mixed',
+    desc: 'There are currently no countries in the world with formal mixed traffic',
+    col: '#8b5cf6',
+    fill: '#ddd6fe',
+    hi: '#6d28d9',
+    light: '#f5f3ff',
+    icon: '↔️'
+  }
 };
 
 /* ===== EXTRA TERRITORIES (not in 110m map) ===== */
-var EXTRA=[
-{id:'HK',name:'香港',flag:'🇭🇰',side:'L',note:'中國特別行政區，保留英治時期靠左行駛。港珠澳大橋設有左右切換車道。'},
-{id:'MO',name:'澳門',flag:'🇲🇴',side:'L',note:'中國特別行政區，保留葡治時期靠左行駛。蓮花大橋設有左右切換設計。'},
-{id:'VI',name:'美屬維爾京群島',flag:'🇻🇮',side:'L',note:'美國領地中唯一靠左行駛的地區'},
-{id:'VG',name:'英屬維爾京群島',flag:'🇻🇬',side:'L',note:'英國海外領土'},
-{id:'BM',name:'百慕達',flag:'🇧🇲',side:'L',note:'英國海外領土'},
-{id:'KY',name:'開曼群島',flag:'🇰🇾',side:'L',note:'英國海外領土'},
-{id:'IM',name:'曼島',flag:'🇮🇲',side:'L',note:'英國皇家屬地'},
-{id:'JE',name:'澤西',flag:'🇯🇪',side:'L',note:'英國皇家屬地'},
-{id:'GG',name:'根西',flag:'🇬🇬',side:'L',note:'英國皇家屬地'},
-{id:'FK',name:'福克蘭群島',flag:'🇫🇰',side:'L',note:'英國海外領土'},
-{id:'MS',name:'蒙塞拉特',flag:'🇲🇸',side:'L',note:'英國海外領土'},
-{id:'TC',name:'特克斯和凱科斯群島',flag:'🇹🇨',side:'L',note:'英國海外領土'},
-{id:'AI',name:'安圭拉',flag:'🇦🇮',side:'L',note:'英國海外領土'},
-{id:'CK',name:'庫克群島',flag:'🇨🇰',side:'L',note:'紐西蘭自由聯合國'},
-{id:'NU',name:'紐埃',flag:'🇳🇺',side:'L',note:'紐西蘭自由聯合國'},
-{id:'CX',name:'聖誕島',flag:'🇨🇽',side:'L',note:'澳洲外部領地'},
-{id:'GI',name:'直布羅陀',flag:'🇬🇮',side:'R',note:'英國海外領土，因毗鄰西班牙而靠右行駛'}
+var EXTRA = [
+  {id:'HK',name:'Hong Kong',flag:'🇭🇰',side:'L',note:'A Special Administrative Region of China that retains left-hand traffic from the British era. The Hong Kong–Zhuhai–Macau Bridge includes lanes for switching between left- and right-hand traffic.'},
+  {id:'MO',name:'Macau',flag:'🇲🇴',side:'L',note:'A Special Administrative Region of China that retains left-hand traffic from the Portuguese era. The Lotus Bridge has a design for switching between left- and right-hand traffic.'},
+  {id:'VI',name:'United States Virgin Islands',flag:'🇻🇮',side:'L',note:'The only U.S. territory where traffic keeps to the left.'},
+  {id:'VG',name:'British Virgin Islands',flag:'🇻🇬',side:'L',note:'British Overseas Territory.'},
+  {id:'BM',name:'Bermuda',flag:'🇧🇲',side:'L',note:'British Overseas Territory.'},
+  {id:'KY',name:'Cayman Islands',flag:'🇰🇾',side:'L',note:'British Overseas Territory.'},
+  {id:'IM',name:'Isle of Man',flag:'🇮🇲',side:'L',note:'Crown dependency.'},
+  {id:'JE',name:'Jersey',flag:'🇯🇪',side:'L',note:'Crown dependency.'},
+  {id:'GG',name:'Guernsey',flag:'🇬🇬',side:'L',note:'Crown dependency.'},
+  {id:'FK',name:'Falkland Islands',flag:'🇫🇰',side:'L',note:'British Overseas Territory.'},
+  {id:'MS',name:'Montserrat',flag:'🇲🇸',side:'L',note:'British Overseas Territory.'},
+  {id:'TC',name:'Turks and Caicos Islands',flag:'🇹🇨',side:'L',note:'British Overseas Territory.'},
+  {id:'AI',name:'Anguilla',flag:'🇦🇮',side:'L',note:'British Overseas Territory.'},
+  {id:'CK',name:'Cook Islands',flag:'🇨🇰',side:'L',note:'Free association with New Zealand.'},
+  {id:'NU',name:'Niue',flag:'🇳🇺',side:'L',note:'Free association with New Zealand.'},
+  {id:'CX',name:'Christmas Island',flag:'🇨🇽',side:'L',note:'External territory of Australia.'},
+  {id:'GI',name:'Gibraltar',flag:'🇬🇮',side:'R',note:'British Overseas Territory; drives on the right because it is adjacent to Spain.'}
 ];
 
 /* ===== HISTORICAL SWITCHES ===== */
 var HIST={
-752:{y:1967,d:'R',note:'Dagen H — 瑞典在 1967/9/3 凌晨全國從靠左切換為靠右'},
-352:{y:1968,d:'R',note:'1968年跟隨瑞典從靠左改為靠右'},
-882:{y:2009,d:'L',note:'2009年從靠右改為靠左，全球最近一次切換'},
-104:{y:1970,d:'R',note:'1970年軍政府下令從靠左改為靠右，但至今多數車輛仍為右駕'},
-288:{y:1974,d:'R',note:'1974年獨立後從英式靠左改為靠右'},
-566:{y:1972,d:'R',note:'1972年獨立後從英式靠左改為靠右'},
-694:{y:1971,d:'R',note:'1971年從靠左改為靠右'}
+752:{y:1967,d:'R',note:'Dagen H — Sweden switched nationwide from left-hand to right-hand traffic in the early hours of 3 September 1967'},
+352:{y:1968,d:'R',note:'Followed Sweden in 1968, changing from left-hand to right-hand traffic'},
+882:{y:2009,d:'L',note:'Changed from right-hand to left-hand traffic in 2009, the most recent switch in the world'},
+104:{y:1970,d:'R',note:'In 1970, the military government ordered a switch from left-hand to right-hand traffic, although most vehicles are still right-hand drive today'},
+288:{y:1974,d:'R',note:'After independence in 1974, it changed from British-style left-hand to right-hand traffic'},
+566:{y:1972,d:'R',note:'After independence in 1972, it changed from British-style left-hand to right-hand traffic'},
+694:{y:1971,d:'R',note:'Switched from left-hand to right-hand traffic in 1971'}
 };
 
 /* ===== A2 CODE MAP ===== */
 var A2={4:'AF',8:'AL',12:'DZ',16:'AS',20:'AD',24:'AO',28:'AG',31:'AZ',32:'AR',36:'AU',40:'AT',44:'BS',48:'BH',50:'BD',51:'AM',52:'BB',56:'BE',64:'BT',68:'BO',70:'BA',72:'BW',76:'BR',84:'BZ',90:'SB',96:'BN',100:'BG',104:'MM',108:'BI',112:'BY',116:'KH',120:'CM',124:'CA',132:'CV',140:'CF',144:'LK',148:'TD',152:'CL',156:'CN',158:'TW',170:'CO',174:'KM',178:'CG',180:'CD',188:'CR',191:'HR',192:'CU',196:'CY',203:'CZ',204:'BJ',208:'DK',214:'DO',218:'EC',222:'SV',226:'GQ',231:'ET',232:'ER',233:'EE',242:'FJ',246:'FI',250:'FR',262:'DJ',266:'GA',268:'GE',270:'GM',275:'PS',276:'DE',288:'GH',296:'KI',300:'GR',304:'GL',320:'GT',324:'GN',328:'GY',332:'HT',336:'VA',340:'HN',348:'HU',352:'IS',356:'IN',360:'ID',364:'IR',368:'IQ',372:'IE',376:'IL',380:'IT',384:'CI',388:'JM',392:'JP',398:'KZ',400:'JO',404:'KE',408:'KP',410:'KR',414:'KW',417:'KG',418:'LA',422:'LB',426:'LS',428:'LV',430:'LR',434:'LY',440:'LT',442:'LU',450:'MG',454:'MW',458:'MY',462:'MV',466:'ML',470:'MT',478:'MR',480:'MU',484:'MX',492:'MC',496:'MN',498:'MD',499:'ME',504:'MA',508:'MZ',512:'OM',516:'NA',524:'NP',528:'NL',540:'NC',548:'VU',554:'NZ',558:'NI',562:'NE',566:'NG',578:'NO',586:'PK',591:'PA',598:'PG',600:'PY',604:'PE',608:'PH',616:'PL',620:'PT',624:'GW',626:'TL',630:'PR',634:'QA',642:'RO',643:'RU',646:'RW',674:'SM',682:'SA',686:'SN',688:'RS',694:'SL',702:'SG',703:'SK',705:'SI',706:'SO',710:'ZA',716:'ZW',724:'ES',728:'SS',729:'SD',732:'EH',740:'SR',748:'SZ',752:'SE',756:'CH',760:'SY',762:'TJ',764:'TH',768:'TG',776:'TO',780:'TT',784:'AE',788:'TN',792:'TR',795:'TM',800:'UG',804:'UA',807:'MK',818:'EG',826:'GB',834:'TZ',840:'US',854:'BF',858:'UY',860:'UZ',862:'VE',882:'WS',887:'YE',894:'ZM',704:'VN'};
-var zhN;try{zhN=new Intl.DisplayNames(['zh-Hant'],{type:'region'});}catch(e){}
-function nameOf(id){var a=A2[id];if(a&&zhN)try{return zhN.of(a);}catch(e){}return a||'';}
+var enN;try{enN=new Intl.DisplayNames(['zh-en-GB'],{type:'region'});}catch(e){}
+function nameOf(id){var a=A2[id];if(a&&enN)try{return enN.of(a);}catch(e){}return a||'';}
 function flagOf(id){var a=A2[id];if(!a)return'🏳️';return a.replace(/./g,function(c){return String.fromCodePoint(0x1F1E6+c.charCodeAt(0)-65);});}
 
 /* ===== ROAD SVG ===== */
@@ -265,7 +359,7 @@ allC.push({id:+id,a2:A2[id]||'',name:nameOf(id),flag:flagOf(id),side:SIDE[id],no
 EXTRA.forEach(function(e){
 allC.push({id:e.id,a2:e.id,name:e.name,flag:e.flag,side:e.side,note:e.note,isExtra:true});
 });
-allC.sort(function(a,b){return a.name.localeCompare(b.name,'zh-Hant');});
+allC.sort(function(a,b){return a.name.localeCompare(b.name,'en-GB');});
 })();
 
 var counts={R:0,L:0,M:0};
@@ -284,7 +378,7 @@ var locked=null,selCat=null;
 /* ===== INFO BAR ===== */
 function resetInfo(){
 $flag.textContent='🌐';
-$name.innerHTML='<span class="info-placeholder">將滑鼠移至地圖上查看各國行車方向</span>';
+$name.innerHTML='<span class="info-placeholder">Move your mouse over the map to see each country’s driving direction</span>';
 $sub.textContent='';$badge.innerHTML='';$infoR.innerHTML='';
 }
 function showInfo(c,isLock){
@@ -293,9 +387,9 @@ $name.textContent=c.name+(isLock?' 🔒':'');
 var cat=CATS[c.side];
 $sub.textContent=(c.a2&&c.a2.length===2?'ISO: '+c.a2:'')+(c.note?' · '+c.note:'');
 $badge.innerHTML='<span class="side-badge" style="background:'+cat.col+'">'+cat.icon+' '+cat.name+' ('+cat.en+')</span>';
-var steer=c.side==='L'?'右側（RHD）':'左側（LHD）';
-var roadSide=c.side==='L'?'左側':'右側';
-$infoR.innerHTML='<div style="flex-shrink:0">'+roadSVG(c.side,56)+'</div><div class="info-stat"><div class="info-stat-val">🛣️ '+roadSide+'</div><div class="info-stat-lbl">行車方向</div></div><div class="info-stat"><div class="info-stat-val">🚗 '+steer+'</div><div class="info-stat-lbl">駕駛座位置</div></div>';
+  var steer = c.side === 'L' ? 'Right-hand drive (RHD)' : 'Left-hand drive (LHD)';
+  var roadSide = c.side === 'L' ? 'Left side' : 'Right side';
+$infoR.innerHTML='<div style="flex-shrink:0">'+roadSVG(c.side,56)+'</div><div class="info-stat"><div class="info-stat-val">🛣️ '+roadSide+'</div><div class="info-stat-lbl">Traffic side</div></div><div class="info-stat"><div class="info-stat-val">🚗 '+steer+'</div><div class="info-stat-lbl">Steering position</div></div>';
 }
 
 /* ===== MAP ===== */
@@ -354,28 +448,28 @@ h+='</div>';
 });
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">📊 全球比例</div>';
+h+='<div class="stat-section"><div class="stat-title">📊 Global proportion</div>';
 var pR=total?Math.round(counts.R/total*100):0,pL=total?Math.round(counts.L/total*100):0;
-h+='<div class="stat-bar-wrap"><div class="sb-r" style="width:'+pR+'%">'+pR+'% 靠右</div><div class="sb-l" style="width:'+pL+'%">'+pL+'% 靠左</div></div>';
+h+='<div class="stat-bar-wrap"><div class="sb-r" style="width:'+pR+'%">'+pR+'% Right-hand</div><div class="sb-l" style="width:'+pL+'%">'+pL+'% Left-hand</div></div>';
 h+='</div>';
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">📅 歷史轉換記錄</div>';
+h+='<div class="stat-section"><div class="stat-title">📅 Historical switch records</div>';
 var hk=Object.keys(HIST).sort(function(a,b){return HIST[a].y-HIST[b].y;});
 hk.forEach(function(id){
 var hi=HIST[id];
-h+='<div class="hist-item"><span class="hist-flag">'+flagOf(id)+'</span><span class="hist-year">'+hi.y+'</span><span class="hist-text">'+nameOf(id)+' — '+hi.note.split('—')[0].split('年')[0]+'</span></div>';
+h+='<div class="hist-item"><span class="hist-flag">'+flagOf(id)+'</span><span class="hist-year">'+hi.y+'</span><span class="hist-text">'+nameOf(id)+' — '+hi.note.split('—')[0].split('year')[0]+'</span></div>';
 });
 h+='</div>';
 
 h+='<div class="divider"></div>';
-h+='<div class="stat-section"><div class="stat-title">💡 趣味知識</div>';
+h+='<div class="stat-section"><div class="stat-title">💡 Fun facts</div>';
 var facts=[
-{i:'🏇',t:'中世紀騎士慣用右手持劍，因此騎馬靠左行走以便右手迎敵，這是靠左行駛的起源。'},
-{i:'🇫🇷',t:'拿破崙將靠右行駛推廣至歐洲大陸及其殖民地，奠定了現代多數國家靠右的基礎。'},
-{i:'🇭🇰',t:'香港和澳門雖屬中國，但保留靠左行駛。跨境大橋設有專用車道切換系統。'},
-{i:'🇲🇲',t:'緬甸 1970 年改為靠右行駛，但至今約 80% 車輛仍是右駕（方向盤在右側）。'},
-{i:'🇼🇸',t:'薩摩亞 2009 年從靠右改為靠左，是全球最近一次行車方向切換。'}
+  {i:'🏇', t:'In the Middle Ages, knights usually held their swords in their right hands, so they travelled on the left side of the road to keep their right hands free for combat. This is the origin of left-hand traffic.'},
+  {i:'🇫🇷', t:'Napoleon spread right-hand traffic across mainland Europe and its colonies, laying the foundation for the modern predominance of right-hand traffic.'},
+  {i:'🇭🇰', t:'Although Hong Kong and Macau are part of China, they retain left-hand traffic. Cross-border bridges have dedicated lane-switching systems.'},
+  {i:'🇲🇲', t:'Myanmar switched to right-hand traffic in 1970, but about 80% of vehicles are still right-hand drive today (the steering wheel is on the right).'},
+  {i:'🇼🇸', t:'Samoa switched from right-hand to left-hand traffic in 2009, the most recent traffic-side change in the world.'}
 ];
 facts.forEach(function(f){
 h+='<div class="fact-item"><span class="fact-icon">'+f.i+'</span><span>'+f.t+'</span></div>';
@@ -398,10 +492,10 @@ var list;
 if(selCat){
 list=allC.filter(function(c){return c.side===selCat;});
 var cat=CATS[selCat];
-$cHdr.innerHTML=cat.icon+' '+cat.name+'的國家與地區';
+$cHdr.innerHTML=cat.icon+' '+cat.name+'Countries and Territories';
 }else{
 list=allC;
-$cHdr.innerHTML='🌍 所有國家與地區';
+$cHdr.innerHTML='🌍 All Countries and Territories';
 }
 $cCount.textContent=list.length;
 var h='';
@@ -436,7 +530,7 @@ $sIn.addEventListener('input',function(){
 var q=this.value.trim().toLowerCase();
 if(!q){$sDD.classList.remove('show');return;}
 var res=allC.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1||(c.a2&&c.a2.toLowerCase().indexOf(q)>-1);}).slice(0,12);
-if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">找不到結果</div>';$sDD.classList.add('show');return;}
+if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">No result</div>';$sDD.classList.add('show');return;}
 var h='';res.forEach(function(c){
 var cat=CATS[c.side];
 h+='<div class="sd-item" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'"><span style="font-size:1.3rem">'+c.flag+'</span><span style="font-weight:600;flex:1">'+c.name+'</span><span class="cc-sb" style="background:'+cat.col+';font-size:.7rem">'+cat.icon+' '+cat.name+'</span></div>';
@@ -495,7 +589,7 @@ if(c){
 var cat=CATS[c.side];
 $tip.innerHTML='<span class="tt-flag">'+c.flag+'</span><span class="tt-name">'+c.name+'</span><br><span class="tt-sub">'+(c.a2?'ISO: '+c.a2:'')+'</span><div class="tt-side" style="background:'+cat.col+'">'+cat.icon+' '+cat.name+'</div>'+(c.note?'<span class="tt-note">'+c.note+'</span>':'');
 }else{
-$tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nameOf(id)+'</span><br><span class="tt-sub">行車方向資料不可用</span>';
+$tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nameOf(id)+'</span><br><span class="tt-sub">No data</span>';
 }
 var tx=ev.clientX+14,ty=ev.clientY-60;
 if(tx+300>window.innerWidth)tx=ev.clientX-300;if(ty<10)ty=ev.clientY+20;
@@ -525,7 +619,7 @@ paintMap();renderCountries();
 
 document.getElementById('loadOv').style.display='none';
 renderCatPanel();renderCountries();
-}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗，請重新整理頁面。</p>';});
+}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ Map loading failed. Please refresh the page.</p>';});
 
 })();
 </script>
