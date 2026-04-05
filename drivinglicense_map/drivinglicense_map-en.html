@@ -1,0 +1,711 @@
+<!DOCTYPE html><html lang="en-GB"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>International Driving Permit Map – Roamwise</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
+
+  .rw-header *{margin:0;padding:0;box-sizing:border-box}
+.rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:linear-gradient(135deg,#1e40af,#3b82f6);border-bottom:none;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
+.rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
+.rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#ffffff}
+.rw-header-logo .brand-wise{font-size:1.55rem;font-weight:800;color:#bfdbfe}
+.rw-header-right{display:flex;align-items:center;gap:20px}
+.rw-header-contact{text-decoration:none;color:#e0e7ff;font-size:.95rem;font-weight:500;transition:color .2s}
+.rw-header-contact:hover{color:#ffffff}
+.rw-header-lang{position:relative;display:inline-block}
+.rw-header-lang-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:.9rem;font-weight:500;color:#ffffff;cursor:pointer;transition:background .2s}
+.rw-header-lang-btn:hover{background:rgba(255,255,255,.25)}
+.rw-header-lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:160px;overflow:hidden;z-index:1001}
+.rw-header-lang:hover .rw-header-lang-menu,.rw-header-lang-menu.show{display:block}
+.rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
+.rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
+.rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+@media(max-width:600px){.rw-header{padding:12px 16px}.rw-header-logo .brand-roam,.rw-header-logo .brand-wise{font-size:1.25rem}.rw-header-right{gap:12px}.rw-header-contact{font-size:.85rem}.rw-header-lang-btn{padding:6px 10px;font-size:.82rem}}
+
+main{flex:1;max-width:1280px;width:100%;margin:1.5rem auto;padding:0 1.5rem}
+h1{font-size:1.6rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.card{background:#fff;border-radius:14px;padding:1.5rem;box-shadow:0 2px 14px rgba(0,0,0,.06);margin-bottom:1.2rem}
+.info-bar{display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;padding-bottom:1rem;border-bottom:1px solid #e2e8f0;min-height:60px}
+.info-left{display:flex;align-items:center;gap:.8rem;flex:1;min-width:200px}
+.info-flag{font-size:2.4rem;line-height:1}
+.info-details{flex:1}.info-name{font-size:1.15rem;font-weight:700}.info-sub{font-size:.82rem;color:#64748b;margin-top:4px;line-height:1.6}
+.info-placeholder{color:#94a3b8;font-size:.95rem;font-weight:400}
+.lvl-badge,.conv-badge,.side-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:16px;font-size:.76rem;font-weight:700;color:#fff;margin-top:4px;margin-right:4px}
+.chip-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;padding-top:8px;border-top:1px solid #f1f5f9}
+.chip-row.hidden{display:none}
+.info-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-size:.78rem;font-weight:600;background:#f1f5f9;border:1px solid #e2e8f0}
+.map-wrap{position:relative;width:100%;background:linear-gradient(180deg,#dbeafe,#e0f2fe);border-radius:10px;overflow:hidden;cursor:grab;margin-top:1rem}.map-wrap:active{cursor:grabbing}
+.map-wrap svg{display:block;width:100%;height:auto}
+.loading-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#dbeafe;z-index:10}
+.spinner{width:40px;height:40px;border:4px solid #93c5fd;border-top-color:#1e3a8a;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:.8rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.map-legend{position:absolute;bottom:10px;right:10px;background:rgba(255,255,255,.93);border-radius:10px;padding:10px 14px;font-size:.73rem;display:flex;flex-wrap:wrap;gap:5px 12px;box-shadow:0 2px 8px rgba(0,0,0,.1);backdrop-filter:blur(4px);z-index:5}
+.ml-item{display:flex;align-items:center;gap:4px;white-space:nowrap;font-weight:600}
+.ml-dot{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+.tips{display:flex;flex-wrap:wrap;gap:1rem;margin-top:.8rem;font-size:.78rem;color:#64748b}
+.bar-row{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-top:1rem;padding-top:1rem;border-top:1px solid #e2e8f0}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:380px}
+.search-input{width:100%;padding:.5rem 1rem .5rem 2.2rem;border:2px solid #e2e8f0;border-radius:8px;font-size:.92rem;outline:none;transition:border .15s}.search-input:focus{border-color:#3b82f6}
+.search-icon{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none}
+.search-dd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:260px;overflow-y:auto;z-index:100;display:none}
+.search-dd.show{display:block}
+.sd-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1rem;cursor:pointer;transition:background .1s;font-size:.88rem}.sd-item:hover{background:#eff6ff}
+.btn{padding:.5rem 1.2rem;border:none;border-radius:8px;font-size:.88rem;cursor:pointer;font-weight:600;transition:all .15s;white-space:nowrap}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+.two-panel{display:grid;grid-template-columns:370px 1fr;gap:1.2rem;align-items:start}
+.panel{background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06);overflow:hidden}
+.panel-hdr{padding:1rem 1.2rem;font-weight:700;font-size:.95rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:.5rem;position:sticky;top:0;background:#fff;z-index:2}
+.panel-body{padding:.6rem;max-height:640px;overflow-y:auto}
+.cat-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;transition:all .16s;border:2px solid transparent;margin-bottom:5px}
+.cat-card:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.07)}
+.cat-card.active{border-color:currentColor;box-shadow:0 3px 14px rgba(0,0,0,.1)}
+.cat-icon{width:40px;height:40px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.cat-info{flex:1;min-width:0}.cat-name{font-weight:700;font-size:.88rem}.cat-desc{font-size:.72rem;color:#64748b;margin-top:1px}
+.cat-count{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;color:#fff}
+.divider{height:1px;background:#e2e8f0;margin:8px 8px}
+.stat-section{padding:8px 14px}
+.stat-title{font-size:.76rem;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.svc-stat-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:.82rem}
+.svc-stat-icon{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.6rem;font-weight:800;flex-shrink:0}
+.svc-stat-name{flex:1;font-weight:600;font-size:.82rem}
+.svc-stat-bar{height:8px;border-radius:4px;background:#f1f5f9;flex:2;overflow:hidden}
+.svc-stat-fill{height:100%;border-radius:4px;transition:width .4s}
+.svc-stat-num{font-size:.72rem;color:#64748b;font-weight:700;min-width:28px;text-align:right}
+.myth-box{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:10px 12px;margin:5px 0}
+.myth-item{padding:5px 0;font-size:.78rem;line-height:1.6}
+.myth-x{color:#dc2626;font-weight:700}.myth-o{color:#16a34a;font-weight:700}
+.tip-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px;margin:6px 0}
+.tip-title{font-size:.8rem;font-weight:700;color:#1e3a8a;margin-bottom:6px}
+.tip-item{font-size:.78rem;color:#475569;line-height:1.6;padding:3px 0;display:flex;gap:6px;align-items:flex-start}
+.tip-item span:first-child{flex-shrink:0}
+.fact-item{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:.8rem;line-height:1.5;color:#475569}
+.fact-icon{font-size:.95rem;flex-shrink:0;margin-top:1px}
+.pc-count{background:#f1f5f9;color:#475569;font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:5px}
+.cc-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .12s;border:1px solid transparent}
+.cc-item:hover{background:#f0f9ff;border-color:#bfdbfe}
+.cc-item.active{background:#dbeafe;border-color:#3b82f6}
+.cc-flag{font-size:1.2rem;flex-shrink:0}
+.cc-info{flex:1;min-width:0}
+.cc-name{font-weight:600;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-badges{display:flex;gap:3px;margin-top:3px;flex-wrap:wrap}
+.cc-lb{display:inline-block;padding:1px 6px;border-radius:4px;font-size:.65rem;font-weight:700;color:#fff}
+.cc-extra{font-size:.68rem;color:#94a3b8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tooltip{position:fixed;pointer-events:none;background:rgba(15,23,42,.94);color:#fff;padding:12px 16px;border-radius:12px;font-size:.88rem;z-index:1000;opacity:0;transition:opacity .12s;box-shadow:0 4px 20px rgba(0,0,0,.25);line-height:1.5;max-width:380px}.tooltip.show{opacity:1}
+.tt-flag{font-size:1.3rem;vertical-align:middle;margin-right:5px}.tt-name{font-weight:700;font-size:.95rem}
+.tt-sub{color:#cbd5e1;font-size:.78rem;display:block;margin-top:2px}
+.tt-badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.tt-b{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:6px;font-size:.72rem;font-weight:700;color:#fff}
+.rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#fff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#fff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
+@media(max-width:768px){.rw-footer-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(max-width:480px){.rw-footer{padding:36px 16px 0}.rw-footer-grid{grid-template-columns:1fr;gap:24px}}
+</style>
+</head>
+<body>
+
+<header class="rw-header">
+  <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
+  <div class="rw-header-right">
+    <a href="../1-contact/contact-zh.html" class="rw-header-contact">contact us</a>
+    <div class="rw-header-lang">
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">English ▾</button>
+      <div class="rw-header-lang-menu">
+        <a href="drivinglicense_map-zh.html">繁體中文</a>
+        <a href="drivinglicense_map-en.html" class="active">English</a>
+        <a href="drivinglicense_map-es.html">Español</a>
+        <a href="drivinglicense_map-pt.html">Português</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<h1>🚗 International Driving Permit Map</h1>
+
+<div class="card">
+  <div class="info-bar" id="infoBar">
+    <div class="info-left">
+      <div class="info-flag" id="infoFlag">🌐</div>
+      <div class="info-details">
+        <div class="info-name" id="infoName"><span class="info-placeholder">Move your mouse over the map to see each country’s IDP recognition status</span></div>
+        <div id="infoBadges"></div>
+        <div class="info-sub" id="infoSub"></div>
+      </div>
+    </div>
+  </div>
+  <div class="chip-row hidden" id="chipRow"></div>
+
+  <div class="map-wrap" id="mapWrap">
+    <div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>載入地圖中…</p></div>
+    <div class="map-legend">
+      <span class="ml-item"><span class="ml-dot" style="background:#bbf7d0;border:1px solid #22c55e"></span>Fully recognised</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#bfdbfe;border:1px solid #3b82f6"></span>Generally accepted</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#fef08a;border:1px solid #eab308"></span>Conditional restrictions</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#fed7aa;border:1px solid #f97316"></span>Local driving licence required</span>
+      <span class="ml-item"><span class="ml-dot" style="background:#fecaca;border:1px solid #ef4444"></span>Prohibited / very difficult</span>
+    </div>
+  </div>
+
+ <div class="tips">
+  <span>🖱️ Hover to view IDP status</span><span>👆 Click to lock a country</span><span>🔍 Scroll to zoom</span><span>✋ Drag to pan</span></div>
+
+  <div class="bar-row">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchIn" type="text" placeholder="Search for a country or territory (e.g. Japan, China, Hong Kong)..." autocomplete="off">
+      <div class="search-dd" id="searchDD"></div>
+    </div>
+    <button class="btn btn-primary" id="btnReset">🔄 Reset</button>
+  </div>
+</div>
+
+<div class="two-panel">
+  <div class="panel" id="panelLeft">
+    <div class="panel-hdr">📊 IDP recognition guide</div>
+    <div class="panel-body" id="catPanel"></div>
+  </div>
+  <div class="panel" id="panelRight">
+    <div class="panel-hdr" id="cListHdr">🌍 All countries and territories<span id="cListCount" class="pc-count">0</span></div>
+    <div class="panel-body" id="cListBody"><div class="cc-grid" id="cGrid"></div></div>
+  </div>
+</div>
+</main>
+
+<div class="tooltip" id="tooltip"></div>
+
+<footer class="rw-footer">
+  <div class="rw-footer-grid">
+    <div class="rw-footer-col">
+      <h4>⏰ Time & Daylight</h4>
+      <ul>
+        <li><a href="../time-zone/time-zone-en.html">World Time Zone Lookup</a></li>
+        <li><a href="../meeting/meeting-en.html">Meeting Time Finder</a></li>
+        <li><a href="../sunset/sunset-en.html">Sunrise & Sunset Times</a></li>
+        <li><a href="../timer/timer-en.html">Timer & Countdown</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🔧 Converters & Tools</h4>
+      <ul>
+        <li><a href="../currency/currency-en.html">Currency Converter</a></li>
+        <li><a href="../unit/unit-en.html">Unit Converter</a></li>
+        <li><a href="../plug/plug-en.html">Power Plug Standards</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🚗 Travel & Driving Maps</h4>
+      <ul>
+        <li><a href="../country_map/country_map-en.html">World Countries & Regions Map</a></li>
+        <li><a href="../drivedirection_map/drivingdirection_map-en.html">Driving Direction Map</a></li>
+        <li><a href="drivinglicense_map-en.html">International Driving Permit Map</a></li>
+      </ul>
+    </div>
+    <div class="rw-footer-col">
+      <h4>🌍 Global Info Maps</h4>
+      <ul>
+        <li><a href="../time-zone-map/time-zone-map-en.html">World Time Zone Map</a></li>
+        <li><a href="../plug_map/plug_map-en.html">World Power Plug Map</a></li>
+        <li><a href="../nationalday_map/nationalday_map-en.html">World Calendar Systems Map</a></li>
+        <li><a href="../Network_map/Network_map-en.html">Internet Freedom Map</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="rw-footer-bottom">© 2026 Roamwise. All rights reserved. | <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></div>
+</footer>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(function(){
+
+var LVLS=[
+ {id:0, name:'Fully recognised', icon:'🟢', desc:'The IDP is formally recognised, so renting and driving are straightforward', col:'#22c55e', fill:'#bbf7d0', hi:'#15803d', light:'#f0fdf4'},
+  {id:1, name:'Generally accepted', icon:'🔵', desc:'The IDP is usually usable, though there may be minor restrictions or conditions', col:'#3b82f6', fill:'#bfdbfe', hi:'#1e40af', light:'#eff6ff'},
+  {id:2, name:'Conditional restrictions', icon:'🟡', desc:'Acceptance of the IDP varies, so extra preparation may be needed', col:'#eab308', fill:'#fef08a', hi:'#a16207', light:'#fefce8'},
+  {id:3, name:'Local driving licence required', icon:'🟠', desc:'The IDP is not recognised and a local driving licence is required', col:'#f97316', fill:'#fed7aa', hi:'#c2410c', light:'#fff7ed'},
+  {id:4, name:'Prohibited / very difficult', icon:'🔴', desc:'Foreign visitors cannot or will find it extremely difficult to drive', col:'#ef4444', fill:'#fecaca', hi:'#b91c1c', light:'#fef2f2'}
+];
+
+var CONVS={
+ G: {name:'Geneva Convention (1949)', short:'Geneva 1949', icon:'📜', col:'#7c3aed', bg:'#ede9fe'},
+  V: {name:'Vienna Convention (1968)', short:'Vienna 1968', icon:'📋', col:'#0891b2', bg:'#ecfeff'},
+  B: {name:'Both conventions signed', short:'Both conventions', icon:'✅', col:'#059669', bg:'#ecfdf5'},
+  N: {name:'Convention not signed', short:'Not signed', icon:'⛔', col:'#dc2626', bg:'#fef2f2'}
+};
+var SIDES = {
+  R: {name:'Right-hand traffic', icon:'➡️', col:'#3b82f6'},
+  L: {name:'Left-hand traffic', icon:'⬅️', col:'#f59e0b'}
+};
+/* ===== DATA [level, conv, side, note] ===== */
+var RDATA={
+156:[3,'N','R','China does not recognise any International Driving Permit (IDP). Foreign visitors must apply for a Chinese temporary driving licence (valid for 3 months), pass the written Theory Test 1 (available in Chinese/English), and undergo a medical check. International car-rental companies do not operate in China. It is recommended to use Didi or hire a car with a driver.'],
+392:[0,'G','L','⚠️ Japan recognises only the 1949 Geneva Convention IDP! Vienna Convention IDPs are not valid in Japan. Holders of a Taiwan driving licence must obtain a Japanese translation from JAF. Left-hand traffic. Tolls are common on expressways (ETC card), and road quality is excellent.'],
+410:[0,'G','R','Recognises the Geneva Convention IDP, valid for 1 year. Reciprocal agreements exist with Taiwan. Foreign residents staying longer than 1 year must obtain a Korean driving licence. Road quality is excellent.'],
+158:[2,'N','R','Taiwan is not a United Nations member state, but it has signed the Vienna Convention and recognises International Driving Permits (IDPs) issued by contracting states. It has reciprocity agreements with Japan, South Korea, Germany, and 30+ other countries; foreign licences from reciprocal countries can be used with a translation in Taiwan.'],
+764:[1,'G','L','Recognises the Geneva Convention IDP, valid for 90 days. Left-hand traffic. Scooter rentals are common in tourist areas but accident rates are high, so make sure your IDP covers motorcycles. Bangkok traffic is extremely congested; BTS/MRT is recommended.'],
+458:[1,'G','L','Recognises the Geneva Convention IDP, valid for 1 year. Left-hand traffic. Highway quality is good, and Touch\'n Go electronic toll cards are essential.'],
+702:[0,'G','L','A valid foreign driving licence allows driving in Singapore for up to 12 months; an IDP is not mandatory. Left-hand traffic. Vehicle ownership costs are among the highest in the world, and car hire is expensive. Public transport is excellent, so most visitors do not need to drive.'],
+360:[2,'V','L','Joined the Vienna Convention in 2022. Left-hand traffic. Scooter rentals are common in Bali, but police checks are frequent and driving without an IDP often leads to fines. Insurance claims require a valid IDP. International car-rental companies operate in Jakarta and Bali.'],
+704:[2,'V','R','Joined the Vienna Convention in 2014, but local enforcement is inconsistent. Some cities are still unfamiliar with IDPs. Foreigners riding motorbikes need a Vietnamese motorcycle licence. Grab is recommended.'],
+116:[2,'G','R','A Geneva Convention signatory, but enforcement is lax. Scooter rentals are common in Siem Reap and Phnom Penh, but traffic rules are often ignored and foreigners are frequently held responsible in accidents. Comprehensive travel insurance is advised.'],
+418:[2,'G','R','A Geneva Convention signatory. Road conditions are poor and many roads become impassable in the rainy season. The IDP is theoretically valid, but local officials may be unfamiliar with it. Hiring a local driver is recommended.'],
+608:[1,'B','R','Recognises IDPs under both conventions, valid for 90 days. Manila traffic is extremely congested. Self-driving is feasible in places like Palawan.'],
+104:[2,'G','R','A Geneva Convention signatory, but the situation has been unstable since the 2021 coup. Some areas are not advisable for travel. Hiring a car with a driver is recommended rather than self-driving.'],
+524:[2,'N','L','Has not signed any convention. Left-hand traffic. Mountain roads are extremely dangerous; hiring a local driver is strongly recommended. Kathmandu traffic is chaotic.'],
+586:[1,'V','L','A Vienna Convention signatory. Left-hand traffic. Road conditions and driving culture are very challenging for foreign visitors. Northern mountain areas are 4WD only. Hiring a car with a driver is recommended.'],
+50:[1,'G','L','A Geneva Convention signatory. Left-hand traffic. Dhaka has one of the worst traffic jams in the world, so self-driving is strongly discouraged.'],
+144:[1,'G','L','A Geneva Convention signatory. Left-hand traffic. Road quality is good. First-time visitors are advised to hire a car with a driver.'],
+496:[1,'V','R','A Vienna Convention signatory. The country is vast and sparsely populated, with many unpaved roads, so 4WD is needed. Fuel stations can be hundreds of kilometres apart, so refuel in advance.'],
+96:[1,'G','L','A Geneva Convention signatory. Left-hand traffic. Road quality is good, and fuel prices are extremely low.'],
+64:[3,'N','L','Has not signed any convention. Left-hand traffic. Foreign tourists are not allowed to drive and must arrange tours with a driver through a travel agency.'],
+784:[1,'B','R','Recognises IDPs under both conventions. Car hire is convenient and inexpensive in Dubai. ⚠️ Speeding fines are severe, with dense camera enforcement, and running a red light can cost AED 1000. Enforcement is even stricter in Sharjah.'],
+682:[1,'V','R','A Vienna Convention signatory. Visitors may rent a car with an IDP for up to 3 months. Women have been legally allowed to drive since 2018. Road quality is excellent, but driving style can be aggressive.'],
+512:[1,'G','R','A Geneva Convention signatory. The IDP is valid for 1 month, after which a local licence is required. Mountain roads are winding but scenic.'],
+634:[1,'V','R','A Vienna Convention signatory. Road quality is excellent. Car hire is cheap.'],
+414:[1,'V','R','A Vienna Convention signatory. IDP valid for 3 months.'],
+48:[1,'V','R','A Vienna Convention signatory. IDP valid for 3 months. A small country with good road quality.'],
+376:[0,'B','R','Recognises IDPs under both conventions. Car hire is easy, with all major international rental companies available. GPS is best used with Waze (Israel\'s most popular navigation app). Some areas have traffic restrictions on the Sabbath.'],
+400:[1,'G','R','A Geneva Convention signatory. Self-driving makes it easy to explore Petra and Wadi Rum. Fuel stations are scarce in desert areas, so fill up beforehand.'],
+422:[1,'G','R','A Geneva Convention signatory. Beirut driving can be aggressive and traffic is chaotic. Hiring a car with a driver or taking taxis is recommended.'],
+364:[2,'V','R','A Vienna Convention signatory. The IDP is theoretically valid, but international car-rental companies do not operate there. Local car-hire firms may be used. Sanctions have left many vehicles old and worn.'],
+368:[2,'V','R','A Vienna Convention signatory. Security conditions are unstable. The Kurdistan Autonomous Region is relatively safe for self-driving, but other areas are not recommended.'],
+760:[3,'G','R','Prolonged civil war has severely damaged infrastructure. After the regime change in late 2024, the situation remains unclear. Self-driving is not recommended.'],
+887:[3,'N','R','Ongoing conflict. There is no effective IDP enforcement mechanism. Travel is not recommended.'],
+276:[0,'B','R','Recognises IDPs under both conventions. Some sections of the Autobahn have no speed limit. ⚠️ Note: Germany issues two different IDP formats; if travelling to Japan, you must specifically obtain the Geneva Convention version. Winter tyres are mandatory in some areas during winter. City parking usually requires an app-based payment.'],
+250:[0,'B','R','Recognises IDPs under both conventions. Motorway tolls apply. Paris is not recommended for self-driving. Carry a high-visibility vest and warning triangle. Roundabouts require caution: vehicles already in the roundabout have priority. Drink-driving is zero tolerance.'],
+380:[0,'B','R','Recognises IDPs under both conventions. ⚠️ ZTL restricted zones are the biggest trap: city centres across Italy commonly have limited-traffic zones, and foreign vehicles entering by mistake can be fined €80-200, often months after returning home. Be sure to check ZTL maps in advance.'],
+724:[0,'B','R','Recognises IDPs under both conventions. Excellent motorway quality, and car hire is cheap. Popular self-drive routes include the south coast and Andalusia.'],
+826:[0,'B','L','Recognises IDPs under both conventions, valid for 12 months. Left-hand traffic! The London Congestion Charge is £15 per day. Give way to traffic from the right at roundabouts. The Scottish Highlands offer stunning self-drive scenery.'],
+372:[0,'G','L','A Geneva Convention signatory. Left-hand traffic! The Wild Atlantic Way is a famous self-drive route. Rural roads are narrow and overtaking requires skill.'],
+756:[0,'B','R','Recognises IDPs under both conventions. A motorway vignette is required (CHF 40). Mountain passes may close in winter, and snow chains are essential. Alpine pass roads are spectacular but very winding.'],
+40:[0,'B','R','Recognises IDPs under both conventions. A motorway vignette is required. Parking in Vienna is difficult and expensive. Winter tyres are mandatory in winter.'],
+528:[0,'B','R','Recognises IDPs under both conventions. Be aware of bicycle priority (the Netherlands has more bicycles than cars). Parking in Amsterdam is among the most expensive in Europe, so self-driving in the city is not recommended.'],
+56:[0,'B','R','Recognises IDPs under both conventions. Motorways are free but often congested. Brussels Low Emission Zone (LEZ) requires online registration in advance.'],
+620:[0,'B','R','Recognises IDPs under both conventions. Motorway tolls apply. Car hire is among the cheapest in Europe. The Algarve coast is very popular for self-driving.'],
+300:[0,'B','R','Recognises IDPs under both conventions. Island self-driving is popular (e.g. Crete and Rhodes). Local driving can be fairly aggressive, and mountain roads are winding.'],
+792:[1,'B','R','Recognises IDPs under both conventions. Road quality is good. Istanbul traffic is chaotic and not recommended for self-driving. Self-driving is convenient in Cappadocia and along the Mediterranean coast.'],
+643:[1,'V','R','A Vienna Convention signatory. Since 2011, foreign drivers have been required to carry an IDP or a notarised Russian translation of their licence. Yandex Navigator is recommended. Winter driving is challenging.'],
+804:[1,'V','R','A Vienna Convention signatory. IDP valid. Some areas are not advisable to travel because of conflict, and roads may be damaged by war.'],
+616:[0,'B','R','Recognises IDPs under both conventions. Motorway tolls apply, and road quality has improved significantly in recent years.'],
+203:[0,'B','R','Recognises IDPs under both conventions. An electronic motorway vignette is required. Prague is not recommended for self-driving, though the suburbs are convenient.'],
+348:[0,'B','R','Recognises IDPs under both conventions. A motorway vignette is required. Budapest has low-emission zone restrictions.'],
+642:[0,'B','R','Recognises IDPs under both conventions. The Transfăgărășan Road was praised by Top Gear as one of the world\'s most beautiful roads.'],
+100:[0,'B','R','Recognises IDPs under both conventions. A motorway vignette is required. Self-driving along the Black Sea coast is popular.'],
+191:[0,'V','R','A Vienna Convention signatory. The Adriatic coast is excellent for self-driving. Roads are crowded during the summer travel season.'],
+70:[1,'V','R','A Vienna Convention signatory. Road quality varies, and mountain roads are narrow but scenic.'],
+688:[1,'V','R','A Vienna Convention signatory. Road quality is acceptable.'],
+807:[1,'V','R','A Vienna Convention signatory. The shores of Lake Ohrid are scenic for self-driving.'],
+8:[1,'B','R','Recognises IDPs under both conventions. Road quality is poor, and local driving can be aggressive.'],
+499:[1,'V','R','A Vienna Convention signatory. The Kotor Bay coastal road is beautiful but narrow and winding, and crowded in summer.'],
+703:[0,'B','R','Recognises IDPs under both conventions. An electronic vignette is essential.'],
+705:[0,'B','R','Recognises IDPs under both conventions. A vignette is required. Self-driving around Lake Bled is convenient.'],
+233:[0,'V','R','A Vienna Convention signatory. Road quality is excellent. The Baltic coast is scenic for self-driving.'],
+428:[0,'V','R','A Vienna Convention signatory. Road quality is good.'],
+440:[0,'V','R','A Vienna Convention signatory. Road quality is good.'],
+246:[0,'B','R','Recognises IDPs under both conventions. Winter tyres are needed across Lapland during much of the winter. Road quality is excellent. Watch out for reindeer.'],
+578:[0,'B','R','Recognises IDPs under both conventions. The fjord roads are world-famous but involve many tunnels and ferries. Tolls are expensive, so AutoPASS is recommended. Mountain roads may close in winter.'],
+752:[0,'B','R','Recognises IDPs under both conventions. Winter tyres are mandatory. Watch out for elk crossings. Road quality is excellent.'],
+208:[0,'B','R','Recognises IDPs under both conventions. The Øresund Bridge links to Sweden (toll applies).'],
+352:[0,'G','R','A Geneva Convention signatory. The Ring Road is extremely popular for self-driving. ⚠️ In winter, Route F is 4WD only. Weather is highly changeable, and strong winds can swing car doors open violently. Insurance should include gravel protection.'],
+112:[1,'V','R','A Vienna Convention signatory. IDP is valid, but you may be subject to extra police checks.'],
+268:[1,'V','R','A Vienna Convention signatory. The Caucasus mountain roads are spectacular but challenging, and the Georgian Military Road is a classic route.'],
+51:[1,'V','R','A Vienna Convention signatory. Mountain roads are narrow.'],
+31:[1,'V','R','A Vienna Convention signatory. Baku city traffic is congested.'],
+196:[0,'B','L','Recognises IDPs under both conventions. Left-hand traffic (a legacy of British rule). In Northern Cyprus there are restricted areas, so confirm insurance before cross-border car hire.'],
+470:[0,'B','L','Recognises IDPs under both conventions. Left-hand traffic. The island is very small but easy to drive around; roads are narrow.'],
+840:[1,'G','R','A Geneva Convention signatory. IDP acceptance varies by state; major tourist states such as California and Florida generally accept it. Car hire is usually restricted to age 21 and over (25 with some companies). Traffic laws differ by state, with no nationwide unified rules. Take care when overtaking school buses that have stopped.'],
+124:[0,'G','R','A Geneva Convention signatory. IDP is valid for up to 1 year, with slight variations by province. Winter tyres are required in most provinces during winter. Use kilometres per hour. Road trips in the Rockies and the Maritime provinces are popular.'],
+484:[1,'G','R','A Geneva Convention signatory. A valid foreign driving licence is usually sufficient, so an IDP is not essential. Watch for tope speed humps. Avoid driving at night in remote areas.'],
+76:[1,'V','R','A Vienna Convention signatory. IDP is valid, or a notarised translation of the foreign licence is accepted. City traffic is chaotic. Motorway tolls apply.'],
+32:[0,'G','R','A Geneva Convention signatory. Patagonia and Route 40 are popular for self-driving, but fuel stations are scarce in the south and winds are strong. Be sure to fill up in advance.'],
+152:[0,'B','R','Recognises IDPs under both conventions. Road quality is among the best in South America. The Pan-American Highway and Atacama Desert are popular for self-driving.'],
+170:[1,'N','R','Not a convention signatory, but an IDP is accepted as a reference document. Car hire is possible in major cities. Mountain roads are dangerous.'],
+604:[1,'B','R','Recognises IDPs under both conventions. Take altitude sickness into account in the Andes, as it can affect driving judgement. Lima traffic is chaotic.'],
+218:[1,'G','R','A Geneva Convention signatory. IDP is valid. Road quality varies.'],
+858:[0,'B','R','Recognises IDPs under both conventions. Road quality is good, and self-driving is easy in this small country.'],
+862:[2,'N','R','Not a convention signatory. A severe economic crisis affects fuel supply. For safety reasons, self-driving is not recommended.'],
+188:[1,'V','R','A Vienna Convention signatory. IDP valid for 3 months. Road quality is good. During the rainy season, beware of floodwater covering the roads.'],
+192:[2,'G','R','A Geneva Convention signatory. Car hire is available but limited and expensive. Road quality is poor and spare parts are scarce. Most cars are old American classics, making for a unique experience.'],
+214:[1,'G','R','A Geneva Convention signatory. IDP valid for 90 days.'],
+388:[1,'G','L','A Geneva Convention signatory. Left-hand traffic. Road quality varies.'],
+780:[1,'G','L','A Geneva Convention signatory. Left-hand traffic.'],
+332:[2,'G','R','A Geneva Convention signatory. Road quality is extremely poor. For safety reasons, self-driving is not recommended.'],
+68:[1,'N','R','Not a signatory to the main conventions, but an IDP is accepted. At high altitude, be mindful of altitude sickness. The Yungas Road is one of the world\'s most dangerous roads.'],
+710:[0,'B','L','Recognises IDPs under both conventions. Left-hand traffic. The Garden Route is very popular for self-driving. ⚠️ Beware of carjacking: always lock your doors, avoid stopping in secluded places, and do not display valuables. Distances between cities are long.'],
+818:[1,'G','R','A Geneva Convention signatory. Cairo traffic is chaotic and not recommended for self-driving. Self-driving is feasible in the Sinai Peninsula and along the Red Sea coast.'],
+504:[1,'B','R','Recognises IDPs under both conventions. Road quality is good. 4WD is needed in mountainous regions and on the edge of the Sahara.'],
+788:[1,'B','R','Recognises IDPs under both conventions. Road quality is good.'],
+404:[1,'B','L','Recognises IDPs under both conventions. Left-hand traffic. Game reserves such as Maasai Mara require 4WD and guided tours are recommended. Nairobi traffic is chaotic.'],
+566:[1,'B','R','Recognises IDPs under both conventions. Lagos traffic is among the most congested in the world. Driving at night is not recommended for safety reasons.'],
+288:[1,'G','R','A Geneva Convention signatory. IDP is valid. Road quality is improving.'],
+834:[1,'G','L','A Geneva Convention signatory. Left-hand traffic. National parks require 4WD, and some roads are impassable in the rainy season.'],
+800:[1,'G','L','A Geneva Convention signatory. Left-hand traffic.'],
+716:[1,'B','L','Recognises IDPs under both conventions. Left-hand traffic. Self-driving near Victoria Falls is convenient, but fuel supplies can be unstable.'],
+72:[1,'G','L','A Geneva Convention signatory. Left-hand traffic. National parks (Okavango and Chobe) require 4WD.'],
+516:[1,'G','L','A Geneva Convention signatory. Left-hand traffic. Road quality is good, but distances between cities are long.'],
+36:[0,'G','L','A Geneva Convention signatory. Left-hand traffic. The Great Ocean Road and Uluru are very popular for self-driving. ⚠️ On long inland journeys, make sure to carry enough water and fuel. At dawn and dusk, watch for kangaroos. Traffic laws vary slightly by state.'],
+554:[0,'G','L','A Geneva Convention signatory. Left-hand traffic. IDP valid for 12 months. South Island road trips are world-famous, and the Milford Sound road is stunning. Campervan culture is widespread. Watch out for sheep on the road.'],
+242:[1,'G','L','A Geneva Convention signatory. Left-hand traffic. Island self-driving is convenient.'],
+598:[2,'G','L','A Geneva Convention signatory. Left-hand traffic. Road quality is poor. For safety reasons, hiring a car with a driver is recommended.'],
+398:[1,'V','R','A Vienna Convention signatory. Road quality varies greatly between rural and urban areas, and distances between cities are extremely long.'],
+417:[1,'V','R','A Vienna Convention signatory. The Pamir Highway (M41) is one of the world\'s best-known adventure self-drive routes. 4WD is required, and altitude must be considered.'],
+762:[1,'V','R','A Vienna Convention signatory. Eastern section of the Pamir Highway. Road quality is poor.'],
+795:[2,'V','R','A Vienna Convention signatory. Foreign travellers need a visa and transit permits in advance, making driving arrangements cumbersome. Touring with a guide is recommended.'],
+860:[1,'V','R','A Vienna Convention signatory. Tourism has opened up significantly in recent years. Self-driving on the Silk Road is becoming increasingly popular. Road quality is improving.'],
+408:[4,'N','R','Foreign visitors are not allowed to drive. All travel must be arranged with transportation provided by a state-assigned guide. Independent travel does not exist.'],
+674:[0,'B','R','Recognises IDPs under both conventions. A microstate, so there is very little need for self-driving.'],
+492:[0,'B','R','Recognises IDPs under both conventions. Traffic is restricted during the Formula One Grand Prix. A micro city-state.'],
+498:[1,'V','R','A Vienna Convention signatory. Road quality is poor. Self-driving is feasible in wine-producing areas.'],
+591:[1,'G','R','A Geneva Convention signatory. Panama City traffic is congested, but self-driving around the canal area is convenient.'],
+320:[1,'G','R','A Geneva Convention signatory. Road quality varies.'],
+600:[1,'G','R','A Geneva Convention signatory.'],
+384:[1,'G','R','A Geneva Convention signatory.'],
+178:[1,'G','R','A Geneva Convention signatory. Road quality is poor.'],
+180:[2,'N','R','Road quality is extremely poor. For safety reasons, self-driving is not recommended.'],
+728:[3,'N','R','Ongoing conflict. Travel is not recommended.'],
+729:[3,'N','R','Civil war ongoing. Travel is not recommended.'],
+706:[3,'N','R','Security conditions are extremely unstable. Travel is not recommended.'],
+434:[2,'N','R','Political conditions are unstable. Road quality is poor. Self-driving is not recommended.'],
+12:[1,'G','R','A Geneva Convention signatory. Road quality is good. Self-driving in the Sahara requires 4WD and thorough preparation.'],
+232:[3,'N','R','Not a convention signatory. Infrastructure is lacking, so self-driving is not recommended.'],
+426:[1,'G','L','A Geneva Convention signatory. Left-hand traffic. Mountain roads are challenging.'],
+454:[1,'G','L','A Geneva Convention signatory. Left-hand traffic.'],
+508:[1,'N','L','Left-hand traffic. Road quality is improving.'],
+894:[1,'N','L','Left-hand traffic. Road quality varies.'],
+24:[1,'N','R','Road quality is poor. 4WD is needed for self-driving.'],
+120:[1,'N','R','Road conditions differ greatly between English-speaking and French-speaking areas.'],
+646:[1,'G','R','A Geneva Convention signatory. Road quality is good (among the best in East Africa).']
+};
+
+var EXTRA=[
+{id:'HK',name:'Hong Kong',flag:'🇭🇰',level:0,conv:'G',side:'L',note:'Recognises the 1949 Geneva Convention IDP, valid for 12 months. Left-hand traffic. Road quality is excellent, but space is limited and parking is expensive. The MTR system is extremely well developed, so most visitors do not need to drive. Tolls apply in tunnels, and Autotoll is recommended.'},
+{id:'MO',name:'Macau',flag:'🇲🇴',level:1,conv:'G',side:'L',note:'Recognises the IDP. Left-hand traffic. The territory is extremely small (about 33 km²), and buses plus walking are enough to reach most sights, so self-driving is of limited value. Travelling across the border to China requires a Chinese temporary driving licence.'}
+];
+
+var A2={4:'AF',8:'AL',12:'DZ',16:'AS',20:'AD',24:'AO',28:'AG',31:'AZ',32:'AR',36:'AU',40:'AT',44:'BS',48:'BH',50:'BD',51:'AM',52:'BB',56:'BE',64:'BT',68:'BO',70:'BA',72:'BW',76:'BR',84:'BZ',90:'SB',96:'BN',100:'BG',104:'MM',108:'BI',112:'BY',116:'KH',120:'CM',124:'CA',132:'CV',140:'CF',144:'LK',148:'TD',152:'CL',156:'CN',158:'TW',170:'CO',174:'KM',178:'CG',180:'CD',188:'CR',191:'HR',192:'CU',196:'CY',203:'CZ',204:'BJ',208:'DK',214:'DO',218:'EC',222:'SV',226:'GQ',231:'ET',232:'ER',233:'EE',242:'FJ',246:'FI',250:'FR',262:'DJ',266:'GA',268:'GE',270:'GM',275:'PS',276:'DE',288:'GH',296:'KI',300:'GR',304:'GL',320:'GT',324:'GN',328:'GY',332:'HT',336:'VA',340:'HN',348:'HU',352:'IS',356:'IN',360:'ID',364:'IR',368:'IQ',372:'IE',376:'IL',380:'IT',384:'CI',388:'JM',392:'JP',398:'KZ',400:'JO',404:'KE',408:'KP',410:'KR',414:'KW',417:'KG',418:'LA',422:'LB',426:'LS',428:'LV',430:'LR',434:'LY',440:'LT',442:'LU',450:'MG',454:'MW',458:'MY',462:'MV',466:'ML',470:'MT',478:'MR',480:'MU',484:'MX',492:'MC',496:'MN',498:'MD',499:'ME',504:'MA',508:'MZ',512:'OM',516:'NA',524:'NP',528:'NL',540:'NC',548:'VU',554:'NZ',558:'NI',562:'NE',566:'NG',578:'NO',586:'PK',591:'PA',598:'PG',600:'PY',604:'PE',608:'PH',616:'PL',620:'PT',624:'GW',626:'TL',630:'PR',634:'QA',642:'RO',643:'RU',646:'RW',674:'SM',682:'SA',686:'SN',688:'RS',694:'SL',702:'SG',703:'SK',705:'SI',706:'SO',710:'ZA',716:'ZW',724:'ES',728:'SS',729:'SD',732:'EH',740:'SR',748:'SZ',752:'SE',756:'CH',760:'SY',762:'TJ',764:'TH',768:'TG',776:'TO',780:'TT',784:'AE',788:'TN',792:'TR',795:'TM',800:'UG',804:'UA',807:'MK',818:'EG',826:'GB',834:'TZ',840:'US',854:'BF',858:'UY',860:'UZ',862:'VE',882:'WS',887:'YE',894:'ZM',704:'VN'};
+var LHT=['GB','IE','JP','AU','NZ','IN','TH','MY','SG','ID','ZA','KE','TZ','UG','MZ','ZW','NA','BW','LS','MW','ZM','CY','MT','JM','TT','BB','GY','SR','FJ','PG','TL','BD','LK','PK','NP','BT','BN','HK','MO','SZ','MU','MV','WS','SB','TO'];
+var enN;try{enN=new Intl.DisplayNames(['en-GB'],{type:'region'});}catch(e){}
+function nameOf(id){var a=A2[id];if(a&&enN)try{return enN.of(a);}catch(e){}return a||'';}
+function flagOf(id){var a=A2[id];if(!a)return'🏳️';return a.replace(/./g,function(c){return String.fromCodePoint(0x1F1E6+c.charCodeAt(0)-65);});}
+
+function getR(id){
+if(RDATA[id])return RDATA[id];
+var a=A2[id];if(!a)return[1,'G','R',''];
+var s=LHT.indexOf(a)>=0?'L':'R';
+return[1,'G',s,''];
+}
+
+var allC=[];
+(function(){
+var seen={};
+for(var id in A2){if(seen[id])continue;seen[id]=1;
+var r=getR(+id);
+allC.push({id:+id,a2:A2[id],name:nameOf(id),flag:flagOf(id),level:r[0],conv:r[1],side:r[2],note:r[3],isExtra:false});
+}
+EXTRA.forEach(function(e){allC.push({id:e.id,a2:e.id,name:e.name,flag:e.flag,level:e.level,conv:e.conv,side:e.side,note:e.note,isExtra:true});});
+allC.sort(function(a,b){return a.name.localeCompare(b.name,'zh-Hant');});
+})();
+
+var counts=[0,0,0,0,0];allC.forEach(function(c){if(c.level>=0&&c.level<=4)counts[c.level]++;});
+var convCounts={G:0,V:0,B:0,N:0};allC.forEach(function(c){if(convCounts[c.conv]!==undefined)convCounts[c.conv]++;});
+var sideCounts={R:0,L:0};allC.forEach(function(c){sideCounts[c.side]++;});
+
+var $flag=document.getElementById('infoFlag'),$name=document.getElementById('infoName'),$badges=document.getElementById('infoBadges'),$sub=document.getElementById('infoSub'),$chipRow=document.getElementById('chipRow');
+var $tip=document.getElementById('tooltip');
+var $sIn=document.getElementById('searchIn'),$sDD=document.getElementById('searchDD');
+var $catPanel=document.getElementById('catPanel'),$cGrid=document.getElementById('cGrid'),$cCount=document.getElementById('cListCount'),$cHdr=document.getElementById('cListHdr');
+var locked=null,selLvl=null;
+
+function lvlOf(id){var r=getR(id);return r[0];}
+
+function resetInfo(){
+$flag.textContent='🌐';$name.innerHTML='<span class="info-placeholder">Move your mouse over the map to see each country’s IDP recognition status</span>';
+$badges.innerHTML='';$sub.textContent='';$chipRow.classList.add('hidden');$chipRow.innerHTML='';
+}
+
+function showInfo(c,isLock){
+var lv=LVLS[c.level],cv=CONVS[c.conv],sd=SIDES[c.side];
+$flag.textContent=c.flag;
+$name.textContent=c.name+(isLock?' 🔒':'');
+$badges.innerHTML='<span class="lvl-badge" style="background:'+lv.col+'">'+lv.icon+' '+lv.name+'</span>'+'<span class="conv-badge" style="background:'+cv.col+'">'+cv.icon+' '+cv.short+'</span>'+'<span class="side-badge" style="background:'+sd.col+'">'+sd.icon+' '+sd.name+'</span>';
+$sub.textContent=c.note||lv.desc;
+if(isLock){
+$chipRow.classList.remove('hidden');
+var h='<span class="info-chip" style="border-color:'+cv.col+';background:'+cv.bg+'"><strong style="color:'+cv.col+'">'+cv.icon+' '+cv.name+'</strong></span>';
+h+='<span class="info-chip" style="border-color:'+sd.col+'">🚗 '+sd.icon+' '+sd.name+'</span>';
+if(c.level===0)h+='<span class="info-chip" style="border-color:#22c55e;color:#16a34a">✅ IDP is fully usable</span>';
+else if(c.level===3)h+='<span class="info-chip" style="border-color:#f97316;color:#ea580c">📋 Local driving licence required</span>';
+else if(c.level===4)h+='<span class="info-chip" style="border-color:#ef4444;color:#dc2626">🚫 Foreign visitors may not drive</span>';
+$chipRow.innerHTML=h;
+}else{$chipRow.classList.add('hidden');}
+}
+
+var W=960,H=500;
+var svg=d3.select('#mapWrap').append('svg').attr('viewBox','0 0 '+W+' '+H).attr('preserveAspectRatio','xMidYMid meet');
+var proj=d3.geoNaturalEarth1().scale(158).translate([W/2,H/2]);
+var path=d3.geoPath().projection(proj);
+var g=svg.append('g');
+g.append('path').datum({type:'Sphere'}).attr('d',path).attr('fill','#dbeafe').attr('stroke','#93c5fd').attr('stroke-width',.5);
+g.append('path').datum(d3.geoGraticule()()).attr('d',path).attr('fill','none').attr('stroke','rgba(255,255,255,.55)').attr('stroke-width',.35);
+var zoom=d3.zoom().scaleExtent([1,12]).on('zoom',function(ev){g.attr('transform',ev.transform);});
+svg.call(zoom);
+
+function fillFor(id){return LVLS[lvlOf(id)].fill;}
+function hiFor(id){return LVLS[lvlOf(id)].hi;}
+
+function paintMap(){
+g.selectAll('.country').each(function(){
+var el=d3.select(this),id=+el.attr('data-id'),lv=lvlOf(id);
+if(selLvl!==null){
+if(lv===selLvl){el.attr('fill',locked===id?hiFor(id):LVLS[selLvl].fill).attr('stroke',locked===id?'#0f172a':'rgba(255,255,255,.8)').attr('stroke-width',locked===id?1.5:.5).attr('opacity',1);}
+else{el.attr('fill','#f1f5f9').attr('stroke','#e2e8f0').attr('stroke-width',.3).attr('opacity',.25);}
+}else if(locked!==null){
+if(id===locked){el.attr('fill',hiFor(id)).attr('stroke','#0f172a').attr('stroke-width',1.5).attr('opacity',1);}
+else{el.attr('fill','#e2e8f0').attr('stroke','#cbd5e1').attr('stroke-width',.3).attr('opacity',.4);}
+}else{el.attr('fill',fillFor(id)).attr('stroke','rgba(255,255,255,.8)').attr('stroke-width',.5).attr('opacity',1);}
+});
+}
+
+function zoomTo(id){
+var el=g.selectAll('.country').filter(function(){return +d3.select(this).attr('data-id')===id;});
+if(el.empty())return;
+var b=path.bounds(el.datum()),dx=b[1][0]-b[0][0],dy=b[1][1]-b[0][1],cx=(b[0][0]+b[1][0])/2,cy=(b[0][1]+b[1][1])/2;
+var s=Math.max(1,Math.min(8,.85/Math.max(dx/W,dy/H)));
+svg.transition().duration(600).call(zoom.transform,d3.zoomIdentity.translate(W/2-s*cx,H/2-s*cy).scale(s));
+}
+
+function renderCatPanel(){
+var h='';
+LVLS.forEach(function(lv){
+var ac=selLvl===lv.id?' active':'';
+h+='<div class="cat-card'+ac+'" data-lvl="'+lv.id+'" style="background:'+lv.light+';'+(ac?'border-color:'+lv.col:'')+';">';
+h+='<div class="cat-icon" style="background:'+lv.fill+'">'+lv.icon+'</div>';
+h+='<div class="cat-info"><div class="cat-name" style="color:'+lv.col+'">'+lv.name+'</div><div class="cat-desc">'+lv.desc+'</div></div>';
+h+='<span class="cat-count" style="background:'+lv.col+'">'+counts[lv.id]+'</span></div>';
+});
+
+h+='<div class="divider"></div>';
+h+='<div class="stat-section"><div class="stat-title">📜 Convention signatory distribution</div>';
+var convArr=[{k:'B',c:CONVS.B},{k:'G',c:CONVS.G},{k:'V',c:CONVS.V},{k:'N',c:CONVS.N}];
+var maxConv=Math.max(convCounts.G,convCounts.V,convCounts.B,convCounts.N);
+convArr.forEach(function(cv){
+var pct=maxConv?convCounts[cv.k]/maxConv*100:0;
+h+='<div class="svc-stat-item"><span class="svc-stat-icon" style="background:'+cv.c.col+'">'+cv.c.icon+'</span>';
+h+='<span class="svc-stat-name">'+cv.c.short+'</span>';
+h+='<div class="svc-stat-bar"><div class="svc-stat-fill" style="width:'+pct+'%;background:'+cv.c.col+'"></div></div>';
+h+='<span class="svc-stat-num">'+convCounts[cv.k]+'國</span></div>';
+});
+h+='</div>';
+
+h+='<div class="divider"></div>';
+h+='<div class="stat-section"><div class="stat-title">🚗 Traffic-side distribution</div>';
+var totalSide=sideCounts.R+sideCounts.L;
+h+='<div class="svc-stat-item"><span class="svc-stat-icon" style="background:#3b82f6">➡️</span><span class="svc-stat-name">Right-hand traffic</span>';
+h+='<div class="svc-stat-bar"><div class="svc-stat-fill" style="width:'+((sideCounts.R/totalSide)*100)+'%;background:#3b82f6"></div></div>';
+h+='<span class="svc-stat-num">'+sideCounts.R+'countries</span></div>';
+h+='<div class="svc-stat-item"><span class="svc-stat-icon" style="background:#f59e0b">⬅️</span><span class="svc-stat-name">Left-hand traffic</span>';
+h+='<div class="svc-stat-bar"><div class="svc-stat-fill" style="width:'+((sideCounts.L/totalSide)*100)+'%;background:#f59e0b"></div></div>';
+h+='<span class="svc-stat-num">'+sideCounts.L+'countries</span></div>';
+h+='</div>';
+
+h+='<div class="divider"></div>';
+h+='<div class="stat-section"><div class="stat-title">🚫 common mistake</div>';
+h+='<div class="myth-box">';
+var myths=[
+ ['International Driving Permits (IDPs) are valid worldwide', 'Some countries do not recognise IDPs at all, such as China and Bhutan. Recognition depends on which convention each country has signed.'],
+  ['If you have an IDP, you do not need to carry your licence', 'An IDP is only the official translation of your original driving licence; you must carry both together. Neither is valid on its own.'],
+  ['All IDPs are the same', 'There are two formats: the "Geneva Convention" version and the "Vienna Convention" version. Japan accepts only the Geneva Convention version.'],
+  ['Japan accepts IDPs from all countries', 'Japan recognises only the 1949 Geneva Convention IDP. Many Eastern European countries have signed only the Vienna Convention, so their IDPs are invalid in Japan.'],
+  ['An IDP can be used as an identity card', 'An IDP is not a valid identity document. Passports are still required for immigration and identity checks.'],
+  ['An IDP is valid forever', 'An IDP usually lasts only 1 year, and it cannot outlast the validity of the underlying driving licence.']
+];
+myths.forEach(function(m){
+h+='<div class="myth-item"><span class="myth-x">❌ 「'+m[0]+'」</span><br><span class="myth-o">✅ '+m[1]+'</span></div>';
+});
+h+='</div></div>';
+
+h+='<div class="divider"></div>';
+h+='<div class="stat-section"><div class="stat-title">🛡️ Essential self-drive travel checklist</div>';
+h+='<div class="tip-box"><div class="tip-title">Before you go</div>';
+var tips=[
+  ['📋', 'Check which convention the destination recognises, and apply for the correct IDP version through the relevant authority (e.g. the supervision office in Taiwan, AAA in the United States).'],
+  ['🪪', 'Carry your original driving licence, IDP, and passport. You will need all three for car hire and roadside checks.'],
+  ['📱', 'Download offline maps (Google Maps / Maps.me), as remote areas may have no network coverage.'],
+  ['🛡️', 'Buy travel insurance that covers self-driving, and confirm that the policy covers the destination country. For car hire, it is wise to add CDW/LDW (collision/loss damage waiver).'],
+  ['⚠️', 'Learn the local rules of the road: driving side (left/right), speed-limit units (km/h or mph), and special rules (such as Italy’s ZTL and the UK Congestion Charge).'],
+  ['❄️', 'In winter, driving in Europe may require winter tyres or snow chains; many countries make them compulsory (e.g. Austria, southern Germany, and the Nordics).'],
+  ['⛽', 'In remote regions such as inland Australia, Patagonia, and Icelandic highlands, fuel stations are very scarce, so make sure to fill up before you go.']
+];
+tips.forEach(function(t){h+='<div class="tip-item"><span>'+t[0]+'</span><span>'+t[1]+'</span></div>';});
+h+='</div></div>';
+
+h+='<div class="divider"></div>';
+h+='<div class="stat-section"><div class="stat-title">💡 fun fact</div>';
+var facts=[
+  {i:'🇯🇵', t:'Japan is one of the easiest places for travellers to "get caught out": it accepts only the Geneva Convention IDP, so many European travellers holding Vienna Convention IDPs cannot rent a car there.'},
+  {i:'🇮🇹', t:'Italy’s ZTL (restricted traffic zones) generate hundreds of thousands of fines for foreign drivers every year. The fines may arrive months after you return home, but they are still legally valid.'},
+  {i:'🇮🇸', t:'Iceland’s strong winds can rip a car door right off. In car-hire insurance, "sand and ash protection" (SAAP) and gravel protection (GP) are almost essential.'},
+  {i:'🇿🇦', t:'South Africa’s Garden Route is ranked among the world’s top ten most beautiful self-drive routes, but Johannesburg also has one of the world’s highest car-jacking rates — always keep the doors locked.'},
+  {i:'🇨🇳', t:'China is the world’s largest country that does not recognise IDPs. Its market of over 1.4 billion people uses a completely separate driving-licence system, and foreign visitors must pass Theory Test 1 before driving.'},
+  {i:'🌍', t:'Around 35% of the world’s countries drive on the left, largely due to British colonial history. Left-hand traffic countries are concentrated in the Commonwealth, South-East Asia, and eastern Africa.'}
+];
+facts.forEach(function(f){h+='<div class="fact-item"><span class="fact-icon">'+f.i+'</span><span>'+f.t+'</span></div>';});
+h+='</div>';
+
+$catPanel.innerHTML=h;
+$catPanel.querySelectorAll('.cat-card').forEach(function(el){
+el.addEventListener('click',function(){
+var k=+this.getAttribute('data-lvl');
+if(selLvl===k){selLvl=null;}else{selLvl=k;locked=null;resetInfo();}
+paintMap();renderCatPanel();renderCountries();
+});
+});
+}
+
+function renderCountries(){
+var list=selLvl!==null?allC.filter(function(c){return c.level===selLvl;}):allC;
+if(selLvl!==null){var lv=LVLS[selLvl];$cHdr.innerHTML=lv.icon+' '+lv.name+' Countries and Territories';}
+else{$cHdr.innerHTML='🌍 All Countries and Territories';}
+$cCount.textContent=list.length;
+var h='';
+list.forEach(function(c){
+var lv=LVLS[c.level],cv=CONVS[c.conv],sd=SIDES[c.side];
+var ac=(locked!==null&&locked===c.id)?' active':'';
+h+='<div class="cc-item'+ac+'" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'">';
+h+='<span class="cc-flag">'+c.flag+'</span>';
+h+='<div class="cc-info"><div class="cc-name">'+c.name+'</div>';
+h+='<div class="cc-badges"><span class="cc-lb" style="background:'+lv.col+'">'+lv.icon+' '+lv.name+'</span>';
+h+='<span class="cc-lb" style="background:'+cv.col+'">'+cv.icon+' '+cv.short+'</span>';
+h+='<span class="cc-lb" style="background:'+sd.col+'">'+sd.icon+'</span></div>';
+if(c.note){var sn=c.note.length>40?c.note.substring(0,40)+'…':c.note;h+='<div class="cc-extra">'+sn+'</div>';}
+h+='</div></div>';
+});
+$cGrid.innerHTML=h;
+$cGrid.querySelectorAll('.cc-item').forEach(function(el){
+el.addEventListener('click',function(){
+var rawId=this.getAttribute('data-id'),isEx=this.getAttribute('data-extra')==='1';
+var cid=isEx?rawId:+rawId;
+if(locked===cid){locked=null;paintMap();resetInfo();renderCountries();return;}
+locked=cid;
+var c=allC.find(function(x){return x.id===cid;});
+if(c)showInfo(c,true);
+paintMap();renderCountries();
+if(!isEx&&typeof cid==='number')zoomTo(cid);
+});
+});
+}
+
+$sIn.addEventListener('input',function(){
+var q=this.value.trim().toLowerCase();
+if(!q){$sDD.classList.remove('show');return;}
+var res=allC.filter(function(c){return c.name.toLowerCase().indexOf(q)>-1||(c.a2&&c.a2.toLowerCase().indexOf(q)>-1);}).slice(0,12);
+if(!res.length){$sDD.innerHTML='<div style="padding:.8rem;color:#94a3b8;text-align:center">No result</div>';$sDD.classList.add('show');return;}
+var h='';res.forEach(function(c){
+var lv=LVLS[c.level],cv=CONVS[c.conv],sd=SIDES[c.side];
+h+='<div class="sd-item" data-id="'+c.id+'" data-extra="'+(c.isExtra?'1':'0')+'"><span style="font-size:1.2rem">'+c.flag+'</span><span style="font-weight:600;flex:1">'+c.name+'</span><span class="cc-lb" style="background:'+lv.col+';font-size:.68rem">'+lv.icon+' '+lv.name+'</span><span class="cc-lb" style="background:'+sd.col+';font-size:.68rem">'+sd.icon+'</span></div>';
+});
+$sDD.innerHTML=h;$sDD.classList.add('show');
+$sDD.querySelectorAll('.sd-item').forEach(function(el){
+el.addEventListener('click',function(){
+var rawId=this.getAttribute('data-id'),isEx=this.getAttribute('data-extra')==='1';
+var cid=isEx?rawId:+rawId;
+locked=cid;selLvl=null;
+var c=allC.find(function(x){return x.id===cid;});
+if(c){showInfo(c,true);$sIn.value=c.name;}
+paintMap();renderCatPanel();renderCountries();
+if(!isEx&&typeof cid==='number')zoomTo(cid);
+$sDD.classList.remove('show');
+});
+});
+});
+$sIn.addEventListener('blur',function(){setTimeout(function(){$sDD.classList.remove('show');},200);});
+$sIn.addEventListener('focus',function(){if(this.value.trim())this.dispatchEvent(new Event('input'));});
+
+document.getElementById('btnReset').addEventListener('click',function(){
+locked=null;selLvl=null;$sIn.value='';
+resetInfo();paintMap();renderCatPanel();renderCountries();
+svg.transition().duration(500).call(zoom.transform,d3.zoomIdentity);
+});
+
+d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(world){
+var countries=topojson.feature(world,world.objects.countries).features;
+g.selectAll('.country').data(countries).enter().append('path')
+  .attr('class','country')
+  .attr('data-id',function(d){return d.id;})
+  .attr('d',path)
+  .attr('fill',function(d){return fillFor(+d.id);})
+  .attr('stroke','rgba(255,255,255,.8)')
+  .attr('stroke-width',.5);
+
+g.selectAll('.country')
+.on('mouseenter',function(){
+if(locked!==null)return;
+var el=d3.select(this),id=+el.attr('data-id'),lv=lvlOf(id);
+if(selLvl!==null&&lv!==selLvl)return;
+el.attr('fill',hiFor(id)).attr('stroke','#0f172a').attr('stroke-width',1.2);
+var c=allC.find(function(x){return x.id===id&&!x.isExtra;});
+if(c)showInfo(c,false);
+$tip.classList.add('show');
+})
+.on('mousemove',function(ev){
+var id=+d3.select(this).attr('data-id'),lv=lvlOf(id);
+if(selLvl!==null&&lv!==selLvl){$tip.classList.remove('show');return;}
+var c=allC.find(function(x){return x.id===id&&!x.isExtra;});
+if(c){
+var lvd=LVLS[c.level],cv=CONVS[c.conv],sd=SIDES[c.side];
+var noteShort=c.note?(c.note.length>60?c.note.substring(0,60)+'…':c.note):'';
+$tip.innerHTML='<span class="tt-flag">'+c.flag+'</span><span class="tt-name">'+c.name+'</span>'
++'<div class="tt-badges">'
++'<span class="tt-b" style="background:'+lvd.col+'">'+lvd.icon+' '+lvd.name+'</span>'
++'<span class="tt-b" style="background:'+cv.col+'">'+cv.icon+' '+cv.short+'</span>'
++'<span class="tt-b" style="background:'+sd.col+'">🚗 '+sd.icon+' '+sd.name+'</span>'
++'</div>'
++(noteShort?'<div style="margin-top:6px;font-size:.76rem;color:#cbd5e1;line-height:1.4">'+noteShort+'</div>':'');
+}else{
+$tip.innerHTML='<span class="tt-flag">'+flagOf(id)+'</span><span class="tt-name">'+nameOf(id)+'</span><br><span style="color:#cbd5e1;font-size:.78rem">view more...</span>';
+}
+var tx=ev.clientX+14,ty=ev.clientY-80;
+if(tx+340>window.innerWidth)tx=ev.clientX-340;if(ty<10)ty=ev.clientY+20;
+$tip.style.left=tx+'px';$tip.style.top=ty+'px';
+$tip.classList.add('show');
+})
+.on('mouseleave',function(){
+$tip.classList.remove('show');
+if(locked!==null)return;
+var el=d3.select(this),id=+el.attr('data-id'),lv=lvlOf(id);
+if(selLvl!==null){if(lv===selLvl)el.attr('fill',LVLS[selLvl].fill).attr('stroke','rgba(255,255,255,.8)').attr('stroke-width',.5);}
+else{el.attr('fill',fillFor(id)).attr('stroke','rgba(255,255,255,.8)').attr('stroke-width',.5);}
+resetInfo();
+})
+.on('click',function(){
+var id=+d3.select(this).attr('data-id'),lv=lvlOf(id);
+if(selLvl!==null&&lv!==selLvl)return;
+if(locked===id){locked=null;paintMap();resetInfo();renderCountries();return;}
+locked=id;
+var c=allC.find(function(x){return x.id===id&&!x.isExtra;});
+if(c)showInfo(c,true);
+paintMap();renderCountries();
+});
+
+document.getElementById('loadOv').style.display='none';
+renderCatPanel();renderCountries();
+}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ Map loading failed. Please refresh the page.</p>';});
+
+})();
+</script>
+
+
+</body></html>
