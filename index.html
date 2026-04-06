@@ -7,11 +7,23 @@
         :root{--primary:#2563eb;--primary-dark:#1d4ed8;--primary-light:#dbeafe;--accent:#f59e0b;--accent-light:#fef3c7;--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.07);--shadow-sm:0 2px 8px rgba(0,0,0,.05)}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
-        header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(37,99,235,.3)}
-        .logo{font-size:1.4rem;font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:8px}.logo span{color:var(--accent)}
-        .header-right{display:flex;align-items:center;gap:16px}
-        .header-right a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;transition:color .2s}.header-right a:hover{color:#fff}
-        .lang-select{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 12px;border-radius:8px;font-size:.85rem;cursor:pointer;font-family:inherit}.lang-select option{color:#333;background:#fff}
+.rw-header *{margin:0;padding:0;box-sizing:border-box}
+.rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:linear-gradient(135deg,#1e40af,#3b82f6);border-bottom:none;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
+.rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
+.rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#ffffff}
+.rw-header-logo .brand-wise{font-size:1.55rem;font-weight:800;color:#bfdbfe}
+.rw-header-right{display:flex;align-items:center;gap:20px}
+.rw-header-contact{text-decoration:none;color:#e0e7ff;font-size:.95rem;font-weight:500;transition:color .2s}
+.rw-header-contact:hover{color:#ffffff}
+.rw-header-lang{position:relative;display:inline-block}
+.rw-header-lang-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:.9rem;font-weight:500;color:#ffffff;cursor:pointer;transition:background .2s}
+.rw-header-lang-btn:hover{background:rgba(255,255,255,.25)}
+.rw-header-lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:160px;overflow:hidden;z-index:1001}
+.rw-header-lang:hover .rw-header-lang-menu,.rw-header-lang-menu.show{display:block}
+.rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
+.rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
+.rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+
         .hero{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 40%,#3b82f6 70%,#60a5fa 100%);color:#fff;padding:64px 24px 56px;text-align:center;position:relative;overflow:hidden}
         .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
         .hero-inner{position:relative;z-index:1;max-width:750px;margin:0 auto}
@@ -97,11 +109,21 @@
         .cta-btn{padding:14px 32px;border-radius:12px;font-weight:700;font-family:inherit;font-size:.95rem;cursor:pointer;transition:all .2s;border:2px solid transparent}
         .cta-btn.primary{background:var(--accent);color:#1e293b;border-color:var(--accent)}.cta-btn.primary:hover{background:#fbbf24;transform:scale(1.03)}
         .cta-btn.outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}.cta-btn.outline:hover{border-color:#fff;background:rgba(255,255,255,.1)}
-        footer{background:#1e293b;color:rgba(255,255,255,.7);padding:36px 24px 20px;margin-top:auto}
-        .footer-grid{max-width:920px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;margin-bottom:28px}
-        .footer-col h4{color:#fff;font-size:.95rem;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-        .footer-col a{display:block;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;padding:4px 0;transition:color .2s}.footer-col a:hover{color:#fff}
-        .footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,.1);padding-top:16px;font-size:.82rem}.footer-bottom a{color:rgba(255,255,255,.5);text-decoration:none}.footer-bottom a:hover{color:#fff}
+    .rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#ffffff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#ffffff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
+@media(max-width:768px){.rw-footer-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(max-width:480px){.rw-footer{padding:36px 16px 0}.rw-footer-grid{grid-template-columns:1fr;gap:24px}}
+
         @media(max-width:768px){
             .hero{padding:48px 20px 40px}.hero h1{font-size:1.7rem}.hero p{font-size:.95rem}
             .hero-search{flex-direction:column;gap:8px;padding:10px}.hero-search button{padding:12px}
@@ -116,16 +138,15 @@
 </head>
 <body>
 
-<header>
-    <div class="logo">Roam<span>wise</span></div>
-    <div class="header-right">
-        <a href="#" class="contact-link" data-t="contact">聯絡我們</a>
+<header class="rw-header">
+  <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
+  <div class="rw-header-right">
+    <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
         <select class="lang-select" id="langSelect" onchange="applyLang(this.value)">
             <option value="zh-TW" selected="">繁體中文</option>
             <option value="en">English</option>
             <option value="es">Español</option>
             <option value="pt">Português</option>
-            <option value="hi">हिन्दी</option>
         </select>
     </div>
 </header>
@@ -271,29 +292,33 @@
     </div>
 </main>
 
-<footer>
-    <div class="footer-grid">
-        <div class="footer-col">
-            <h4 data-t="f1h">🔌 電力與時間</h4>
-            <a href="#" onclick="goTool('插頭規格'); return false;" data-t="f1a">插頭規格查詢</a>
-            <a href="#" onclick="goTool('時區查詢'); return false;" data-t="f1b">時區查詢</a>
-            <a href="#" onclick="goTool('日出日落'); return false;" data-t="f1c">日出日落時間</a>
-            <a href="#" onclick="goTool('計時器'); return false;" data-t="f1c">計時器</a>
+<footer class="rw-footer">
+  <div class="rw-footer-grid">
+    <div class="rw-footer-col">
+            <h4 data-t="f1h">⏰ 時間與日照</h4>
+            <a href="#" onclick="goTool('世界時區查詢'); return false;" data-t="f1a">世界時區查詢</a>
+            <a href="#" onclick="goTool('會議時間查找器'); return false;" data-t="f1b">會議時間查找器</a>
+            <a href="#" onclick="goTool('日出日落時間查詢'); return false;" data-t="f1c">日出日落時間查詢</a>
+            <a href="#" onclick="goTool('計時器與倒計時'); return false;" data-t="f1d">計時器與倒計時</a>
         </div>
         <div class="footer-col">
-            <h4 data-t="f2h">🎉 假期與節慶</h4>
-            <a href="#" onclick="goTool('國定假日'); return false;" data-t="f2a">各國國定假日</a>
-            <a href="#" onclick="goTool('節慶活動'); return false;" data-t="f2b">節慶活動一覽</a>
+            <h4 data-t="f2h">🔧 換算與生活工具</h4>
+            <a href="#" onclick="goTool('匯率換算'); return false;" data-t="f2a">匯率換算</a>
+            <a href="#" onclick="goTool('單位轉換'); return false;" data-t="f2b">單位轉換</a>
+            <a href="#" onclick="goTool('插頭標準查詢'); return false;" data-t="f2c">插頭標準查詢</a>
         </div>
         <div class="footer-col">
-            <h4 data-t="f3h">💱 金融與單位</h4>
-            <a href="#" onclick="goTool('匯率換算'); return false;" data-t="f3a">匯率換算</a>
-            <a href="#" onclick="goTool('單位轉換'); return false;" data-t="f3b">單位轉換</a>
+            <h4 data-t="f3h">🚗 交通與出行地圖</h4>
+            <a href="#" onclick="goTool('世界國家與地區互動地圖'); return false;" data-t="f3a">世界國家與地區互動地圖</a>
+            <a href="#" onclick="goTool('世界行車方向互動地圖'); return false;" data-t="f3b">世界行車方向互動地圖</a>
+            <a href="#" onclick="goTool('全球國際駕照承認互動地圖'); return false;" data-t="f3c">全球國際駕照承認互動地圖</a>
         </div>
         <div class="footer-col">
-            <h4 data-t="f4h">🌍 旅遊資訊</h4>
-            <a href="#" onclick="goTool('國家概覽'); return false;" data-t="f4a">國家概覽</a>
-            <a href="#" onclick="goTool('目的地指南'); return false;" data-t="f4b">各地詳細指南</a>
+            <h4 data-t="f4h">🌍 全球資訊地圖</h4>
+            <a href="#" onclick="goTool('世界時區互動地圖'); return false;" data-t="f4a">世界時區互動地圖</a>
+            <a href="#" onclick="goTool('世界插頭類型互動地圖'); return false;" data-t="f4b">世界插頭類型互動地圖</a>
+            <a href="#" onclick="goTool('全球曆法互動地圖'); return false;" data-t="f4b">全球曆法互動地圖</a>
+            <a href="#" onclick="goTool('全球網路自由度互動地圖'); return false;" data-t="f4b">全球網路自由度互動地圖</a>
         </div>
     </div>
     <div class="footer-bottom">
@@ -306,16 +331,20 @@
 <script>
 /* ====== TOOL PAGE ROUTES ====== */
 const toolPages = {
+    '世界時區查詢':   { zh: 'time-zone/time-zone-zh.html',    en: 'time-zone/time-zone-en.html',    es: 'time-zone/time-zone-es.html',    pt: 'time-zone/time-zone-pt.html' },
+    '會議時間查找器':   { zh: 'meeting/meeting-zh.html',    en: 'meeting/meeting-en.html',    es: 'meeting/meeting-es.html',    pt: 'meeting/meeting-pt.html' },
+    '日出日落時間查詢':   { zh: 'sunset/sunset-zh.html',          en: 'sunset/sunset-en.html',          es: 'sunset/sunset-es.html',          pt: 'sunset/sunset-pt.html' },
+    '計時器與倒計時':   { zh: 'timer/timer-zh.html',          en: 'timer/timer-en.html',          es: 'timer/timer-es.html',          pt: 'timer/timer-pt.html' },
     '匯率換算':   { zh: 'currency/currency-zh.html',     en: 'currency/currency-en.html',     es: 'currency/currency-es.html',     pt: 'currency/currency-pt.html' },
     '單位轉換':   { zh: 'unit/unit-zh.html',              en: 'unit/unit-en.html',              es: 'unit/unit-es.html',              pt: 'unit/unit-pt.html' },
-    '時區查詢':   { zh: 'time-zone/time-zone-zh.html',    en: 'time-zone/time-zone-en.html',    es: 'time-zone/time-zone-es.html',    pt: 'time-zone/time-zone-pt.html' },
-    '插頭規格':   { zh: 'plug/plug-zh.html',              en: 'plug/plug-en.html',              es: 'plug/plug-es.html',              pt: 'plug/plug-pt.html' },
-    '國定假日':   { zh: 'holiday-zh.html',                en: 'holiday-en.html' },
-    '日出日落':   { zh: 'sunset/sunset-zh.html',          en: 'sunset/sunset-en.html',          es: 'sunset/sunset-es.html',          pt: 'sunset/sunset-pt.html' },
-    '計時器':   { zh: 'timer/timer-zh.html',          en: 'timer/timer-en.html',          es: 'timer/timer-es.html',          pt: 'timer/timer-pt.html' },
-    '國家概覽':   { zh: 'country-zh.html',                en: 'country-en.html' },
-    '目的地指南': { zh: 'guide-zh.html',                  en: 'guide-en.html' },
-    '節慶活動':   { zh: 'festival-zh.html',               en: 'festival-en.html' }
+    '插頭標準查詢':   { zh: 'plug/plug-zh.html',              en: 'plug/plug-en.html',              es: 'plug/plug-es.html',              pt: 'plug/plug-pt.html' },
+    '世界國家與地區互動地圖':   { zh: 'country_map/country_map-zh.html',              en: 'country_map/country_map-en.html',              es: 'country_map/country_map-es.html',              pt: 'country_map/country_map-pt.html' },
+    '世界行車方向互動地圖':    { zh: 'drivingdirection_map/drivingdirection_map-zh.html',              en: 'drivingdirection_map/drivingdirection_map-en.html',              es: 'drivingdirection_map/drivingdirection_map-es.html',              pt: 'drivingdirection_map/drivingdirection_map-pt.html' },
+    '全球國際駕照承認互動地圖':    { zh: 'drivinglicense_map/drivinglicense_map-zh.html',              en: 'drivinglicense_map/drivinglicense_map-en.html',              es: 'drivinglicense_map/drivinglicense_map-es.html',              pt: 'drivinglicense_map/drivinglicense_map-pt.html' },
+    '世界時區互動地圖':    { zh: 'ptime-zone-map/time-zone-map-zh.html',              en: 'time-zone-map/time-zone-map-en.html',              es: 'time-zone-map/time-zone-map-es.html',              pt: 'time-zone-map/time-zone-map-pt.html' },
+    '世界插頭類型互動地圖':    { zh: 'plug_map/plug_mapzh.html',              en: 'plug_map/plug_mapen.html',              es: 'plug_map/plug_map-es.html',              pt: 'plug_map/plug_map-pt.html' },
+    '全球曆法互動地圖':    { zh: 'nationalday_map/nationalday_map-zh.html',              en: 'nationalday_map/nationalday_map-en.html',              es: 'nationalday_map/nationalday_map-es.html',              pt: 'nationalday_map/nationalday_map-pt.html' },
+    '節全球網路自由度互動地圖':    { zh: 'Network_map/Network_map-zh.html',              en: 'Network_map/Network_map-en.html',              es: 'Network_map/Network_map-es.html',              pt: 'Network_map/Network_map-pt.html' },
 };
 
 /* ====== TRANSLATIONS ====== */
@@ -323,12 +352,12 @@ const T = {
 'zh-TW': {
     contact:'聯絡我們',
     hero_t:'出發前，先問 <em>Roamwise</em>',
-    hero_s:'匯率換算、單位轉換、時區查詢、插頭規格、國定假日⋯⋯<br>一站搞定所有旅行前必須知道的大小事',
+    hero_s:'生活中的小事、探索地球鮮為人知的小事⋯⋯<br>一站搞定所有旅行前必須知道的大小事',
     hero_ph:'搜尋國家、工具或關鍵字⋯',
     hero_btn:'🔍 搜尋',
-    tag1:'🇯🇵 日本插頭',tag2:'💵 美金匯率',tag3:'🇹🇭 泰國假日',tag4:'⚖️ 公斤換磅',tag5:'🇬🇧 英國時差',
+    tag1:'🇲🇴 澳門插頭',tag2:'💵 美金匯率',tag3:'⚖️ 公斤換磅',tag4:'🇬🇧 英國時差',
     ticker_t:'💱 即時匯率速覽',
-    qs1l:'台北 UTC+8',qs2l:'今日天氣提示',qs2v:'出行宜查天氣',qs3l:'熱門換算',qs3v:'1 坪 ≈ 35.6 ft²',qs4l:'旅行小知識',qs4v:'各國電壓不同',
+    qs1l:'台北 UTC+8',qs2l:'匯率計算',qs2v:'去旅行了',qs3l:'熱門換算',qs3v:'1 坪 ≈ 35.6 ft²',qs4l:'旅行小知識',qs4v:'各國電壓不同',
     tools_t:'🧰 旅行工具箱',tools_s:'從出發到落地，每一步都替你想好了',
     t1t:'匯率換算',t1d:'即時匯率、歷史走勢，支援全球 150+ 種貨幣',
     t2t:'單位轉換',t2d:'長度、重量、面積、溫度、電力等 10 大分類一鍵換算',
@@ -336,11 +365,11 @@ const T = {
     t4t:'插頭規格查詢',t4d:'各國電壓、頻率、插頭類型速查，出國不再帶錯轉接頭',
     t5t:'各國國定假日',t5d:'避開公眾假期或巧妙利用連假，讓行程規劃更有彈性',
     t6t:'日出日落時間',t6d:'精準查詢各地日出日落，抓住黃金時刻拍下最美照片',
-    t7t:'國家概覽',t7d:'人口、語言、貨幣、簽證需求等旅行基本資訊一覽',
-    t8t:'目的地指南',t8d:'深度圖文攻略，在地文化、美食推薦和安全提示',
-    t9t:'節慶活動一覽',t9d:'世界各地精彩節慶，讓你的旅程多一份驚喜和感動',
-    tip_t:'你知道嗎？',tip_btn:'換一個 ✨',
-    dest_t:'🗺️ 熱門目的地',dest_s:'探索旅人最常查詢的國家與城市',
+    t7t:'駕駛方向',t7d:'各國的駕車方向不盡相同，以地圖呈現差異',
+    t8t:'曆法',t8d:'每個國家都有著自己獨得的文化，曆法也有所不同，有的曆法距今至少五千年',
+    t9t:'網絡自由度',t9d:'有些網站不一定在每個國家地區都能看見，出發前看看有沒必須裝VPN',
+    tip_t:'你瞭解這個世界嗎嗎？',tip_btn:'換一個 ✨',
+    dest_t:'🗺️ 熱門目的地',dest_s:'旅人曾經遊過的國家與城市',
     why_t:'✨ 為什麼選擇 Roamwise？',
     w1t:'即時準確',w1d:'資料持續更新，匯率、時區、假日資訊皆為最新狀態',
     w2t:'簡潔直覺',w2d:'不需要下載 App，打開瀏覽器就能使用，操作零門檻',
@@ -349,10 +378,10 @@ const T = {
     w5t:'跨裝置適配',w5d:'手機、平板、電腦都能完美顯示，隨時隨地輕鬆使用',
     w6t:'完全免費',w6d:'所有功能永久免費，不設付費牆，旅行資訊人人可用',
     cta_t:'🚀 準備好出發了嗎？',cta_s:'從今天開始，讓 Roamwise 成為你每次旅行的第一站',cta_b1:'開始使用工具箱',cta_b2:'探索熱門目的地',
-    f1h:'🔌 電力與時間',f1a:'插頭規格查詢',f1b:'時區查詢',f1c:'日出日落時間',
-    f2h:'🎉 假期與節慶',f2a:'各國國定假日',f2b:'節慶活動一覽',
-    f3h:'💱 金融與單位',f3a:'匯率換算',f3b:'單位轉換',
-    f4h:'🌍 旅遊資訊',f4a:'國家概覽',f4b:'各地詳細指南',
+    f1h:'⏰ 時間與日照',f1a:'世界時區查詢',f1b:'會議時間查找器',f1c:'日出日落時間查詢',f1d:'計時器與倒計時',
+    f2h:'🔧 換算與生活工具',f2a:'匯率換算',f2b:'單位轉換',f2c:'插頭標準查詢',
+    f3h:'🚗 交通與出行地圖位',f3a:'世界國家與地區互動地圖',f3b:'世界行車方向互動地圖',f3c:'全球國際駕照承認互動地圖',
+    f4h:'🌍 全球資訊地圖',f4a:'世界時區互動地圖',f4b:'世界插頭類型互動地圖',f4c:'全球曆法互動地圖',f4d:'全球網路自由度互動地圖',
     fc:'© 2026 Roamwise. All rights reserved.',fp:'隱私權政策',ft:'使用條款'
 },
 'en': {
