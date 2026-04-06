@@ -7,7 +7,7 @@
         :root{--primary:#2563eb;--primary-dark:#1d4ed8;--primary-light:#dbeafe;--accent:#f59e0b;--accent-light:#fef3c7;--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.07);--shadow-sm:0 2px 8px rgba(0,0,0,.05)}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
-.rw-header *{margin:0;padding:0;box-sizing:border-box}
+       .rw-header *{margin:0;padding:0;box-sizing:border-box}
 .rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:linear-gradient(135deg,#1e40af,#3b82f6);border-bottom:none;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
 .rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
 .rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#ffffff}
@@ -23,6 +23,7 @@
 .rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
 .rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
 .rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+@media(max-width:600px){.rw-header{padding:12px 16px}.rw-header-logo .brand-roam,.rw-header-logo .brand-wise{font-size:1.25rem}.rw-header-right{gap:12px}.rw-header-contact{font-size:.85rem}.rw-header-lang-btn{padding:6px 10px;font-size:.82rem}}
 
         .hero{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 40%,#3b82f6 70%,#60a5fa 100%);color:#fff;padding:64px 24px 56px;text-align:center;position:relative;overflow:hidden}
         .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
@@ -142,7 +143,7 @@
   <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
   <div class="rw-header-right">
     <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
-        <select class="lang-select" id="langSelect" onchange="applyLang(this.value)">
+        <select class="rw-header-lang-menu" id="langSelect" onchange="applyLang(this.value)">
             <option value="zh-TW" selected="">繁體中文</option>
             <option value="en">English</option>
             <option value="es">Español</option>
@@ -296,29 +297,37 @@
   <div class="rw-footer-grid">
     <div class="rw-footer-col">
             <h4 data-t="f1h">⏰ 時間與日照</h4>
+              <ul>
             <a href="#" onclick="goTool('世界時區查詢'); return false;" data-t="f1a">世界時區查詢</a>
             <a href="#" onclick="goTool('會議時間查找器'); return false;" data-t="f1b">會議時間查找器</a>
             <a href="#" onclick="goTool('日出日落時間查詢'); return false;" data-t="f1c">日出日落時間查詢</a>
             <a href="#" onclick="goTool('計時器與倒計時'); return false;" data-t="f1d">計時器與倒計時</a>
-        </div>
-        <div class="footer-col">
+              </ul>
+    </div>
+    <div class="rw-footer-col">
             <h4 data-t="f2h">🔧 換算與生活工具</h4>
-            <a href="#" onclick="goTool('匯率換算'); return false;" data-t="f2a">匯率換算</a>
-            <a href="#" onclick="goTool('單位轉換'); return false;" data-t="f2b">單位轉換</a>
-            <a href="#" onclick="goTool('插頭標準查詢'); return false;" data-t="f2c">插頭標準查詢</a>
+              <ul>
+             <li><a href="#" onclick="goTool('匯率換算'); return false;" data-t="f2a">匯率換算</a></li>
+             <li><a href="#" onclick="goTool('單位轉換'); return false;" data-t="f2b">單位轉換</a></li>
+             <li><a href="#" onclick="goTool('插頭標準查詢'); return false;" data-t="f2c">插頭標準查詢</a></li>
+             </ul>
         </div>
-        <div class="footer-col">
+    <div class="rw-footer-col">
             <h4 data-t="f3h">🚗 交通與出行地圖</h4>
-            <a href="#" onclick="goTool('世界國家與地區互動地圖'); return false;" data-t="f3a">世界國家與地區互動地圖</a>
-            <a href="#" onclick="goTool('世界行車方向互動地圖'); return false;" data-t="f3b">世界行車方向互動地圖</a>
-            <a href="#" onclick="goTool('全球國際駕照承認互動地圖'); return false;" data-t="f3c">全球國際駕照承認互動地圖</a>
+              <ul>
+             <li><a href="#" onclick="goTool('世界國家與地區互動地圖'); return false;" data-t="f3a">世界國家與地區互動地圖</a></li>
+             <li><a href="#" onclick="goTool('世界行車方向互動地圖'); return false;" data-t="f3b">世界行車方向互動地圖</a></li>
+             <li><a href="#" onclick="goTool('全球國際駕照承認互動地圖'); return false;" data-t="f3c">全球國際駕照承認互動地圖</a></li>
+            </ul>
         </div>
-        <div class="footer-col">
+    <div class="rw-footer-col">
             <h4 data-t="f4h">🌍 全球資訊地圖</h4>
-            <a href="#" onclick="goTool('世界時區互動地圖'); return false;" data-t="f4a">世界時區互動地圖</a>
-            <a href="#" onclick="goTool('世界插頭類型互動地圖'); return false;" data-t="f4b">世界插頭類型互動地圖</a>
-            <a href="#" onclick="goTool('全球曆法互動地圖'); return false;" data-t="f4b">全球曆法互動地圖</a>
-            <a href="#" onclick="goTool('全球網路自由度互動地圖'); return false;" data-t="f4b">全球網路自由度互動地圖</a>
+              <ul>
+             <li><a href="#" onclick="goTool('世界時區互動地圖'); return false;" data-t="f4a">世界時區互動地圖</a></li>
+             <li><a href="#" onclick="goTool('世界插頭類型互動地圖'); return false;" data-t="f4b">世界插頭類型互動地圖</a></li>
+             <li><a href="#" onclick="goTool('全球曆法互動地圖'); return false;" data-t="f4b">全球曆法互動地圖</a></li>
+             <li><a href="#" onclick="goTool('全球網路自由度互動地圖'); return false;" data-t="f4b">全球網路自由度互動地圖</a></li>
+            </ul>
         </div>
     </div>
     <div class="footer-bottom">
@@ -537,14 +546,14 @@ const tipsAll = {
 
 /* ====== DESTINATION DATA ====== */
 const destImgs = [
-    {url:'https://imgur.com/gallery/mount-fiji-japan-zoYMhvX#zuRYuse',emoji:'🗼',bg:'linear-gradient(135deg,#fce4ec,#f8bbd0)'},
-    {url:'https://imgur.com/gallery/kyoto-castle-japan-9h73LHZ#wHlrka8',emoji:'🏯',bg:'linear-gradient(135deg,#fff3e0,#ffe0b2)'},
+    {url:'https://i.postimg.cc/d37j7FzZ/A010395.png',emoji:'🗼',bg:'linear-gradient(135deg,#fce4ec,#f8bbd0)'},
+    {url:'https://i.postimg.cc/8P6bN1dC/A010031.png',emoji:'🏯',bg:'linear-gradient(135deg,#fff3e0,#ffe0b2)'},
     {url:'#',emoji:'🇰🇷',bg:'linear-gradient(135deg,#e3f2fd,#bbdefb)'},
-    {url:'https://imgur.com/gallery/vitoria-harbour-hong-kong-wXJLzGg#2OnzQN6',emoji:'🏙️',bg:'linear-gradient(135deg,#e8f5e9,#a5d6a7)'},
-    {url:'https://imgur.com/gallery/ruins-of-saint-paul-macao-mrg1z0k#cMNGOiO',emoji:'🎰',bg:'linear-gradient(135deg,#fff9c4,#fff176)'},
+    {url:'https://i.postimg.cc/3wBBVnX7/A010044.png',emoji:'🏙️',bg:'linear-gradient(135deg,#e8f5e9,#a5d6a7)'},
+    {url:'https://i.postimg.cc/NMF1VYGP/250219-da-san-ba.png',emoji:'🎰',bg:'linear-gradient(135deg,#fff9c4,#fff176)'},
     {url:'#',emoji:'🏛️',bg:'linear-gradient(135deg,#e0f2f1,#80cbc4)'},
-    {url:'https://imgur.com/gallery/kaohsiung-85-tower-taiwan-BILZlwT#xnzE5xY',emoji:'🌊',bg:'linear-gradient(135deg,#e3f2fd,#90caf9)'},
-    {url:'https://imgur.com/gallery/black-church-iceland-qhdVfHR#THQPEGF',emoji:'🏔️',bg:'linear-gradient(135deg,#e8eaf6,#9fa8da)'},
+    {url:'https://i.postimg.cc/Nf3pHyGB/A010022.png',emoji:'🌊',bg:'linear-gradient(135deg,#e3f2fd,#90caf9)'},
+    {url:'https://i.postimg.cc/hvhp9T7B/A010302.png',emoji:'🏔️',bg:'linear-gradient(135deg,#e8eaf6,#9fa8da)'},
     {url:'#',emoji:'🌲',bg:'linear-gradient(135deg,#e8f5e9,#81c784)'}
 ];
 const destLang = {
