@@ -5,11 +5,25 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
-nav{background:linear-gradient(135deg,#92400e,#b45309);display:flex;align-items:center;justify-content:space-between;padding:.75rem 2rem;flex-wrap:wrap}
-.logo{font-size:1.5rem;font-weight:700;color:#fff;text-decoration:none}.logo span{color:#facc15}
-.nav-r{display:flex;align-items:center;gap:1.2rem}
-nav a{color:#fde68a;text-decoration:none;font-size:.95rem;padding-bottom:2px;border-bottom:2px solid transparent}nav a:hover{color:#fff}nav a.act{color:#fff;border-bottom-color:#facc15}
-main{flex:1;max-width:1340px;width:100%;margin:1.5rem auto;padding:0 1.5rem}
+
+.rw-header *{margin:0;padding:0;box-sizing:border-box}
+.rw-header{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:linear-gradient(135deg,#1e40af,#3b82f6);border-bottom:none;font-family:'Segoe UI','Noto Sans TC',sans-serif;position:sticky;top:0;z-index:1000}
+.rw-header-logo{display:flex;align-items:baseline;text-decoration:none;gap:2px}
+.rw-header-logo .brand-roam{font-size:1.55rem;font-weight:800;color:#ffffff}
+.rw-header-logo .brand-wise{font-size:1.55rem;font-weight:800;color:#bfdbfe}
+.rw-header-right{display:flex;align-items:center;gap:20px}
+.rw-header-contact{text-decoration:none;color:#e0e7ff;font-size:.95rem;font-weight:500;transition:color .2s}
+.rw-header-contact:hover{color:#ffffff}
+.rw-header-lang{position:relative;display:inline-block}
+.rw-header-lang-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:7px 14px;font-size:.9rem;font-weight:500;color:#ffffff;cursor:pointer;transition:background .2s}
+.rw-header-lang-btn:hover{background:rgba(255,255,255,.25)}
+.rw-header-lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:160px;overflow:hidden;z-index:1001}
+.rw-header-lang:hover .rw-header-lang-menu,.rw-header-lang-menu.show{display:block}
+.rw-header-lang-menu a{display:block;padding:10px 18px;text-decoration:none;color:#374151;font-size:.9rem;transition:background .15s}
+.rw-header-lang-menu a:hover{background:#eff6ff;color:#2563eb}
+.rw-header-lang-menu a.active{color:#2563eb;font-weight:600;background:#eff6ff}
+
+  main{flex:1;max-width:1340px;width:100%;margin:1.5rem auto;padding:0 1.5rem}
 h1{font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
 .alert-bar{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2px solid #fcd34d;border-radius:12px;padding:.8rem 1.2rem;margin-bottom:1rem;display:flex;align-items:flex-start;gap:.8rem;flex-wrap:wrap;font-size:.87rem;line-height:1.65}
 .alert-bar b{color:#92400e}
@@ -97,17 +111,39 @@ h1{font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem
 .cc-dv{font-size:.72rem;font-weight:800;flex-shrink:0;white-space:nowrap}
 .sort-btn{padding:2px 8px;border-radius:5px;font-size:.68rem;font-weight:700;cursor:pointer;border:1px solid #e2e8f0;background:#fff}.sort-btn:hover{background:#fffbeb}.sort-btn.on{background:#f59e0b;color:#fff;border-color:#f59e0b}
 .ttip{position:fixed;pointer-events:none;background:rgba(15,23,42,.94);color:#fff;padding:12px 16px;border-radius:12px;font-size:.84rem;z-index:1000;opacity:0;transition:opacity .12s;box-shadow:0 4px 20px rgba(0,0,0,.25);line-height:1.55;max-width:320px}.ttip.show{opacity:1}
-footer{background:#1e293b;color:#94a3b8;margin-top:auto}
-.finner{max-width:1340px;margin:0 auto;padding:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;font-size:.82rem}
-@media(max-width:900px){.two-p{grid-template-columns:1fr}.det-grid{grid-template-columns:1fr 1fr}.calc-row{grid-template-columns:1fr 50px 1fr}}
-@media(max-width:600px){nav{padding:.6rem 1rem}.nav-r{gap:.6rem}nav a{font-size:.75rem}main{padding:0 .7rem}.card{padding:.9rem}.calc-row{grid-template-columns:1fr;gap:.5rem}.calc-swap{margin-top:0;transform:rotate(90deg)}.calc-swap:hover{transform:rotate(270deg)}.det-grid{grid-template-columns:1fr}.cc-g{grid-template-columns:1fr}.stat-banner{gap:6px}.sb-item{min-width:60px;padding:4px 8px}.sb-num{font-size:.95rem}}
+    .rw-footer *{margin:0;padding:0;box-sizing:border-box}
+.rw-footer{background:#0f172a;color:#cbd5e1;font-family:'Segoe UI','Noto Sans TC',sans-serif;padding:48px 32px 0}
+.rw-footer a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.rw-footer a:hover{color:#ffffff}
+.rw-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;max-width:1100px;margin:0 auto;padding-bottom:40px}
+.rw-footer-col h4{font-size:1rem;font-weight:700;color:#ffffff;margin-bottom:16px}
+.rw-footer-col ul{list-style:none}
+.rw-footer-col ul li{margin-bottom:10px}
+.rw-footer-col ul li a{font-size:.9rem}
+.rw-footer-bottom{border-top:1px solid #1e293b;text-align:center;padding:20px 0;font-size:.85rem;color:#64748b;max-width:1100px;margin:0 auto}
+.rw-footer-bottom a{color:#64748b;margin:0 6px}
+.rw-footer-bottom a:hover{color:#e2e8f0}
+@media(max-width:768px){.rw-footer-grid{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(max-width:480px){.rw-footer{padding:36px 16px 0}.rw-footer-grid{grid-template-columns:1fr;gap:24px}}
 </style>
 </head>
 <body>
-<nav>
-<a class="logo" href="#">🍔 Roam<span>wise</span></a>
-<div class="nav-r"><a href="#">🔌 插頭</a><a href="#">🚗 駕駛</a><a href="#">📡 網路</a><a href="#">🌍 人口密度</a><a href="#" class="act">🍔 大麥克指數</a></div>
-</nav>
+<header class="rw-header">
+  <a href="../index.html" class="rw-header-logo"><span class="brand-roam">Roam</span><span class="brand-wise">wise</span></a>
+  <div class="rw-header-right">
+    <a href="../1-contact/contact-zh.html" class="rw-header-contact">聯絡我們</a>
+    <div class="rw-header-lang">
+      <button class="rw-header-lang-btn" onclick="this.nextElementSibling.classList.toggle('show')">繁體中文 ▾</button>
+      <div class="rw-header-lang-menu">
+        <a href="bigmac-zh.html" class="active">繁體中文</a>
+        <a href="bigmac-en.html">English</a>
+        <a href="bigmac-es.html">Español</a>
+        <a href="bigmac-pt.html">Português</a>
+      </div>
+    </div>
+  </div>
+</header>
+
 <main>
 <h1>🍔 大麥克指數互動地圖與計算器 <span id="apiBadge" class="api-badge api-fall">⏳ 載入中…</span></h1>
 <div class="alert-bar">
