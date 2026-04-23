@@ -1,0 +1,557 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界殖民史互動地圖 – Roamwise</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
+nav{background:linear-gradient(135deg,#1e3a8a,#1e40af);display:flex;align-items:center;justify-content:space-between;padding:.75rem 2rem;flex-wrap:wrap}
+.logo{font-size:1.5rem;font-weight:700;color:#fff;text-decoration:none}.logo span{color:#facc15}
+.nav-r{display:flex;align-items:center;gap:1.2rem}
+nav a{color:#e0e7ff;text-decoration:none;font-size:.95rem;padding-bottom:2px;border-bottom:2px solid transparent}nav a:hover{color:#fff}nav a.act{color:#fff;border-bottom-color:#facc15}
+main{flex:1;max-width:1320px;width:100%;margin:1.5rem auto;padding:0 1.5rem}
+h1{font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.card{background:#fff;border-radius:14px;padding:1.2rem 1.5rem;box-shadow:0 2px 14px rgba(0,0,0,.06);margin-bottom:1.2rem}
+.info-bar{min-height:54px;display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;padding-bottom:.8rem;border-bottom:1px solid #e2e8f0}
+.info-left{display:flex;align-items:center;gap:.8rem;flex:1;min-width:200px}
+.info-flag{font-size:2.2rem;line-height:1}.info-name{font-size:1.1rem;font-weight:700}.info-sub{font-size:.78rem;color:#64748b;margin-top:2px;line-height:1.5}
+.info-placeholder{color:#94a3b8;font-size:.9rem;font-weight:400}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 9px;border-radius:14px;font-size:.73rem;font-weight:700;color:#fff;margin:2px 2px 0 0}
+.history-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid #f1f5f9}
+.history-row.hidden{display:none}
+.hist-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;font-size:.78rem;border:1px solid #e2e8f0;background:#f8fafc}
+.hist-chip .hc-bar{height:4px;border-radius:2px;min-width:20px;max-width:80px}
+.year-row{display:flex;align-items:center;gap:1rem;margin:.8rem 0;flex-wrap:wrap}
+.year-big{font-size:2.8rem;font-weight:900;color:#1e3a8a;font-variant-numeric:tabular-nums;min-width:120px}
+.year-stat{font-size:.85rem;color:#64748b;line-height:1.7}
+.year-stat b{color:#1e293b}
+.ctrl-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem}
+.slider-wrap{flex:1;min-width:200px;position:relative}
+.slider-wrap input[type=range]{width:100%;cursor:pointer;accent-color:#1e3a8a;height:6px}
+.evt-marks{position:relative;height:18px;margin-top:2px}
+.evt-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:#3b82f6;border:2px solid #fff;box-shadow:0 0 3px rgba(0,0,0,.2);top:2px;transform:translateX(-50%);cursor:pointer;z-index:2;transition:transform .12s}.evt-dot:hover{transform:translateX(-50%) scale(1.6)}
+.evt-dot.major{background:#dc2626;width:10px;height:10px;top:1px}
+.btn{padding:.4rem .9rem;border:none;border-radius:8px;font-size:.82rem;cursor:pointer;font-weight:600;transition:all .15s;white-space:nowrap}
+.btn-play{background:#1e3a8a;color:#fff;font-size:1rem;padding:.4rem .7rem;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center}.btn-play:hover{background:#1e40af}
+.btn-spd{background:#e2e8f0;color:#475569}.btn-spd:hover{background:#cbd5e1}.btn-spd.active{background:#1e3a8a;color:#fff}
+.btn-rst{background:#f1f5f9;color:#64748b}.btn-rst:hover{background:#e2e8f0}
+.map-wrap{position:relative;width:100%;background:linear-gradient(180deg,#dbeafe,#e0f2fe);border-radius:10px;overflow:hidden;cursor:grab;margin-top:.5rem}.map-wrap:active{cursor:grabbing}
+.map-wrap svg{display:block;width:100%;height:auto}
+.loading-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#dbeafe;z-index:10}
+.spinner{width:40px;height:40px;border:4px solid #93c5fd;border-top-color:#1e3a8a;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:.8rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.map-legend{position:absolute;bottom:8px;left:8px;background:rgba(255,255,255,.92);border-radius:10px;padding:8px 12px;font-size:.68rem;display:flex;flex-wrap:wrap;gap:3px 10px;box-shadow:0 2px 8px rgba(0,0,0,.1);backdrop-filter:blur(4px);z-index:5;max-width:90%}
+.ml-item{display:flex;align-items:center;gap:3px;white-space:nowrap;font-weight:600}
+.ml-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.tips{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.6rem;font-size:.75rem;color:#94a3b8}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:340px;margin-top:.6rem}
+.search-input{width:100%;padding:.45rem .9rem .45rem 2rem;border:2px solid #e2e8f0;border-radius:8px;font-size:.88rem;outline:none;transition:border .15s}.search-input:focus{border-color:#3b82f6}
+.search-icon{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none;font-size:.85rem}
+.search-dd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:240px;overflow-y:auto;z-index:100;display:none}
+.search-dd.show{display:block}
+.sd-item{display:flex;align-items:center;gap:.6rem;padding:.5rem .9rem;cursor:pointer;transition:background .1s;font-size:.84rem}.sd-item:hover{background:#eff6ff}
+.two-panel{display:grid;grid-template-columns:360px 1fr;gap:1.2rem;align-items:start}
+.panel{background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06);overflow:hidden}
+.panel-hdr{padding:.9rem 1.1rem;font-weight:700;font-size:.92rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:.5rem;position:sticky;top:0;background:#fff;z-index:2}
+.panel-body{padding:.5rem;max-height:620px;overflow-y:auto}
+.pw-card{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:11px;cursor:pointer;transition:all .14s;border:2px solid transparent;margin-bottom:4px}
+.pw-card:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.pw-card.active{box-shadow:0 3px 14px rgba(0,0,0,.1)}
+.pw-icon{width:38px;height:38px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.pw-info{flex:1;min-width:0}.pw-name{font-weight:700;font-size:.84rem}.pw-desc{font-size:.7rem;color:#64748b;margin-top:1px}
+.pw-count{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;color:#fff}
+.divider{height:1px;background:#e2e8f0;margin:8px 8px}
+.stat-section{padding:8px 12px}
+.stat-title{font-size:.74rem;font-weight:700;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.method-row{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:.8rem}
+.method-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.method-bar{height:7px;border-radius:4px;background:#f1f5f9;flex:2;overflow:hidden}
+.method-fill{height:100%;border-radius:4px;transition:width .3s}
+.method-num{font-size:.7rem;color:#64748b;font-weight:700;min-width:24px;text-align:right}
+.fact-item{display:flex;align-items:flex-start;gap:6px;padding:4px 0;font-size:.78rem;line-height:1.5;color:#475569}
+.fact-icon{font-size:.9rem;flex-shrink:0;margin-top:1px}
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:4px}
+.cc-item{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:8px;cursor:pointer;transition:all .12s;border:1px solid transparent}
+.cc-item:hover{background:#f0f9ff;border-color:#bfdbfe}
+.cc-item.active{background:#dbeafe;border-color:#3b82f6}
+.cc-flag{font-size:1.1rem;flex-shrink:0}
+.cc-info{flex:1;min-width:0}.cc-name{font-weight:600;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-sub{font-size:.68rem;color:#94a3b8;margin-top:1px;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.cc-lb{display:inline-block;padding:1px 5px;border-radius:4px;font-size:.62rem;font-weight:700;color:#fff}
+.pc-count{background:#f1f5f9;color:#475569;font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.tooltip{position:fixed;pointer-events:none;background:rgba(15,23,42,.94);color:#fff;padding:12px 16px;border-radius:12px;font-size:.85rem;z-index:1000;opacity:0;transition:opacity .12s;box-shadow:0 4px 20px rgba(0,0,0,.25);line-height:1.5;max-width:340px}.tooltip.show{opacity:1}
+footer{background:#1e293b;color:#94a3b8;margin-top:auto}
+.footer-inner{max-width:1320px;margin:0 auto;padding:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;font-size:.82rem}
+.footer-inner a{color:#94a3b8;text-decoration:none}.footer-inner a:hover{color:#60a5fa}
+.special-marker{cursor:pointer;transition:r .15s}
+.special-marker:hover{r:5}
+@media(max-width:900px){.two-panel{grid-template-columns:1fr}.year-big{font-size:2rem}}
+@media(max-width:600px){nav{padding:.6rem 1rem}.nav-r{gap:.6rem}nav a{font-size:.75rem}main{padding:0 .7rem}.card{padding:.9rem}.year-big{font-size:1.8rem}.cc-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+<a class="logo" href="#">Roam<span>wise</span></a>
+<div class="nav-r"><a href="#">🔌 插頭</a><a href="#">🚗 駕駛</a><a href="#">📡 網路</a><a href="#" class="act">🗺️ 殖民史</a><a href="#">💱 匯率</a></div>
+</nav>
+<main>
+<h1>🗺️ 世界殖民史互動地圖</h1>
+<div class="card">
+<div class="info-bar" id="infoBar">
+<div class="info-left">
+<div class="info-flag" id="iFlag">🌍</div>
+<div><div class="info-name" id="iName"><span class="info-placeholder">點擊地圖上的國家查看殖民歷史</span></div><div id="iBadges"></div><div class="info-sub" id="iSub"></div></div>
+</div>
+</div>
+<div class="history-row hidden" id="histRow"></div>
+<div class="year-row">
+<div class="year-big" id="yearNum">1492</div>
+<div class="year-stat" id="yearStat"></div>
+</div>
+<div class="ctrl-row">
+<button class="btn-play" id="btnPlay" title="播放/暫停">▶</button>
+<button class="btn btn-spd" data-s="1">1×</button>
+<button class="btn btn-spd" data-s="3">3×</button>
+<button class="btn btn-spd active" data-s="8">8×</button>
+<button class="btn btn-spd" data-s="20">20×</button>
+<div class="slider-wrap">
+<input type="range" min="1492" max="1999" value="1492" step="1" id="slider">
+<div class="evt-marks" id="evtMarks"></div>
+</div>
+<button class="btn btn-rst" id="btnReset">🔄 重設</button>
+</div>
+<div class="map-wrap" id="mapWrap">
+<div class="loading-overlay" id="loadOv"><div class="spinner"></div><p>載入世界地圖中…</p></div>
+<div class="map-legend" id="mapLeg"></div>
+</div>
+<div class="tips"><span>🖱️ 滑入查看</span><span>👆 點擊鎖定</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span><span>▶ 自動播放時間線</span></div>
+<div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="sIn" placeholder="搜尋國家或地區（如：印度、香港、巴西）…" autocomplete="off"><div class="search-dd" id="sDD"></div></div>
+</div>
+<div class="two-panel">
+<div class="panel"><div class="panel-hdr">👑 殖民帝國排名<span class="pc-count" id="pwTotal">0</span></div><div class="panel-body" id="pwPanel"></div></div>
+<div class="panel"><div class="panel-hdr" id="cHdr">🏴 殖民地列表<span class="pc-count" id="cCount">0</span></div><div class="panel-body"><div class="cc-grid" id="cGrid"></div></div></div>
+</div>
+</main>
+<div class="tooltip" id="tip"></div>
+<footer><div class="footer-inner"><span>© 2026 Roamwise — 旅行者的歷史工具箱</span><span>資料來源：歷史文獻綜合整理，邊界以現代國界為準</span></div></footer>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(function(){
+var PW={
+GB:{n:'大英帝國',f:'🇬🇧',c:'#DC2626',fl:'#FCA5A5',dk:'#991B1B',lgt:'#fef2f2'},
+FR:{n:'法蘭西帝國',f:'🇫🇷',c:'#2563EB',fl:'#93C5FD',dk:'#1E40AF',lgt:'#eff6ff'},
+ES:{n:'西班牙帝國',f:'🇪🇸',c:'#CA8A04',fl:'#FDE68A',dk:'#92400E',lgt:'#fefce8'},
+PT:{n:'葡萄牙帝國',f:'🇵🇹',c:'#16A34A',fl:'#86EFAC',dk:'#166534',lgt:'#f0fdf4'},
+NL:{n:'荷蘭帝國',f:'🇳🇱',c:'#EA580C',fl:'#FDBA74',dk:'#9A3412',lgt:'#fff7ed'},
+BE:{n:'比利時',f:'🇧🇪',c:'#7C3AED',fl:'#C4B5FD',dk:'#5B21B6',lgt:'#f5f3ff'},
+DE:{n:'德意志帝國',f:'🇩🇪',c:'#4B5563',fl:'#D1D5DB',dk:'#1F2937',lgt:'#f9fafb'},
+IT:{n:'義大利王國',f:'🇮🇹',c:'#0D9488',fl:'#5EEAD4',dk:'#134E4A',lgt:'#f0fdfa'},
+JP:{n:'大日本帝國',f:'🇯🇵',c:'#DB2777',fl:'#F9A8D4',dk:'#9D174D',lgt:'#fdf2f8'},
+US:{n:'美國',f:'🇺🇸',c:'#1E3A8A',fl:'#BFDBFE',dk:'#1E3A5A',lgt:'#eff6ff'}
+};
+var MT={
+war:{i:'⚔️',n:'獨立戰爭',c:'#DC2626'},
+negotiation:{i:'🤝',n:'和平談判',c:'#2563EB'},
+revolution:{i:'✊',n:'革命起義',c:'#7C3AED'},
+referendum:{i:'🗳️',n:'公民投票',c:'#0D9488'},
+collapse:{i:'💔',n:'帝國瓦解',c:'#6B7280'},
+handover:{i:'🔄',n:'主權移交',c:'#CA8A04'},
+armed:{i:'💥',n:'武裝鬥爭',c:'#EA580C'},
+conflict:{i:'⚡',n:'衝突獨立',c:'#991B1B'}
+};
+/* [id,power,start,end,method,note] */
+var D=[
+[840,'GB',1607,1783,'war','十三殖民地，美國獨立革命建國'],
+[356,'GB',1757,1947,'negotiation','英屬印度，甘地非暴力運動推動獨立，印巴分治'],
+[586,'GB',1858,1947,'negotiation','英屬印度一部分，1947年印巴分治獨立'],
+[50,'GB',1858,1947,'negotiation','英屬印度一部分（東孟加拉），1971年脫離巴基斯坦'],
+[144,'GB',1796,1948,'negotiation','英屬錫蘭，和平獨立'],
+[104,'GB',1824,1948,'negotiation','英屬緬甸，三次英緬戰爭後完全控制'],
+[458,'GB',1824,1957,'negotiation','英屬馬來亞，和平過渡獨立'],
+[702,'GB',1819,1963,'negotiation','海峽殖民地，1965年脫離馬來西亞'],
+[96,'GB',1888,1984,'negotiation','英國保護國汶萊，1984年完全獨立'],
+['HK','GB',1842,1997,'handover','南京條約割讓香港島，1898年租借新界99年，1997年主權移交中國'],
+[36,'GB',1788,1901,'negotiation','英國流放殖民地，1901年聯邦自治'],
+[554,'GB',1840,1907,'negotiation','英國殖民地，1907年成為自治領'],
+[598,'GB',1884,1975,'negotiation','英屬巴布亞，1975年與前德屬新幾內亞合併獨立'],
+[242,'GB',1874,1970,'negotiation','英屬斐濟，和平獨立'],
+[124,'GB',1763,1867,'negotiation','英屬北美（原法國殖民地），1867年加拿大聯邦自治'],
+[124,'FR',1534,1763,'war','新法蘭西，七年戰爭敗北後割讓給英國'],
+[710,'NL',1652,1806,'war','開普殖民地，荷蘭東印度公司建立'],
+[710,'GB',1806,1910,'war','布爾戰爭後英國完全控制，1910年南非聯邦'],
+[566,'GB',1884,1960,'negotiation','英屬奈及利亞，非洲人口最多國家'],
+[288,'GB',1874,1957,'negotiation','黃金海岸，撒哈拉以南非洲首個獨立國'],
+[404,'GB',1895,1963,'armed','英屬東非，茅茅起義加速獨立'],
+[800,'GB',1894,1962,'negotiation','英屬烏干達保護國'],
+[834,'DE',1885,1919,'collapse','德屬東非，一戰後由英國託管'],
+[834,'GB',1919,1961,'negotiation','英國託管坦干伊喀，和平獨立'],
+[716,'GB',1888,1980,'war','南羅德西亞，經游擊戰與談判獨立為辛巴威'],
+[894,'GB',1889,1964,'negotiation','北羅德西亞，和平獨立為尚比亞'],
+[454,'GB',1891,1964,'negotiation','尼亞薩蘭，獨立為馬拉威'],
+[72,'GB',1885,1966,'negotiation','貝專納保護國，獨立為波札那'],
+[426,'GB',1868,1966,'negotiation','巴蘇托蘭保護國，獨立為賴索托'],
+[748,'GB',1903,1968,'negotiation','史瓦濟蘭保護國，獨立為史瓦帝尼'],
+[694,'GB',1808,1961,'negotiation','英屬獅子山，殖民始於獲自由黑奴定居'],
+[270,'GB',1821,1965,'negotiation','英屬甘比亞，非洲大陸最小國家'],
+[818,'GB',1882,1922,'negotiation','英國佔領埃及，名義上仍屬鄂圖曼'],
+[729,'GB',1899,1956,'negotiation','英埃共管蘇丹，和平獨立'],
+[388,'GB',1655,1962,'negotiation','英屬牙買加，曾是最大蔗糖殖民地'],
+[780,'GB',1797,1962,'negotiation','英屬千里達及托巴哥'],
+[328,'GB',1814,1966,'negotiation','英屬圭亞那，南美唯一英語國家'],
+[84,'GB',1862,1981,'negotiation','英屬宏都拉斯，中美洲最晚獨立'],
+[196,'GB',1878,1960,'negotiation','英屬賽普勒斯'],
+[470,'GB',1800,1964,'negotiation','英屬馬爾他'],
+[48,'GB',1820,1971,'negotiation','英國保護國巴林'],
+[414,'GB',1899,1961,'negotiation','英國保護國科威特'],
+[634,'GB',1916,1971,'negotiation','英國保護國卡達'],
+[784,'GB',1820,1971,'negotiation','休戰諸國（今阿聯酋），英國保護國'],
+[512,'GB',1891,1971,'negotiation','英國保護國阿曼'],
+[887,'GB',1839,1967,'armed','亞丁保護國，南葉門武裝鬥爭獨立'],
+[368,'GB',1920,1932,'negotiation','國際聯盟委任統治伊拉克'],
+[400,'GB',1921,1946,'negotiation','外約旦委任統治'],
+[376,'GB',1920,1948,'conflict','巴勒斯坦委任統治，以色列建國'],
+[516,'DE',1884,1915,'collapse','德屬西南非洲，赫雷羅族大屠殺'],
+[516,'GB',1915,1990,'armed','南非託管，經長期武裝鬥爭獨立為納米比亞'],
+[706,'GB',1884,1960,'negotiation','英屬索馬利蘭（北部），與義屬合併'],
+[90,'GB',1893,1978,'negotiation','英屬所羅門群島'],
+[12,'FR',1830,1962,'war','法屬阿爾及利亞，8年血腥戰爭（逾百萬人犧牲）'],
+[504,'FR',1912,1956,'negotiation','法屬摩洛哥保護國'],
+[788,'FR',1881,1956,'negotiation','法屬突尼西亞保護國'],
+[704,'FR',1858,1954,'war','法屬印度支那，奠邊府戰役法軍慘敗'],
+[418,'FR',1893,1953,'negotiation','法屬寮國（印度支那一部分）'],
+[116,'FR',1863,1953,'negotiation','法屬柬埔寨保護國'],
+[686,'FR',1659,1960,'negotiation','法屬西非最古老殖民地塞內加爾'],
+[466,'FR',1892,1960,'negotiation','法屬蘇丹，獨立為馬利'],
+[324,'FR',1891,1958,'referendum','幾內亞公投拒絕留在法蘭西共同體，戴高樂震怒'],
+[384,'FR',1843,1960,'negotiation','法屬象牙海岸'],
+[854,'FR',1896,1960,'negotiation','法屬上伏塔，獨立為布吉納法索'],
+[562,'FR',1900,1960,'negotiation','法屬尼日'],
+[148,'FR',1900,1960,'negotiation','法屬查德'],
+[140,'FR',1903,1960,'negotiation','法屬烏班吉夏利，獨立為中非'],
+[178,'FR',1880,1960,'negotiation','法屬剛果'],
+[266,'FR',1839,1960,'negotiation','法屬加彭'],
+[450,'FR',1896,1960,'negotiation','法屬馬達加斯加'],
+[478,'FR',1903,1960,'negotiation','法屬茅利塔尼亞'],
+[262,'FR',1884,1977,'referendum','法屬索馬利蘭，公投獨立為吉布地'],
+[174,'FR',1841,1975,'referendum','法屬葛摩群島'],
+[204,'FR',1894,1960,'negotiation','法屬達荷美，獨立為貝南'],
+[768,'DE',1884,1914,'collapse','德屬多哥蘭，一戰後由法國託管'],
+[768,'FR',1914,1960,'negotiation','法國託管多哥'],
+[120,'DE',1884,1916,'collapse','德屬喀麥隆，一戰後英法瓜分'],
+[120,'FR',1916,1960,'negotiation','法國託管喀麥隆大部分領土'],
+[422,'FR',1920,1943,'negotiation','國際聯盟委任統治黎巴嫩'],
+[760,'FR',1920,1946,'negotiation','國際聯盟委任統治敘利亞'],
+[332,'FR',1625,1804,'revolution','海地革命 — 全球首個成功的奴隸起義建國'],
+[484,'ES',1521,1821,'war','新西班牙總督轄區，伊達爾戈領導獨立運動'],
+[170,'ES',1525,1819,'war','新格拉納達，玻利瓦爾「解放者」領導獨立'],
+[862,'ES',1522,1821,'war','委內瑞拉，玻利瓦爾故鄉'],
+[218,'ES',1534,1822,'war','基多皇家審判區'],
+[604,'ES',1533,1824,'war','祕魯總督轄區，印加帝國所在地'],
+[68,'ES',1538,1825,'war','上祕魯，南美最後獨立的國家'],
+[152,'ES',1540,1818,'war','智利都督府，奧希金斯領導獨立'],
+[32,'ES',1536,1816,'war','拉布拉他總督轄區，聖馬丁領導獨立'],
+[600,'ES',1537,1811,'revolution','南美洲首個宣布獨立的國家'],
+[858,'ES',1726,1828,'war','西斯普拉蒂納省，南美獨立戰爭最後章節'],
+[192,'ES',1492,1898,'war','哥倫布首航登陸地，美西戰爭後割讓美國'],
+[214,'ES',1492,1821,'revolution','聖多明哥，美洲最早的歐洲殖民地'],
+[608,'ES',1565,1898,'war','美西戰爭後割讓予美國'],
+[320,'ES',1524,1821,'revolution','瓜地馬拉都督府，中美洲獨立'],
+[340,'ES',1524,1821,'revolution','中美洲聯邦一部分'],
+[222,'ES',1524,1821,'revolution','中美洲聯邦一部分'],
+[558,'ES',1524,1821,'revolution','中美洲聯邦一部分'],
+[188,'ES',1524,1821,'revolution','中美洲聯邦一部分'],
+[591,'ES',1538,1821,'revolution','隨哥倫比亞獨立'],
+[226,'ES',1778,1968,'negotiation','西屬幾內亞，西班牙在非洲最後的殖民地'],
+[76,'PT',1500,1822,'revolution','巴西帝國宣布獨立，王儲佩德羅留下稱帝'],
+[24,'PT',1575,1975,'war','安哥拉獨立戰爭，康乃馨革命後獨立'],
+[508,'PT',1505,1975,'war','莫三比克獨立戰爭'],
+[624,'PT',1446,1974,'war','幾內亞比索獨立戰爭，觸發葡萄牙康乃馨革命'],
+[132,'PT',1460,1975,'negotiation','維德角，康乃馨革命後和平獨立'],
+[626,'PT',1702,1975,'collapse','葡屬帝汶，1975年印尼入侵佔領，2002年獨立'],
+['MO','PT',1557,1999,'handover','葡屬澳門，1999年主權移交中國，最後一個歐洲在亞洲的殖民地'],
+[360,'NL',1602,1942,'war','荷屬東印度，荷蘭東印度公司統治三百餘年'],
+[360,'JP',1942,1945,'collapse','日本佔領荷屬東印度（二戰期間）'],
+[360,'NL',1945,1949,'war','荷蘭重返但遭抵抗，1949年承認印尼獨立'],
+[740,'NL',1667,1975,'negotiation','荷屬蘇利南，南美唯一荷語國家'],
+[180,'BE',1885,1960,'negotiation','比屬剛果（利奧波德二世私人領地，暴行震驚世界）'],
+[646,'DE',1884,1916,'collapse','德屬東非一部分，一戰後由比利時託管'],
+[646,'BE',1916,1962,'negotiation','比屬盧安達-烏隆迪，種族分類政策埋下日後屠殺禍根'],
+[108,'DE',1884,1916,'collapse','德屬東非一部分'],
+[108,'BE',1916,1962,'negotiation','比屬盧安達-烏隆迪，獨立為蒲隆地'],
+[598,'DE',1884,1914,'collapse','德屬新幾內亞（北部），一戰後由澳大利亞託管'],
+[434,'IT',1911,1951,'collapse','義屬利比亞，二戰後聯合國決議獨立'],
+[232,'IT',1890,1941,'collapse','義屬厄利垂亞，二戰後英國託管'],
+[706,'IT',1889,1941,'collapse','義屬索馬利蘭（南部），二戰後英國託管'],
+[706,'IT',1950,1960,'negotiation','聯合國託管義屬索馬利蘭，1960年與英屬合併獨立'],
+[231,'IT',1936,1941,'war','義大利入侵衣索比亞，海爾·塞拉西流亡，游擊隊持續抵抗'],
+[410,'JP',1910,1945,'collapse','日韓合併，殖民統治35年，二戰後光復'],
+[408,'JP',1910,1945,'collapse','日韓合併，二戰後南北分裂'],
+[158,'JP',1895,1945,'collapse','馬關條約割讓，日本統治50年，二戰後歸還中國'],
+[608,'US',1898,1946,'negotiation','美西戰爭後取得，二戰中慘遭日軍佔領，1946年獨立'],
+[192,'US',1898,1902,'negotiation','美西戰爭後短暫軍管，普拉特修正案限制主權至1934年']
+];
+var EV=[
+{y:1492,t:'哥倫布抵達美洲',m:1},{y:1500,t:'葡萄牙發現巴西',m:0},
+{y:1521,t:'西班牙征服阿茲特克帝國',m:0},{y:1602,t:'荷蘭東印度公司成立',m:0},
+{y:1607,t:'英國在北美建立詹姆斯鎮',m:0},{y:1757,t:'普拉西戰役（英控印度開端）',m:0},
+{y:1776,t:'美國獨立宣言',m:1},{y:1804,t:'海地革命成功（首個黑人共和國）',m:1},
+{y:1816,t:'拉丁美洲獨立浪潮',m:1},{y:1830,t:'法國開始征服阿爾及利亞',m:0},
+{y:1842,t:'南京條約 — 香港割讓英國',m:1},{y:1884,t:'柏林會議 — 列強瓜分非洲',m:1},
+{y:1895,t:'馬關條約 — 台灣割讓日本',m:1},{y:1910,t:'日韓合併',m:0},
+{y:1914,t:'第一次世界大戰爆發',m:1},{y:1919,t:'凡爾賽條約（德國失去殖民地）',m:0},
+{y:1939,t:'第二次世界大戰爆發',m:1},{y:1945,t:'二戰結束，日本帝國瓦解',m:1},
+{y:1947,t:'印度獨立 — 印巴分治',m:1},{y:1954,t:'奠邊府戰役（法國退出越南）',m:0},
+{y:1960,t:'「非洲之年」— 17國獨立',m:1},{y:1962,t:'阿爾及利亞獨立（百萬人犧牲）',m:0},
+{y:1974,t:'康乃馨革命（葡萄牙帝國瓦解）',m:1},{y:1997,t:'香港回歸中國',m:1},
+{y:1999,t:'澳門回歸中國 — 殖民時代終結',m:1}
+];
+var A2={4:'AF',8:'AL',12:'DZ',16:'AS',20:'AD',24:'AO',28:'AG',31:'AZ',32:'AR',36:'AU',40:'AT',44:'BS',48:'BH',50:'BD',51:'AM',52:'BB',56:'BE',64:'BT',68:'BO',70:'BA',72:'BW',76:'BR',84:'BZ',90:'SB',96:'BN',100:'BG',104:'MM',108:'BI',112:'BY',116:'KH',120:'CM',124:'CA',132:'CV',140:'CF',144:'LK',148:'TD',152:'CL',156:'CN',158:'TW',170:'CO',174:'KM',178:'CG',180:'CD',188:'CR',191:'HR',192:'CU',196:'CY',203:'CZ',204:'BJ',208:'DK',214:'DO',218:'EC',222:'SV',226:'GQ',231:'ET',232:'ER',233:'EE',242:'FJ',246:'FI',250:'FR',262:'DJ',266:'GA',268:'GE',270:'GM',275:'PS',276:'DE',288:'GH',296:'KI',300:'GR',304:'GL',320:'GT',324:'GN',328:'GY',332:'HT',336:'VA',340:'HN',348:'HU',352:'IS',356:'IN',360:'ID',364:'IR',368:'IQ',372:'IE',376:'IL',380:'IT',384:'CI',388:'JM',392:'JP',398:'KZ',400:'JO',404:'KE',408:'KP',410:'KR',414:'KW',417:'KG',418:'LA',422:'LB',426:'LS',428:'LV',430:'LR',434:'LY',440:'LT',442:'LU',450:'MG',454:'MW',458:'MY',462:'MV',466:'ML',470:'MT',478:'MR',480:'MU',484:'MX',492:'MC',496:'MN',498:'MD',499:'ME',504:'MA',508:'MZ',512:'OM',516:'NA',524:'NP',528:'NL',540:'NC',548:'VU',554:'NZ',558:'NI',562:'NE',566:'NG',578:'NO',586:'PK',591:'PA',598:'PG',600:'PY',604:'PE',608:'PH',616:'PL',620:'PT',624:'GW',626:'TL',630:'PR',634:'QA',642:'RO',643:'RU',646:'RW',674:'SM',682:'SA',686:'SN',688:'RS',694:'SL',702:'SG',703:'SK',705:'SI',706:'SO',710:'ZA',716:'ZW',724:'ES',728:'SS',729:'SD',732:'EH',740:'SR',748:'SZ',752:'SE',756:'CH',760:'SY',762:'TJ',764:'TH',768:'TG',776:'TO',780:'TT',784:'AE',788:'TN',792:'TR',795:'TM',800:'UG',804:'UA',807:'MK',818:'EG',826:'GB',834:'TZ',840:'US',854:'BF',858:'UY',860:'UZ',862:'VE',882:'WS',887:'YE',894:'ZM',704:'VN'};
+var SPN={'HK':{n:'香港',f:'🇭🇰'},'MO':{n:'澳門',f:'🇲🇴'}};
+var SP_LOC={'HK':[114.17,22.32],'MO':[113.55,22.2]};
+var zhN;try{zhN=new Intl.DisplayNames(['zh-Hant'],{type:'region'});}catch(e){}
+function nameOf(id){if(SPN[id])return SPN[id].n;var a=A2[id];if(a&&zhN)try{return zhN.of(a)}catch(e){}return a||''}
+function flagOf(id){if(SPN[id])return SPN[id].f;var a=A2[id];if(!a)return'🏳️';return a.replace(/./g,function(c){return String.fromCodePoint(0x1F1E6+c.charCodeAt(0)-65)})}
+function getAt(id,y){var best=null;for(var i=0;i<D.length;i++){var c=D[i];if(c[0]===id&&c[2]<=y&&c[3]>=y){if(!best||c[2]>best[2])best=c;}}return best;}
+function getHist(id){return D.filter(function(c){return c[0]===id}).sort(function(a,b){return a[2]-b[2]})}
+function allIDs(){var s={};D.forEach(function(c){s[c[0]]=1});return Object.keys(s).map(function(k){return isNaN(+k)?k:+k})}
+var W=960,H=500;
+var svg=d3.select('#mapWrap').append('svg').attr('viewBox','0 0 '+W+' '+H).attr('preserveAspectRatio','xMidYMid meet');
+var proj=d3.geoNaturalEarth1().scale(158).translate([W/2,H/2]);
+var path=d3.geoPath().projection(proj);
+var g=svg.append('g');
+g.append('path').datum({type:'Sphere'}).attr('d',path).attr('fill','#dbeafe').attr('stroke','#93c5fd').attr('stroke-width',.5);
+g.append('path').datum(d3.geoGraticule()()).attr('d',path).attr('fill','none').attr('stroke','rgba(255,255,255,.55)').attr('stroke-width',.3);
+var zoom=d3.zoom().scaleExtent([1,12]).on('zoom',function(ev){g.attr('transform',ev.transform)});
+svg.call(zoom);
+var cEls={};
+var $yr=document.getElementById('yearNum'),$ys=document.getElementById('yearStat'),$sl=document.getElementById('slider');
+var $iF=document.getElementById('iFlag'),$iN=document.getElementById('iName'),$iB=document.getElementById('iBadges'),$iS=document.getElementById('iSub'),$hR=document.getElementById('histRow');
+var $tip=document.getElementById('tip');
+var $pwP=document.getElementById('pwPanel'),$cG=document.getElementById('cGrid'),$cC=document.getElementById('cCount'),$pwT=document.getElementById('pwTotal');
+var $sIn=document.getElementById('sIn'),$sDD=document.getElementById('sDD');
+var year=1492,playing=false,timer=null,speed=8,locked=null,selPW=null;
+/* legend */
+(function(){var h='';for(var k in PW){var p=PW[k];h+='<span class="ml-item"><span class="ml-dot" style="background:'+p.fl+';border:1.5px solid '+p.c+'"></span>'+p.f+' '+p.n+'</span>';}document.getElementById('mapLeg').innerHTML=h})();
+/* event marks */
+(function(){var $m=document.getElementById('evtMarks');var h='';EV.forEach(function(e){var pct=(e.y-1492)/(1999-1492)*100;h+='<div class="evt-dot'+(e.m?' major':'')+'" style="left:'+pct+'%" data-y="'+e.y+'" title="'+e.y+' '+e.t+'"></div>';});$m.innerHTML=h;$m.querySelectorAll('.evt-dot').forEach(function(el){el.addEventListener('click',function(){setYear(+this.getAttribute('data-y'))})})})();
+/* speed buttons */
+document.querySelectorAll('.btn-spd').forEach(function(el){el.addEventListener('click',function(){speed=+this.getAttribute('data-s');document.querySelectorAll('.btn-spd').forEach(function(b){b.classList.remove('active')});this.classList.add('active');if(playing){clearInterval(timer);timer=setInterval(tick,Math.max(16,200/speed))}})});
+function tick(){if(year>=1999){stopPlay();return}setYear(year+1)}
+function startPlay(){playing=true;document.getElementById('btnPlay').textContent='⏸';timer=setInterval(tick,Math.max(16,200/speed))}
+function stopPlay(){playing=false;document.getElementById('btnPlay').textContent='▶';if(timer){clearInterval(timer);timer=null}}
+document.getElementById('btnPlay').addEventListener('click',function(){playing?stopPlay():startPlay()});
+document.getElementById('btnReset').addEventListener('click',function(){stopPlay();locked=null;selPW=null;setYear(1492);resetInfo();svg.transition().duration(400).call(zoom.transform,d3.zoomIdentity)});
+$sl.addEventListener('input',function(){stopPlay();setYear(+this.value)});
+function setYear(y){year=y;$sl.value=y;$yr.textContent=y;updateMap();updatePanels();if(locked){var col=getAt(locked,year);if(col){showInfo(locked,true)}else{var h=getHist(locked);if(h.length)showInfoHist(locked)}}}
+function resetInfo(){$iF.textContent='🌍';$iN.innerHTML='<span class="info-placeholder">點擊地圖上的國家查看殖民歷史</span>';$iB.innerHTML='';$iS.textContent='';$hR.classList.add('hidden');$hR.innerHTML=''}
+function showInfo(id,isLock){
+var col=getAt(id,year),hist=getHist(id);
+$iF.textContent=flagOf(id);
+$iN.textContent=nameOf(id)+(isLock?' 🔒':'');
+if(col){
+var pw=PW[col[1]],mt=MT[col[4]];
+$iB.innerHTML='<span class="badge" style="background:'+pw.c+'">'+pw.f+' '+pw.n+' ('+col[2]+'–'+col[3]+')</span>'+(mt?'<span class="badge" style="background:'+mt.c+'">'+mt.i+' '+mt.n+'</span>':'');
+$iS.textContent=col[5];
+}else{$iB.innerHTML='<span class="badge" style="background:#22c55e">🟢 未被殖民 ('+year+'年)</span>';$iS.textContent=hist.length?'此國在其他時期曾被殖民，點擊查看歷史。':'此國從未被歐洲或日本殖民。';}
+if(isLock&&hist.length){$hR.classList.remove('hidden');
+var h='';hist.forEach(function(c){var pw=PW[c[1]],mt=MT[c[4]],dur=c[3]-c[2];
+h+='<div class="hist-chip"><span style="font-size:1rem">'+pw.f+'</span><div><span style="font-weight:700;color:'+pw.c+'">'+pw.n+'</span><br><span style="font-size:.72rem;color:#64748b">'+c[2]+'–'+c[3]+' ('+dur+'年)</span></div><div class="hc-bar" style="width:'+Math.max(20,Math.min(80,dur/5))+'px;background:'+pw.c+'"></div>'+(mt?'<span style="font-size:.72rem;color:'+mt.c+'">'+mt.i+' '+mt.n+'</span>':'')+'</div>';
+});
+$hR.innerHTML=h;}else{$hR.classList.add('hidden')}
+}
+function showInfoHist(id){showInfo(id,true)}
+function updateMap(){
+for(var sid in cEls){var id=+sid,el=cEls[sid],col=getAt(id,year);
+if(selPW){
+if(col&&col[1]===selPW){el.attr('fill',PW[selPW].fl).attr('stroke',PW[selPW].dk).attr('stroke-width',.7).attr('opacity',1)}
+else{el.attr('fill','#f1f5f9').attr('stroke','#e2e8f0').attr('stroke-width',.3).attr('opacity',.2)}
+}else if(locked!==null&&locked===id){
+el.attr('fill',col?PW[col[1]].dk:'#94a3b8').attr('stroke','#0f172a').attr('stroke-width',1.5).attr('opacity',1);
+}else{
+if(col){el.attr('fill',PW[col[1]].fl).attr('stroke','rgba(255,255,255,.75)').attr('stroke-width',.5).attr('opacity',1)}
+else{el.attr('fill','#f1f5f9').attr('stroke','#e2e8f0').attr('stroke-width',.3).attr('opacity',locked!==null?.3:1)}
+}
+}
+/* special markers */
+g.selectAll('.special-marker').each(function(){
+var el=d3.select(this),id=el.attr('data-id'),col=getAt(id,year);
+if(col){el.attr('fill',PW[col[1]].c).attr('stroke','#fff').attr('stroke-width',1.5).attr('r',4).attr('display',null)}
+else{el.attr('display','none')}
+});
+/* stats */
+var cnt=0,pCnt={};
+D.forEach(function(c){if(c[2]<=year&&c[3]>=year){var k=c[0]+'_'+c[1];if(!pCnt[k]){pCnt[k]=1;cnt++;}}});
+var pwCnts={};for(var k in pCnt){var pw=k.split('_')[1];pwCnts[pw]=(pwCnts[pw]||0)+1;}
+var maxPw='',maxN=0;for(var k in pwCnts){if(pwCnts[k]>maxN){maxN=pwCnts[k];maxPw=k;}}
+$ys.innerHTML='<b>'+cnt+'</b> 個殖民地'+(maxPw?' · 最大帝國：'+PW[maxPw].f+' <b>'+PW[maxPw].n+'</b> ('+maxN+'處)':'');
+var eNow=EV.filter(function(e){return e.y===year});
+if(eNow.length)$ys.innerHTML+='<br>📌 '+eNow[0].t;
+}
+function updatePanels(){
+var pwCnts={},territories={};
+D.forEach(function(c){
+if(c[2]<=year&&c[3]>=year){
+var best=getAt(c[0],year);
+if(best&&best[1]===c[1]){
+if(!territories[c[0]]){territories[c[0]]=c;pwCnts[c[1]]=(pwCnts[c[1]]||0)+1;}
+}
+}
+});
+var totalC=Object.keys(territories).length;
+$cC.textContent=totalC;
+/* left panel */
+var sorted=Object.keys(PW).map(function(k){return{k:k,c:pwCnts[k]||0}}).sort(function(a,b){return b.c-a.c});
+var h='';
+sorted.forEach(function(item){
+if(item.c===0&&!selPW)return;
+var p=PW[item.k],ac=selPW===item.k?' active':'';
+h+='<div class="pw-card'+ac+'" data-pw="'+item.k+'" style="background:'+p.lgt+';'+(ac?'border-color:'+p.c:'')+';">';
+h+='<div class="pw-icon" style="background:'+p.fl+'">'+p.f+'</div>';
+h+='<div class="pw-info"><div class="pw-name" style="color:'+p.dk+'">'+p.n+'</div>';
+h+='<div class="pw-desc">'+item.c+' 個殖民地 ('+year+'年)</div></div>';
+if(item.c>0)h+='<span class="pw-count" style="background:'+p.c+'">'+item.c+'</span>';
+h+='</div>';
+});
+/* method stats for current colonies */
+var mCnts={};
+for(var id in territories){var c=territories[id];if(c[4]&&MT[c[4]])mCnts[c[4]]=(mCnts[c[4]]||0)+1;}
+h+='<div class="divider"></div><div class="stat-section"><div class="stat-title">🏛️ 獨立方式統計（現存殖民地）</div>';
+var maxM=0;for(var k in mCnts)if(mCnts[k]>maxM)maxM=mCnts[k];
+for(var k in MT){var c=mCnts[k]||0;if(c===0)continue;var pct=maxM?c/maxM*100:0;
+h+='<div class="method-row"><span class="method-icon">'+MT[k].i+'</span><span style="flex:1;font-weight:600;font-size:.78rem">'+MT[k].n+'</span><div class="method-bar"><div class="method-fill" style="width:'+pct+'%;background:'+MT[k].c+'"></div></div><span class="method-num">'+c+'</span></div>';}
+h+='</div>';
+/* facts */
+h+='<div class="divider"></div><div class="stat-section"><div class="stat-title">📖 歷史小知識</div>';
+var facts=[
+{i:'🇬🇧',t:'大英帝國鼎盛時期（約1920年）統治全球約25%的陸地面積與四分之一人口，是人類史上最大帝國。'},
+{i:'🇪🇸',t:'西班牙帝國是第一個「日不落帝國」，16世紀控制美洲大部分地區。拉丁美洲的獨立浪潮（1810-1830）使其迅速瓦解。'},
+{i:'🇫🇷',t:'1960年被稱為「非洲之年」，17個非洲國家同年獨立，其中14個為前法國殖民地。'},
+{i:'🇵🇹',t:'葡萄牙是歐洲最早的殖民帝國，也是最後放手的 — 1999年澳門回歸中國標誌殖民時代正式終結。'},
+{i:'🇧🇪',t:'利奧波德二世將剛果據為私人領地，其橡膠奴役政策導致數百萬剛果人死亡，被稱為「剛果恐怖」。'},
+{i:'🇭🇹',t:'海地（1804年）是全球第一個由奴隸革命成功建立的共和國，也是拉丁美洲第一個獨立國家。'},
+{i:'🇭🇰',t:'香港（1842-1997）和澳門（1557-1999）是歐洲在亞洲最後的殖民地，分別由英國和葡萄牙移交中國。'}
+];
+facts.forEach(function(f){h+='<div class="fact-item"><span class="fact-icon">'+f.i+'</span><span>'+f.t+'</span></div>'});
+h+='</div>';
+$pwP.innerHTML=h;
+$pwT.textContent=sorted.filter(function(i){return i.c>0}).length+' 帝國';
+$pwP.querySelectorAll('.pw-card').forEach(function(el){el.addEventListener('click',function(){var k=this.getAttribute('data-pw');if(selPW===k){selPW=null}else{selPW=k;locked=null;resetInfo()}updateMap();updatePanels()})});
+/* right panel colony list */
+var list=[];for(var id in territories){
+var c=territories[id],pw=PW[c[1]],mt=MT[c[4]];
+list.push({id:c[0],pw:c[1],s:c[2],e:c[3],m:c[4],n:c[5],name:nameOf(c[0]),flag:flagOf(c[0])});
+}
+list.sort(function(a,b){return a.name.localeCompare(b.name,'zh-Hant')});
+if(selPW)list=list.filter(function(x){return x.pw===selPW});
+var gh='';list.forEach(function(c){
+var pw=PW[c.pw],mt=MT[c.m],dur=c.e-c.s,ac=locked===c.id?' active':'';
+gh+='<div class="cc-item'+ac+'" data-id="'+c.id+'"><span class="cc-flag">'+c.flag+'</span>';
+gh+='<div class="cc-info"><div class="cc-name">'+c.name+'</div>';
+gh+='<div class="cc-sub"><span class="cc-lb" style="background:'+pw.c+'">'+pw.f+' '+pw.n+'</span>';
+gh+='<span>'+c.s+'–'+c.e+' ('+dur+'年)</span>';
+if(mt)gh+='<span class="cc-lb" style="background:'+mt.c+'">'+mt.i+'</span>';
+gh+='</div></div></div>';
+});
+$cG.innerHTML=gh||'<div style="padding:2rem;text-align:center;color:#94a3b8;font-size:.9rem">📭 '+year+' 年沒有殖民地'+(selPW?' ('+PW[selPW].n+')':'')+'</div>';
+$cG.querySelectorAll('.cc-item').forEach(function(el){el.addEventListener('click',function(){
+var rid=this.getAttribute('data-id'),id=isNaN(+rid)?rid:+rid;
+if(locked===id){locked=null;resetInfo();updateMap();updatePanels();return}
+locked=id;selPW=null;showInfo(id,true);updateMap();updatePanels();
+if(typeof id==='number')zoomTo(id);
+})});
+}
+function zoomTo(id){
+var el=cEls[id];if(!el)return;
+var b=path.bounds(el.datum()),dx=b[1][0]-b[0][0],dy=b[1][1]-b[0][1],cx=(b[0][0]+b[1][0])/2,cy=(b[0][1]+b[1][1])/2;
+var s=Math.max(1,Math.min(8,.85/Math.max(dx/W,dy/H)));
+svg.transition().duration(500).call(zoom.transform,d3.zoomIdentity.translate(W/2-s*cx,H/2-s*cy).scale(s));
+}
+/* search */
+$sIn.addEventListener('input',function(){
+var q=this.value.trim().toLowerCase();if(!q){$sDD.classList.remove('show');return}
+var ids=allIDs(),res=[];
+ids.forEach(function(id){var n=nameOf(id);if(n.toLowerCase().indexOf(q)>-1||(A2[id]&&A2[id].toLowerCase().indexOf(q)>-1)){res.push({id:id,name:n,flag:flagOf(id)})}});
+res.sort(function(a,b){return a.name.localeCompare(b.name,'zh-Hant')});
+res=res.slice(0,10);
+if(!res.length){$sDD.innerHTML='<div style="padding:.7rem;color:#94a3b8;text-align:center">找不到結果</div>';$sDD.classList.add('show');return}
+var h='';res.forEach(function(r){
+var col=getAt(r.id,year),hist=getHist(r.id);
+h+='<div class="sd-item" data-id="'+r.id+'"><span style="font-size:1.1rem">'+r.flag+'</span><span style="font-weight:600;flex:1">'+r.name+'</span>';
+if(col){var pw=PW[col[1]];h+='<span class="cc-lb" style="background:'+pw.c+'">'+pw.f+'</span>';}
+else if(hist.length){h+='<span style="font-size:.7rem;color:#94a3b8">曾被殖民</span>';}
+h+='</div>';
+});
+$sDD.innerHTML=h;$sDD.classList.add('show');
+$sDD.querySelectorAll('.sd-item').forEach(function(el){el.addEventListener('click',function(){
+var rid=this.getAttribute('data-id'),id=isNaN(+rid)?rid:+rid;
+locked=id;selPW=null;$sIn.value=nameOf(id);showInfo(id,true);updateMap();updatePanels();
+if(typeof id==='number')zoomTo(id);
+$sDD.classList.remove('show');
+})});
+});
+$sIn.addEventListener('blur',function(){setTimeout(function(){$sDD.classList.remove('show')},200)});
+/* LOAD MAP */
+d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(world){
+var countries=topojson.feature(world,world.objects.countries).features;
+g.selectAll('.country').data(countries).enter().append('path')
+.attr('class','country').attr('data-id',function(d){return d.id}).attr('d',path)
+.attr('fill','#f1f5f9').attr('stroke','#e2e8f0').attr('stroke-width',.3);
+g.selectAll('.country').each(function(d){cEls[+d3.select(this).attr('data-id')]=d3.select(this)});
+/* special markers HK, MO */
+for(var sid in SP_LOC){
+var xy=proj(SP_LOC[sid]);
+g.append('circle').attr('class','special-marker').attr('data-id',sid)
+.attr('cx',xy[0]).attr('cy',xy[1]).attr('r',4).attr('fill','#dc2626').attr('stroke','#fff').attr('stroke-width',1.5).attr('display','none');
+}
+/* hover */
+g.selectAll('.country')
+.on('mouseenter',function(){
+if(locked!==null)return;var el=d3.select(this),id=+el.attr('data-id'),col=getAt(id,year);
+if(col){el.attr('fill',PW[col[1]].dk).attr('stroke','#0f172a').attr('stroke-width',1)}
+else{el.attr('fill','#e2e8f0').attr('stroke','#94a3b8').attr('stroke-width',.6)}
+showInfo(id,false);$tip.classList.add('show');
+})
+.on('mousemove',function(ev){
+if(locked!==null){$tip.classList.remove('show');return}
+var id=+d3.select(this).attr('data-id'),col=getAt(id,year),hist=getHist(id);
+var html='<span style="font-size:1.2rem;vertical-align:middle;margin-right:4px">'+flagOf(id)+'</span><b>'+nameOf(id)+'</b>';
+if(col){var pw=PW[col[1]],mt=MT[col[4]];
+html+='<br><span style="display:inline-block;padding:2px 7px;border-radius:5px;background:'+pw.c+';color:#fff;font-size:.72rem;font-weight:700;margin-top:4px">'+pw.f+' '+pw.n+' ('+col[2]+'–'+col[3]+')</span>';
+if(mt)html+=' <span style="font-size:.72rem;color:'+mt.c+'">'+mt.i+' '+mt.n+'</span>';
+html+='<br><span style="font-size:.75rem;color:#cbd5e1;margin-top:2px;display:block">'+col[5]+'</span>';
+}else if(hist.length){
+html+='<br><span style="font-size:.75rem;color:#86efac;margin-top:3px;display:block">'+year+'年未被殖民（曾有'+hist.length+'段殖民史）</span>';
+}else{html+='<br><span style="font-size:.75rem;color:#86efac">從未被殖民</span>';}
+$tip.innerHTML=html;
+var tx=ev.clientX+14,ty=ev.clientY-80;if(tx+320>window.innerWidth)tx=ev.clientX-320;if(ty<10)ty=ev.clientY+20;
+$tip.style.left=tx+'px';$tip.style.top=ty+'px';$tip.classList.add('show');
+})
+.on('mouseleave',function(){$tip.classList.remove('show');if(locked!==null)return;updateMap();resetInfo()})
+.on('click',function(){
+var id=+d3.select(this).attr('data-id');
+if(locked===id){locked=null;selPW=null;resetInfo();updateMap();updatePanels();return}
+locked=id;selPW=null;showInfo(id,true);updateMap();updatePanels();
+});
+/* special marker interactions */
+g.selectAll('.special-marker')
+.on('mouseenter',function(ev){
+var el=d3.select(this),id=el.attr('data-id'),col=getAt(id,year);
+if(!col)return;var pw=PW[col[1]];
+$tip.innerHTML='<span style="font-size:1.2rem">'+flagOf(id)+'</span> <b>'+nameOf(id)+'</b><br><span style="display:inline-block;padding:2px 7px;border-radius:5px;background:'+pw.c+';color:#fff;font-size:.72rem;font-weight:700;margin-top:4px">'+pw.f+' '+pw.n+' ('+col[2]+'–'+col[3]+')</span><br><span style="font-size:.75rem;color:#cbd5e1">'+col[5]+'</span>';
+var tx=ev.clientX+14,ty=ev.clientY-80;$tip.style.left=tx+'px';$tip.style.top=ty+'px';$tip.classList.add('show');
+})
+.on('mouseleave',function(){$tip.classList.remove('show')})
+.on('click',function(){
+var id=d3.select(this).attr('data-id');
+if(locked===id){locked=null;resetInfo();updateMap();updatePanels();return}
+locked=id;selPW=null;showInfo(id,true);updateMap();updatePanels();
+});
+document.getElementById('loadOv').style.display='none';
+setYear(1492);
+}).catch(function(){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗，請重新整理。</p>'});
+})();
+</script>
+
+
+</body></html>
