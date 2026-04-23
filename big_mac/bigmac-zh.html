@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>大麥克指數計算器 – Roamwise</title>
+<title>bigmac radio – Roamwise</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
@@ -145,46 +145,41 @@ h1{font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem
 </header>
 
 <main>
-<h1>🍔 大麥克指數互動地圖與計算器 <span id="apiBadge" class="api-badge api-fall">⏳ 載入中…</span></h1>
+<h1>🍔 bigmac radio <span id="apiBadge" class="api-badge api-fall">⏳ Loading…</span></h1>
 <div class="alert-bar">
 <span style="font-size:1.5rem">📊</span>
-<div>「<b>大麥克指數</b>」由《經濟學人》(The Economist) 於 1986 年創立，透過比較各國麥當勞大麥克漢堡的售價來衡量 <b>購買力平價 (PPP)</b>。若某國大麥克換算美元後比美國便宜，代表該國貨幣被「<b style="color:#059669">低估</b>」；反之則被「<b style="color:#dc2626">高估</b>」。本工具從 <b>The Economist 的 GitHub 開源數據庫</b> 自動載入最新數據（每半年更新一次），可用於比較各國實際購買力與匯率差異。</div>
-</div>
+<div>The "<b>Big Mac Index</b>" was created by <b>The Economist</b> in 1986 as a way to measure <b>Purchasing Power Parity (PPP)</b> by comparing the price of a McDonald's Big Mac across different countries. If a country's Big Mac costs less than the US price when converted to USD, that country's currency is considered "<b style="color:#059669">undervalued</b>"; if it costs more, the currency is considered "<b style="color:#dc2626">overvalued</b>". This tool automatically loads the latest data from <b>The Economist's open-source GitHub repository</b> (updated every six months), and can be used to compare real purchasing power and exchange rate disparities across countries.</div></div>
 
 <div class="card">
-<div class="info-bar" id="infoBar"><div class="info-left"><div class="info-name" id="iName"><span class="info-placeholder">👆 點擊地圖上的國家或下方列表，查看大麥克指數詳情</span></div><div id="iBadges"></div><div class="info-sub" id="iSub"></div></div></div>
+<div class="info-bar" id="infoBar"><div class="info-left"><div class="info-name" id="iName"><span class="info-placeholder">👆 點Click on a country on the map or the list below to view BigMac Index details</span></div><div id="iBadges"></div><div class="info-sub" id="iSub"></div></div></div>
 <div class="detail-wrap" id="detWrap">
 <div class="det-grid" id="detVS"></div>
 <div class="rate-row" id="detRates"></div>
-<div class="val-bar-w"><div class="val-track"></div><div class="val-mk" id="valMk" style="left:50%"></div><div class="val-labels"><span>-80% 低估</span><span>-40%</span><span>0% 公平</span><span>+40%</span><span>+80% 高估</span></div></div>
-</div>
+<div class="val-bar-w"><div class="val-track"></div><div class="val-mk" id="valMk" style="left:50%"></div><div class="val-labels"><span>-80% Undervalued</span><span>-40%</span><span>0% Fair</span><span>+40%</span><span>+80% Overvalued</span></div></div></div>
 <div class="stat-banner" id="statBanner"></div>
 <div class="ctrl-row">
-<div class="view-tog"><span class="p-tab on" id="vtVal" onclick="setView('val')">📊 估值模式</span><span class="p-tab" id="vtPrc" onclick="setView('prc')">💲 價格模式</span></div>
-<div class="srch"><span class="srch-ico">🔍</span><input id="sIn" placeholder="搜尋國家（如：香港、Japan、Swiss）…" autocomplete="off"><div class="sdd" id="sDD"></div></div>
+<div class="view-tog"><span class="p-tab on" id="vtVal" onclick="setView('val')">📊 Valuation Mode</span><span class="p-tab" id="vtPrc" onclick="setView('prc')">💲 Price Mode</span></div>
+<div class="srch"><span class="srch-ico">🔍</span><input id="sIn" placeholder="Search country (e.g. Hong Kong, Japan, Swiss)…" autocomplete="off"><div class="sdd" id="sDD"></div></div>
 </div>
-<div class="map-wrap" id="mapWrap"><div class="load-ov" id="loadOv"><div class="spinner"></div><p>載入世界地圖中…</p></div><div class="map-leg" id="mapLeg"></div></div>
-<div class="tips"><span>🖱️ 懸停查看摘要</span><span>👆 點擊查看詳情</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span></div>
-</div>
+<div class="map-wrap" id="mapWrap"><div class="load-ov" id="loadOv"><div class="spinner"></div><p>Loading world map…</p></div><div class="map-leg" id="mapLeg"></div></div>
+<div class="tips"><span>🖱️ Hover for summary</span><span>👆 Click for details</span><span>🔍 Scroll to zoom</span><span>✋ Drag to pan</span></div></div>
 
 <div class="card calc-card" id="calcCard">
-<div class="calc-h">🍔 PPP 購買力計算器</div>
+<div class="calc-h">🍔 PPP </div>
 <div class="calc-row">
-<div class="calc-side"><label class="vs-lbl">🛫 從</label><select id="cFrom" onchange="updCalc()"></select><div class="calc-bp" id="cfBP"></div><div class="calc-bp-usd" id="cfUSD"></div></div>
-<button class="calc-swap" onclick="swapCalc()" title="交換">⇄</button>
-<div class="calc-side"><label class="vs-lbl">🛬 到</label><select id="cTo" onchange="updCalc()"></select><div class="calc-bp" id="ctBP"></div><div class="calc-bp-usd" id="ctUSD"></div></div>
+<<div class="calc-side"><label class="vs-lbl">🛫 From</label><select id="cFrom" onchange="updCalc()"></select><div class="calc-bp" id="cfBP"></div><div class="calc-bp-usd" id="cfUSD"></div></div>
+<button class="calc-swap" onclick="swapCalc()" title="Swap">⇄</button>
+<div class="calc-side"><label class="vs-lbl">🛬 To</label><select id="cTo" onchange="updCalc()"></select><div class="calc-bp" id="ctBP"></div><div class="calc-bp-usd" id="ctUSD"></div></div>
 </div>
-<div class="calc-amt"><label>💰 金額：</label><input id="cAmt" type="number" value="100" onchange="updCalc()" oninput="updCalc()"><span class="cur-lbl" id="cCurL">USD</span></div>
-<div class="calc-res" id="calcRes"></div>
+<div class="calc-amt"><label>💰 Amount: </label><input id="cAmt" type="number" value="100" onchange="updCalc()" oninput="updCalc()"><span class="cur-lbl" id="cCurL">USD</span></div><div class="calc-res" id="calcRes"></div>
 </div>
 
 <div class="two-p">
 <div class="panel">
-<div class="p-hdr">🏆 排名 <span style="display:flex;gap:4px"><span class="sort-btn on" id="sB1" onclick="setSort('under')">低估→高估</span><span class="sort-btn" id="sB2" onclick="setSort('over')">高估→低估</span><span class="sort-btn" id="sB3" onclick="setSort('cheap')">便宜→貴</span></span></div>
-<div class="p-body" id="rkPanel"></div>
+<div class="p-hdr">🏆 Rankings <span style="display:flex;gap:4px"><span class="sort-btn on" id="sB1" onclick="setSort('under')">Undervalued → Overvalued</span><span class="sort-btn" id="sB2" onclick="setSort('over')">Overvalued → Undervalued</span><span class="sort-btn" id="sB3" onclick="setSort('cheap')">Cheapest → Most Expensive</span></span></div><div class="p-body" id="rkPanel"></div>
 </div>
 <div class="panel">
-<div class="p-hdr">🌍 國家列表 <span class="pc-cnt" id="cCount"></span></div>
+<div class="p-hdr">🌍 Country list <span class="pc-cnt" id="cCount"></span></div>
 <div class="p-tabs" id="regTabs"></div>
 <div class="p-body"><div class="cc-g" id="cGrid"></div></div>
 </div>
@@ -199,9 +194,9 @@ h1{font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem
 (function(){
 "use strict";
 /* ── constants ── */
-var BV=[-50,-30,-15,0,15,30,50],CV=['#064e3b','#059669','#34d399','#bbf7d0','#fecaca','#f87171','#dc2626','#7f1d1d'],LV=['<-50%','-50~-30','-30~-15','-15~0','0~+15','+15~+30','+30~+50','>+50%'],NV=['嚴重低估','明顯低估','略為低估','接近公平','略為高估','明顯高估','嚴重高估','極度高估'];
+var BV=[-50,-30,-15,0,15,30,50],CV=['#064e3b','#059669','#34d399','#bbf7d0','#fecaca','#f87171','#dc2626','#7f1d1d'],LV=['<-50%','-50~-30','-30~-15','-15~0','0~+15','+15~+30','+30~+50','>+50%'],NV=['Severely Undervalued','Notably Undervalued','Slightly Undervalued','Near Fair Value','Slightly Overvalued','Notably Overvalued','Severely Overvalued','Extremely Overvalued'];
 var BP=[2,3,4,5,6,7],CP=['#dbeafe','#93c5fd','#60a5fa','#fbbf24','#f97316','#ef4444','#991b1b'],LP=['<$2','$2-3','$3-4','$4-5','$5-6','$6-7','>$7'];
-var RGN={A:"亞洲",E:"歐洲",F:"非洲",N:"美洲",O:"大洋洲"};
+var RGN={A:"Asia",E:"Europe",F:"Africa",N:"Americas",O:"Oceania"};
 function vColor(r){if(r==null)return'#e2e8f0';var p=r*100;for(var i=0;i<BV.length;i++){if(p<BV[i])return CV[i];}return CV[CV.length-1];}
 function vIdx(r){if(r==null)return-1;var p=r*100;for(var i=0;i<BV.length;i++){if(p<BV[i])return i;}return CV.length-1;}
 function pColor(d){if(d==null)return'#e2e8f0';for(var i=0;i<BP.length;i++){if(d<BP[i])return CP[i];}return CP[CP.length-1];}
@@ -212,64 +207,64 @@ function valPos(r){return Math.min(100,Math.max(0,(r*100+80)/160*100));}
 
 /* ── fallback data [iso3,[nums],zh,en,cur,lp,ex,reg,lat,lng] ── */
 var RAW=[
-["USA",[840],"美國","United States","USD",5.69,1.0,"N",null,null],
-["ARG",[32],"阿根廷","Argentina","ARS",3500,926,"N",null,null],
-["AUS",[36],"澳洲","Australia","AUD",7.65,1.506,"O",null,null],
-["AZE",[31],"亞塞拜然","Azerbaijan","AZN",6.95,1.70,"A",null,null],
-["BHR",[48],"巴林","Bahrain","BHD",1.90,0.377,"A",26.07,50.55],
-["BRA",[76],"巴西","Brazil","BRL",22.90,5.52,"N",null,null],
-["GBR",[826],"英國","Britain","GBP",4.19,0.789,"E",null,null],
-["CAN",[124],"加拿大","Canada","CAD",7.47,1.37,"N",null,null],
-["CHL",[152],"智利","Chile","CLP",3390,953,"N",null,null],
-["CHN",[156],"中國","China","CNY",24.40,7.27,"A",null,null],
-["COL",[170],"哥倫比亞","Colombia","COP",16900,4120,"N",null,null],
-["CRI",[188],"哥斯達黎加","Costa Rica","CRC",2800,523,"N",null,null],
-["CZE",[203],"捷克","Czechia","CZK",109,23.3,"E",null,null],
-["DNK",[208],"丹麥","Denmark","DKK",35,6.89,"E",null,null],
-["EGY",[818],"埃及","Egypt","EGP",120,48.2,"F",null,null],
-["EUZ",[40,56,191,196,233,246,250,276,300,372,380,428,440,442,470,528,620,703,705,724],"歐元區","Euro area","EUR",5.29,0.922,"E",50.1,9.7],
-["GTM",[320],"危地馬拉","Guatemala","GTQ",31,7.77,"N",null,null],
-["HND",[340],"洪都拉斯","Honduras","HNL",99,24.8,"N",null,null],
-["HKG",[344],"香港","Hong Kong","HKD",22.50,7.81,"A",22.32,114.17],
-["HUN",[348],"匈牙利","Hungary","HUF",1580,366,"E",null,null],
-["IND",[356],"印度","India","INR",209,83.6,"A",null,null],
-["IDN",[360],"印尼","Indonesia","IDR",38000,16300,"A",null,null],
-["ISR",[376],"以色列","Israel","ILS",19.90,3.69,"A",null,null],
-["JPN",[392],"日本","Japan","JPY",480,158,"A",null,null],
-["JOR",[400],"約旦","Jordan","JOD",2.75,0.709,"A",null,null],
-["KWT",[414],"科威特","Kuwait","KWD",1.30,0.307,"A",null,null],
-["LBN",[422],"黎巴嫩","Lebanon","LBP",170000,89500,"A",null,null],
-["MYS",[458],"馬來西亞","Malaysia","MYR",12.30,4.71,"A",null,null],
-["MEX",[484],"墨西哥","Mexico","MXN",79,18.3,"N",null,null],
-["MDA",[498],"摩爾多瓦","Moldova","MDL",70,17.8,"E",null,null],
-["NZL",[554],"紐西蘭","New Zealand","NZD",8.10,1.67,"O",null,null],
-["NIC",[558],"尼加拉瓜","Nicaragua","NIO",135,36.8,"N",null,null],
-["NOR",[578],"挪威","Norway","NOK",72,10.7,"E",null,null],
-["OMN",[512],"阿曼","Oman","OMR",1.50,0.385,"A",null,null],
-["PAK",[586],"巴基斯坦","Pakistan","PKR",850,279,"A",null,null],
-["PAN",[591],"巴拿馬","Panama","PAB",4.25,1.0,"N",null,null],
-["PER",[604],"秘魯","Peru","PEN",14.90,3.74,"N",null,null],
-["PHL",[608],"菲律賓","Philippines","PHP",168,58.0,"A",null,null],
-["POL",[616],"波蘭","Poland","PLN",17.90,4.0,"E",null,null],
-["QAT",[634],"卡塔爾","Qatar","QAR",16,3.64,"A",null,null],
-["ROU",[642],"羅馬尼亞","Romania","RON",22,4.64,"E",null,null],
-["SAU",[682],"沙特阿拉伯","Saudi Arabia","SAR",17,3.75,"A",null,null],
-["SGP",[702],"新加坡","Singapore","SGD",6.35,1.35,"A",1.35,103.82],
-["ZAF",[710],"南非","South Africa","ZAR",59.90,18.4,"F",null,null],
-["KOR",[410],"韓國","South Korea","KRW",5400,1380,"A",null,null],
-["LKA",[144],"斯里蘭卡","Sri Lanka","LKR",1290,305,"A",null,null],
-["SWE",[752],"瑞典","Sweden","SEK",64,10.74,"E",null,null],
-["CHE",[756],"瑞士","Switzerland","CHF",6.90,0.893,"E",null,null],
-["TWN",[158],"台灣","Taiwan","TWD",80,32.5,"A",23.7,121.0],
-["THA",[764],"泰國","Thailand","THB",128,36.6,"A",null,null],
-["TUR",[792],"土耳其","Türkiye","TRY",110,32.8,"A",null,null],
-["ARE",[784],"阿聯酋","UAE","AED",19,3.67,"A",null,null],
-["UKR",[804],"烏克蘭","Ukraine","UAH",89,41.2,"E",null,null],
-["URY",[858],"烏拉圭","Uruguay","UYU",249,40.9,"N",null,null],
-["VNM",[704],"越南","Vietnam","VND",69000,25350,"A",null,null],
-["VEN",[862],"委內瑞拉","Venezuela","VES",130,36.5,"N",null,null],
-["HRV",[191],"克羅地亞","Croatia","EUR",3.77,0.922,"E",null,null],
-["PER",[604],"秘魯","Peru","PEN",14.90,3.74,"N",null,null]
+["USA",[840],"United States","United States","USD",5.69,1.0,"N",null,null],
+["ARG",[32],"Argentina","Argentina","ARS",3500,926,"N",null,null],
+["AUS",[36],"Australia","Australia","AUD",7.65,1.506,"O",null,null],
+["AZE",[31],"Azerbaijan","Azerbaijan","AZN",6.95,1.70,"A",null,null],
+["BHR",[48],"Bahrain","Bahrain","BHD",1.90,0.377,"A",26.07,50.55],
+["BRA",[76],"Brazil","Brazil","BRL",22.90,5.52,"N",null,null],
+["GBR",[826],"Britain","Britain","GBP",4.19,0.789,"E",null,null],
+["CAN",[124],"Canada","Canada","CAD",7.47,1.37,"N",null,null],
+["CHL",[152],"Chile","Chile","CLP",3390,953,"N",null,null],
+["CHN",[156],"China","China","CNY",24.40,7.27,"A",null,null],
+["COL",[170],"Colombia","Colombia","COP",16900,4120,"N",null,null],
+["CRI",[188],"Costa Rica","Costa Rica","CRC",2800,523,"N",null,null],
+["CZE",[203],"Czechia","Czechia","CZK",109,23.3,"E",null,null],
+["DNK",[208],"Denmark","Denmark","DKK",35,6.89,"E",null,null],
+["EGY",[818],"Egypt","Egypt","EGP",120,48.2,"F",null,null],
+["EUZ",[40,56,191,196,233,246,250,276,300,372,380,428,440,442,470,528,620,703,705,724],"Euro area","Euro area","EUR",5.29,0.922,"E",50.1,9.7],
+["GTM",[320],"Guatemala","Guatemala","GTQ",31,7.77,"N",null,null],
+["HND",[340],"Honduras","Honduras","HNL",99,24.8,"N",null,null],
+["HKG",[344],"Hong Kong","Hong Kong","HKD",22.50,7.81,"A",22.32,114.17],
+["HUN",[348],"Hungary","Hungary","HUF",1580,366,"E",null,null],
+["IND",[356],"India","India","INR",209,83.6,"A",null,null],
+["IDN",[360],"Indonesia","Indonesia","IDR",38000,16300,"A",null,null],
+["ISR",[376],"Israel","Israel","ILS",19.90,3.69,"A",null,null],
+["JPN",[392],"Japan","Japan","JPY",480,158,"A",null,null],
+["JOR",[400],"Jordan","Jordan","JOD",2.75,0.709,"A",null,null],
+["KWT",[414],"Kuwait","Kuwait","KWD",1.30,0.307,"A",null,null],
+["LBN",[422],"Lebanon","Lebanon","LBP",170000,89500,"A",null,null],
+["MYS",[458],"Malaysia","Malaysia","MYR",12.30,4.71,"A",null,null],
+["MEX",[484],"Mexico","Mexico","MXN",79,18.3,"N",null,null],
+["MDA",[498],"Moldova","Moldova","MDL",70,17.8,"E",null,null],
+["NZL",[554],"New Zealand","New Zealand","NZD",8.10,1.67,"O",null,null],
+["NIC",[558],"Nicaragua","Nicaragua","NIO",135,36.8,"N",null,null],
+["NOR",[578],"Norway","Norway","NOK",72,10.7,"E",null,null],
+["OMN",[512],"Oman","Oman","OMR",1.50,0.385,"A",null,null],
+["PAK",[586],"Pakistan","Pakistan","PKR",850,279,"A",null,null],
+["PAN",[591],"Panama","Panama","PAB",4.25,1.0,"N",null,null],
+["PER",[604],"Peru","Peru","PEN",14.90,3.74,"N",null,null],
+["PHL",[608],"Philippines","Philippines","PHP",168,58.0,"A",null,null],
+["POL",[616],"Poland","Poland","PLN",17.90,4.0,"E",null,null],
+["QAT",[634],"Qatar","Qatar","QAR",16,3.64,"A",null,null],
+["ROU",[642],"Romania","Romania","RON",22,4.64,"E",null,null],
+["SAU",[682],"Saudi Arabia","Saudi Arabia","SAR",17,3.75,"A",null,null],
+["SGP",[702],"Singapore","Singapore","SGD",6.35,1.35,"A",1.35,103.82],
+["ZAF",[710],"South Africa","South Africa","ZAR",59.90,18.4,"F",null,null],
+["KOR",[410],"South Korea","South Korea","KRW",5400,1380,"A",null,null],
+["LKA",[144],"Sri Lanka","Sri Lanka","LKR",1290,305,"A",null,null],
+["SWE",[752],"Sweden","Sweden","SEK",64,10.74,"E",null,null],
+["CHE",[756],"Switzerland","Switzerland","CHF",6.90,0.893,"E",null,null],
+["TWN",[158],"Taiwan","Taiwan","TWD",80,32.5,"A",23.7,121.0],
+["THA",[764],"Thailand","Thailand","THB",128,36.6,"A",null,null],
+["TUR",[792],"Türkiye","Türkiye","TRY",110,32.8,"A",null,null],
+["ARE",[784],"UAE","UAE","AED",19,3.67,"A",null,null],
+["UKR",[804],"Ukraine","Ukraine","UAH",89,41.2,"E",null,null],
+["URY",[858],"Uruguay","Uruguay","UYU",249,40.9,"N",null,null],
+["VNM",[704],"Vietnam","Vietnam","VND",69000,25350,"A",null,null],
+["VEN",[862],"Venezuela","Venezuela","VES",130,36.5,"N",null,null],
+["HRV",[191],"Croatia","Croatia","EUR",3.77,0.922,"E",null,null],
+["PER",[604],"Peru","Peru","PEN",14.90,3.74,"N",null,null]
 ];
 
 /* ── build data ── */
@@ -286,8 +281,8 @@ function recomputeRaw(){var us=data[iso3Map['USA']];data.forEach(function(d){d.d
 recomputeRaw();
 
 /* ── state ── */
-var locked=null,viewMode='val',sortMode='under',selReg='ALL',apiOk=false,dataDate='估算 2024H1';
-
+var locked=null,viewMode='val',sortMode='under',selReg='ALL',apiOk=false,dataDate='Est. 2024H1';
+  
 /* ── fetch Economist data ── */
 function fetchEcon(){
 return d3.csv('https://cdn.jsdelivr.net/gh/TheEconomist/big-mac-data@master/output-data/big-mac-raw-index.csv').then(function(rows){
@@ -305,7 +300,7 @@ data[idx].apiDate=latest;
 recomputeRaw();dataDate='The Economist '+latest;apiOk=true;
 }).catch(function(e){console.warn('Economist API fallback:',e.message);});}
 
-function updateBadge(){var el=document.getElementById('apiBadge');if(apiOk){el.className='api-badge api-ok';el.textContent='✅ '+dataDate;}else{el.className='api-badge api-fall';el.textContent='⚠️ 備用數據（'+dataDate+'）· 部署到 GitHub Pages 後自動載入即時數據';}}
+function updateBadge(){var el=document.getElementById('apiBadge');if(apiOk){el.className='api-badge api-ok';el.textContent='✅ '+dataDate;}else{el.className='api-badge api-fall';el.textContent='⚠️ data（'+dataDate+'）;}}
 
 /* ── map ── */
 var mapW=960,mapH=500,svgM,proj,pathG,gMap,zoomB,landSel,$tip=document.getElementById('tip'),$dW=document.getElementById('detWrap');
@@ -361,10 +356,10 @@ gMap.selectAll('.ptmk').transition().duration(200)
 function updateLegend(){
 var h='';
 if(viewMode==='val'){
-h='<span style="font-weight:800;margin-right:4px">貨幣估值：</span>';
+h='<span style="font-weight:800;margin-right:4px">Currency Valuation: </span>';
 LV.forEach(function(l,i){h+='<span class="ml-i"><span class="ml-d" style="background:'+CV[i]+'"></span>'+l+'</span>';});
 }else{
-h='<span style="font-weight:800;margin-right:4px">USD 價格：</span>';
+h='<span style="font-weight:800;margin-right:4px">USD Price: </span>';
 LP.forEach(function(l,i){h+='<span class="ml-i"><span class="ml-d" style="background:'+CP[i]+'"></span>'+l+'</span>';});
 }
 document.getElementById('mapLeg').innerHTML=h;
@@ -372,14 +367,13 @@ document.getElementById('mapLeg').innerHTML=h;
 
 /* ── info ── */
 function resetInfo(){
-document.getElementById('iName').innerHTML='<span class="info-placeholder">👆 點擊地圖上的國家或下方列表，查看大麥克指數詳情</span>';
-document.getElementById('iBadges').innerHTML='';document.getElementById('iSub').textContent='';$dW.classList.remove('show');
+document.getElementById('iName').innerHTML='<span class="info-placeholder">👆 Click on a country on the map or the list below to view Big Mac Index details</span>';document.getElementById('iBadges').innerHTML='';document.getElementById('iSub').textContent='';$dW.classList.remove('show');
 }
 function showBrief(idx){
 var c=data[idx],col=vColor(c.raw);
 document.getElementById('iName').innerHTML='🍔 '+c.zh+'<span class="info-en">'+c.en+'</span>';
 document.getElementById('iBadges').innerHTML='<span class="badge" style="background:'+col+';color:'+(vIdx(c.raw)<=3?'#1e293b':'#fff')+'">'+fmtPct(c.raw)+'</span><span class="badge" style="background:#b45309">'+fmtUSD(c.dp)+'</span><span class="badge" style="background:#475569">'+(RGN[c.reg]||'')+'</span>';
-document.getElementById('iSub').textContent=c.cur+' '+fmtP(c.lp)+' · 換算 '+fmtUSD(c.dp);
+document.getElementById('iSub').textContent=c.cur+' '+fmtP(c.lp)+' · Converted: '+fmtUSD(c.dp);
 $dW.classList.remove('show');
 }
 function showInfo(idx){
@@ -387,17 +381,17 @@ showBrief(idx);$dW.classList.add('show');
 var c=data[idx],us=data[iso3Map['USA']],col=vColor(c.raw),ci=vIdx(c.raw);
 /* VS cards */
 var h='<div class="vs-card hl"><div class="vs-lbl">🍔 '+c.zh+'</div><div class="vs-name">'+c.cur+'</div><div class="vs-price">'+fmtP(c.lp)+'</div><div class="vs-usd">= '+fmtUSD(c.dp)+'</div><div class="vs-badge" style="background:'+col+'">'+(ci>=0?NV[ci]:'')+'</div></div>';
-h+='<div class="vs-card"><div class="vs-lbl">🍔 基準：美國</div><div class="vs-name">USD</div><div class="vs-price">'+fmtP(us.lp)+'</div><div class="vs-usd">= '+fmtUSD(us.dp)+'</div></div>';
+h+='<div class="vs-card"><div class="vs-lbl">🍔 Baseline: USA</div><div class="vs-name">USD</div><div class="vs-price">'+fmtP(us.lp)+'</div><div class="vs-usd">= '+fmtUSD(us.dp)+'</div></div>';
 document.getElementById('detVS').innerHTML=h;
 /* Rates */
 var implied=c.lp/us.lp,market=c.ex/us.ex;
 var rk_p=1,rk_v=1;data.forEach(function(d){if(d.dp>c.dp)rk_p++;if(d.raw>c.raw)rk_v++;});
-var rh='<div class="rate-i"><div class="rate-v">1 USD = '+fmtP(implied)+' '+c.cur+'</div><div class="rate-l">🍔 大麥克隱含匯率 (PPP)</div></div>';
-rh+='<div class="rate-i"><div class="rate-v">1 USD = '+fmtP(market)+' '+c.cur+'</div><div class="rate-l">💱 市場匯率</div></div>';
-rh+='<div class="rate-i"><div class="rate-v" style="color:'+col+'">'+fmtPct(c.raw)+'</div><div class="rate-l">📊 貨幣估值 vs USD</div></div>';
-rh+='<div class="rate-i"><div class="rate-v">#'+rk_p+' / '+data.length+'</div><div class="rate-l">💲 價格排名（貴→便宜）</div></div>';
-rh+='<div class="rate-i"><div class="rate-v">#'+rk_v+' / '+data.length+'</div><div class="rate-l">📈 高估排名（高→低）</div></div>';
-if(c.apiDate)rh+='<div class="rate-i"><div class="rate-v">📅 '+c.apiDate+'</div><div class="rate-l">數據日期</div></div>';
+var rh='<div class="rate-i"><div class="rate-v">1 USD = '+fmtP(implied)+' '+c.cur+'</div><div class="rate-l">🍔 Big Mac Implied Rate (PPP)</div></div>';
+rh+='<div class="rate-i"><div class="rate-v">1 USD = '+fmtP(market)+' '+c.cur+'</div><div class="rate-l">💱 Market Exchange Rate</div></div>';
+rh+='<div class="rate-i"><div class="rate-v" style="color:'+col+'">'+fmtPct(c.raw)+'</div><div class="rate-l">📊 Currency Valuation vs USD</div></div>';
+rh+='<div class="rate-i"><div class="rate-v">#'+rk_p+' / '+data.length+'</div><div class="rate-l">💲 Price Ranking (Expensive → Cheap)</div></div>';
+rh+='<div class="rate-i"><div class="rate-v">#'+rk_v+' / '+data.length+'</div><div class="rate-l">📈 Overvaluation Ranking (High → Low)</div></div>';
+if(c.apiDate)rh+='<div class="rate-i"><div class="rate-v">📅 '+c.apiDate+'</div><div class="rate-l">Data Date</div></div>';
 document.getElementById('detRates').innerHTML=rh;
 /* Gauge */
 document.getElementById('valMk').style.left=valPos(c.raw)+'%';
@@ -410,7 +404,7 @@ function showTip(ev,idx){
 var c=data[idx],col=vColor(c.raw);
 var h='<b>🍔 '+c.zh+'</b> '+c.en+'<br><span style="color:#94a3b8;font-size:.72rem">'+(RGN[c.reg]||'')+' · '+c.cur+'</span>';
 h+='<div style="margin-top:4px;display:flex;align-items:center;gap:6px"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:'+col+'"></span><b style="font-size:1.1rem">'+fmtUSD(c.dp)+'</b><span style="color:'+col+';font-weight:800">'+fmtPct(c.raw)+'</span></div>';
-h+='<div style="font-size:.76rem;margin-top:3px">當地售價 '+c.cur+' '+fmtP(c.lp)+'</div>';
+h+='<div style="font-size:.76rem;margin-top:3px">local price '+c.cur+' '+fmtP(c.lp)+'</div>';
 $tip.innerHTML=h;moveTip(ev);$tip.classList.add('show');
 }
 function moveTip(ev){var x=ev.clientX+14,y=ev.clientY-60;if(x+320>window.innerWidth)x=ev.clientX-320;if(y<10)y=ev.clientY+20;$tip.style.left=x+'px';$tip.style.top=y+'px';}
@@ -430,12 +424,11 @@ var avg=data.reduce(function(s,d){return s+d.dp;},0)/data.length;
 var mostOver=data.slice().sort(function(a,b){return b.raw-a.raw;})[0];
 var mostUnder=data.slice().sort(function(a,b){return a.raw-b.raw;})[0];
 var h='<div class="sb-item"><span class="sb-num">'+data.length+'</span><span class="sb-label">國家/地區</span></div>';
-h+='<div class="sb-item"><span class="sb-num">'+fmtUSD(avg)+'</span><span class="sb-label">全球平均價格</span></div>';
-h+='<div class="sb-item"><span class="sb-num" style="color:#991b1b">'+fmtUSD(most.dp)+'</span><span class="sb-label">🔴 最貴：'+most.zh+'</span></div>';
-h+='<div class="sb-item"><span class="sb-num" style="color:#059669">'+fmtUSD(least.dp)+'</span><span class="sb-label">🟢 最便宜：'+least.zh+'</span></div>';
-h+='<div class="sb-item"><span class="sb-num" style="color:#dc2626">'+fmtPct(mostOver.raw)+'</span><span class="sb-label">📈 最高估：'+mostOver.zh+'</span></div>';
-h+='<div class="sb-item"><span class="sb-num" style="color:#064e3b">'+fmtPct(mostUnder.raw)+'</span><span class="sb-label">📉 最低估：'+mostUnder.zh+'</span></div>';
-document.getElementById('statBanner').innerHTML=h;
+h+='<div class="sb-item"><span class="sb-num">'+fmtUSD(avg)+'</span><span class="sb-label">Global Average Price</span></div>';
+h+='<div class="sb-item"><span class="sb-num" style="color:#991b1b">'+fmtUSD(most.dp)+'</span><span class="sb-label">🔴 Most Expensive: '+most.zh+'</span></div>';
+h+='<div class="sb-item"><span class="sb-num" style="color:#059669">'+fmtUSD(least.dp)+'</span><span class="sb-label">🟢 Cheapest: '+least.zh+'</span></div>';
+h+='<div class="sb-item"><span class="sb-num" style="color:#dc2626">'+fmtPct(mostOver.raw)+'</span><span class="sb-label">📈 Most Overvalued: '+mostOver.zh+'</span></div>';
+h+='<div class="sb-item"><span class="sb-num" style="color:#064e3b">'+fmtPct(mostUnder.raw)+'</span><span class="sb-label">📉 Most Undervalued: '+mostUnder.zh+'</span></div>';document.getElementById('statBanner').innerHTML=h;
 }
 
 /* ── view toggle ── */
@@ -475,17 +468,17 @@ document.querySelectorAll('.rk-i').forEach(function(el){el.onclick=function(){se
 function updateGrid(){
 var list=data.map(function(c,i){return{i:i,c:c};});
 if(selReg!=='ALL')list=list.filter(function(x){return x.c.reg===selReg;});
-list.sort(function(a,b){return a.c.zh.localeCompare(b.c.zh,'zh-Hant');});
+list.sort(function(a,b){return a.c.zh.localeCompare(b.c.zh,'en-GB');});
 var h='';list.forEach(function(x){
 var c=x.c,col=vColor(c.raw);
-h+='<div class="cc-i'+(locked===x.i?' on':'')+'" data-ci="'+x.i+'"><span class="cc-mk" style="background:'+col+'"></span><div class="cc-inf"><div class="cc-nm">'+c.zh+' <span style="color:#94a3b8;font-weight:400;font-size:.7rem">'+c.en+'</span></div><div class="cc-sub">'+c.cur+' '+fmtP(c.lp)+' · '+(RGN[c.reg]||'')+'</div></div><span class="cc-dv" style="color:'+col+'">'+fmtUSD(c.dp)+'<br><span style="font-size:.64rem">'+fmtPct(c.raw)+'</span></span></div>';
+h+='<div class="cc-i'+(locked===x.i?' on':'')+'" data-ci="'+x.i+'"><span class="cc-mk" style="background:'+col+'"></span><div class="cc-inf"><div class="cc-nm">'+c.en+' <span style="color:#94a3b8;font-weight:400;font-size:.7rem">'+c.en+'</span></div><div class="cc-sub">'+c.cur+' '+fmtP(c.lp)+' · '+(RGN[c.reg]||'')+'</div></div><span class="cc-dv" style="color:'+col+'">'+fmtUSD(c.dp)+'<br><span style="font-size:.64rem">'+fmtPct(c.raw)+'</span></span></div>';
 });
-document.getElementById('cGrid').innerHTML=h||'<div style="padding:2rem;text-align:center;color:#94a3b8">無符合結果</div>';
-document.getElementById('cCount').textContent=list.length+'個';
+document.getElementById('cGrid').innerHTML=h||'<div style="padding:2rem;text-align:center;color:#94a3b8">no result</div>';
+document.getElementById('cCount').textContent=list.length+'piece';
 document.querySelectorAll('.cc-i').forEach(function(el){el.onclick=function(){selectCountry(+this.getAttribute('data-ci'));};});
 }
 function initRegTabs(){
-var tabs=[{k:'ALL',n:'全部'}];for(var k in RGN)tabs.push({k:k,n:RGN[k]});
+var tabs=[{k:'ALL',n:'all'}];for(var k in RGN)tabs.push({k:k,n:RGN[k]});
 var h='';tabs.forEach(function(t){h+='<span class="p-tab'+(selReg===t.k?' on':'')+'" data-r="'+t.k+'">'+t.n+'</span>';});
 document.getElementById('regTabs').innerHTML=h;
 document.querySelectorAll('#regTabs .p-tab').forEach(function(el){el.onclick=function(){selReg=this.getAttribute('data-r');initRegTabs();updateGrid();};});
@@ -514,25 +507,24 @@ var mktAmt=amt*market,pppAmt=amt*implied;
 var eqPower=amt*(f.dp/t.dp);
 var col=vColor(rel);
 
-var h='<div class="cr-row"><span class="cr-l">🍔 大麥克隱含匯率</span><span class="cr-v">1 '+f.cur+' = '+fmtP(implied)+' '+t.cur+'</span></div>';
-h+='<div class="cr-row"><span class="cr-l">💱 市場匯率</span><span class="cr-v">1 '+f.cur+' = '+fmtP(market)+' '+t.cur+'</span></div>';
-h+='<div class="cr-row"><span class="cr-l">📊 '+t.cur+' 相對 '+f.cur+' 估值</span><span class="cr-v" style="color:'+col+';font-size:1rem">'+fmtPct(rel)+(rel<0?' 被低估':rel>0?' 被高估':' 公平估值')+'</span></div>';
-h+='<div class="cr-row" style="border-top:2px solid #fcd34d;padding-top:10px;margin-top:4px"><span class="cr-l">💱 按市場匯率兌換</span><span class="cr-v">'+fmtP(amt)+' '+f.cur+' = '+fmtP(mktAmt)+' '+t.cur+'</span></div>';
-h+='<div class="cr-row"><span class="cr-l">🍔 按 PPP 匯率兌換</span><span class="cr-v">'+fmtP(amt)+' '+f.cur+' = '+fmtP(pppAmt)+' '+t.cur+'</span></div>';
-
+var h='<div class="cr-row"><span class="cr-l">🍔 Big Mac Implied Rate</span><span class="cr-v">1 '+f.cur+' = '+fmtP(implied)+' '+t.cur+'</span></div>';
+h+='<div class="cr-row"><span class="cr-l">💱 Market Exchange Rate</span><span class="cr-v">1 '+f.cur+' = '+fmtP(market)+' '+t.cur+'</span></div>';
+h+='<div class="cr-row"><span class="cr-l">📊 '+t.cur+' Valuation vs '+f.cur+'</span><span class="cr-v" style="color:'+col+';font-size:1rem">'+fmtPct(rel)+(rel<0?' Undervalued':rel>0?' Overvalued':' Fair Value')+'</span></div>';
+h+='<div class="cr-row" style="border-top:2px solid #fcd34d;padding-top:10px;margin-top:4px"><span class="cr-l">💱 Converted at Market Rate</span><span class="cr-v">'+fmtP(amt)+' '+f.cur+' = '+fmtP(mktAmt)+' '+t.cur+'</span></div>';
+h+='<div class="cr-row"><span class="cr-l">🍔 Converted at PPP Rate</span><span class="cr-v">'+fmtP(amt)+' '+f.cur+' = '+fmtP(pppAmt)+' '+t.cur+'</span></div>';
 /* Travel tip */
 var tipBg,tipText;
 if(Math.abs(rel)<0.05){
 tipBg='background:#f8fafc;border:1px solid #e2e8f0';
-tipText='🤝 根據大麥克指數，<b>'+t.zh+'</b> 與 <b>'+f.zh+'</b> 的物價水平接近，匯率大致反映真實購買力。';
+tipText='🤝 According to the Big Mac Index, <b>'+t.en+'</b> and <b>'+f.en+'</b> have similar price levels, and the exchange rate broadly reflects real purchasing power.';
 }else if(rel<0){
 var pwr=Math.abs(Math.round(rel*100));
 tipBg='background:#ecfdf5;border:1px solid #34d399';
-tipText='💰 好消息！根據大麥克指數，<b>'+t.zh+'</b> 的物價比 <b>'+f.zh+'</b> 便宜約 <b>'+pwr+'%</b>。你的 <b>'+fmtP(amt)+' '+f.cur+'</b> 在 '+t.zh+' 的實際購買力約等同在 '+f.zh+' 的 <b>'+fmtP(eqPower)+' '+f.cur+'</b>！';
+tipText='💰 Good news! According to the Big Mac Index, prices in <b>'+t.en+'</b> are about <b>'+pwr+'%</b> cheaper than in <b>'+f.en+'</b>. Your <b>'+fmtP(amt)+' '+f.cur+'</b> has roughly the same purchasing power in '+t.en+' as <b>'+fmtP(eqPower)+' '+f.cur+'</b> in '+f.en+'!';
 }else{
 var pwr=Math.round(rel*100);
 tipBg='background:#fef2f2;border:1px solid #f87171';
-tipText='⚠️ 注意！根據大麥克指數，<b>'+t.zh+'</b> 的物價比 <b>'+f.zh+'</b> 貴約 <b>'+pwr+'%</b>。你的 <b>'+fmtP(amt)+' '+f.cur+'</b> 在 '+t.zh+' 的實際購買力約等同在 '+f.zh+' 的 <b>'+fmtP(eqPower)+' '+f.cur+'</b>。';
+tipText='⚠️ Watch out! According to the Big Mac Index, prices in <b>'+t.en+'</b> are about <b>'+pwr+'%</b> more expensive than in <b>'+f.en+'</b>. Your <b>'+fmtP(amt)+' '+f.cur+'</b> has roughly the same purchasing power in '+t.en+' as <b>'+fmtP(eqPower)+' '+f.cur+'</b> in '+f.en+'.';
 }
 h+='<div class="cr-tip" style="'+tipBg+'">'+tipText+'</div>';
 document.getElementById('calcRes').innerHTML=h;
@@ -547,10 +539,10 @@ $sIn.oninput=function(){
 var q=this.value.trim().toLowerCase();if(!q){$sDD.classList.remove('show');return;}
 var res=[];data.forEach(function(c,i){if(c.zh.toLowerCase().indexOf(q)>-1||c.en.toLowerCase().indexOf(q)>-1||c.cur.toLowerCase().indexOf(q)>-1)res.push({i:i,c:c});});
 res=res.slice(0,15);
-if(!res.length){$sDD.innerHTML='<div style="padding:.7rem;color:#94a3b8;text-align:center">找不到結果</div>';$sDD.classList.add('show');return;}
+if(!res.length){$sDD.innerHTML='<div style="padding:.7rem;color:#94a3b8;text-align:center">no result</div>';$sDD.classList.add('show');return;}
 var h='';res.forEach(function(x){var col=vColor(x.c.raw);h+='<div class="sd-i" data-ci="'+x.i+'"><span class="sd-k" style="background:'+col+'">'+fmtUSD(x.c.dp)+'</span><span style="font-weight:600;flex:1">🍔 '+x.c.zh+' <span style="color:#94a3b8;font-size:.75rem">'+x.c.en+'</span></span><span style="font-size:.72rem;color:'+col+';font-weight:700">'+fmtPct(x.c.raw)+'</span></div>';});
 $sDD.innerHTML=h;$sDD.classList.add('show');
-$sDD.querySelectorAll('.sd-i').forEach(function(el){el.onclick=function(){var ci=+this.getAttribute('data-ci');$sIn.value=data[ci].zh;selectCountry(ci);$sDD.classList.remove('show');};});
+$sDD.querySelectorAll('.sd-i').forEach(function(el){el.onclick=function(){var ci=+this.getAttribute('data-ci');$sIn.value=data[ci].en;selectCountry(ci);$sDD.classList.remove('show');};});
 };
 $sIn.onblur=function(){setTimeout(function(){$sDD.classList.remove('show');},200);};
 
