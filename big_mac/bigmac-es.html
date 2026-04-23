@@ -1,0 +1,531 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大麥克指數計算器 – Roamwise</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
+nav{background:linear-gradient(135deg,#92400e,#b45309);display:flex;align-items:center;justify-content:space-between;padding:.75rem 2rem;flex-wrap:wrap}
+.logo{font-size:1.5rem;font-weight:700;color:#fff;text-decoration:none}.logo span{color:#facc15}
+.nav-r{display:flex;align-items:center;gap:1.2rem}
+nav a{color:#fde68a;text-decoration:none;font-size:.95rem;padding-bottom:2px;border-bottom:2px solid transparent}nav a:hover{color:#fff}nav a.act{color:#fff;border-bottom-color:#facc15}
+main{flex:1;max-width:1340px;width:100%;margin:1.5rem auto;padding:0 1.5rem}
+h1{font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.alert-bar{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2px solid #fcd34d;border-radius:12px;padding:.8rem 1.2rem;margin-bottom:1rem;display:flex;align-items:flex-start;gap:.8rem;flex-wrap:wrap;font-size:.87rem;line-height:1.65}
+.alert-bar b{color:#92400e}
+.api-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;margin-left:8px}
+.api-ok{background:#dcfce7;color:#166534}.api-fall{background:#fef9c3;color:#854d0e}.api-err{background:#fee2e2;color:#991b1b}
+.card{background:#fff;border-radius:14px;padding:1.2rem 1.5rem;box-shadow:0 2px 14px rgba(0,0,0,.06);margin-bottom:1.2rem}
+.info-bar{min-height:50px;display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;padding-bottom:.8rem;border-bottom:1px solid #e2e8f0}
+.info-left{flex:1;min-width:200px}
+.info-name{font-size:1.15rem;font-weight:700}.info-en{font-size:.82rem;color:#94a3b8;font-weight:400;margin-left:6px}
+.info-sub{font-size:.78rem;color:#64748b;margin-top:3px;line-height:1.5}
+.info-placeholder{color:#94a3b8;font-size:.9rem;font-weight:400}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 10px;border-radius:14px;font-size:.73rem;font-weight:700;color:#fff;margin:3px 3px 0 0}
+.detail-wrap{display:none;margin-top:12px;padding-top:12px;border-top:1px solid #f1f5f9}.detail-wrap.show{display:block}
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.vs-card{text-align:center;padding:14px;border-radius:12px;background:#f8fafc;border:2px solid #e2e8f0;position:relative}
+.vs-card.hl{border-color:#f59e0b;background:#fffbeb}
+.vs-lbl{font-size:.68rem;color:#94a3b8;font-weight:700;margin-bottom:4px}
+.vs-name{font-size:1rem;font-weight:800}.vs-cur{font-size:.72rem;color:#64748b}
+.vs-price{font-size:1.6rem;font-weight:900;margin:6px 0 2px;line-height:1}
+.vs-usd{font-size:.85rem;font-weight:700}
+.vs-badge{position:absolute;top:8px;right:8px;font-size:.6rem;font-weight:800;padding:2px 8px;border-radius:10px;color:#fff}
+.rate-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:12px}
+.rate-i{padding:10px 14px;border-radius:10px;background:#f8fafc}.rate-v{font-size:1.05rem;font-weight:900}.rate-l{font-size:.68rem;color:#94a3b8;margin-top:2px}
+.val-bar-w{margin-top:12px;position:relative}
+.val-track{height:16px;border-radius:8px;background:linear-gradient(to right,#064e3b,#059669,#34d399,#bbf7d0,#fecaca,#f87171,#dc2626,#7f1d1d)}
+.val-mk{position:absolute;top:-4px;width:4px;height:24px;background:#1e293b;border-radius:3px;transform:translateX(-50%);z-index:2}
+.val-mk::after{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #1e293b}
+.val-labels{display:flex;justify-content:space-between;font-size:.58rem;color:#94a3b8;margin-top:3px}
+.stat-banner{display:flex;flex-wrap:wrap;gap:8px;margin:.8rem 0;padding:.8rem 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9}
+.sb-item{display:flex;flex-direction:column;padding:6px 14px;border-radius:10px;background:#f8fafc;min-width:80px;flex:1}
+.sb-num{font-size:1.15rem;font-weight:900;color:#b45309;line-height:1.2}.sb-label{font-size:.67rem;color:#94a3b8;margin-top:2px}
+.ctrl-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:.5rem 0}
+.view-tog{display:flex;gap:4px}
+.map-wrap{position:relative;width:100%;background:linear-gradient(180deg,#fef3c7,#fffbeb);border-radius:10px;overflow:hidden;cursor:grab;margin-top:.5rem}.map-wrap:active{cursor:grabbing}
+.map-wrap svg{display:block;width:100%;height:auto}
+.load-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fef3c7;z-index:10}
+.spinner{width:40px;height:40px;border:4px solid #fcd34d;border-top-color:#b45309;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:.8rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.map-leg{position:absolute;bottom:8px;left:8px;background:rgba(255,255,255,.92);border-radius:10px;padding:8px 12px;font-size:.7rem;display:flex;flex-wrap:wrap;gap:3px 6px;box-shadow:0 2px 8px rgba(0,0,0,.1);backdrop-filter:blur(4px);z-index:5;max-width:95%;align-items:center}
+.ml-i{display:flex;align-items:center;gap:3px;white-space:nowrap;font-weight:600}
+.ml-d{width:16px;height:12px;border-radius:2px;flex-shrink:0;border:1px solid rgba(0,0,0,.08)}
+.tips{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.6rem;font-size:.75rem;color:#94a3b8}
+.srch{position:relative;flex:1;min-width:200px;max-width:420px}
+.srch input{width:100%;padding:.45rem .9rem .45rem 2rem;border:2px solid #e2e8f0;border-radius:8px;font-size:.88rem;outline:none;transition:border .15s}.srch input:focus{border-color:#f59e0b}
+.srch-ico{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none;font-size:.85rem}
+.sdd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:280px;overflow-y:auto;z-index:100;display:none}.sdd.show{display:block}
+.sd-i{display:flex;align-items:center;gap:.6rem;padding:.55rem .9rem;cursor:pointer;transition:background .1s;font-size:.84rem}.sd-i:hover{background:#fffbeb}
+.sd-k{font-size:.7rem;font-weight:700;padding:1px 7px;border-radius:5px;color:#fff;flex-shrink:0}
+.calc-card{border:2px solid #fcd34d;background:linear-gradient(180deg,#fffbeb,#fff)}
+.calc-h{font-size:1.2rem;font-weight:800;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.calc-row{display:grid;grid-template-columns:1fr 50px 1fr;gap:.8rem;align-items:start}
+.calc-side{text-align:center;padding:16px;border-radius:12px;background:#f8fafc;border:2px solid #e2e8f0}
+.calc-side select{width:100%;padding:6px 8px;border:2px solid #e2e8f0;border-radius:8px;font-size:.88rem;font-weight:600;background:#fff;cursor:pointer;outline:none}.calc-side select:focus{border-color:#f59e0b}
+.calc-bp{margin-top:8px;font-size:1.5rem;font-weight:900;color:#b45309}.calc-bp-usd{font-size:.82rem;color:#64748b;font-weight:600}
+.calc-swap{width:44px;height:44px;border-radius:50%;background:#f59e0b;color:#fff;border:none;font-size:1.2rem;cursor:pointer;margin-top:30px;transition:transform .2s;display:flex;align-items:center;justify-content:center;justify-self:center}
+.calc-swap:hover{transform:rotate(180deg)}
+.calc-amt{margin-top:1rem;display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap}
+.calc-amt label{font-weight:700;font-size:.9rem}
+.calc-amt input{width:140px;padding:8px 12px;border:2px solid #e2e8f0;border-radius:8px;font-size:1.1rem;font-weight:700;text-align:right;outline:none}.calc-amt input:focus{border-color:#f59e0b}
+.calc-amt .cur-lbl{font-weight:800;color:#b45309;font-size:.9rem}
+.calc-res{margin-top:1rem;background:#f8fafc;border-radius:12px;padding:1rem 1.2rem;border:1px solid #e2e8f0}
+.cr-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:.88rem;flex-wrap:wrap;gap:4px}
+.cr-row:last-child{border:none}
+.cr-l{color:#64748b;font-weight:600;display:flex;align-items:center;gap:4px}.cr-v{font-weight:800}
+.cr-tip{margin-top:10px;padding:10px 14px;border-radius:10px;font-size:.84rem;line-height:1.6}
+.two-p{display:grid;grid-template-columns:320px 1fr;gap:1.2rem;align-items:start}
+.panel{background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06);overflow:hidden}
+.p-hdr{padding:.9rem 1.1rem;font-weight:700;font-size:.92rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:.5rem;position:sticky;top:0;background:#fff;z-index:2}
+.p-body{padding:.5rem;max-height:560px;overflow-y:auto}
+.rk-i{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;cursor:pointer;transition:all .12s;margin-bottom:2px;border:2px solid transparent}
+.rk-i:hover{background:#fffbeb}.rk-i.on{background:#fef3c7;border-color:#f59e0b}
+.rk-n{font-size:.72rem;font-weight:900;width:28px;text-align:center;flex-shrink:0;color:#64748b}
+.rk-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.rk-inf{flex:1;min-width:0}.rk-nm{font-weight:700;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rk-sub{font-size:.64rem;color:#94a3b8;margin-top:1px}
+.rk-val{font-size:.72rem;font-weight:800;width:70px;text-align:right;flex-shrink:0}
+.p-tabs{display:flex;gap:4px;padding:6px 8px;border-bottom:1px solid #f1f5f9;flex-wrap:wrap}
+.p-tab{padding:3px 10px;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;border:1px solid #e2e8f0;background:#fff;transition:all .12s;white-space:nowrap}.p-tab:hover{background:#fffbeb}.p-tab.on{background:#f59e0b;color:#fff;border-color:#f59e0b}
+.pc-cnt{background:#f1f5f9;color:#475569;font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:10px}
+.cc-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:4px}
+.cc-i{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:pointer;transition:all .12s;border:1px solid transparent}
+.cc-i:hover{background:#fffbeb;border-color:#fcd34d}.cc-i.on{background:#fef3c7;border-color:#f59e0b}
+.cc-mk{width:10px;height:10px;border-radius:2px;flex-shrink:0;border:1px solid rgba(0,0,0,.08)}
+.cc-inf{flex:1;min-width:0}.cc-nm{font-weight:600;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-sub{font-size:.64rem;color:#94a3b8;margin-top:1px}
+.cc-dv{font-size:.72rem;font-weight:800;flex-shrink:0;white-space:nowrap}
+.sort-btn{padding:2px 8px;border-radius:5px;font-size:.68rem;font-weight:700;cursor:pointer;border:1px solid #e2e8f0;background:#fff}.sort-btn:hover{background:#fffbeb}.sort-btn.on{background:#f59e0b;color:#fff;border-color:#f59e0b}
+.ttip{position:fixed;pointer-events:none;background:rgba(15,23,42,.94);color:#fff;padding:12px 16px;border-radius:12px;font-size:.84rem;z-index:1000;opacity:0;transition:opacity .12s;box-shadow:0 4px 20px rgba(0,0,0,.25);line-height:1.55;max-width:320px}.ttip.show{opacity:1}
+footer{background:#1e293b;color:#94a3b8;margin-top:auto}
+.finner{max-width:1340px;margin:0 auto;padding:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;font-size:.82rem}
+@media(max-width:900px){.two-p{grid-template-columns:1fr}.det-grid{grid-template-columns:1fr 1fr}.calc-row{grid-template-columns:1fr 50px 1fr}}
+@media(max-width:600px){nav{padding:.6rem 1rem}.nav-r{gap:.6rem}nav a{font-size:.75rem}main{padding:0 .7rem}.card{padding:.9rem}.calc-row{grid-template-columns:1fr;gap:.5rem}.calc-swap{margin-top:0;transform:rotate(90deg)}.calc-swap:hover{transform:rotate(270deg)}.det-grid{grid-template-columns:1fr}.cc-g{grid-template-columns:1fr}.stat-banner{gap:6px}.sb-item{min-width:60px;padding:4px 8px}.sb-num{font-size:.95rem}}
+</style>
+</head>
+<body>
+<nav>
+<a class="logo" href="#">🍔 Roam<span>wise</span></a>
+<div class="nav-r"><a href="#">🔌 插頭</a><a href="#">🚗 駕駛</a><a href="#">📡 網路</a><a href="#">🌍 人口密度</a><a href="#" class="act">🍔 大麥克指數</a></div>
+</nav>
+<main>
+<h1>🍔 大麥克指數互動地圖與計算器 <span id="apiBadge" class="api-badge api-fall">⏳ 載入中…</span></h1>
+<div class="alert-bar">
+<span style="font-size:1.5rem">📊</span>
+<div>「<b>大麥克指數</b>」由《經濟學人》(The Economist) 於 1986 年創立，透過比較各國麥當勞大麥克漢堡的售價來衡量 <b>購買力平價 (PPP)</b>。若某國大麥克換算美元後比美國便宜，代表該國貨幣被「<b style="color:#059669">低估</b>」；反之則被「<b style="color:#dc2626">高估</b>」。本工具從 <b>The Economist 的 GitHub 開源數據庫</b> 自動載入最新數據（每半年更新一次），可用於比較各國實際購買力與匯率差異。</div>
+</div>
+
+<div class="card">
+<div class="info-bar" id="infoBar"><div class="info-left"><div class="info-name" id="iName"><span class="info-placeholder">👆 點擊地圖上的國家或下方列表，查看大麥克指數詳情</span></div><div id="iBadges"></div><div class="info-sub" id="iSub"></div></div></div>
+<div class="detail-wrap" id="detWrap">
+<div class="det-grid" id="detVS"></div>
+<div class="rate-row" id="detRates"></div>
+<div class="val-bar-w"><div class="val-track"></div><div class="val-mk" id="valMk" style="left:50%"></div><div class="val-labels"><span>-80% 低估</span><span>-40%</span><span>0% 公平</span><span>+40%</span><span>+80% 高估</span></div></div>
+</div>
+<div class="stat-banner" id="statBanner"></div>
+<div class="ctrl-row">
+<div class="view-tog"><span class="p-tab on" id="vtVal" onclick="setView('val')">📊 估值模式</span><span class="p-tab" id="vtPrc" onclick="setView('prc')">💲 價格模式</span></div>
+<div class="srch"><span class="srch-ico">🔍</span><input id="sIn" placeholder="搜尋國家（如：香港、Japan、Swiss）…" autocomplete="off"><div class="sdd" id="sDD"></div></div>
+</div>
+<div class="map-wrap" id="mapWrap"><div class="load-ov" id="loadOv"><div class="spinner"></div><p>載入世界地圖中…</p></div><div class="map-leg" id="mapLeg"></div></div>
+<div class="tips"><span>🖱️ 懸停查看摘要</span><span>👆 點擊查看詳情</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span></div>
+</div>
+
+<div class="card calc-card" id="calcCard">
+<div class="calc-h">🍔 PPP 購買力計算器</div>
+<div class="calc-row">
+<div class="calc-side"><label class="vs-lbl">🛫 從</label><select id="cFrom" onchange="updCalc()"></select><div class="calc-bp" id="cfBP"></div><div class="calc-bp-usd" id="cfUSD"></div></div>
+<button class="calc-swap" onclick="swapCalc()" title="交換">⇄</button>
+<div class="calc-side"><label class="vs-lbl">🛬 到</label><select id="cTo" onchange="updCalc()"></select><div class="calc-bp" id="ctBP"></div><div class="calc-bp-usd" id="ctUSD"></div></div>
+</div>
+<div class="calc-amt"><label>💰 金額：</label><input id="cAmt" type="number" value="100" onchange="updCalc()" oninput="updCalc()"><span class="cur-lbl" id="cCurL">USD</span></div>
+<div class="calc-res" id="calcRes"></div>
+</div>
+
+<div class="two-p">
+<div class="panel">
+<div class="p-hdr">🏆 排名 <span style="display:flex;gap:4px"><span class="sort-btn on" id="sB1" onclick="setSort('under')">低估→高估</span><span class="sort-btn" id="sB2" onclick="setSort('over')">高估→低估</span><span class="sort-btn" id="sB3" onclick="setSort('cheap')">便宜→貴</span></span></div>
+<div class="p-body" id="rkPanel"></div>
+</div>
+<div class="panel">
+<div class="p-hdr">🌍 國家列表 <span class="pc-cnt" id="cCount"></span></div>
+<div class="p-tabs" id="regTabs"></div>
+<div class="p-body"><div class="cc-g" id="cGrid"></div></div>
+</div>
+</div>
+</main>
+<div class="ttip" id="tip"></div>
+<footer><div class="finner"><span>© 2026 Roamwise · 大麥克指數計算器</span><span>數據來源：The Economist · GitHub Open Data · 每半年自動更新</span></div></footer>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(function(){
+"use strict";
+/* ── constants ── */
+var BV=[-50,-30,-15,0,15,30,50],CV=['#064e3b','#059669','#34d399','#bbf7d0','#fecaca','#f87171','#dc2626','#7f1d1d'],LV=['<-50%','-50~-30','-30~-15','-15~0','0~+15','+15~+30','+30~+50','>+50%'],NV=['嚴重低估','明顯低估','略為低估','接近公平','略為高估','明顯高估','嚴重高估','極度高估'];
+var BP=[2,3,4,5,6,7],CP=['#dbeafe','#93c5fd','#60a5fa','#fbbf24','#f97316','#ef4444','#991b1b'],LP=['<$2','$2-3','$3-4','$4-5','$5-6','$6-7','>$7'];
+var RGN={A:"亞洲",E:"歐洲",F:"非洲",N:"美洲",O:"大洋洲"};
+function vColor(r){if(r==null)return'#e2e8f0';var p=r*100;for(var i=0;i<BV.length;i++){if(p<BV[i])return CV[i];}return CV[CV.length-1];}
+function vIdx(r){if(r==null)return-1;var p=r*100;for(var i=0;i<BV.length;i++){if(p<BV[i])return i;}return CV.length-1;}
+function pColor(d){if(d==null)return'#e2e8f0';for(var i=0;i<BP.length;i++){if(d<BP[i])return CP[i];}return CP[CP.length-1];}
+function fmtP(d){if(d==null)return'N/A';return d<10?d.toFixed(2):d<1000?d.toFixed(1):Math.round(d).toLocaleString();}
+function fmtUSD(d){if(d==null)return'N/A';return'$'+d.toFixed(2);}
+function fmtPct(r){if(r==null)return'N/A';var p=r*100;return(p>0?'+':'')+p.toFixed(1)+'%';}
+function valPos(r){return Math.min(100,Math.max(0,(r*100+80)/160*100));}
+
+/* ── fallback data [iso3,[nums],zh,en,cur,lp,ex,reg,lat,lng] ── */
+var RAW=[
+["USA",[840],"美國","United States","USD",5.69,1.0,"N",null,null],
+["ARG",[32],"阿根廷","Argentina","ARS",3500,926,"N",null,null],
+["AUS",[36],"澳洲","Australia","AUD",7.65,1.506,"O",null,null],
+["AZE",[31],"亞塞拜然","Azerbaijan","AZN",6.95,1.70,"A",null,null],
+["BHR",[48],"巴林","Bahrain","BHD",1.90,0.377,"A",26.07,50.55],
+["BRA",[76],"巴西","Brazil","BRL",22.90,5.52,"N",null,null],
+["GBR",[826],"英國","Britain","GBP",4.19,0.789,"E",null,null],
+["CAN",[124],"加拿大","Canada","CAD",7.47,1.37,"N",null,null],
+["CHL",[152],"智利","Chile","CLP",3390,953,"N",null,null],
+["CHN",[156],"中國","China","CNY",24.40,7.27,"A",null,null],
+["COL",[170],"哥倫比亞","Colombia","COP",16900,4120,"N",null,null],
+["CRI",[188],"哥斯達黎加","Costa Rica","CRC",2800,523,"N",null,null],
+["CZE",[203],"捷克","Czechia","CZK",109,23.3,"E",null,null],
+["DNK",[208],"丹麥","Denmark","DKK",35,6.89,"E",null,null],
+["EGY",[818],"埃及","Egypt","EGP",120,48.2,"F",null,null],
+["EUZ",[40,56,191,196,233,246,250,276,300,372,380,428,440,442,470,528,620,703,705,724],"歐元區","Euro area","EUR",5.29,0.922,"E",50.1,9.7],
+["GTM",[320],"危地馬拉","Guatemala","GTQ",31,7.77,"N",null,null],
+["HND",[340],"洪都拉斯","Honduras","HNL",99,24.8,"N",null,null],
+["HKG",[344],"香港","Hong Kong","HKD",22.50,7.81,"A",22.32,114.17],
+["HUN",[348],"匈牙利","Hungary","HUF",1580,366,"E",null,null],
+["IND",[356],"印度","India","INR",209,83.6,"A",null,null],
+["IDN",[360],"印尼","Indonesia","IDR",38000,16300,"A",null,null],
+["ISR",[376],"以色列","Israel","ILS",19.90,3.69,"A",null,null],
+["JPN",[392],"日本","Japan","JPY",480,158,"A",null,null],
+["JOR",[400],"約旦","Jordan","JOD",2.75,0.709,"A",null,null],
+["KWT",[414],"科威特","Kuwait","KWD",1.30,0.307,"A",null,null],
+["LBN",[422],"黎巴嫩","Lebanon","LBP",170000,89500,"A",null,null],
+["MYS",[458],"馬來西亞","Malaysia","MYR",12.30,4.71,"A",null,null],
+["MEX",[484],"墨西哥","Mexico","MXN",79,18.3,"N",null,null],
+["MDA",[498],"摩爾多瓦","Moldova","MDL",70,17.8,"E",null,null],
+["NZL",[554],"紐西蘭","New Zealand","NZD",8.10,1.67,"O",null,null],
+["NIC",[558],"尼加拉瓜","Nicaragua","NIO",135,36.8,"N",null,null],
+["NOR",[578],"挪威","Norway","NOK",72,10.7,"E",null,null],
+["OMN",[512],"阿曼","Oman","OMR",1.50,0.385,"A",null,null],
+["PAK",[586],"巴基斯坦","Pakistan","PKR",850,279,"A",null,null],
+["PAN",[591],"巴拿馬","Panama","PAB",4.25,1.0,"N",null,null],
+["PER",[604],"秘魯","Peru","PEN",14.90,3.74,"N",null,null],
+["PHL",[608],"菲律賓","Philippines","PHP",168,58.0,"A",null,null],
+["POL",[616],"波蘭","Poland","PLN",17.90,4.0,"E",null,null],
+["QAT",[634],"卡塔爾","Qatar","QAR",16,3.64,"A",null,null],
+["ROU",[642],"羅馬尼亞","Romania","RON",22,4.64,"E",null,null],
+["SAU",[682],"沙特阿拉伯","Saudi Arabia","SAR",17,3.75,"A",null,null],
+["SGP",[702],"新加坡","Singapore","SGD",6.35,1.35,"A",1.35,103.82],
+["ZAF",[710],"南非","South Africa","ZAR",59.90,18.4,"F",null,null],
+["KOR",[410],"韓國","South Korea","KRW",5400,1380,"A",null,null],
+["LKA",[144],"斯里蘭卡","Sri Lanka","LKR",1290,305,"A",null,null],
+["SWE",[752],"瑞典","Sweden","SEK",64,10.74,"E",null,null],
+["CHE",[756],"瑞士","Switzerland","CHF",6.90,0.893,"E",null,null],
+["TWN",[158],"台灣","Taiwan","TWD",80,32.5,"A",23.7,121.0],
+["THA",[764],"泰國","Thailand","THB",128,36.6,"A",null,null],
+["TUR",[792],"土耳其","Türkiye","TRY",110,32.8,"A",null,null],
+["ARE",[784],"阿聯酋","UAE","AED",19,3.67,"A",null,null],
+["UKR",[804],"烏克蘭","Ukraine","UAH",89,41.2,"E",null,null],
+["URY",[858],"烏拉圭","Uruguay","UYU",249,40.9,"N",null,null],
+["VNM",[704],"越南","Vietnam","VND",69000,25350,"A",null,null],
+["VEN",[862],"委內瑞拉","Venezuela","VES",130,36.5,"N",null,null],
+["HRV",[191],"克羅地亞","Croatia","EUR",3.77,0.922,"E",null,null],
+["PER",[604],"秘魯","Peru","PEN",14.90,3.74,"N",null,null]
+];
+
+/* ── build data ── */
+var data=[],numMap={},iso3Map={},_seen3={};
+RAW.forEach(function(r){
+if(_seen3[r[0]])return;_seen3[r[0]]=1;
+var dp=r[5]/r[6];
+var obj={iso3:r[0],nums:r[1],zh:r[2],en:r[3],cur:r[4],lp:r[5],ex:r[6],dp:dp,raw:0,reg:r[7],lat:r[8],lng:r[9],apiDate:null};
+var idx=data.length;data.push(obj);
+r[1].forEach(function(n){numMap[n]=idx;});
+iso3Map[r[0]]=idx;
+});
+function recomputeRaw(){var us=data[iso3Map['USA']];data.forEach(function(d){d.dp=d.lp/d.ex;d.raw=d.dp/us.dp-1;});}
+recomputeRaw();
+
+/* ── state ── */
+var locked=null,viewMode='val',sortMode='under',selReg='ALL',apiOk=false,dataDate='估算 2024H1';
+
+/* ── fetch Economist data ── */
+function fetchEcon(){
+return d3.csv('https://cdn.jsdelivr.net/gh/TheEconomist/big-mac-data@master/output-data/big-mac-raw-index.csv').then(function(rows){
+var dates=[];rows.forEach(function(r){if(r.date&&dates.indexOf(r.date)<0)dates.push(r.date);});
+dates.sort();var latest=dates[dates.length-1];
+rows.forEach(function(r){
+if(r.date!==latest)return;
+var idx=iso3Map[r.iso_a3];if(idx===undefined)return;
+data[idx].lp=+r.local_price||data[idx].lp;
+data[idx].ex=+r.dollar_ex||data[idx].ex;
+data[idx].cur=r.currency_code||data[idx].cur;
+if(r.name)data[idx].en=r.name;
+data[idx].apiDate=latest;
+});
+recomputeRaw();dataDate='The Economist '+latest;apiOk=true;
+}).catch(function(e){console.warn('Economist API fallback:',e.message);});}
+
+function updateBadge(){var el=document.getElementById('apiBadge');if(apiOk){el.className='api-badge api-ok';el.textContent='✅ '+dataDate;}else{el.className='api-badge api-fall';el.textContent='⚠️ 備用數據（'+dataDate+'）· 部署到 GitHub Pages 後自動載入即時數據';}}
+
+/* ── map ── */
+var mapW=960,mapH=500,svgM,proj,pathG,gMap,zoomB,landSel,$tip=document.getElementById('tip'),$dW=document.getElementById('detWrap');
+function curColor(idx){var d=data[idx];return viewMode==='val'?vColor(d.raw):pColor(d.dp);}
+
+function initMap(){
+svgM=d3.select('#mapWrap').append('svg').attr('viewBox','0 0 '+mapW+' '+mapH).attr('preserveAspectRatio','xMidYMid meet');
+proj=d3.geoNaturalEarth1().scale(158).translate([mapW/2,mapH/2]);
+pathG=d3.geoPath().projection(proj);
+gMap=svgM.append('g');
+gMap.append('path').datum({type:'Sphere'}).attr('d',pathG).attr('fill','#fef3c7').attr('stroke','#fcd34d').attr('stroke-width',.5);
+gMap.append('path').datum(d3.geoGraticule()()).attr('d',pathG).attr('fill','none').attr('stroke','rgba(255,255,255,.5)').attr('stroke-width',.3);
+zoomB=d3.zoom().scaleExtent([1,12]).on('zoom',function(ev){gMap.attr('transform',ev.transform);});
+svgM.call(zoomB);
+d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(world){
+var feats=topojson.feature(world,world.objects.countries).features;
+landSel=gMap.selectAll('.land').data(feats).enter().append('path').attr('class','land').attr('d',pathG)
+.attr('stroke','#94a3b8').attr('stroke-width',.3).attr('cursor','pointer')
+.attr('fill',function(f){var i=numMap[+f.id];return i!==undefined?curColor(i):'#e2e8f0';})
+.on('mouseenter',function(ev,f){var i=numMap[+f.id];if(i===undefined)return;d3.select(this).attr('stroke','#1e293b').attr('stroke-width',1.5).raise();if(locked===null)showBrief(i);showTip(ev,i);})
+.on('mousemove',function(ev){moveTip(ev);})
+.on('mouseleave',function(){d3.select(this).attr('stroke','#94a3b8').attr('stroke-width',.3);$tip.classList.remove('show');if(locked===null)resetInfo();})
+.on('click',function(ev,f){ev.stopPropagation();var i=numMap[+f.id];if(i!==undefined)selectCountry(i);});
+
+var matched={};feats.forEach(function(f){if(numMap[+f.id]!==undefined)matched[numMap[+f.id]]=1;});
+data.forEach(function(c,idx){
+if(matched[idx])return;if(c.lat==null)return;
+var xy=proj([c.lng,c.lat]);if(!xy)return;
+gMap.append('circle').attr('cx',xy[0]).attr('cy',xy[1]).attr('r',5)
+.attr('fill',curColor(idx)).attr('stroke','#fff').attr('stroke-width',1.5).attr('cursor','pointer').attr('class','ptmk').datum(idx)
+.on('mouseenter',function(ev){d3.select(this).attr('r',8).attr('stroke-width',2.5);var i=d3.select(this).datum();if(locked===null)showBrief(i);showTip(ev,i);})
+.on('mousemove',function(ev){moveTip(ev);})
+.on('mouseleave',function(){d3.select(this).attr('r',5).attr('stroke-width',1.5);$tip.classList.remove('show');if(locked===null)resetInfo();})
+.on('click',function(ev){ev.stopPropagation();selectCountry(d3.select(this).datum());});
+});
+svgM.on('click',function(){if(locked!==null){locked=null;resetInfo();refreshMap();updateRk();updateGrid();svgM.transition().duration(500).call(zoomB.transform,d3.zoomIdentity);}});
+document.getElementById('loadOv').style.display='none';
+}).catch(function(e){document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗：'+e.message+'</p>';});
+}
+
+function refreshMap(){
+if(!landSel)return;
+landSel.transition().duration(200)
+.attr('fill',function(f){var i=numMap[+f.id];return i!==undefined?curColor(i):'#e2e8f0';})
+.attr('opacity',function(f){var i=numMap[+f.id];if(i===undefined)return .3;if(locked!==null)return i===locked?1:.2;return 1;});
+gMap.selectAll('.ptmk').transition().duration(200)
+.attr('fill',function(){return curColor(d3.select(this).datum());})
+.attr('opacity',function(){var i=d3.select(this).datum();if(locked!==null)return i===locked?1:.15;return 1;})
+.attr('r',function(){var i=d3.select(this).datum();return(locked!==null&&i===locked)?8:5;});
+}
+
+/* ── legend ── */
+function updateLegend(){
+var h='';
+if(viewMode==='val'){
+h='<span style="font-weight:800;margin-right:4px">貨幣估值：</span>';
+LV.forEach(function(l,i){h+='<span class="ml-i"><span class="ml-d" style="background:'+CV[i]+'"></span>'+l+'</span>';});
+}else{
+h='<span style="font-weight:800;margin-right:4px">USD 價格：</span>';
+LP.forEach(function(l,i){h+='<span class="ml-i"><span class="ml-d" style="background:'+CP[i]+'"></span>'+l+'</span>';});
+}
+document.getElementById('mapLeg').innerHTML=h;
+}
+
+/* ── info ── */
+function resetInfo(){
+document.getElementById('iName').innerHTML='<span class="info-placeholder">👆 點擊地圖上的國家或下方列表，查看大麥克指數詳情</span>';
+document.getElementById('iBadges').innerHTML='';document.getElementById('iSub').textContent='';$dW.classList.remove('show');
+}
+function showBrief(idx){
+var c=data[idx],col=vColor(c.raw);
+document.getElementById('iName').innerHTML='🍔 '+c.zh+'<span class="info-en">'+c.en+'</span>';
+document.getElementById('iBadges').innerHTML='<span class="badge" style="background:'+col+';color:'+(vIdx(c.raw)<=3?'#1e293b':'#fff')+'">'+fmtPct(c.raw)+'</span><span class="badge" style="background:#b45309">'+fmtUSD(c.dp)+'</span><span class="badge" style="background:#475569">'+(RGN[c.reg]||'')+'</span>';
+document.getElementById('iSub').textContent=c.cur+' '+fmtP(c.lp)+' · 換算 '+fmtUSD(c.dp);
+$dW.classList.remove('show');
+}
+function showInfo(idx){
+showBrief(idx);$dW.classList.add('show');
+var c=data[idx],us=data[iso3Map['USA']],col=vColor(c.raw),ci=vIdx(c.raw);
+/* VS cards */
+var h='<div class="vs-card hl"><div class="vs-lbl">🍔 '+c.zh+'</div><div class="vs-name">'+c.cur+'</div><div class="vs-price">'+fmtP(c.lp)+'</div><div class="vs-usd">= '+fmtUSD(c.dp)+'</div><div class="vs-badge" style="background:'+col+'">'+(ci>=0?NV[ci]:'')+'</div></div>';
+h+='<div class="vs-card"><div class="vs-lbl">🍔 基準：美國</div><div class="vs-name">USD</div><div class="vs-price">'+fmtP(us.lp)+'</div><div class="vs-usd">= '+fmtUSD(us.dp)+'</div></div>';
+document.getElementById('detVS').innerHTML=h;
+/* Rates */
+var implied=c.lp/us.lp,market=c.ex/us.ex;
+var rk_p=1,rk_v=1;data.forEach(function(d){if(d.dp>c.dp)rk_p++;if(d.raw>c.raw)rk_v++;});
+var rh='<div class="rate-i"><div class="rate-v">1 USD = '+fmtP(implied)+' '+c.cur+'</div><div class="rate-l">🍔 大麥克隱含匯率 (PPP)</div></div>';
+rh+='<div class="rate-i"><div class="rate-v">1 USD = '+fmtP(market)+' '+c.cur+'</div><div class="rate-l">💱 市場匯率</div></div>';
+rh+='<div class="rate-i"><div class="rate-v" style="color:'+col+'">'+fmtPct(c.raw)+'</div><div class="rate-l">📊 貨幣估值 vs USD</div></div>';
+rh+='<div class="rate-i"><div class="rate-v">#'+rk_p+' / '+data.length+'</div><div class="rate-l">💲 價格排名（貴→便宜）</div></div>';
+rh+='<div class="rate-i"><div class="rate-v">#'+rk_v+' / '+data.length+'</div><div class="rate-l">📈 高估排名（高→低）</div></div>';
+if(c.apiDate)rh+='<div class="rate-i"><div class="rate-v">📅 '+c.apiDate+'</div><div class="rate-l">數據日期</div></div>';
+document.getElementById('detRates').innerHTML=rh;
+/* Gauge */
+document.getElementById('valMk').style.left=valPos(c.raw)+'%';
+/* Auto-fill calculator */
+document.getElementById('cTo').value=idx;updCalc();
+}
+
+/* ── tooltip ── */
+function showTip(ev,idx){
+var c=data[idx],col=vColor(c.raw);
+var h='<b>🍔 '+c.zh+'</b> '+c.en+'<br><span style="color:#94a3b8;font-size:.72rem">'+(RGN[c.reg]||'')+' · '+c.cur+'</span>';
+h+='<div style="margin-top:4px;display:flex;align-items:center;gap:6px"><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:'+col+'"></span><b style="font-size:1.1rem">'+fmtUSD(c.dp)+'</b><span style="color:'+col+';font-weight:800">'+fmtPct(c.raw)+'</span></div>';
+h+='<div style="font-size:.76rem;margin-top:3px">當地售價 '+c.cur+' '+fmtP(c.lp)+'</div>';
+$tip.innerHTML=h;moveTip(ev);$tip.classList.add('show');
+}
+function moveTip(ev){var x=ev.clientX+14,y=ev.clientY-60;if(x+320>window.innerWidth)x=ev.clientX-320;if(y<10)y=ev.clientY+20;$tip.style.left=x+'px';$tip.style.top=y+'px';}
+
+function selectCountry(idx){
+if(locked===idx){locked=null;resetInfo();refreshMap();updateRk();updateGrid();svgM.transition().duration(500).call(zoomB.transform,d3.zoomIdentity);return;}
+locked=idx;showInfo(idx);refreshMap();updateRk();updateGrid();
+var c=data[idx];
+if(c.lat!=null&&c.lng!=null){var xy=proj([c.lng,c.lat]);svgM.transition().duration(500).call(zoomB.transform,d3.zoomIdentity.translate(mapW/2-4*xy[0],mapH/2-4*xy[1]).scale(4));}
+}
+
+/* ── stats banner ── */
+function updateStats(){
+var sorted=data.slice().sort(function(a,b){return b.dp-a.dp;});
+var most=sorted[0],least=sorted[sorted.length-1];
+var avg=data.reduce(function(s,d){return s+d.dp;},0)/data.length;
+var mostOver=data.slice().sort(function(a,b){return b.raw-a.raw;})[0];
+var mostUnder=data.slice().sort(function(a,b){return a.raw-b.raw;})[0];
+var h='<div class="sb-item"><span class="sb-num">'+data.length+'</span><span class="sb-label">國家/地區</span></div>';
+h+='<div class="sb-item"><span class="sb-num">'+fmtUSD(avg)+'</span><span class="sb-label">全球平均價格</span></div>';
+h+='<div class="sb-item"><span class="sb-num" style="color:#991b1b">'+fmtUSD(most.dp)+'</span><span class="sb-label">🔴 最貴：'+most.zh+'</span></div>';
+h+='<div class="sb-item"><span class="sb-num" style="color:#059669">'+fmtUSD(least.dp)+'</span><span class="sb-label">🟢 最便宜：'+least.zh+'</span></div>';
+h+='<div class="sb-item"><span class="sb-num" style="color:#dc2626">'+fmtPct(mostOver.raw)+'</span><span class="sb-label">📈 最高估：'+mostOver.zh+'</span></div>';
+h+='<div class="sb-item"><span class="sb-num" style="color:#064e3b">'+fmtPct(mostUnder.raw)+'</span><span class="sb-label">📉 最低估：'+mostUnder.zh+'</span></div>';
+document.getElementById('statBanner').innerHTML=h;
+}
+
+/* ── view toggle ── */
+window.setView=function(m){
+viewMode=m;
+document.getElementById('vtVal').className='p-tab'+(m==='val'?' on':'');
+document.getElementById('vtPrc').className='p-tab'+(m==='prc'?' on':'');
+updateLegend();refreshMap();updateRk();
+};
+
+/* ── sort ── */
+window.setSort=function(m){
+sortMode=m;
+['sB1','sB2','sB3'].forEach(function(id){document.getElementById(id).className='sort-btn';});
+if(m==='under')document.getElementById('sB1').classList.add('on');
+else if(m==='over')document.getElementById('sB2').classList.add('on');
+else document.getElementById('sB3').classList.add('on');
+updateRk();
+};
+
+/* ── ranking ── */
+function updateRk(){
+var sorted=data.map(function(c,i){return{i:i,c:c};});
+if(sortMode==='under')sorted.sort(function(a,b){return a.c.raw-b.c.raw;});
+else if(sortMode==='over')sorted.sort(function(a,b){return b.c.raw-a.c.raw;});
+else sorted.sort(function(a,b){return a.c.dp-b.c.dp;});
+var h='';sorted.forEach(function(x,ri){
+var c=x.c,col=vColor(c.raw);
+var sub=viewMode==='val'?fmtPct(c.raw):fmtUSD(c.dp);
+h+='<div class="rk-i'+(locked===x.i?' on':'')+'" data-ci="'+x.i+'"><span class="rk-n">'+(ri+1)+'</span><span class="rk-dot" style="background:'+col+'"></span><div class="rk-inf"><div class="rk-nm">'+c.zh+'</div><div class="rk-sub">'+c.en+' · '+c.cur+'</div></div><span class="rk-val" style="color:'+col+'">'+sub+'</span></div>';
+});
+document.getElementById('rkPanel').innerHTML=h;
+document.querySelectorAll('.rk-i').forEach(function(el){el.onclick=function(){selectCountry(+this.getAttribute('data-ci'));};});
+}
+
+/* ── grid ── */
+function updateGrid(){
+var list=data.map(function(c,i){return{i:i,c:c};});
+if(selReg!=='ALL')list=list.filter(function(x){return x.c.reg===selReg;});
+list.sort(function(a,b){return a.c.zh.localeCompare(b.c.zh,'zh-Hant');});
+var h='';list.forEach(function(x){
+var c=x.c,col=vColor(c.raw);
+h+='<div class="cc-i'+(locked===x.i?' on':'')+'" data-ci="'+x.i+'"><span class="cc-mk" style="background:'+col+'"></span><div class="cc-inf"><div class="cc-nm">'+c.zh+' <span style="color:#94a3b8;font-weight:400;font-size:.7rem">'+c.en+'</span></div><div class="cc-sub">'+c.cur+' '+fmtP(c.lp)+' · '+(RGN[c.reg]||'')+'</div></div><span class="cc-dv" style="color:'+col+'">'+fmtUSD(c.dp)+'<br><span style="font-size:.64rem">'+fmtPct(c.raw)+'</span></span></div>';
+});
+document.getElementById('cGrid').innerHTML=h||'<div style="padding:2rem;text-align:center;color:#94a3b8">無符合結果</div>';
+document.getElementById('cCount').textContent=list.length+'個';
+document.querySelectorAll('.cc-i').forEach(function(el){el.onclick=function(){selectCountry(+this.getAttribute('data-ci'));};});
+}
+function initRegTabs(){
+var tabs=[{k:'ALL',n:'全部'}];for(var k in RGN)tabs.push({k:k,n:RGN[k]});
+var h='';tabs.forEach(function(t){h+='<span class="p-tab'+(selReg===t.k?' on':'')+'" data-r="'+t.k+'">'+t.n+'</span>';});
+document.getElementById('regTabs').innerHTML=h;
+document.querySelectorAll('#regTabs .p-tab').forEach(function(el){el.onclick=function(){selReg=this.getAttribute('data-r');initRegTabs();updateGrid();};});
+}
+
+/* ── calculator ── */
+function initCalcSelects(){
+var opts='';data.forEach(function(c,i){opts+='<option value="'+i+'">'+c.zh+' ('+c.cur+')</option>';});
+document.getElementById('cFrom').innerHTML=opts;document.getElementById('cTo').innerHTML=opts;
+document.getElementById('cFrom').value=iso3Map['USA']||0;
+document.getElementById('cTo').value=iso3Map['JPN']||1;
+updCalc();
+}
+window.updCalc=function(){
+var fi=+document.getElementById('cFrom').value,ti=+document.getElementById('cTo').value;
+var f=data[fi],t=data[ti],amt=+document.getElementById('cAmt').value||100;
+document.getElementById('cfBP').textContent='🍔 '+f.cur+' '+fmtP(f.lp);
+document.getElementById('cfUSD').textContent='= '+fmtUSD(f.dp);
+document.getElementById('ctBP').textContent='🍔 '+t.cur+' '+fmtP(t.lp);
+document.getElementById('ctUSD').textContent='= '+fmtUSD(t.dp);
+document.getElementById('cCurL').textContent=f.cur;
+
+var implied=t.lp/f.lp,market=t.ex/f.ex;
+var rel=t.dp/f.dp-1;
+var mktAmt=amt*market,pppAmt=amt*implied;
+var eqPower=amt*(f.dp/t.dp);
+var col=vColor(rel);
+
+var h='<div class="cr-row"><span class="cr-l">🍔 大麥克隱含匯率</span><span class="cr-v">1 '+f.cur+' = '+fmtP(implied)+' '+t.cur+'</span></div>';
+h+='<div class="cr-row"><span class="cr-l">💱 市場匯率</span><span class="cr-v">1 '+f.cur+' = '+fmtP(market)+' '+t.cur+'</span></div>';
+h+='<div class="cr-row"><span class="cr-l">📊 '+t.cur+' 相對 '+f.cur+' 估值</span><span class="cr-v" style="color:'+col+';font-size:1rem">'+fmtPct(rel)+(rel<0?' 被低估':rel>0?' 被高估':' 公平估值')+'</span></div>';
+h+='<div class="cr-row" style="border-top:2px solid #fcd34d;padding-top:10px;margin-top:4px"><span class="cr-l">💱 按市場匯率兌換</span><span class="cr-v">'+fmtP(amt)+' '+f.cur+' = '+fmtP(mktAmt)+' '+t.cur+'</span></div>';
+h+='<div class="cr-row"><span class="cr-l">🍔 按 PPP 匯率兌換</span><span class="cr-v">'+fmtP(amt)+' '+f.cur+' = '+fmtP(pppAmt)+' '+t.cur+'</span></div>';
+
+/* Travel tip */
+var tipBg,tipText;
+if(Math.abs(rel)<0.05){
+tipBg='background:#f8fafc;border:1px solid #e2e8f0';
+tipText='🤝 根據大麥克指數，<b>'+t.zh+'</b> 與 <b>'+f.zh+'</b> 的物價水平接近，匯率大致反映真實購買力。';
+}else if(rel<0){
+var pwr=Math.abs(Math.round(rel*100));
+tipBg='background:#ecfdf5;border:1px solid #34d399';
+tipText='💰 好消息！根據大麥克指數，<b>'+t.zh+'</b> 的物價比 <b>'+f.zh+'</b> 便宜約 <b>'+pwr+'%</b>。你的 <b>'+fmtP(amt)+' '+f.cur+'</b> 在 '+t.zh+' 的實際購買力約等同在 '+f.zh+' 的 <b>'+fmtP(eqPower)+' '+f.cur+'</b>！';
+}else{
+var pwr=Math.round(rel*100);
+tipBg='background:#fef2f2;border:1px solid #f87171';
+tipText='⚠️ 注意！根據大麥克指數，<b>'+t.zh+'</b> 的物價比 <b>'+f.zh+'</b> 貴約 <b>'+pwr+'%</b>。你的 <b>'+fmtP(amt)+' '+f.cur+'</b> 在 '+t.zh+' 的實際購買力約等同在 '+f.zh+' 的 <b>'+fmtP(eqPower)+' '+f.cur+'</b>。';
+}
+h+='<div class="cr-tip" style="'+tipBg+'">'+tipText+'</div>';
+document.getElementById('calcRes').innerHTML=h;
+};
+window.swapCalc=function(){
+var a=document.getElementById('cFrom'),b=document.getElementById('cTo'),t=a.value;a.value=b.value;b.value=t;updCalc();
+};
+
+/* ── search ── */
+var $sIn=document.getElementById('sIn'),$sDD=document.getElementById('sDD');
+$sIn.oninput=function(){
+var q=this.value.trim().toLowerCase();if(!q){$sDD.classList.remove('show');return;}
+var res=[];data.forEach(function(c,i){if(c.zh.toLowerCase().indexOf(q)>-1||c.en.toLowerCase().indexOf(q)>-1||c.cur.toLowerCase().indexOf(q)>-1)res.push({i:i,c:c});});
+res=res.slice(0,15);
+if(!res.length){$sDD.innerHTML='<div style="padding:.7rem;color:#94a3b8;text-align:center">找不到結果</div>';$sDD.classList.add('show');return;}
+var h='';res.forEach(function(x){var col=vColor(x.c.raw);h+='<div class="sd-i" data-ci="'+x.i+'"><span class="sd-k" style="background:'+col+'">'+fmtUSD(x.c.dp)+'</span><span style="font-weight:600;flex:1">🍔 '+x.c.zh+' <span style="color:#94a3b8;font-size:.75rem">'+x.c.en+'</span></span><span style="font-size:.72rem;color:'+col+';font-weight:700">'+fmtPct(x.c.raw)+'</span></div>';});
+$sDD.innerHTML=h;$sDD.classList.add('show');
+$sDD.querySelectorAll('.sd-i').forEach(function(el){el.onclick=function(){var ci=+this.getAttribute('data-ci');$sIn.value=data[ci].zh;selectCountry(ci);$sDD.classList.remove('show');};});
+};
+$sIn.onblur=function(){setTimeout(function(){$sDD.classList.remove('show');},200);};
+
+/* ── init ── */
+fetchEcon().finally(function(){
+updateBadge();updateStats();updateLegend();initMap();updateRk();initRegTabs();updateGrid();initCalcSelects();
+});
+setTimeout(function(){if(!document.querySelector('.land')){updateBadge();updateStats();updateLegend();initMap();updateRk();initRegTabs();updateGrid();initCalcSelects();}},5000);
+
+})();
+</script>
+
+
+</body></html>

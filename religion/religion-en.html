@@ -1,0 +1,628 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球宗教分布互動地圖 – Roamwise</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Microsoft JhengHei','Segoe UI',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
+nav{background:linear-gradient(135deg,#0F766E,#0D9488);display:flex;align-items:center;justify-content:space-between;padding:.75rem 2rem;flex-wrap:wrap}
+.logo{font-size:1.5rem;font-weight:700;color:#fff;text-decoration:none}.logo span{color:#facc15}
+.nav-r{display:flex;align-items:center;gap:1.2rem}
+nav a{color:#99f6e4;text-decoration:none;font-size:.95rem;padding-bottom:2px;border-bottom:2px solid transparent}nav a:hover{color:#fff}nav a.act{color:#fff;border-bottom-color:#facc15}
+main{flex:1;max-width:1340px;width:100%;margin:1.5rem auto;padding:0 1.5rem}
+h1{font-size:1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.alert-bar{background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border:2px solid #99f6e4;border-radius:12px;padding:.8rem 1.2rem;margin-bottom:1rem;display:flex;align-items:flex-start;gap:.8rem;flex-wrap:wrap;font-size:.87rem;line-height:1.65}
+.alert-bar b{color:#0F766E}
+.card{background:#fff;border-radius:14px;padding:1.2rem 1.5rem;box-shadow:0 2px 14px rgba(0,0,0,.06);margin-bottom:1.2rem}
+.info-bar{min-height:50px;display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;padding-bottom:.8rem;border-bottom:1px solid #e2e8f0}
+.info-left{flex:1;min-width:200px}
+.info-name{font-size:1.15rem;font-weight:700}.info-en{font-size:.82rem;color:#94a3b8;font-weight:400;margin-left:6px}
+.info-sub{font-size:.78rem;color:#64748b;margin-top:3px;line-height:1.5}
+.info-placeholder{color:#94a3b8;font-size:.9rem;font-weight:400}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 10px;border-radius:14px;font-size:.73rem;font-weight:700;color:#fff;margin:3px 3px 0 0}
+.detail-wrap{display:none;margin-top:12px;padding-top:12px;border-top:1px solid #f1f5f9}.detail-wrap.show{display:block}
+.det-grid{display:grid;grid-template-columns:200px 1fr;gap:1rem;align-items:start}
+#donutSvg{display:block;margin:0 auto}
+.rel-list{display:flex;flex-direction:column;gap:4px}
+.rl-i{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;transition:background .1s;cursor:default}
+.rl-i:hover{background:#f8fafc}
+.rl-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,.1)}
+.rl-nm{flex:1;font-size:.82rem;font-weight:600}
+.rl-bar-wrap{width:110px;height:10px;background:#f1f5f9;border-radius:5px;overflow:hidden;flex-shrink:0}
+.rl-bar{height:100%;border-radius:5px;transition:width .4s}
+.rl-pct{width:42px;text-align:right;font-size:.82rem;font-weight:800;flex-shrink:0}
+.rel-desc{font-size:.82rem;color:#475569;line-height:1.65;margin-top:8px;padding:8px 12px;background:#f0fdfa;border-radius:8px;border-left:4px solid #14b8a6}
+.stat-banner{display:flex;flex-wrap:wrap;gap:8px;margin:.8rem 0;padding:.8rem 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9}
+.sb-item{display:flex;flex-direction:column;padding:6px 14px;border-radius:10px;background:#f8fafc;min-width:80px;flex:1}
+.sb-num{font-size:1.2rem;font-weight:900;color:#0F766E;line-height:1.2}.sb-label{font-size:.67rem;color:#94a3b8;margin-top:2px}
+.map-wrap{position:relative;width:100%;background:linear-gradient(180deg,#dbeafe,#e0f2fe);border-radius:10px;overflow:hidden;cursor:grab;margin-top:.5rem}.map-wrap:active{cursor:grabbing}
+.map-wrap svg{display:block;width:100%;height:auto}
+.load-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#dbeafe;z-index:10}
+.spinner{width:40px;height:40px;border:4px solid #93c5fd;border-top-color:#0D9488;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:.8rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.map-leg{position:absolute;bottom:8px;left:8px;background:rgba(255,255,255,.92);border-radius:10px;padding:8px 12px;font-size:.7rem;display:flex;flex-wrap:wrap;gap:3px 10px;box-shadow:0 2px 8px rgba(0,0,0,.1);backdrop-filter:blur(4px);z-index:5;max-width:95%}
+.ml-i{display:flex;align-items:center;gap:4px;white-space:nowrap;font-weight:600;cursor:pointer;padding:2px 5px;border-radius:4px;transition:all .12s}.ml-i:hover{background:#e0e7ff}.ml-i.on{background:#dbeafe;outline:2px solid #3b82f6}
+.ml-d{width:13px;height:13px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,.12)}
+.tips{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.6rem;font-size:.75rem;color:#94a3b8}
+.srch{position:relative;flex:1;min-width:200px;max-width:480px;margin-top:.6rem}
+.srch input{width:100%;padding:.45rem .9rem .45rem 2rem;border:2px solid #e2e8f0;border-radius:8px;font-size:.88rem;outline:none;transition:border .15s}.srch input:focus{border-color:#0D9488}
+.srch-ico{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none;font-size:.85rem}
+.sdd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:280px;overflow-y:auto;z-index:100;display:none}
+.sdd.show{display:block}
+.sd-i{display:flex;align-items:center;gap:.6rem;padding:.55rem .9rem;cursor:pointer;transition:background .1s;font-size:.84rem}.sd-i:hover{background:#f0fdfa}
+.sd-k{font-size:.68rem;font-weight:700;padding:1px 6px;border-radius:5px;color:#fff;flex-shrink:0}
+.two-p{display:grid;grid-template-columns:320px 1fr;gap:1.2rem;align-items:start}
+.panel{background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06);overflow:hidden}
+.p-hdr{padding:.9rem 1.1rem;font-weight:700;font-size:.92rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:.5rem;position:sticky;top:0;background:#fff;z-index:2}
+.p-body{padding:.5rem;max-height:560px;overflow-y:auto}
+.grp-i{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:11px;cursor:pointer;transition:all .14s;border:2px solid transparent;margin-bottom:3px}
+.grp-i:hover{box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.grp-i.on{box-shadow:0 3px 14px rgba(0,0,0,.1)}
+.grp-ico{width:36px;height:36px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff}
+.grp-inf{flex:1;min-width:0}.grp-n{font-weight:700;font-size:.84rem}.grp-d{font-size:.68rem;color:#64748b;margin-top:2px}
+.grp-cnt{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;color:#fff}
+.pc-cnt{background:#f1f5f9;color:#475569;font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:10px}
+.cc-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:4px}
+.cc-i{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:pointer;transition:all .12s;border:1px solid transparent}
+.cc-i:hover{background:#f0fdfa;border-color:#99f6e4}
+.cc-i.on{background:#ccfbf1;border-color:#14b8a6}
+.cc-mk{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,.1)}
+.cc-inf{flex:1;min-width:0}.cc-nm{font-weight:600;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-sub{font-size:.64rem;color:#94a3b8;margin-top:1px;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.cc-kb{display:inline-block;padding:0 5px;border-radius:4px;font-size:.6rem;font-weight:700;color:#fff}
+.ttip{position:fixed;pointer-events:none;background:rgba(15,23,42,.94);color:#fff;padding:12px 16px;border-radius:12px;font-size:.84rem;z-index:1000;opacity:0;transition:opacity .12s;box-shadow:0 4px 20px rgba(0,0,0,.25);line-height:1.55;max-width:340px}.ttip.show{opacity:1}
+footer{background:#1e293b;color:#94a3b8;margin-top:auto}
+.finner{max-width:1340px;margin:0 auto;padding:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;font-size:.82rem}
+@media(max-width:900px){.two-p{grid-template-columns:1fr}.det-grid{grid-template-columns:160px 1fr}}
+@media(max-width:600px){nav{padding:.6rem 1rem}.nav-r{gap:.6rem}nav a{font-size:.75rem}main{padding:0 .7rem}.card{padding:.9rem}.cc-g{grid-template-columns:1fr}.det-grid{grid-template-columns:1fr}.stat-banner{gap:6px}.sb-item{min-width:70px;padding:4px 10px}.sb-num{font-size:1rem}}
+</style>
+</head>
+<body>
+<nav>
+<a class="logo" href="#">Roam<span>wise</span></a>
+<div class="nav-r"><a href="#">🔌 插頭</a><a href="#">🚗 駕駛</a><a href="#">📡 網路</a><a href="#">🌍 氣候</a><a href="#" class="act">🛐 宗教</a></div>
+</nav>
+<main>
+<h1>🛐 全球宗教分布互動地圖</h1>
+<div class="alert-bar">
+<span style="font-size:1.5rem">📖</span>
+<div>本地圖展示全球超過 <b>200 個國家及地區</b> 的宗教人口比例分布。數據主要來源為 Pew Research Center 及 CIA World Factbook 之多年統計平均值。各國國境以<b>主要宗教群</b>著色。佔比低於 2% 之宗教歸入「其他」。點擊地圖上的國家或下方列表，即可查看該地區的宗教組成餅圖及詳細比例。</div>
+</div>
+<div class="card">
+<div class="info-bar" id="infoBar">
+<div class="info-left"><div class="info-name" id="iName"><span class="info-placeholder">👆 點擊地圖上的國家或下方列表，查看宗教分布詳情</span></div><div id="iBadges"></div><div class="info-sub" id="iSub"></div></div>
+</div>
+<div class="detail-wrap" id="detWrap">
+<div class="det-grid">
+<div><svg id="donutSvg" width="200" height="200" viewBox="0 0 200 200"></svg><div id="donutLabel" style="text-align:center;font-size:.76rem;color:#94a3b8;margin-top:4px"></div></div>
+<div><div class="rel-list" id="relList"></div></div>
+</div>
+<div class="rel-desc" id="relDesc"></div>
+</div>
+<div class="stat-banner" id="statBanner"></div>
+<div class="map-wrap" id="mapWrap">
+<div class="load-ov" id="loadOv"><div class="spinner"></div><p>載入世界地圖中…</p></div>
+<div class="map-leg" id="mapLeg"></div>
+</div>
+<div class="tips"><span>🖱️ 懸停查看摘要</span><span>👆 點擊查看詳細比例</span><span>🔍 滾輪縮放</span><span>✋ 拖曳平移</span><span>🏷️ 圖例過濾宗教</span></div>
+<div class="srch"><span class="srch-ico">🔍</span><input id="sIn" placeholder="搜尋國家或宗教（如：香港、Japan、佛教、Islam）…" autocomplete="off"><div class="sdd" id="sDD"></div></div>
+</div>
+<div class="two-p">
+<div class="panel"><div class="p-hdr">🛐 宗教分類<span class="pc-cnt" id="grpTotal"></span></div><div class="p-body" id="grpPanel"></div></div>
+<div class="panel"><div class="p-hdr">🌏 國家/地區列表<span class="pc-cnt" id="cCount"></span></div><div class="p-body"><div class="cc-g" id="cGrid"></div></div></div>
+</div>
+</main>
+<div class="ttip" id="tip"></div>
+<footer><div class="finner"><span>© 2026 Roamwise</span><span>宗教數據為多年統計平均值，僅供參考</span></div></footer>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(function(){
+"use strict";
+var RL={
+C:{n:"天主教",e:"Catholic",g:"christianity",c:"#7C3AED"},
+Pr:{n:"新教",e:"Protestant",g:"christianity",c:"#A78BFA"},
+Or:{n:"東正教",e:"Orthodox",g:"christianity",c:"#5B21B6"},
+Xr:{n:"其他基督宗教",e:"Other Christian",g:"christianity",c:"#C4B5FD"},
+Su:{n:"遜尼派伊斯蘭教",e:"Sunni Islam",g:"islam",c:"#059669"},
+Sh:{n:"什葉派伊斯蘭教",e:"Shia Islam",g:"islam",c:"#34D399"},
+Mu:{n:"伊斯蘭教",e:"Islam",g:"islam",c:"#047857"},
+Bu:{n:"佛教",e:"Buddhism",g:"buddhism",c:"#D97706"},
+Hi:{n:"印度教",e:"Hinduism",g:"hinduism",c:"#EA580C"},
+Ju:{n:"猶太教",e:"Judaism",g:"judaism",c:"#2563EB"},
+Fo:{n:"民間信仰/傳統宗教",e:"Folk/Traditional",g:"folk",c:"#DB2777"},
+Si:{n:"錫克教",e:"Sikhism",g:"sikhism",c:"#9333EA"},
+No:{n:"無宗教/無信仰",e:"Unaffiliated",g:"none",c:"#64748B"},
+Ot:{n:"其他宗教",e:"Other",g:"other",c:"#6B7280"}
+};
+var GP={
+christianity:{n:"基督宗教",e:"Christianity",c:"#7C3AED",ic:"✝️",desc:"世界最大宗教，信徒約24億，涵蓋天主教、新教、東正教等分支。起源於公元1世紀巴勒斯坦地區，信仰耶穌基督為救世主。"},
+islam:{n:"伊斯蘭教",e:"Islam",c:"#059669",ic:"☪️",desc:"世界第二大宗教，信徒約19億，分為遜尼派和什葉派。公元7世紀由先知穆罕默德在阿拉伯半島創立，信仰唯一真主安拉。"},
+buddhism:{n:"佛教",e:"Buddhism",c:"#D97706",ic:"☸️",desc:"約5億信徒，起源於公元前6世紀印度。由悉達多·喬達摩（釋迦牟尼）創立，追求通過修行達到涅槃解脫。"},
+hinduism:{n:"印度教",e:"Hinduism",c:"#EA580C",ic:"🕉️",desc:"世界第三大宗教，約12億信徒，主要分布在南亞。為世界現存最古老的宗教之一，具有多元的神學體系和修行傳統。"},
+judaism:{n:"猶太教",e:"Judaism",c:"#2563EB",ic:"✡️",desc:"約1400萬信徒，主要分布在以色列和美國。為三大一神教之始祖，有超過3000年歷史。"},
+folk:{n:"民間信仰",e:"Folk/Traditional",c:"#DB2777",ic:"🎭",desc:"包括中國民間信仰、非洲傳統宗教、原住民信仰等。通常與特定文化深度結合，涵蓋祖先崇拜、薩滿信仰等。"},
+sikhism:{n:"錫克教",e:"Sikhism",c:"#9333EA",ic:"🪯",desc:"約3000萬信徒，15世紀由古魯那納克在旁遮普創立。強調一神信仰、平等和服務社會。"},
+none:{n:"無宗教",e:"Unaffiliated",c:"#64748B",ic:"⚪",desc:"包括無神論者、不可知論者以及不認同任何特定宗教的人群。在東亞和歐洲部分地區比例較高。"},
+other:{n:"其他宗教",e:"Other",c:"#6B7280",ic:"🔷",desc:"包括耆那教、巴哈伊教、拜火教、神道教、巫術信仰、新興宗教運動等。"}
+};
+var RGN={A:"亞洲",E:"歐洲",F:"非洲",N:"美洲",O:"大洋洲"};
+// [iso_num, "中文", "English", "region", {religion:pct}, opt_lng, opt_lat]
+var DATA=[
+[4,"阿富汗","Afghanistan","A",{Su:85,Sh:15}],
+[8,"阿爾巴尼亞","Albania","E",{Mu:57,No:20,C:10,Or:7,Ot:6}],
+[12,"阿爾及利亞","Algeria","F",{Su:99}],
+[24,"安哥拉","Angola","F",{C:41,Pr:38,No:12,Fo:5,Ot:4}],
+[32,"阿根廷","Argentina","N",{C:63,No:19,Pr:15,Ot:3}],
+[51,"亞美尼亞","Armenia","A",{Or:93,No:3,Ot:4}],
+[36,"澳洲","Australia","O",{No:39,C:20,Pr:16,Or:3,Mu:3,Bu:3,Hi:3,Ot:13}],
+[40,"奧地利","Austria","E",{C:57,No:27,Mu:8,Pr:4,Or:3}],
+[31,"亞塞拜然","Azerbaijan","A",{Sh:65,Su:26,No:5,Ot:4}],
+[44,"巴哈馬","Bahamas","N",{Pr:70,C:14,No:10,Ot:6}],
+[48,"巴林","Bahrain","A",{Sh:46,Su:27,Hi:10,Xr:9,Ot:8}],
+[50,"孟加拉","Bangladesh","A",{Mu:90,Hi:9}],
+[52,"巴巴多斯","Barbados","N",{Pr:66,No:20,C:4,Ot:10}],
+[112,"白俄羅斯","Belarus","E",{Or:48,No:41,C:7,Ot:4}],
+[56,"比利時","Belgium","E",{C:50,No:36,Mu:7,Pr:3,Ot:4}],
+[84,"伯利茲","Belize","N",{C:40,Pr:32,No:16,Ot:12}],
+[204,"貝寧","Benin","F",{C:27,Mu:24,Fo:18,Pr:14,No:12,Ot:5}],
+[64,"不丹","Bhutan","A",{Bu:75,Hi:23,Ot:2}],
+[68,"玻利維亞","Bolivia","N",{C:70,Pr:17,No:10,Ot:3}],
+[70,"波斯尼亞","Bosnia & Herzegovina","E",{Mu:51,Or:31,C:15,Ot:3}],
+[72,"博茨瓦納","Botswana","F",{Pr:75,No:15,Fo:5,Ot:5}],
+[76,"巴西","Brazil","N",{C:65,Pr:22,No:8,Ot:5}],
+[96,"汶萊","Brunei","A",{Mu:78,Bu:8,Xr:8,Fo:4,Ot:2}],
+[100,"保加利亞","Bulgaria","E",{Or:60,No:28,Mu:8,Ot:4}],
+[854,"布基納法索","Burkina Faso","F",{Mu:61,C:23,Fo:8,Pr:7}],
+[108,"布隆迪","Burundi","F",{C:62,Pr:23,Fo:8,Mu:3,Ot:4}],
+[116,"柬埔寨","Cambodia","A",{Bu:97,Mu:2}],
+[120,"喀麥隆","Cameroon","F",{C:38,Pr:26,Mu:21,Fo:6,No:5,Ot:4}],
+[124,"加拿大","Canada","N",{C:39,No:24,Pr:20,Mu:3,Hi:2,Si:2,Ot:10}],
+[132,"佛得角","Cape Verde","F",{C:77,Pr:10,No:10,Ot:3}],
+[140,"中非共和國","Central African Rep.","F",{Pr:51,C:29,Mu:10,Fo:8,Ot:2}],
+[148,"乍得","Chad","F",{Mu:52,Pr:23,C:20,Fo:3,Ot:2}],
+[152,"智利","Chile","N",{C:55,No:25,Pr:16,Ot:4}],
+[156,"中國","China","A",{No:52,Fo:22,Bu:18,Xr:5,Mu:2}],
+[170,"哥倫比亞","Colombia","N",{C:73,Pr:16,No:8,Ot:3}],
+[174,"科摩羅","Comoros","F",{Su:98,Ot:2}],
+[178,"剛果共和國","Congo Republic","F",{C:33,Pr:23,No:16,Xr:12,Fo:10,Mu:2,Ot:4}],
+[180,"剛果民主共和國","DR Congo","F",{Pr:48,C:29,Xr:13,Fo:5,Mu:4}],
+[188,"哥斯達黎加","Costa Rica","N",{C:52,Pr:25,No:18,Ot:5}],
+[384,"科特迪瓦","Côte d'Ivoire","F",{Mu:43,C:17,Fo:15,Pr:12,No:10,Ot:3}],
+[191,"克羅地亞","Croatia","E",{C:86,No:6,Or:4,Mu:2,Ot:2}],
+[192,"古巴","Cuba","N",{C:45,No:23,Fo:18,Pr:5,Ot:9}],
+[196,"塞浦路斯","Cyprus","E",{Or:73,Mu:18,No:4,C:3,Ot:2}],
+[203,"捷克","Czechia","E",{No:72,C:21,Pr:2,Ot:5}],
+[208,"丹麥","Denmark","E",{Pr:75,No:15,Mu:5,C:2,Ot:3}],
+[262,"吉布提","Djibouti","F",{Su:94,Xr:6}],
+[214,"多明尼加","Dominican Republic","N",{C:48,Pr:30,No:18,Ot:4}],
+[218,"厄瓜多爾","Ecuador","N",{C:74,Pr:14,No:8,Ot:4}],
+[818,"埃及","Egypt","F",{Su:90,Xr:10}],
+[222,"薩爾瓦多","El Salvador","N",{C:45,Pr:42,No:10,Ot:3}],
+[226,"赤道幾內亞","Equatorial Guinea","F",{C:88,Pr:5,Mu:4,Ot:3}],
+[232,"厄立特里亞","Eritrea","F",{Or:50,Su:36,C:5,Pr:5,Ot:4}],
+[233,"愛沙尼亞","Estonia","E",{No:60,Or:16,Pr:10,Ot:14}],
+[748,"斯威士蘭","Eswatini","F",{Pr:40,Xr:30,No:20,C:5,Mu:2,Ot:3}],
+[231,"衣索比亞","Ethiopia","F",{Or:44,Mu:34,Pr:19,Fo:3}],
+[242,"斐濟","Fiji","O",{Pr:45,Hi:28,C:9,Mu:6,No:5,Ot:7}],
+[246,"芬蘭","Finland","E",{Pr:67,No:28,Or:2,Ot:3}],
+[250,"法國","France","E",{C:47,No:40,Mu:8,Pr:2,Ot:3}],
+[266,"加蓬","Gabon","F",{C:42,Fo:20,Pr:12,No:12,Mu:10,Ot:4}],
+[270,"岡比亞","Gambia","F",{Su:96,Xr:3}],
+[268,"格魯吉亞","Georgia","A",{Or:83,Mu:11,No:3,Ot:3}],
+[276,"德國","Germany","E",{No:38,C:28,Pr:25,Mu:5,Or:2,Ot:2}],
+[288,"加納","Ghana","F",{Pr:31,Xr:28,Mu:18,C:13,Fo:5,No:3,Ot:2}],
+[300,"希臘","Greece","E",{Or:90,Mu:5,No:3,Ot:2}],
+[320,"危地馬拉","Guatemala","N",{C:42,Pr:40,No:12,Ot:6}],
+[324,"幾內亞","Guinea","F",{Su:85,Xr:8,Fo:7}],
+[624,"幾內亞比紹","Guinea-Bissau","F",{Mu:45,Fo:30,No:12,Xr:10,Ot:3}],
+[328,"圭亞那","Guyana","N",{Pr:30,Hi:28,No:18,C:8,Mu:7,Fo:4,Ot:5}],
+[332,"海地","Haiti","N",{C:55,Pr:29,No:10,Fo:2,Ot:4}],
+[340,"洪都拉斯","Honduras","N",{C:46,Pr:41,No:10,Ot:3}],
+[348,"匈牙利","Hungary","E",{No:40,C:37,Pr:14,Ot:9}],
+[352,"冰島","Iceland","E",{Pr:63,No:28,C:4,Ot:5}],
+[356,"印度","India","A",{Hi:80,Mu:14,Xr:2,Si:2,Ot:2}],
+[360,"印尼","Indonesia","A",{Mu:87,Pr:7,C:3,Hi:2}],
+[364,"伊朗","Iran","A",{Sh:90,Su:8,Ot:2}],
+[368,"伊拉克","Iraq","A",{Sh:55,Su:40,Xr:3,Ot:2}],
+[372,"愛爾蘭","Ireland","E",{C:73,No:14,Pr:5,Mu:2,Ot:6}],
+[376,"以色列","Israel","A",{Ju:74,Mu:18,No:4,Xr:2,Ot:2}],
+[380,"義大利","Italy","E",{C:80,No:13,Mu:4,Ot:3}],
+[388,"牙買加","Jamaica","N",{Pr:64,No:21,C:3,Ot:12}],
+[392,"日本","Japan","A",{No:57,Bu:36,Fo:4,Xr:2}],
+[400,"約旦","Jordan","A",{Su:95,Xr:4}],
+[398,"哈薩克","Kazakhstan","A",{Mu:70,Or:26,Ot:4}],
+[404,"肯亞","Kenya","F",{Pr:48,C:23,Mu:11,Fo:8,Xr:6,No:3}],
+[414,"科威特","Kuwait","A",{Su:60,Sh:25,Hi:6,Xr:6,Ot:3}],
+[417,"吉爾吉斯","Kyrgyzstan","A",{Mu:90,Or:7,Ot:3}],
+[418,"老撾","Laos","A",{Bu:65,Fo:31,Xr:2,Ot:2}],
+[428,"拉脫維亞","Latvia","E",{No:37,C:24,Pr:17,Or:15,Ot:7}],
+[422,"黎巴嫩","Lebanon","A",{Sh:27,Su:27,C:25,Or:8,Ot:13}],
+[426,"萊索托","Lesotho","F",{C:45,Pr:45,No:5,Mu:2,Ot:3}],
+[430,"利比里亞","Liberia","F",{Pr:40,Mu:20,Fo:18,C:13,No:5,Ot:4}],
+[434,"利比亞","Libya","F",{Su:97,Ot:3}],
+[440,"立陶宛","Lithuania","E",{C:77,No:14,Or:4,Ot:5}],
+[442,"盧森堡","Luxembourg","E",{C:68,No:22,Pr:3,Mu:3,Ot:4}],
+[450,"馬達加斯加","Madagascar","F",{Fo:40,C:27,Pr:22,Mu:5,No:3,Ot:3}],
+[454,"馬拉維","Malawi","F",{Pr:34,Xr:26,C:17,Mu:14,Fo:4,No:3,Ot:2}],
+[458,"馬來西亞","Malaysia","A",{Mu:61,Bu:20,Xr:9,Hi:6,Fo:2,Ot:2}],
+[462,"馬爾代夫","Maldives","A",{Su:100}],
+[466,"馬里","Mali","F",{Su:95,Fo:3,Ot:2}],
+[470,"馬耳他","Malta","E",{C:95,Ot:5}],
+[478,"毛里塔尼亞","Mauritania","F",{Su:100}],
+[480,"毛里求斯","Mauritius","F",{Hi:48,C:26,Mu:17,Pr:6,Ot:3}],
+[484,"墨西哥","Mexico","N",{C:78,Pr:11,No:8,Ot:3}],
+[498,"摩爾多瓦","Moldova","E",{Or:93,No:3,Ot:4}],
+[496,"蒙古","Mongolia","A",{Bu:53,No:38,Mu:3,Fo:3,Xr:2}],
+[499,"黑山","Montenegro","E",{Or:72,Mu:19,C:4,No:3,Ot:2}],
+[504,"摩洛哥","Morocco","F",{Su:99}],
+[508,"莫三比克","Mozambique","F",{C:28,Xr:18,Mu:18,Pr:15,No:13,Fo:5,Ot:3}],
+[104,"緬甸","Myanmar","A",{Bu:88,Xr:6,Mu:4,Ot:2}],
+[516,"納米比亞","Namibia","F",{Pr:50,C:17,Xr:15,No:10,Fo:5,Ot:3}],
+[524,"尼泊爾","Nepal","A",{Hi:81,Bu:9,Mu:4,Fo:3,Xr:2}],
+[528,"荷蘭","Netherlands","E",{No:52,C:23,Pr:15,Mu:5,Ot:5}],
+[554,"紐西蘭","New Zealand","O",{No:49,Pr:20,C:11,Hi:3,Mu:2,Bu:2,Ot:13}],
+[558,"尼加拉瓜","Nicaragua","N",{C:50,Pr:33,No:13,Ot:4}],
+[562,"尼日爾","Niger","F",{Su:99}],
+[566,"尼日利亞","Nigeria","F",{Mu:50,Pr:25,C:15,Fo:4,Ot:6}],
+[408,"朝鮮","North Korea","A",{No:73,Fo:16,Bu:5,Xr:2,Ot:4}],
+[807,"北馬其頓","North Macedonia","E",{Or:65,Mu:33,Ot:2}],
+[578,"挪威","Norway","E",{Pr:68,No:20,Mu:3,C:3,Ot:6}],
+[512,"阿曼","Oman","A",{Mu:86,Hi:5,Xr:5,Ot:4}],
+[586,"巴基斯坦","Pakistan","A",{Su:80,Sh:15,Hi:2,Xr:2}],
+[275,"巴勒斯坦","Palestine","A",{Su:93,Xr:5,Ot:2}],
+[591,"巴拿馬","Panama","N",{C:63,Pr:25,No:7,Ot:5}],
+[598,"巴布亞新幾內亞","Papua New Guinea","O",{Pr:53,C:28,Fo:8,No:5,Ot:6}],
+[600,"巴拉圭","Paraguay","N",{C:89,Pr:7,No:2,Ot:2}],
+[604,"秘魯","Peru","N",{C:76,Pr:14,No:7,Ot:3}],
+[608,"菲律賓","Philippines","A",{C:79,Pr:9,Mu:6,Ot:6}],
+[616,"波蘭","Poland","E",{C:85,No:10,Or:2,Ot:3}],
+[620,"葡萄牙","Portugal","E",{C:81,No:12,Ot:7}],
+[634,"卡塔爾","Qatar","A",{Mu:68,Xr:14,Hi:14,Bu:3}],
+[642,"羅馬尼亞","Romania","E",{Or:82,Pr:6,C:5,No:4,Ot:3}],
+[643,"俄羅斯","Russia","E",{Or:71,No:15,Mu:10,Ot:4}],
+[646,"盧旺達","Rwanda","F",{C:44,Pr:38,No:8,Mu:5,Ot:5}],
+[682,"沙特阿拉伯","Saudi Arabia","A",{Su:87,Sh:13}],
+[686,"塞內加爾","Senegal","F",{Su:97,Xr:3}],
+[688,"塞爾維亞","Serbia","E",{Or:85,C:5,No:5,Mu:3,Ot:2}],
+[694,"塞拉利昂","Sierra Leone","F",{Mu:78,Pr:12,Fo:5,C:3,Ot:2}],
+[702,"新加坡","Singapore","A",{Bu:31,No:20,Xr:19,Mu:14,Fo:9,Hi:5,Ot:2}],
+[703,"斯洛伐克","Slovakia","E",{C:62,No:24,Pr:9,Or:2,Ot:3}],
+[705,"斯洛文尼亞","Slovenia","E",{C:58,No:35,Mu:3,Or:2,Ot:2}],
+[90,"所羅門群島","Solomon Islands","O",{Pr:73,C:19,No:3,Ot:5}],
+[706,"索馬里","Somalia","F",{Su:100}],
+[710,"南非","South Africa","F",{Pr:36,Xr:36,No:11,C:8,Fo:3,Mu:2,Hi:2,Ot:2}],
+[410,"韓國","South Korea","A",{No:46,Bu:23,Pr:20,C:8,Ot:3}],
+[728,"南蘇丹","South Sudan","F",{Pr:30,C:30,Fo:33,Mu:6}],
+[724,"西班牙","Spain","E",{C:58,No:35,Mu:3,Pr:2,Ot:2}],
+[144,"斯里蘭卡","Sri Lanka","A",{Bu:70,Hi:13,Mu:10,Xr:7}],
+[729,"蘇丹","Sudan","F",{Su:91,Xr:6,Fo:2}],
+[740,"蘇里南","Suriname","N",{Pr:24,C:22,Hi:20,Mu:14,No:10,Fo:5,Ot:5}],
+[752,"瑞典","Sweden","E",{No:46,Pr:42,Mu:8,Ot:4}],
+[756,"瑞士","Switzerland","E",{C:35,No:28,Pr:24,Mu:5,Or:2,Ot:6}],
+[760,"敘利亞","Syria","A",{Su:74,Sh:13,Xr:10,Ot:3}],
+[762,"塔吉克","Tajikistan","A",{Su:95,Sh:3,Ot:2}],
+[834,"坦桑尼亞","Tanzania","F",{Mu:35,Pr:30,C:26,Xr:5,Fo:2,Ot:2}],
+[764,"泰國","Thailand","A",{Bu:93,Mu:5,Ot:2}],
+[626,"東帝汶","Timor-Leste","A",{C:97,Pr:2}],
+[768,"多哥","Togo","F",{Fo:36,C:25,Pr:15,Mu:14,No:6,Ot:4}],
+[780,"千里達","Trinidad & Tobago","N",{Pr:32,C:22,Hi:18,No:14,Mu:5,Ot:9}],
+[788,"突尼西亞","Tunisia","F",{Su:99}],
+[792,"土耳其","Turkey","A",{Su:82,Sh:15,No:2}],
+[795,"土庫曼","Turkmenistan","A",{Su:89,Or:9,Ot:2}],
+[800,"烏干達","Uganda","F",{C:39,Pr:32,Mu:14,Xr:11,Ot:4}],
+[804,"烏克蘭","Ukraine","E",{Or:78,No:10,C:8,Pr:2,Ot:2}],
+[784,"阿聯酋","United Arab Emirates","A",{Mu:76,Xr:9,Hi:6,Bu:5,Ot:4}],
+[826,"英國","United Kingdom","E",{No:48,Pr:25,C:10,Mu:6,Hi:2,Ot:9}],
+[840,"美國","United States","N",{Pr:43,No:26,C:20,Ju:2,Ot:9}],
+[858,"烏拉圭","Uruguay","N",{No:42,C:42,Pr:8,Ot:8}],
+[860,"烏茲別克","Uzbekistan","A",{Su:88,Or:9,Ot:3}],
+[548,"瓦努阿圖","Vanuatu","O",{Pr:70,C:13,No:7,Fo:6,Ot:4}],
+[862,"委內瑞拉","Venezuela","N",{C:71,Pr:17,No:9,Ot:3}],
+[704,"越南","Vietnam","A",{No:73,Bu:14,C:7,Fo:3,Pr:2}],
+[732,"西撒哈拉","Western Sahara","F",{Su:99}],
+[887,"也門","Yemen","A",{Su:65,Sh:35}],
+[894,"贊比亞","Zambia","F",{Pr:75,C:20,Mu:2,Ot:3}],
+[716,"津巴布韋","Zimbabwe","F",{Pr:68,No:15,C:10,Fo:4,Ot:3}],
+[690,"塞舌爾","Seychelles","F",{C:76,Pr:10,No:6,Hi:2,Mu:2,Ot:4}],
+[882,"薩摩亞","Samoa","O",{Pr:50,C:20,Xr:22,No:5,Ot:3}],
+[776,"湯加","Tonga","O",{Pr:60,C:14,Xr:17,No:5,Ot:4}],
+[678,"聖多美普林西比","São Tomé & Príncipe","F",{C:55,No:25,Pr:12,Ot:8}],
+["HK","香港","Hong Kong","A",{No:34,Fo:28,Bu:21,Pr:6,C:5,Ot:6},114.17,22.32],
+["MO","澳門","Macau","A",{No:60,Bu:17,Fo:7,C:6,Ot:10},113.55,22.20],
+["TW","台灣","Taiwan","A",{Fo:44,Bu:22,No:20,Pr:3,C:2,Ot:9},121.0,23.7],
+["KV","科索沃","Kosovo","E",{Mu:96,Or:2,Ot:2},21.0,42.6],
+["PR","波多黎各","Puerto Rico","N",{C:56,Pr:33,No:8,Ot:3},-66.5,18.2],
+["AD","安道爾","Andorra","E",{C:88,No:8,Ot:4},1.52,42.51],
+[158,"台灣(備)","Taiwan_alt","A",{Fo:44,Bu:22,No:20,Pr:3,C:2,Ot:9}]
+];
+DATA=DATA.filter(function(d){return d[1]!=="台灣(備)";});
+var idMap={},ptMarkers=[];
+DATA.forEach(function(d,i){if(typeof d[0]==="number"){idMap[d[0]]=i;}else{ptMarkers.push(i);}});
+function domGrp(d){
+var gs={};var rels=d[4];
+for(var k in rels){if(RL[k]){var g=RL[k].g;gs[g]=(gs[g]||0)+rels[k];}}
+var mx=0,mg2="other";for(var g in gs){if(gs[g]>mx){mx=gs[g];mg2=g;}}return mg2;
+}
+function grpColor(d){return GP[domGrp(d)]?GP[domGrp(d)].c:"#6B7280";}
+var locked=null,selGrp=null;
+var $dW=document.getElementById('detWrap'),$tip=document.getElementById('tip');
+function updateStats(){
+var gc={};DATA.forEach(function(d){var g=domGrp(d);gc[g]=(gc[g]||0)+1;});
+var h='<div class="sb-item"><span class="sb-num">'+DATA.length+'</span><span class="sb-label">國家/地區</span></div>';
+var order=["christianity","islam","buddhism","hinduism","folk","none","judaism","sikhism","other"];
+order.forEach(function(g){if(!gc[g])return;
+h+='<div class="sb-item"><span class="sb-num" style="color:'+GP[g].c+'">'+(gc[g])+'</span><span class="sb-label">'+GP[g].n+'為主</span></div>';
+});
+document.getElementById('statBanner').innerHTML=h;
+}
+function initLegend(){
+var h='',order=["christianity","islam","buddhism","hinduism","folk","none","judaism","other"];
+order.forEach(function(g){if(!GP[g])return;
+h+='<span class="ml-i" data-grp="'+g+'"><span class="ml-d" style="background:'+GP[g].c+'"></span>'+GP[g].n+'</span>';
+});
+document.getElementById('mapLeg').innerHTML=h;
+document.querySelectorAll('.ml-i').forEach(function(el){
+el.onclick=function(){
+var g=this.getAttribute('data-grp');
+if(selGrp===g){selGrp=null;}else{selGrp=g;locked=null;resetInfo();}
+document.querySelectorAll('.ml-i').forEach(function(e){e.classList.remove('on');});
+if(selGrp)this.classList.add('on');
+updateMap();updatePanels();
+};
+});
+}
+function resetInfo(){
+document.getElementById('iName').innerHTML='<span class="info-placeholder">👆 點擊地圖上的國家或下方列表，查看宗教分布詳情</span>';
+document.getElementById('iBadges').innerHTML='';document.getElementById('iSub').textContent='';
+$dW.classList.remove('show');
+}
+function showInfo(idx){
+var d=DATA[idx],g=domGrp(d),gp=GP[g];
+document.getElementById('iName').innerHTML=d[1]+'<span class="info-en">'+d[2]+'</span>';
+var bs='<span class="badge" style="background:'+gp.c+'">'+gp.ic+' '+gp.n+'為主</span>';
+var rels=d[4],sorted=[];
+for(var k in rels){sorted.push({k:k,v:rels[k]});}
+sorted.sort(function(a,b){return b.v-a.v;});
+sorted.forEach(function(s){if(RL[s.k])bs+='<span class="badge" style="background:'+RL[s.k].c+'">'+RL[s.k].n+' '+s.v+'%</span>';});
+document.getElementById('iBadges').innerHTML=bs;
+document.getElementById('iSub').textContent=RGN[d[3]]||d[3];
+$dW.classList.add('show');
+drawDonut(sorted);
+var lh='';
+sorted.forEach(function(s){
+var r=RL[s.k];if(!r)return;
+lh+='<div class="rl-i"><span class="rl-dot" style="background:'+r.c+'"></span><span class="rl-nm">'+r.n+'</span><div class="rl-bar-wrap"><div class="rl-bar" style="width:'+s.v+'%;background:'+r.c+'"></div></div><span class="rl-pct" style="color:'+r.c+'">'+s.v+'%</span></div>';
+});
+document.getElementById('relList').innerHTML=lh;
+document.getElementById('donutLabel').textContent='👆 懸停餅圖查看比例';
+document.getElementById('relDesc').innerHTML='<b>'+gp.ic+' '+gp.n+'（'+gp.e+'）</b><br>'+gp.desc;
+}
+function drawDonut(sorted){
+var svg=d3.select('#donutSvg');svg.selectAll('*').remove();
+var w=200,h=200,r=85,ir=52;
+var g=svg.append('g').attr('transform','translate('+w/2+','+h/2+')');
+var pie=d3.pie().value(function(d){return d.v}).sort(null).padAngle(.02);
+var arc=d3.arc().innerRadius(ir).outerRadius(r);
+var arcH=d3.arc().innerRadius(ir-3).outerRadius(r+5);
+var arcs=g.selectAll('.arc').data(pie(sorted)).enter().append('g').attr('class','arc');
+arcs.append('path').attr('d',arc)
+.attr('fill',function(d){return RL[d.data.k]?RL[d.data.k].c:'#6B7280'})
+.attr('stroke','#fff').attr('stroke-width',2)
+.style('cursor','pointer')
+.on('mouseenter',function(ev,d){
+d3.select(this).transition().duration(120).attr('d',arcH);
+var r2=RL[d.data.k];
+document.getElementById('donutLabel').innerHTML='<b style="color:'+(r2?r2.c:'#333')+'">'+( r2?r2.n:d.data.k)+'</b>：'+d.data.v+'%';
+})
+.on('mouseleave',function(){
+d3.select(this).transition().duration(120).attr('d',arc);
+document.getElementById('donutLabel').textContent='👆 懸停餅圖查看比例';
+});
+g.append('text').attr('text-anchor','middle').attr('dy','-0.2em').attr('font-size','14').attr('font-weight','900').attr('fill','#1e293b')
+.text(sorted[0]?sorted[0].v+'%':'');
+g.append('text').attr('text-anchor','middle').attr('dy','1.2em').attr('font-size','10').attr('fill','#64748b')
+.text(sorted[0]&&RL[sorted[0].k]?RL[sorted[0].k].n:'');
+}
+var mapW=960,mapH=500,svgMap,proj,pathGen,gMap,zoomBeh,landSel;
+function initMap(){
+svgMap=d3.select('#mapWrap').append('svg').attr('viewBox','0 0 '+mapW+' '+mapH).attr('preserveAspectRatio','xMidYMid meet');
+proj=d3.geoNaturalEarth1().scale(158).translate([mapW/2,mapH/2]);
+pathGen=d3.geoPath().projection(proj);
+gMap=svgMap.append('g');
+gMap.append('path').datum({type:'Sphere'}).attr('d',pathGen).attr('fill','#dbeafe').attr('stroke','#93c5fd').attr('stroke-width',.5);
+gMap.append('path').datum(d3.geoGraticule()()).attr('d',pathGen).attr('fill','none').attr('stroke','rgba(255,255,255,.4)').attr('stroke-width',.3);
+zoomBeh=d3.zoom().scaleExtent([1,12]).on('zoom',function(ev){gMap.attr('transform',ev.transform);});
+svgMap.call(zoomBeh);
+d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(world){
+var features=topojson.feature(world,world.objects.countries).features;
+landSel=gMap.selectAll('.land').data(features).enter().append('path').attr('class','land').attr('d',pathGen)
+.attr('stroke','#fff').attr('stroke-width',.4).attr('cursor','pointer')
+.attr('fill',function(f){
+var idx=idMap[+f.id];
+if(idx!==undefined)return grpColor(DATA[idx]);
+return '#e2e8f0';
+})
+.on('mouseenter',function(ev,f){
+var idx=idMap[+f.id];if(idx===undefined)return;
+d3.select(this).attr('stroke','#1e293b').attr('stroke-width',1.5).raise();
+if(locked===null)showBrief(idx);
+showTip(ev,idx);
+})
+.on('mousemove',function(ev){
+var tx=ev.clientX+14,ty=ev.clientY-60;if(tx+340>window.innerWidth)tx=ev.clientX-340;if(ty<10)ty=ev.clientY+20;
+$tip.style.left=tx+'px';$tip.style.top=ty+'px';
+})
+.on('mouseleave',function(){
+d3.select(this).attr('stroke','#fff').attr('stroke-width',.4);
+$tip.classList.remove('show');
+if(locked===null)resetInfo();
+})
+.on('click',function(ev,f){
+ev.stopPropagation();
+var idx=idMap[+f.id];if(idx===undefined)return;
+selectCountry(idx);
+});
+ptMarkers.forEach(function(idx){
+var d=DATA[idx],xy=proj([d[5],d[6]]);
+if(!xy)return;
+gMap.append('circle').attr('cx',xy[0]).attr('cy',xy[1]).attr('r',5)
+.attr('fill',grpColor(d)).attr('stroke','#fff').attr('stroke-width',1.5).attr('cursor','pointer')
+.attr('class','ptmk').datum(idx)
+.on('mouseenter',function(ev){
+d3.select(this).attr('r',8).attr('stroke-width',2.5);
+var i=d3.select(this).datum();
+if(locked===null)showBrief(i);
+showTip(ev,i);
+})
+.on('mousemove',function(ev){
+var tx=ev.clientX+14,ty=ev.clientY-60;if(tx+340>window.innerWidth)tx=ev.clientX-340;if(ty<10)ty=ev.clientY+20;
+$tip.style.left=tx+'px';$tip.style.top=ty+'px';
+})
+.on('mouseleave',function(){
+d3.select(this).attr('r',5).attr('stroke-width',1.5);
+$tip.classList.remove('show');
+if(locked===null)resetInfo();
+})
+.on('click',function(ev){
+ev.stopPropagation();
+selectCountry(d3.select(this).datum());
+});
+});
+svgMap.on('click',function(){
+if(locked!==null){locked=null;selGrp=null;resetInfo();updateMap();updatePanels();
+svgMap.transition().duration(500).call(zoomBeh.transform,d3.zoomIdentity);}
+});
+document.getElementById('loadOv').style.display='none';
+updateMap();
+}).catch(function(err){
+document.getElementById('loadOv').innerHTML='<p style="color:#ef4444">⚠️ 地圖載入失敗：'+err.message+'</p>';
+});
+}
+function showBrief(idx){
+var d=DATA[idx],g=domGrp(d),gp=GP[g];
+document.getElementById('iName').innerHTML=d[1]+'<span class="info-en">'+d[2]+'</span>';
+var rels=d[4],sorted=[];for(var k in rels)sorted.push({k:k,v:rels[k]});sorted.sort(function(a,b){return b.v-a.v;});
+var bs='<span class="badge" style="background:'+gp.c+'">'+gp.ic+' '+gp.n+'為主</span>';
+sorted.slice(0,3).forEach(function(s){if(RL[s.k])bs+='<span class="badge" style="background:'+RL[s.k].c+'">'+RL[s.k].n+' '+s.v+'%</span>';});
+document.getElementById('iBadges').innerHTML=bs;
+document.getElementById('iSub').textContent=RGN[d[3]]||d[3];
+$dW.classList.remove('show');
+}
+function showTip(ev,idx){
+var d=DATA[idx],g=domGrp(d),gp=GP[g];
+var rels=d[4],sorted=[];for(var k in rels)sorted.push({k:k,v:rels[k]});sorted.sort(function(a,b){return b.v-a.v;});
+var h='<b>'+d[1]+'</b> '+d[2]+'<br><span style="font-size:.72rem;color:#94a3b8">'+( RGN[d[3]]||'')+'</span>';
+h+='<br><span style="display:inline-block;margin-top:3px;padding:2px 7px;border-radius:5px;background:'+gp.c+';color:#fff;font-size:.72rem;font-weight:700">'+gp.ic+' '+gp.n+'</span>';
+h+='<div style="margin-top:5px;font-size:.78rem">';
+sorted.slice(0,5).forEach(function(s){
+if(RL[s.k])h+='<div style="display:flex;align-items:center;gap:4px;margin-top:2px"><span style="width:8px;height:8px;border-radius:50%;background:'+RL[s.k].c+';flex-shrink:0"></span>'+RL[s.k].n+' <b>'+s.v+'%</b></div>';
+});
+h+='</div>';
+$tip.innerHTML=h;
+var tx=ev.clientX+14,ty=ev.clientY-60;if(tx+340>window.innerWidth)tx=ev.clientX-340;if(ty<10)ty=ev.clientY+20;
+$tip.style.left=tx+'px';$tip.style.top=ty+'px';$tip.classList.add('show');
+}
+function selectCountry(idx){
+if(locked===idx){locked=null;selGrp=null;resetInfo();updateMap();updatePanels();svgMap.transition().duration(500).call(zoomBeh.transform,d3.zoomIdentity);return;}
+locked=idx;selGrp=null;
+document.querySelectorAll('.ml-i').forEach(function(e){e.classList.remove('on');});
+showInfo(idx);updateMap();updatePanels();
+var d=DATA[idx];
+if(d[5]!==undefined){
+var xy=proj([d[5],d[6]]);
+svgMap.transition().duration(500).call(zoomBeh.transform,d3.zoomIdentity.translate(mapW/2-4*xy[0],mapH/2-4*xy[1]).scale(4));
+}
+}
+function updateMap(){
+if(!landSel)return;
+landSel.transition().duration(200)
+.attr('fill',function(f){
+var idx=idMap[+f.id];if(idx===undefined)return '#e2e8f0';
+var d=DATA[idx],g=domGrp(d);
+if(locked!==null)return idx===locked?grpColor(d):'#e2e8f0';
+if(selGrp)return g===selGrp?grpColor(d):'#e2e8f0';
+return grpColor(d);
+})
+.attr('opacity',function(f){
+var idx=idMap[+f.id];if(idx===undefined)return .4;
+if(locked!==null)return idx===locked?1:.25;
+if(selGrp)return domGrp(DATA[idx])===selGrp?1:.15;
+return 1;
+});
+gMap.selectAll('.ptmk').transition().duration(200)
+.attr('fill',function(){var i=d3.select(this).datum();return locked!==null?(i===locked?grpColor(DATA[i]):'#cbd5e1'):selGrp?(domGrp(DATA[i])===selGrp?grpColor(DATA[i]):'#e2e8f0'):grpColor(DATA[i]);})
+.attr('opacity',function(){var i=d3.select(this).datum();if(locked!==null)return i===locked?1:.2;if(selGrp)return domGrp(DATA[i])===selGrp?1:.12;return 1;})
+.attr('r',function(){var i=d3.select(this).datum();if(locked!==null)return i===locked?8:3;if(selGrp)return domGrp(DATA[i])===selGrp?6:2;return 5;});
+}
+function updatePanels(){
+var gc={};DATA.forEach(function(d){var g=domGrp(d);gc[g]=(gc[g]||0)+1;});
+var order=["christianity","islam","buddhism","hinduism","folk","none","judaism","sikhism","other"];
+var h='';
+order.forEach(function(gk){
+if(!gc[gk])return;
+var gp=GP[gk],cnt=gc[gk];
+var ac=selGrp===gk;
+h+='<div class="grp-i'+(ac?' on':'')+'" data-grp="'+gk+'" style="background:'+(ac?gp.c+'11':'#f8fafc')+';'+(ac?'border-color:'+gp.c:'')+'">'+
+'<div class="grp-ico" style="background:'+gp.c+'">'+gp.ic+'</div>'+
+'<div class="grp-inf"><div class="grp-n" style="color:'+gp.c+'">'+gp.n+'</div><div class="grp-d">'+gp.e+' · '+cnt+'國家/地區</div></div>'+
+'<span class="grp-cnt" style="background:'+gp.c+'">'+cnt+'</span></div>';
+});
+document.getElementById('grpPanel').innerHTML=h;
+document.getElementById('grpTotal').textContent=order.filter(function(g){return gc[g];}).length+'類';
+document.querySelectorAll('.grp-i').forEach(function(el){
+el.onclick=function(){
+var g=this.getAttribute('data-grp');
+if(selGrp===g){selGrp=null;}else{selGrp=g;locked=null;resetInfo();}
+document.querySelectorAll('.ml-i').forEach(function(e){e.classList.remove('on');});
+if(selGrp){var le=document.querySelector('.ml-i[data-grp="'+selGrp+'"]');if(le)le.classList.add('on');}
+updateMap();updatePanels();
+};
+});
+var list=DATA.map(function(d,i){return{i:i,d:d};});
+if(selGrp)list=list.filter(function(x){return domGrp(x.d)===selGrp;});
+list.sort(function(a,b){return a.d[1].localeCompare(b.d[1],'zh-Hant');});
+var gh='';list.forEach(function(x){
+var d=x.d,g=domGrp(d),gp=GP[g];
+var rels=d[4],sorted=[];for(var k in rels)sorted.push({k:k,v:rels[k]});sorted.sort(function(a,b){return b.v-a.v;});
+var topR=sorted[0]&&RL[sorted[0].k]?RL[sorted[0].k]:null;
+gh+='<div class="cc-i'+(locked===x.i?' on':'')+'" data-ci="'+x.i+'">'+
+'<span class="cc-mk" style="background:'+gp.c+'"></span>'+
+'<div class="cc-inf"><div class="cc-nm">'+d[1]+' <span style="color:#94a3b8;font-weight:400;font-size:.7rem">'+d[2]+'</span></div>'+
+'<div class="cc-sub"><span class="cc-kb" style="background:'+(topR?topR.c:gp.c)+'">'+(topR?topR.n.substring(0,4):gp.n.substring(0,2))+' '+sorted[0].v+'%</span> '+(RGN[d[3]]||'')+'</div></div></div>';
+});
+document.getElementById('cGrid').innerHTML=gh||'<div style="padding:2rem;text-align:center;color:#94a3b8">無符合結果</div>';
+document.getElementById('cCount').textContent=list.length+'個';
+document.querySelectorAll('.cc-i').forEach(function(el){
+el.onclick=function(){selectCountry(+this.getAttribute('data-ci'));};
+});
+}
+var $sIn=document.getElementById('sIn'),$sDD=document.getElementById('sDD');
+$sIn.oninput=function(){
+var q=this.value.trim().toLowerCase();if(!q){$sDD.classList.remove('show');return;}
+var res=[];
+DATA.forEach(function(d,i){
+var match=d[1].toLowerCase().indexOf(q)>-1||d[2].toLowerCase().indexOf(q)>-1;
+if(!match){for(var k in d[4]){if(RL[k]&&(RL[k].n.indexOf(q)>-1||RL[k].e.toLowerCase().indexOf(q)>-1)){match=true;break;}}}
+if(!match){var g=domGrp(d);if(GP[g]&&(GP[g].n.indexOf(q)>-1||GP[g].e.toLowerCase().indexOf(q)>-1))match=true;}
+if(match)res.push({i:i,d:d});
+});
+res=res.slice(0,15);
+if(!res.length){$sDD.innerHTML='<div style="padding:.7rem;color:#94a3b8;text-align:center">找不到結果</div>';$sDD.classList.add('show');return;}
+var h='';res.forEach(function(x){
+var gp=GP[domGrp(x.d)];
+h+='<div class="sd-i" data-ci="'+x.i+'"><span class="sd-k" style="background:'+gp.c+'">'+gp.ic+'</span><span style="font-weight:600;flex:1">'+x.d[1]+' <span style="color:#94a3b8;font-size:.75rem">'+x.d[2]+'</span></span><span style="font-size:.72rem;color:#64748b">'+(RGN[x.d[3]]||'')+'</span></div>';
+});
+$sDD.innerHTML=h;$sDD.classList.add('show');
+$sDD.querySelectorAll('.sd-i').forEach(function(el){el.onclick=function(){
+var ci=+this.getAttribute('data-ci');
+$sIn.value=DATA[ci][1];selectCountry(ci);$sDD.classList.remove('show');
+};});
+};
+$sIn.onblur=function(){setTimeout(function(){$sDD.classList.remove('show');},200);};
+initLegend();updateStats();initMap();updatePanels();
+})();
+</script>
+
+
+</body></html>
